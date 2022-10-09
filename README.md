@@ -1,0 +1,1 @@
+# Mandelbrot-Menge-Generator
