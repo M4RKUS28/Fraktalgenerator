@@ -463,6 +463,7 @@ public:
 
         doubleSpinBoxEscapeR = new QDoubleSpinBox(tab_2);
         doubleSpinBoxEscapeR->setObjectName(QString::fromUtf8("doubleSpinBoxEscapeR"));
+        doubleSpinBoxEscapeR->setMinimum(2.000000000000000);
         doubleSpinBoxEscapeR->setMaximum(9999.989999999999782);
         doubleSpinBoxEscapeR->setValue(4.000000000000000);
 
@@ -588,7 +589,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(0);
+        tabWidget->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(MainWindow);

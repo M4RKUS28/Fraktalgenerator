@@ -44,6 +44,8 @@ public:
         size_t maxIterations;
     private:
         int **iterations;
+
+        //alle anderen auch!!!!!
     };
 
     QList<SETTING> settings;
@@ -69,9 +71,14 @@ public:
 
     // timer only update img if there are changes
     bool imgUpdateNeeded = false;
-    QString zoomOrReload = "RELOAD";
 
-
+    enum OP_MODE {
+        ZOOM_TO_SELECTED,
+        REFRESH,
+        APPLY_SETTINGS,
+        APPLY_SETTINGS_AND_ZOOM,
+        RESET
+    } op_mode;
 
 public:
     MainWindow(QWidget *parent = nullptr);
@@ -99,6 +106,10 @@ public:
 
     void afterColoring(SETTING set);
 
+    void setOperationMode(OP_MODE o);
+
+
+
 
 private slots:
     void on_pushButtonStart_clicked();
@@ -113,6 +124,34 @@ private slots:
 
     void on_pushButton_clicked();
 
+
+    void on_spinBoxMaxIterations_valueChanged(int arg1);
+
+    void on_comboBox_palette_currentIndexChanged(int index);
+
+    void on_radioButton_normalized_toggled(bool checked);
+
+    void on_radioButton_invert_toggled(bool checked);
+
+    void on_radioButton_toggled(bool checked);
+
+    void on_spinBox_zoom_valueChanged(int arg1);
+
+    void on_spinBoxW_valueChanged(int arg1);
+
+    void on_spinBoxH_valueChanged(int arg1);
+
+    void on_comboBox_background_color_currentIndexChanged(int index);
+
+    void on_groupBoxMandelFarbe_toggled(bool arg1);
+
+    void on_comboBoxMandelColor_currentIndexChanged(int index);
+
+    void on_comboBox_precession_currentIndexChanged(int index);
+
+    void on_doubleSpinBoxEscapeR_valueChanged(double arg1);
+
+    void on_radioButton_reload_at_back_toggled(bool checked);
 
 private:
     Ui::MainWindow *ui;

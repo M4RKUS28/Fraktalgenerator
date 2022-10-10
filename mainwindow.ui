@@ -69,7 +69,7 @@
           </size>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="tab">
           <attribute name="title">
@@ -676,6 +676,9 @@
            </item>
            <item row="6" column="1">
             <widget class="QDoubleSpinBox" name="doubleSpinBoxEscapeR">
+             <property name="minimum">
+              <double>2.000000000000000</double>
+             </property>
              <property name="maximum">
               <double>9999.989999999999782</double>
              </property>
@@ -863,7 +866,7 @@
     <item row="3" column="1">
      <widget class="QLabel" name="label_7">
       <property name="text">
-       <string>Made by Markus</string>
+       <string>Made by Markus --&gt; mit Linksclick zahelnfolge!</string>
       </property>
      </widget>
     </item>

@@ -58,14 +58,14 @@ void MainWindow::zustandWechseln(QString aktion, QString, int, QMouseEvent *m_ev
         if(aktion == "TIMER") {
 
         } else if(aktion == "BUTTON_REFRESH_AND_STOP") {
-            if(this->zoomOrReload == "RELOAD") {
+            qDebug() << this->op_mode;
 
-
+            if(this->op_mode == OP_MODE::REFRESH) {
                 //Aktualiseren
                 this->startRefresh(settings.last());
 
             // wenn: einstellungenverändert == true:
-            } else {
+            } else if(this->op_mode == OP_MODE::APPLY_SETTINGS || this->op_mode == OP_MODE::ZOOM_TO_SELECTED || this->op_mode == OP_MODE::APPLY_SETTINGS_AND_ZOOM) {
                 //Zoomen
                 SETTING newSetting = getNewScaledSetting(settings.last());
                 this->startRefresh(newSetting, true);
@@ -91,8 +91,7 @@ void MainWindow::zustandWechseln(QString aktion, QString, int, QMouseEvent *m_ev
         } else if(aktion == "mouseMoveEvent" && m_event) {
             if(this->mousePress.isPressed) {
                 this->mousePress.setPress( this->ui->labelFraktal->mapFrom(this, m_event->pos()), settings.last().x_verschiebung, settings.last().y_verschiebung  );
-                this->zoomOrReload = ("ZOOM");
-                ui->pushButtonStart->setText("Vergrößern");
+                this->setOperationMode(OP_MODE::ZOOM_TO_SELECTED);
                 this->update();
             }
 
@@ -114,8 +113,7 @@ void MainWindow::zustandWechseln(QString aktion, QString, int, QMouseEvent *m_ev
             auto pos = this->ui->labelFraktal->mapFrom(this, m_event->pos());
             if(m_event->button() == Qt::LeftButton && pos.x() >= 0 && pos.x() < settings.last().img_w && pos.y() >= 0 && pos.y() < settings.last().img_h) {
                 this->mousePress.setPress(pos , settings.last().x_verschiebung, settings.last().y_verschiebung );
-                this->zoomOrReload = ("ZOOM");
-                ui->pushButtonStart->setText("Vergrößern");
+                this->setOperationMode(OP_MODE::ZOOM_TO_SELECTED);
 
                 ui->label_iterations->setText(QString::number(settings.last().getIterationCountAt(pos)));
                 ui->re->setText(QString::number((double(this->mousePress.koord.x() / settings.last().scale))));
@@ -123,8 +121,8 @@ void MainWindow::zustandWechseln(QString aktion, QString, int, QMouseEvent *m_ev
 
                 this->update();
             } else {
-                this->zoomOrReload = ("RELOAD");
-                ui->pushButtonStart->setText("Neu Laden");
+                this->setOperationMode(OP_MODE::REFRESH);
+
                 this->mousePress.isPressed = false;
 
                 ui->re->setText("-");
@@ -298,7 +296,46 @@ void MainWindow::afterColoring(SETTING set)
 ////    this->ui->labelFraktal->setPixmap(QPixmap::fromImage(*img));
 
 //    delete[] NumIterationsPerPixel;
-//    return;
+    //    return;
+}
+
+void MainWindow::setOperationMode(OP_MODE o)
+{
+    if(this->op_mode == OP_MODE::APPLY_SETTINGS_AND_ZOOM && o == OP_MODE::REFRESH)
+        o = OP_MODE::APPLY_SETTINGS;
+    else if(this->op_mode == OP_MODE::APPLY_SETTINGS && o == OP_MODE::ZOOM_TO_SELECTED)
+        o = OP_MODE::APPLY_SETTINGS_AND_ZOOM;
+    else if(this->op_mode == OP_MODE::ZOOM_TO_SELECTED && o == OP_MODE::APPLY_SETTINGS)
+        o = OP_MODE::APPLY_SETTINGS_AND_ZOOM;
+    else if(this->op_mode == OP_MODE::APPLY_SETTINGS && o == OP_MODE::REFRESH)
+        return;
+    else if(this->op_mode == OP_MODE::APPLY_SETTINGS_AND_ZOOM && (o == OP_MODE::ZOOM_TO_SELECTED || o == OP_MODE::APPLY_SETTINGS) )
+        return;
+
+    switch (o) {
+    case MainWindow::APPLY_SETTINGS_AND_ZOOM:
+        ui->pushButtonStart->setText("Vergrößern mit neuen Einstellungen");
+        this->op_mode = APPLY_SETTINGS_AND_ZOOM;
+        break;
+    case MainWindow::ZOOM_TO_SELECTED:
+        ui->pushButtonStart->setText("Vergrößern");
+        this->op_mode = ZOOM_TO_SELECTED;
+        break;
+
+    case MainWindow::RESET:
+    case MainWindow::REFRESH:
+        ui->pushButtonStart->setText("Bild neu laden");
+        this->op_mode = REFRESH;
+        break;
+    case MainWindow::APPLY_SETTINGS:
+        ui->pushButtonStart->setText("Einstellungen anwenden");
+        this->op_mode = APPLY_SETTINGS;
+        break;
+    default:
+        break;
+    }
+
+
 }
 
 void MainWindow::startRefresh(SETTING set, bool zoom)
@@ -370,7 +407,7 @@ void MainWindow::endRefresh()
     this->state = STATE::STOPED;
     ui->widget->setDisabled(false);
     ui->pushButtonStart->setText("Neu Laden");
-    this->zoomOrReload = "RELOAD";
+    this->setOperationMode(OP_MODE::RESET);
     ui->progressBar->setEnabled(false);
     ui->pushButtonSaveImg->setEnabled(true);
     ui->frameButtons->setEnabled(true);
@@ -607,4 +644,90 @@ void MainWindow::on_pushButton_clicked()
     zustandWechseln("HOME");
 }
 
+
+
+
+
+void MainWindow::on_spinBoxMaxIterations_valueChanged(int arg1)
+{
+    this->setOperationMode(OP_MODE::APPLY_SETTINGS);
+}
+
+
+void MainWindow::on_comboBox_palette_currentIndexChanged(int index)
+{
+    this->setOperationMode(OP_MODE::APPLY_SETTINGS);
+}
+
+
+void MainWindow::on_radioButton_normalized_toggled(bool checked)
+{
+    this->setOperationMode(OP_MODE::APPLY_SETTINGS);
+}
+
+
+void MainWindow::on_radioButton_invert_toggled(bool checked)
+{
+    this->setOperationMode(OP_MODE::APPLY_SETTINGS);
+}
+
+
+void MainWindow::on_radioButton_toggled(bool checked)
+{
+    this->setOperationMode(OP_MODE::APPLY_SETTINGS);
+}
+
+
+void MainWindow::on_spinBox_zoom_valueChanged(int arg1)
+{
+    this->setOperationMode(OP_MODE::APPLY_SETTINGS);
+}
+
+
+void MainWindow::on_spinBoxW_valueChanged(int arg1)
+{
+    this->setOperationMode(OP_MODE::APPLY_SETTINGS);
+}
+
+
+void MainWindow::on_spinBoxH_valueChanged(int arg1)
+{
+    this->setOperationMode(OP_MODE::APPLY_SETTINGS);
+}
+
+
+void MainWindow::on_comboBox_background_color_currentIndexChanged(int index)
+{
+    this->setOperationMode(OP_MODE::APPLY_SETTINGS);
+}
+
+
+void MainWindow::on_groupBoxMandelFarbe_toggled(bool arg1)
+{
+    this->setOperationMode(OP_MODE::APPLY_SETTINGS);
+}
+
+
+void MainWindow::on_comboBoxMandelColor_currentIndexChanged(int index)
+{
+    this->setOperationMode(OP_MODE::APPLY_SETTINGS);
+}
+
+
+void MainWindow::on_comboBox_precession_currentIndexChanged(int index)
+{
+    this->setOperationMode(OP_MODE::APPLY_SETTINGS);
+}
+
+
+void MainWindow::on_doubleSpinBoxEscapeR_valueChanged(double arg1)
+{
+    this->setOperationMode(OP_MODE::APPLY_SETTINGS);
+}
+
+
+void MainWindow::on_radioButton_reload_at_back_toggled(bool checked)
+{
+//no setting
+}
 
