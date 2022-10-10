@@ -45,7 +45,7 @@ void WorkerThread::run()
                 std::complex<double> c(x * zoom, - y * zoom);
                 std::complex<double> z = 0;
                 ssize_t i;
-                for( i = 0; i < iters && std::abs( (z = z*z + c) ) < escape_radius; i++);
+                for( i = 0; i < iters && std::abs( (z = z*z + c) ) < escape_radius; i++) {}
                 if( i == iters ) {
                     line->append(Pixel(x, y, 0, z));
                 } else {
@@ -64,7 +64,9 @@ void WorkerThread::run()
                 std::complex<long double> c(x * zoom, - y * zoom);
                 std::complex<long double> z = 0;
                 ssize_t i;
-                for( i = 0; i < iters && std::abs( (z = z*z + c) ) < escape_radius; i++);
+                for( i = 0; i < iters && std::abs( (z = z*z + c) ) < escape_radius; i++) {
+
+                }
                 if( i == iters ) {
                     line->append(Pixel(x, y, 0, z));
                 } else {

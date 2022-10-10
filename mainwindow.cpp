@@ -59,9 +59,12 @@ void MainWindow::zustandWechseln(QString aktion, QString, int, QMouseEvent *m_ev
 
         } else if(aktion == "BUTTON_REFRESH_AND_STOP") {
             if(this->zoomOrReload == "RELOAD") {
+
+
                 //Aktualiseren
                 this->startRefresh(settings.last());
 
+            // wenn: einstellungenverändert == true:
             } else {
                 //Zoomen
                 SETTING newSetting = getNewScaledSetting(settings.last());
@@ -96,7 +99,7 @@ void MainWindow::zustandWechseln(QString aktion, QString, int, QMouseEvent *m_ev
             auto pos = this->ui->labelFraktal->mapFrom(this, m_event->pos());
             qDebug() << pos;
             if(pos.x() >= 0 && pos.x() < settings.last().img_w && pos.y() >= 0 && pos.y() < settings.last().img_h) {
-                ui->label_iterations->setText(QString::number(settings.last().iterations[pos.x()][pos.y()]));
+                ui->label_iterations->setText(QString::number(settings.last().getIterationCountAt(pos)));
 
                 ui->re->setText(QString::number((double(this->mousePress.koord.x() / settings.last().scale))));
                 ui->img->setText(QString::number((double(this->mousePress.koord.y() / settings.last().scale)))  + "i");
@@ -114,7 +117,7 @@ void MainWindow::zustandWechseln(QString aktion, QString, int, QMouseEvent *m_ev
                 this->zoomOrReload = ("ZOOM");
                 ui->pushButtonStart->setText("Vergrößern");
 
-                ui->label_iterations->setText(QString::number(settings.last().iterations[pos.x()][pos.y()]));
+                ui->label_iterations->setText(QString::number(settings.last().getIterationCountAt(pos)));
                 ui->re->setText(QString::number((double(this->mousePress.koord.x() / settings.last().scale))));
                 ui->img->setText(QString::number((double(this->mousePress.koord.y() / settings.last().scale)))  + "i");
 
@@ -188,7 +191,7 @@ MainWindow::SETTING MainWindow::getNewScaledSetting(SETTING lastSet)
     int midy= (this->mousePress.point.y() + lastSet.y_verschiebung)* (long double)(ui->spinBox_zoom->value());
 
     SETTING s(lastSet.scale * (long double)(ui->spinBox_zoom->value()), QPoint(midx, midy));
-    s.init(this->ui->spinBoxW->value(), this->ui->spinBoxH->value());
+    s.init(this->ui->spinBoxW->value(), this->ui->spinBoxH->value(), ui->spinBoxMaxIterations->value());
     return s;
 }
 
@@ -223,12 +226,79 @@ void MainWindow::setColor(QPainter * mpainter, size_t iters, std::complex<long d
             v = ui->radioButton_invert->isChecked() ? 255.0 - v : v;
             mpainter->setPen(QColor::fromRgbF(1, v, v, 1 ));
             break;
+        case 3:
+            alpha = (iters == 0) ? 1.0 /*Mandelbrot-Set-Alpha*/ : (double)((int)(n) % ui->spinBoxMaxIterations->value()) / ((double)ui->spinBoxMaxIterations->value()); /*Outside*/
+            mpainter->setPen(QColor::fromRgbF(0, 0, 0, ui->radioButton_invert->isChecked() ? 1.0 - alpha : alpha ));
+            break;
+        case 4:
+            if(iters == 0) {
+                mpainter->setPen(QColor(Qt::black));
+            } else {
+                // hsv = [powf((i / max) * 360, 1.5) % 360, 100, (i / max) * 100]
+                QColor c = QColor::fromHsv( int(pow( (n / (double)settings.last().maxIterations) * 358 , 1.5)) % 358, 100, (n / (double)settings.last().maxIterations) * 250);
+                mpainter->setPen(c);
+            }
+            break;
+        case 5:
+            if(iters == 0) {
+                mpainter->setPen(QColor(Qt::black));
+            } else {
+                mpainter->setPen(QColor::fromHsv(int( (358.0 * n) / (double)settings.last().maxIterations ), 255, 255));
+            }
+            break;
         default:
             alpha = (iters == 0) ? 1.0 /*Mandelbrot-Set-Alpha*/ : 0.0; /*Outside*/
             mpainter->setPen(QColor::fromRgbF(0, 0, 0, ui->radioButton_invert->isChecked() ? 1.0 - alpha : alpha ));
             break;
         }
     }
+}
+
+#include <algorithm>
+
+
+void MainWindow::afterColoring(SETTING set)
+{
+//    int * NumIterationsPerPixel = new int[set.maxIterations];
+//    memset(NumIterationsPerPixel, 0, sizeof(int) * set.maxIterations );
+
+//    for(int x = 0; x < set.img_w; x++) {
+//        for(int y = 0; y < set.img_h; y++) {
+//            size_t i = set.getIterationCountAt(x, y);
+//            if(i >= 0 && i < set.maxIterations)
+//                NumIterationsPerPixel[i]++;
+//        }
+//    }
+
+//    size_t total = 0;
+//    for (size_t i = 0; i < set.maxIterations; i++)
+//        total += NumIterationsPerPixel[i];
+
+//    auto * img = new QImage(set.img_w, set.img_h, QImage::Format_ARGB32_Premultiplied);
+//    auto * p =  new QPainter(img);
+
+
+//    for(int x = 0; x < set.img_w; x++) {
+//        for(int y = 0; y < set.img_h; y++) {
+
+//        size_t iteration= set.getIterationCountAt(x, y);
+//        double hue = 0;
+//        for (size_t i = 0; i < iteration; i++) {
+//            hue += (double)NumIterationsPerPixel[i] / (double)total; /* Must be floating-point division. */
+//        }
+////        qDebug() << "p("<<x<<"|"<<y<<"): i="<<iteration<< " ---> hue: " << int(hue*358.0) % 358;
+////        QColor c = QColor::fromHsv(hue , 100, (iteration / (double)settings.last().maxIterations) * 250);
+//        auto c = QColor::fromHsv(int(hue*360), 1, 1);
+////        p->setPen(c);
+////        p->drawPoint(x, y);
+
+//        }
+
+//    }
+////    this->ui->labelFraktal->setPixmap(QPixmap::fromImage(*img));
+
+//    delete[] NumIterationsPerPixel;
+//    return;
 }
 
 void MainWindow::startRefresh(SETTING set, bool zoom)
@@ -281,7 +351,7 @@ void MainWindow::startRefresh(SETTING set, bool zoom)
                       x_left_corner + parts * (tn + 1) + ( (tn + 1 == tc ) ? (set.img_w - parts * (tn + 1)) : 0), // wenn breite mit threadzahl nicht aufgeht -> letzter thread noch etwas breiter
                       y_left_corner,
                       y_left_corner + set.img_h,
-                      ui->spinBoxIterations->value(),
+                      ui->spinBoxMaxIterations->value(),
                       ui->doubleSpinBoxEscapeR->value(),
                       (1.0 / set.scale),
                       this->ui->comboBox_precession->currentIndex() == 0 ? WorkerThread::PRECESSION::DOUBLE : WorkerThread::PRECESSION::LONG_DOUBLE );
@@ -308,13 +378,15 @@ void MainWindow::endRefresh()
     ui->progressBar->setValue(ui->progressBar->maximum());
     ui->bmRe->setText(QString::number( (double)(((long double) this->settings.last().midPoint.x()) / this->settings.last().scale) ));
     ui->bmIm->setText(QString::number( (double)(((long double) this->settings.last().midPoint.y()) / this->settings.last().scale) ) + "i");
+
+    afterColoring(settings.last());
 }
 
 void MainWindow::loadInitImg()
 {
     //später das zuletzt verwendete
     SETTING newImage(150, QPoint(-80, 0));
-    newImage.init(this->ui->spinBoxW->value(), this->ui->spinBoxH->value());
+    newImage.init(this->ui->spinBoxW->value(), this->ui->spinBoxH->value(), ui->spinBoxMaxIterations->value());
     newImage.painter->fillRect(newImage.image->rect(), QColor(ui->comboBox_background_color->currentText()));
 
     this->ui->labelFraktal->setPixmap(QPixmap::fromImage(*newImage.image));
@@ -380,7 +452,7 @@ void MainWindow::finishedLine(QList<WorkerThread::Pixel> *list)
             y = list->at(l).c_y -  settings.last().y_verschiebung;
         settings.last().painter->drawPoint(x, y);
         if(x >= 0 && x < this->settings.last().img_w && y >= 0 && y < this->settings.last().img_h)
-            settings.last().iterations[x][y] = list->at(l).i;
+            settings.last().setIterationCountAt(x, y, list->at(l).i);
 
     }
     //QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
@@ -480,10 +552,12 @@ MainWindow::SETTING::SETTING(long double scale, QPoint midPoint)
 
 }
 
-void MainWindow::SETTING::init(int img_w, int img_h)
+void MainWindow::SETTING::init(int img_w, int img_h, size_t maxIterations)
 {
     this->img_w = img_w;
     this->img_h = img_h;
+    this->maxIterations = maxIterations;
+
     this->image = new QImage(img_w, img_h, QImage::Format_ARGB32_Premultiplied);
     this->painter = new QPainter(this->image);
 
@@ -495,6 +569,27 @@ void MainWindow::SETTING::init(int img_w, int img_h)
         this->iterations[i] = new int[img_h];
         memset(this->iterations[i], 0, sizeof(int) * img_h );
     }
+}
+
+void MainWindow::SETTING::setIterationCountAt(int x, int y, size_t iterations)
+{
+    if(x >= 0 && x < this->img_w && y >= 0 && y < this->img_h) {
+        this->iterations[x][y] = iterations;
+    }
+
+}
+
+int MainWindow::SETTING::getIterationCountAt(QPoint pos)
+{
+    return this->getIterationCountAt(pos.x(), pos.y());
+}
+
+int MainWindow::SETTING::getIterationCountAt(int x, int y)
+{
+    if(x >= 0 && x < this->img_w && x >= 0 && x < this->img_h)
+        return this->iterations[x][x];
+    else
+        return -1;
 }
 
 

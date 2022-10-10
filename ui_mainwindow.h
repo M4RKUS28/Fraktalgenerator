@@ -48,7 +48,7 @@ public:
     QWidget *tab;
     QFormLayout *formLayout_2;
     QLabel *label_6;
-    QSpinBox *spinBoxIterations;
+    QSpinBox *spinBoxMaxIterations;
     QLabel *label_9;
     QComboBox *comboBox_palette;
     QFrame *line_13;
@@ -165,13 +165,13 @@ public:
 
         formLayout_2->setWidget(0, QFormLayout::LabelRole, label_6);
 
-        spinBoxIterations = new QSpinBox(tab);
-        spinBoxIterations->setObjectName(QString::fromUtf8("spinBoxIterations"));
-        spinBoxIterations->setMinimum(0);
-        spinBoxIterations->setMaximum(999999);
-        spinBoxIterations->setValue(1000);
+        spinBoxMaxIterations = new QSpinBox(tab);
+        spinBoxMaxIterations->setObjectName(QString::fromUtf8("spinBoxMaxIterations"));
+        spinBoxMaxIterations->setMinimum(0);
+        spinBoxMaxIterations->setMaximum(999999);
+        spinBoxMaxIterations->setValue(1000);
 
-        formLayout_2->setWidget(0, QFormLayout::FieldRole, spinBoxIterations);
+        formLayout_2->setWidget(0, QFormLayout::FieldRole, spinBoxMaxIterations);
 
         label_9 = new QLabel(tab);
         label_9->setObjectName(QString::fromUtf8("label_9"));
@@ -180,6 +180,9 @@ public:
         formLayout_2->setWidget(2, QFormLayout::LabelRole, label_9);
 
         comboBox_palette = new QComboBox(tab);
+        comboBox_palette->addItem(QString());
+        comboBox_palette->addItem(QString());
+        comboBox_palette->addItem(QString());
         comboBox_palette->addItem(QString());
         comboBox_palette->addItem(QString());
         comboBox_palette->addItem(QString());
@@ -585,7 +588,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(1);
+        tabWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -599,6 +602,9 @@ public:
         comboBox_palette->setItemText(0, QCoreApplication::translate("MainWindow", "Alpha Wert", nullptr));
         comboBox_palette->setItemText(1, QCoreApplication::translate("MainWindow", "KA RGB", nullptr));
         comboBox_palette->setItemText(2, QCoreApplication::translate("MainWindow", "SchwarzWeis", nullptr));
+        comboBox_palette->setItemText(3, QCoreApplication::translate("MainWindow", "Alpha2", nullptr));
+        comboBox_palette->setItemText(4, QCoreApplication::translate("MainWindow", "HSV", nullptr));
+        comboBox_palette->setItemText(5, QCoreApplication::translate("MainWindow", "HSL", nullptr));
 
         radioButton_normalized->setText(QCoreApplication::translate("MainWindow", "Normalized", nullptr));
         radioButton_invert->setText(QCoreApplication::translate("MainWindow", "Farben Invertieren", nullptr));
@@ -632,7 +638,7 @@ public:
         comboBox_background_color->setItemText(7, QCoreApplication::translate("MainWindow", "black", nullptr));
         comboBox_background_color->setItemText(8, QCoreApplication::translate("MainWindow", "white", nullptr));
 
-        groupBoxMandelFarbe->setTitle(QCoreApplication::translate("MainWindow", "Mandelbrot-Menge:", nullptr));
+        groupBoxMandelFarbe->setTitle(QCoreApplication::translate("MainWindow", "Mandelbrot-Menge Farbe:", nullptr));
         comboBoxMandelColor->setItemText(0, QCoreApplication::translate("MainWindow", "black", nullptr));
         comboBoxMandelColor->setItemText(1, QCoreApplication::translate("MainWindow", "white", nullptr));
         comboBoxMandelColor->setItemText(2, QCoreApplication::translate("MainWindow", "cyan", nullptr));

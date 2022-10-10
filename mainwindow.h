@@ -28,17 +28,22 @@ class MainWindow : public QMainWindow
 public:
     struct SETTING {
         SETTING(long double scale, QPoint midPoint );
-        void init(int img_w, int img_h);
+        void init(int img_w, int img_h, size_t maxIterations);
+        void setIterationCountAt(int x, int y, size_t iterations);
+        int getIterationCountAt(QPoint pos);
+        int getIterationCountAt(int x, int y);
 
         QImage * image;
         QPainter * painter;
-        int **iterations;
         long double scale;
         int x_verschiebung,
             y_verschiebung,
             img_w,
             img_h;
         QPoint midPoint;
+        size_t maxIterations;
+    private:
+        int **iterations;
     };
 
     QList<SETTING> settings;
@@ -91,6 +96,9 @@ public:
     void updateImage();
 
     bool checkForFinished();
+
+    void afterColoring(SETTING set);
+
 
 private slots:
     void on_pushButtonStart_clicked();
