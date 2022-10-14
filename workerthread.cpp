@@ -1,5 +1,7 @@
 #include "workerthread.h"
 #include "qdebug.h"
+#include <iostream>
+
 
 WorkerThread::WorkerThread(QObject *parent)
     : QThread(parent)
@@ -11,13 +13,15 @@ WorkerThread::~WorkerThread()
 {
 
 }
+#include <limits>
 
-void WorkerThread::startCalc(ssize_t x_left_corner, ssize_t x_right_corner, ssize_t y_left_corner, ssize_t y_right_corner, ssize_t iters, long double escape_radius, long double zoom, PRECESSION p)
+void WorkerThread::startCalc(ssize_t x_left_corner, ssize_t x_right_corner, ssize_t test, ssize_t y_left_corner, ssize_t y_right_corner, ssize_t iters, long double escape_radius, long double zoom, PRECESSION p)
 {
 
     if (this->isRunning())
         return;
 
+//    std::cout << "x test" << test << std::endl;
 
     this->x_left_corner = x_left_corner;
     this->x_right_corner = x_right_corner;
@@ -32,9 +36,15 @@ void WorkerThread::startCalc(ssize_t x_left_corner, ssize_t x_right_corner, ssiz
     this->start();
 }
 
+
 void WorkerThread::run()
 {
     // qDebug() << "  x -> [" << x_left_corner << "\t; " << x_right_corner << "\t] y: [" << y_left_corner << "; " << y_right_corner << "]";
+    try {
+        std::cout << "x" << x_right_corner << " zoom: " << zoom << "  x:" << ((long double)x_right_corner * zoom) << "   " << (- (long double)y_right_corner * zoom) << " low" << std::numeric_limits<double>::lowest() << std::endl;;
+    } catch (std::error_condition e) {
+        qDebug() << e.message().c_str();
+    }
 
     switch ( this->precession ) {
     case WorkerThread::DOUBLE:
@@ -44,8 +54,10 @@ void WorkerThread::run()
             for(ssize_t y = y_left_corner; y < y_right_corner; y++) {
                 std::complex<double> c(x * zoom, - y * zoom);
                 std::complex<double> z = 0;
+
                 ssize_t i;
                 for( i = 0; i < iters && std::abs( (z = z*z + c) ) < escape_radius; i++) {}
+
                 if( i == iters ) {
                     line->append(Pixel(x, y, 0, z));
                 } else {

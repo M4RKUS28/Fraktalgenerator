@@ -37,7 +37,7 @@ public:
         escape_radius;
 
 
-    void startCalc(ssize_t x_left_corner, ssize_t x_right_corner, ssize_t y_left_corner, ssize_t y_right_corner, ssize_t iters, long double escape_radius, long double zoom, PRECESSION p);
+    void startCalc(ssize_t x_left_corner, ssize_t x_right_corner, ssize_t test,  ssize_t y_left_corner, ssize_t y_right_corner, ssize_t iters, long double escape_radius, long double zoom, PRECESSION p);
     void run();
 
 
