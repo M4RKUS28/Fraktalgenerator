@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 6.2.2
+** Created by: Qt User Interface Compiler version 6.3.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -39,6 +39,8 @@ QT_BEGIN_NAMESPACE
 class Ui_MainWindow
 {
 public:
+    QAction *actionSpeichern_unter;
+    QAction *actionBild_in_Zwischenablage_kopieren;
     QWidget *centralwidget;
     QGridLayout *gridLayout;
     QProgressBar *progressBar;
@@ -122,6 +124,10 @@ public:
         font.setPointSize(10);
         MainWindow->setFont(font);
         MainWindow->setMouseTracking(false);
+        actionSpeichern_unter = new QAction(MainWindow);
+        actionSpeichern_unter->setObjectName(QString::fromUtf8("actionSpeichern_unter"));
+        actionBild_in_Zwischenablage_kopieren = new QAction(MainWindow);
+        actionBild_in_Zwischenablage_kopieren->setObjectName(QString::fromUtf8("actionBild_in_Zwischenablage_kopieren"));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         gridLayout = new QGridLayout(centralwidget);
@@ -488,7 +494,7 @@ public:
         scrollArea->setWidgetResizable(true);
         scrollAreaWidgetContents_2 = new QWidget();
         scrollAreaWidgetContents_2->setObjectName(QString::fromUtf8("scrollAreaWidgetContents_2"));
-        scrollAreaWidgetContents_2->setGeometry(QRect(0, 0, 688, 563));
+        scrollAreaWidgetContents_2->setGeometry(QRect(0, 0, 684, 564));
         horizontalLayout_5 = new QHBoxLayout(scrollAreaWidgetContents_2);
         horizontalLayout_5->setObjectName(QString::fromUtf8("horizontalLayout_5"));
         labelFraktal = new QLabel(scrollAreaWidgetContents_2);
@@ -573,7 +579,7 @@ public:
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 1002, 24));
+        menubar->setGeometry(QRect(0, 0, 1002, 23));
         menuSettings = new QMenu(menubar);
         menuSettings->setObjectName(QString::fromUtf8("menuSettings"));
         MainWindow->setMenuBar(menubar);
@@ -582,6 +588,8 @@ public:
         MainWindow->setStatusBar(statusbar);
 
         menubar->addAction(menuSettings->menuAction());
+        menuSettings->addAction(actionSpeichern_unter);
+        menuSettings->addAction(actionBild_in_Zwischenablage_kopieren);
 
         retranslateUi(MainWindow);
 
@@ -594,6 +602,14 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
+        actionSpeichern_unter->setText(QCoreApplication::translate("MainWindow", "Bild Speichern unter", nullptr));
+#if QT_CONFIG(shortcut)
+        actionSpeichern_unter->setShortcut(QCoreApplication::translate("MainWindow", "Ctrl+S", nullptr));
+#endif // QT_CONFIG(shortcut)
+        actionBild_in_Zwischenablage_kopieren->setText(QCoreApplication::translate("MainWindow", "Bild in Zwischenablage kopieren", nullptr));
+#if QT_CONFIG(shortcut)
+        actionBild_in_Zwischenablage_kopieren->setShortcut(QCoreApplication::translate("MainWindow", "Ctrl+C", nullptr));
+#endif // QT_CONFIG(shortcut)
         label_6->setText(QCoreApplication::translate("MainWindow", "Iterationen", nullptr));
         label_9->setText(QCoreApplication::translate("MainWindow", "Farbpalette:", nullptr));
         comboBox_palette->setItemText(0, QCoreApplication::translate("MainWindow", "Alpha Wert", nullptr));
@@ -632,7 +648,7 @@ public:
         comboBox_background_color->setItemText(7, QCoreApplication::translate("MainWindow", "black", nullptr));
         comboBox_background_color->setItemText(8, QCoreApplication::translate("MainWindow", "white", nullptr));
 
-        groupBoxMandelFarbe->setTitle(QCoreApplication::translate("MainWindow", "Mandelbrot-Menge:", nullptr));
+        groupBoxMandelFarbe->setTitle(QCoreApplication::translate("MainWindow", "Mandelbrot-Menge Farbe:", nullptr));
         comboBoxMandelColor->setItemText(0, QCoreApplication::translate("MainWindow", "black", nullptr));
         comboBoxMandelColor->setItemText(1, QCoreApplication::translate("MainWindow", "white", nullptr));
         comboBoxMandelColor->setItemText(2, QCoreApplication::translate("MainWindow", "cyan", nullptr));
@@ -658,7 +674,7 @@ public:
         pushButtonSaveImg->setText(QCoreApplication::translate("MainWindow", "Bild Speichern", nullptr));
         pushButton->setText(QCoreApplication::translate("MainWindow", "Home", nullptr));
         label_7->setText(QCoreApplication::translate("MainWindow", "Made by Markus", nullptr));
-        menuSettings->setTitle(QCoreApplication::translate("MainWindow", "Settings", nullptr));
+        menuSettings->setTitle(QCoreApplication::translate("MainWindow", "Datei", nullptr));
     } // retranslateUi
 
 };

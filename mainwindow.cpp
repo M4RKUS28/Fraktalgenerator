@@ -219,7 +219,7 @@ void MainWindow::setColor(QPainter * mpainter, size_t iters, std::complex<long d
             mpainter->setPen(QColor::fromRgbF(0, 0, 0, ui->radioButton_invert->isChecked() ? 1.0 - alpha : alpha ));
             break;
         case 1:
-            v = (iters == 0) ? 255.0 /*Mandelbrot-Set-Alpha*/ : ((double)((int)(n*3.0) % 255) / 255.0);
+            v = (iters == 0) ? 255.0 /*Mandelbrot-Set-Alpha*/ : ((double)((int)(n) % 255) / 255.0);
             v = ui->radioButton_invert->isChecked() ? 255.0 - v : v;
             mpainter->setPen(QColor::fromRgbF(1, v, v, 1 ));
             break;
@@ -512,4 +512,18 @@ void MainWindow::on_pushButton_clicked()
     zustandWechseln("HOME");
 }
 
+
+
+void MainWindow::on_actionSpeichern_unter_triggered()
+{
+    ui->pushButtonSaveImg->click();
+}
+
+#include <QClipboard>
+
+void MainWindow::on_actionBild_in_Zwischenablage_kopieren_triggered()
+{
+    QApplication::clipboard()->setImage(*this->settings.last().image);
+    this->ui->statusbar->showMessage("Bild in Zwischenablage kopiert.", 2000);
+}
 

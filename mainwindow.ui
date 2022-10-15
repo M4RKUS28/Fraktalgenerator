@@ -712,8 +712,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>688</width>
-         <height>563</height>
+         <width>684</width>
+         <height>564</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_5">
@@ -860,17 +860,35 @@
      <x>0</x>
      <y>0</y>
      <width>1002</width>
-     <height>24</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuSettings">
     <property name="title">
-     <string>Settings</string>
+     <string>Datei</string>
     </property>
+    <addaction name="actionSpeichern_unter"/>
+    <addaction name="actionBild_in_Zwischenablage_kopieren"/>
    </widget>
    <addaction name="menuSettings"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionSpeichern_unter">
+   <property name="text">
+    <string>Bild Speichern unter</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionBild_in_Zwischenablage_kopieren">
+   <property name="text">
+    <string>Bild in Zwischenablage kopieren</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+C</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

@@ -106,6 +106,10 @@ private slots:
     void on_pushButton_clicked();
 
 
+    void on_actionSpeichern_unter_triggered();
+
+    void on_actionBild_in_Zwischenablage_kopieren_triggered();
+
 private:
     Ui::MainWindow *ui;
 
