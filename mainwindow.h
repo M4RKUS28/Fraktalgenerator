@@ -6,7 +6,7 @@
 
 #include <QLinearGradient>
 
-
+#include "imageview.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -112,6 +112,8 @@ public:
         bool show = false;
 
     } zahlenfolge;
+
+    ImageView * i;
 
 public:
     MainWindow(QWidget *parent = nullptr);

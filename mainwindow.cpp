@@ -18,6 +18,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->setupUi(this);
     this->startTimer(20);
+    i= new ImageView();
+    i->show();
+
 }
 
 MainWindow::~MainWindow()
@@ -487,9 +490,11 @@ void MainWindow::updateImage()
 {
     if(settings.empty())
         return;
-    auto img = QPixmap::fromImage(*settings.last().image);
-    if( ! img.isNull())
-        this->ui->labelFraktal->setPixmap(img);
+//    auto img = QPixmap::fromImage(*settings.last().image);
+//    if( ! img.isNull())
+//        this->ui->labelFraktal->setPixmap(img);
+    this->update();
+
 }
 
 bool MainWindow::checkForFinished()
@@ -676,8 +681,13 @@ void MainWindow::paintEvent(QPaintEvent *)
 
             }
 
-            painter.end();
+//            painter.end();
+//            QPainter painter2(ui->labelFraktal);
+//            this->ui->labelFraktal->setPixmap(QPixmap::fromImage(img));
+//            painter2.drawImage(0, 0, img);
+//            painter2.end();
             this->ui->labelFraktal->setPixmap(QPixmap::fromImage(img));
+            i->setImg(img);
 
         }
 
