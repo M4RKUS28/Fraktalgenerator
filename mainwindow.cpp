@@ -129,7 +129,7 @@ void MainWindow::zustandWechseln(QString aktion, QString, QPoint m_pos, QMouseEv
 
         } else if(aktion == "mousePressEvent"  && m_event) {
 
-            auto qpos = this->ui->imageView->mapFrom(this, m_event->pos());
+            auto qpos = this->ui->imageView->mapFrom(this, m_event->pos()) * ui->imageView->getHdpi_multiplicator();
             auto pos = Point(qpos.x(), qpos.y());
 
             if(pos.x() >= 0 && pos.x() < currentImg.img_w && pos.y() >= 0 && pos.y() < currentImg.img_h) {
@@ -609,7 +609,7 @@ void MainWindow::paintEvent(QPaintEvent *)
                 painter.drawRect(zoomRect.getRect());
                 painter.setPen(Qt::white);
                 //                painter.drawRect(QRect(x_left_corner - 1, y_left_corner - 1, w + 2, h + 2));
-                painter.drawRect(zoomRect.getRect().adjusted(-1, -1, +2, +2));
+                painter.drawRect(zoomRect.getRect().adjusted(-1, -1, +1, +1));
             }
 
             if(zahlenfolge.isShown()) {
@@ -1057,8 +1057,38 @@ void MainWindow::on_spinBox_zoom_valueChanged(double arg1)
 
 
 
-void MainWindow::on_radioButtonHDPI_toggled(bool checked)
+void MainWindow::on_comboBox_currentIndexChanged(int index)
 {
-    ui->imageView->setHdpiScaleEnabled(checked);
+    double multiplikator = 1.0;
+
+    switch (index) {
+    case 0: // auto %
+        multiplikator = ui->imageView->devicePixelRatio();
+        break;
+    case 1:
+        multiplikator = 4.00;
+        break;
+    case 2: // 50 % hdpi
+        multiplikator = 2.00;
+        break;
+    case 3: // 100 % dpi
+        multiplikator = 1.00;
+        break;
+    case 4:
+        multiplikator = 0.50;
+        break;
+    case 5:
+        multiplikator = 0.25;
+        break;
+    default:
+        multiplikator = ui->imageView->devicePixelRatio();
+        break;
+    }
+
+    ui->imageView->setHdpiScale(multiplikator);
+    this->updateImage();
 }
+
+
+
 

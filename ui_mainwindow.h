@@ -132,7 +132,8 @@ public:
     QLabel *label_10;
     QComboBox *comboBox_precession;
     QSpacerItem *verticalSpacer;
-    QRadioButton *radioButtonHDPI;
+    QLabel *label_27;
+    QComboBox *comboBox;
     QScrollArea *scrollArea;
     QWidget *scrollAreaWidgetContents_2;
     QHBoxLayout *horizontalLayout_5;
@@ -760,12 +761,21 @@ public:
 
         formLayout_2->setItem(17, QFormLayout::SpanningRole, verticalSpacer);
 
-        radioButtonHDPI = new QRadioButton(tab);
-        radioButtonHDPI->setObjectName(QString::fromUtf8("radioButtonHDPI"));
-        radioButtonHDPI->setChecked(true);
-        radioButtonHDPI->setAutoExclusive(false);
+        label_27 = new QLabel(tab);
+        label_27->setObjectName(QString::fromUtf8("label_27"));
 
-        formLayout_2->setWidget(16, QFormLayout::SpanningRole, radioButtonHDPI);
+        formLayout_2->setWidget(16, QFormLayout::LabelRole, label_27);
+
+        comboBox = new QComboBox(tab);
+        comboBox->addItem(QString());
+        comboBox->addItem(QString());
+        comboBox->addItem(QString());
+        comboBox->addItem(QString());
+        comboBox->addItem(QString());
+        comboBox->addItem(QString());
+        comboBox->setObjectName(QString::fromUtf8("comboBox"));
+
+        formLayout_2->setWidget(16, QFormLayout::FieldRole, comboBox);
 
         tabWidget->addTab(tab, QString());
 
@@ -974,7 +984,14 @@ public:
         comboBox_precession->setItemText(0, QCoreApplication::translate("MainWindow", "double<8 Bit>", nullptr));
         comboBox_precession->setItemText(1, QCoreApplication::translate("MainWindow", "double<16 Bit>", nullptr));
 
-        radioButtonHDPI->setText(QCoreApplication::translate("MainWindow", "HDPI Scaling", nullptr));
+        label_27->setText(QCoreApplication::translate("MainWindow", "HDPI Scaling:", nullptr));
+        comboBox->setItemText(0, QCoreApplication::translate("MainWindow", "auto", nullptr));
+        comboBox->setItemText(1, QCoreApplication::translate("MainWindow", "25%", nullptr));
+        comboBox->setItemText(2, QCoreApplication::translate("MainWindow", "50% HDPI", nullptr));
+        comboBox->setItemText(3, QCoreApplication::translate("MainWindow", "100% DPI", nullptr));
+        comboBox->setItemText(4, QCoreApplication::translate("MainWindow", "200%", nullptr));
+        comboBox->setItemText(5, QCoreApplication::translate("MainWindow", "400%", nullptr));
+
         tabWidget->setTabText(tabWidget->indexOf(tab), QCoreApplication::translate("MainWindow", "\342\232\231Settings", nullptr));
         pushButtonStart->setText(QCoreApplication::translate("MainWindow", "Vergr\303\266\303\237ern", nullptr));
         pushButton_2->setText(QCoreApplication::translate("MainWindow", "Zur\303\274ck", nullptr));

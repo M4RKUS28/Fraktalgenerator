@@ -228,7 +228,7 @@ private slots:
 
     void mouse_move_in_img(QPoint pos);
 
-    void on_radioButtonHDPI_toggled(bool checked);
+    void on_comboBox_currentIndexChanged(int index);
 
 private:
     Ui::MainWindow *ui;

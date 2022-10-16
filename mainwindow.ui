@@ -1273,17 +1273,45 @@
              </property>
             </spacer>
            </item>
-           <item row="16" column="0" colspan="2">
-            <widget class="QRadioButton" name="radioButtonHDPI">
+           <item row="16" column="0">
+            <widget class="QLabel" name="label_27">
              <property name="text">
-              <string>HDPI Scaling</string>
+              <string>HDPI Scaling:</string>
              </property>
-             <property name="checked">
-              <bool>true</bool>
-             </property>
-             <property name="autoExclusive">
-              <bool>false</bool>
-             </property>
+            </widget>
+           </item>
+           <item row="16" column="1">
+            <widget class="QComboBox" name="comboBox">
+             <item>
+              <property name="text">
+               <string>auto</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>25%</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>50% HDPI</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>100% DPI</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>200%</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>400%</string>
+              </property>
+             </item>
             </widget>
            </item>
           </layout>

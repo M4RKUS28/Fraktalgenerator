@@ -20,11 +20,17 @@ public:
     ~ImageView();
 
     void setImage(QImage img);
-    void setHdpiScaleEnabled(bool status);
+    void setHdpiScale(double multiplikator);
+
+    double getHdpi_scale() const;
+
+    double getHdpi_multiplicator() const;
+
 private:
     QImage img;
     double hdpi_scale;
-    bool use_hdpi;
+    double hdpi_multiplicator;
+
 
     // QWidget interface
 protected:
@@ -34,9 +40,19 @@ protected:
 protected:
     virtual void mouseMoveEvent(QMouseEvent *event);
 
+
 signals:
     void mouseMove(QPoint pos);
+
+    // QWidget interface
+protected:
+//    virtual void mousePressEvent(QMouseEvent *event);
+//    virtual void mouseReleaseEvent(QMouseEvent *event);
 };
+
+
+
+
 
 
 
