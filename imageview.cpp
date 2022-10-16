@@ -1,5 +1,6 @@
 #include "imageview.h"
 
+#include <QMouseEvent>
 #include <QPainter>
 
 ImageView::ImageView(QWidget *parent)
@@ -8,25 +9,30 @@ ImageView::ImageView(QWidget *parent)
 
 }
 
-void ImageView::setImg(QImage i)
-{
-    this->img = i;
-    this->setFixedSize(i.size());
-    this->update();
-
-}
-
 ImageView::~ImageView()
 {
 
 }
 
-void ImageView::paintEvent(QPaintEvent *event)
+void ImageView::setImage(QImage img)
+{
+    this->img = img;
+    this->setFixedSize(img.size());
+    this->update();
+}
+
+void ImageView::paintEvent(QPaintEvent *)
 {
     auto p = QPainter(this);
-    qreal inverseDPR = 1.0 / this->devicePixelRatio();
-    p.scale(inverseDPR, inverseDPR);
+    // wegen hdpi bildschirmen -> hoch auflösendere Bilder!
+        qreal inverseDPR = 1.0 / this->devicePixelRatio();
+        p.scale(inverseDPR, inverseDPR);
+    // zeichne Bild
     p.drawImage(0,0,img);
-
-
 }
+
+void ImageView::mouseMoveEvent(QMouseEvent *event)
+{
+    qDebug() << event;
+}
+

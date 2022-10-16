@@ -8,34 +8,43 @@
 #include <QPainter>
 #include <QPixmap>
 #include <QTime>
+#include <iostream>
 
 
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    , currentImg(START_SCALE, Point(START_POS_X, START_POS_Y)),
+      ui(new Ui::MainWindow)
 {
 
     ui->setupUi(this);
-    this->startTimer(20);
-    i= new ImageView();
-    i->show();
+    timerID = this->startTimer(20);
+
+    currentImg.init(this->ui->spinBoxW->value(), this->ui->spinBoxH->value(), ui->spinBoxMaxIterations->value());
+    currentImg.painter->fillRect(currentImg.image->rect(), QColor(ui->comboBox_background_color->currentText()));
+
+    ui->imageView->setImage(*currentImg.image);
+    this->startRefresh(currentImg, true);
 
 }
 
 MainWindow::~MainWindow()
 {
+    //Stoppe timer
+    this->killTimer(timerID);
+
+    // Stoppe und lösche Threads...
     stopThreads();
 
-//    this->painter->end();
-//    delete this->painter;
-//    this->painter = nullptr;
+    //Lösche die Bilderliste
+    for( auto e : settingsList)
+        e.cleanUP();
+    settingsList.clear();
 
     delete ui;
     ui = nullptr;
 
-//    delete image;
-//    image = nullptr;
 }
 
 void MainWindow::timerEvent(QTimerEvent *)
@@ -50,12 +59,6 @@ void MainWindow::zustandWechseln(QString aktion, QString, size_t, QMouseEvent *m
         qDebug() << "zustandWechseln "<< aktion;
 
     switch (this->state) {
-    case MainWindow::INIT:
-        if(aktion == "TIMER") {
-            this->loadInitImg();
-        }
-
-        break;
     case MainWindow::STOPED:
 
         if(aktion == "TIMER") {
@@ -65,21 +68,21 @@ void MainWindow::zustandWechseln(QString aktion, QString, size_t, QMouseEvent *m
 
             if(this->op_mode == OP_MODE::REFRESH) {
                 //Aktualiseren
-                this->startRefresh(settings.last());
+                this->startRefresh(currentImg);
 
             // wenn: einstellungenverändert == true:
             } else if(this->op_mode == OP_MODE::APPLY_SETTINGS || this->op_mode == OP_MODE::ZOOM_TO_SELECTED || this->op_mode == OP_MODE::APPLY_SETTINGS_AND_ZOOM) {
                 //Zoomen
-                SETTING newSetting = getNewScaledSetting(settings.last());
+                ImageSetting newSetting = getNewScaledSetting(currentImg);
                 this->startRefresh(newSetting, true);
                 this->ui->pushButton_2->setDisabled(false);
 
             }
 
         } else if( aktion == "DOPPELKLICK_IN_BILD" && m_event) {
-            auto pos = this->ui->labelFraktal->mapFrom(this, m_event->pos());
-            if(m_event->button() == Qt::LeftButton && pos.x() >= 0 && pos.x() < settings.last().img_w && pos.y() >= 0 && pos.y() < settings.last().img_h) {
-                SETTING newSetting = getNewScaledSetting(settings.last());
+            auto pos = this->ui->imageView->mapFrom(this, m_event->pos());
+            if(m_event->button() == Qt::LeftButton && pos.x() >= 0 && pos.x() < currentImg.img_w && pos.y() >= 0 && pos.y() < currentImg.img_h) {
+                ImageSetting newSetting = getNewScaledSetting(currentImg);
                 this->startRefresh(newSetting, true);
                 this->ui->pushButton_2->setDisabled(false);
 
@@ -87,31 +90,32 @@ void MainWindow::zustandWechseln(QString aktion, QString, size_t, QMouseEvent *m
         } else if(aktion == "mouseReleaseEvent" && m_event) {
             if(m_event->button() == Qt::LeftButton) {
                 // no update in paintevent!! --> no move!!
-                this->mousePress.isPressed = false;
+                this->zoomRect.setMousePressState(false);
                 this->update();
             }
 
         } else if(aktion == "mouseMoveEvent" && m_event) {
 
-            auto qpos = this->ui->labelFraktal->mapFrom(this, m_event->pos());
+            auto qpos = this->ui->imageView->mapFrom(this, m_event->pos());
             auto pos = Point(qpos.x(), qpos.y());
 
             qDebug() << qpos;
-            if(pos.x() >= 0 && pos.x() < settings.last().img_w && pos.y() >= 0 && pos.y() < settings.last().img_h) {
-                this->mousePress.updateKoords( pos, settings.last().x_verschiebung, settings.last().y_verschiebung  );
-                if(this->mousePress.isPressed) {
-                    this->setOperationMode(OP_MODE::ZOOM_TO_SELECTED);
-                    this->update();
-                }
-                ui->label_iterations->setText(QString::number(settings.last().getIterationCountAt(qpos)));
+            if(pos.x() >= 0 && pos.x() < currentImg.img_w && pos.y() >= 0 && pos.y() < currentImg.img_h) {
+                this->zoomRect.updateRectPos( pos );
 
-                ui->re->setText(QString::number((double(this->mousePress.koord.x() / settings.last().scale))));
-                ui->img->setText(QString::number( - (double(this->mousePress.koord.y() / settings.last().scale)))  + "i");
+                if(this->zoomRect.rightMouseIsPressed()) {
+                    this->setOperationMode(OP_MODE::ZOOM_TO_SELECTED);
+                    this->updateImage();
+                }
+                ui->label_iterations->setText(QString::number(currentImg.getIterationCountAt(qpos)));
+
+                ui->re->setText(QString::number((double( (this->zoomRect.getMousePos().x() + currentImg.x_verschiebung) / currentImg.scale))));
+                ui->img->setText(QString::number( - (double( (this->zoomRect.getMousePos().y() + currentImg.y_verschiebung) / currentImg.scale)))  + "i");
 
 
                 if( ui->radioButton_zahelnfolge_bei_mousemove->isChecked() && zahlenfolge.isShown() ) {
-                    this->zahlenfolge.setZahlenfolge(pos, settings.last());
-                    this->update();
+                    this->zahlenfolge.setZahlenfolge(pos, currentImg);
+                    this->updateImage();
                 }
 
             } else {
@@ -122,30 +126,30 @@ void MainWindow::zustandWechseln(QString aktion, QString, size_t, QMouseEvent *m
 
         } else if(aktion == "mousePressEvent"  && m_event) {
 
-            auto qpos = this->ui->labelFraktal->mapFrom(this, m_event->pos());
+            auto qpos = this->ui->imageView->mapFrom(this, m_event->pos());
             auto pos = Point(qpos.x(), qpos.y());
 
-            if(pos.x() >= 0 && pos.x() < settings.last().img_w && pos.y() >= 0 && pos.y() < settings.last().img_h) {
+            if(pos.x() >= 0 && pos.x() < currentImg.img_w && pos.y() >= 0 && pos.y() < currentImg.img_h) {
                 if(m_event->button() == Qt::LeftButton) {
-                    mousePress.setPressed();
-                    this->mousePress.updateKoords(pos , settings.last().x_verschiebung, settings.last().y_verschiebung );
+                    zoomRect.setMousePressState(true);
+                    this->zoomRect.updateRectPos(pos);
                     this->setOperationMode(OP_MODE::ZOOM_TO_SELECTED);
 
-                    ui->label_iterations->setText(QString::number(settings.last().getIterationCountAt(qpos)));
-                    ui->re->setText(QString::number((double(this->mousePress.koord.x() / settings.last().scale))));
-                    ui->img->setText( QString::number( - (double(this->mousePress.koord.y() / settings.last().scale)))  + "i");
+                    ui->label_iterations->setText(QString::number(currentImg.getIterationCountAt(qpos)));
+
+                    ui->re->setText(QString::number((double( (this->zoomRect.getMousePos().x() + currentImg.x_verschiebung) / currentImg.scale))));
+                    ui->img->setText(QString::number( - (double( (this->zoomRect.getMousePos().y() + currentImg.y_verschiebung) / currentImg.scale)))  + "i");
 
                     if(zahlenfolge.isShown())
                         this->zahlenfolge.removeZahlenfolge();
                 } else  if(m_event->button() == Qt::RightButton) {
-                    this->zahlenfolge.setZahlenfolge(pos, settings.last());
+                    this->zahlenfolge.setZahlenfolge(pos, currentImg);
                 }
 
                 this->update();
             } else {
                 this->setOperationMode(OP_MODE::REFRESH);
-
-                this->mousePress.isPressed = false;
+                zoomRect.setMousePressState(false);
 
                 ui->re->setText("-");
                 ui->img->setText("-");
@@ -157,29 +161,25 @@ void MainWindow::zustandWechseln(QString aktion, QString, size_t, QMouseEvent *m
 
 
         } else if(aktion == "ZURÜCK") {
-            if(settings.length() > 1) {
-                auto s = settings.takeLast();
-                delete s.painter;
-                delete s.image;
+            if(settingsList.length() > 1) {
+                auto s = settingsList.takeLast();
+                s.cleanUP();
             }
             if(ui->radioButton_reload_at_back->isChecked())
-                this->startRefresh(settings.last());
+                this->startRefresh(settingsList.last());
             else {
-                this->ui->labelFraktal->setFixedSize( settings.last().img_w, settings.last().img_h);
                 this->endRefresh();
                 updateImage();
             }
 
         } else if(aktion == "HOME") {
-            while(settings.length() > 1) {
-                auto s = settings.takeLast();
-                delete s.painter;
-                delete s.image;
+            while(settingsList.length() > 1) {
+                auto s = settingsList.takeLast();
+                s.cleanUP();
             }
             if(ui->radioButton_reload_at_back->isChecked())
-                this->startRefresh(settings.last());
+                this->startRefresh(settingsList.last());
             else {
-                this->ui->labelFraktal->setFixedSize( settings.last().img_w, settings.last().img_h);
                 this->endRefresh();
                 updateImage();
             }
@@ -204,42 +204,115 @@ void MainWindow::zustandWechseln(QString aktion, QString, size_t, QMouseEvent *m
     }
 }
 
-MainWindow::SETTING MainWindow::getNewScaledSetting(SETTING lastSet)
+ImageSetting MainWindow::getNewScaledSetting(ImageSetting last_img)
 {
     //es wird davon ausgegangen, dass diese Funktion dann aufgerufen wird, wenn mousePress gesetzt ist! Wenn nicht, dann sollte lastSetGeladen werden.
     // entweder zoomfeld gesetzt und davon mitte, egal ob doppelklick oder button, oder reines neu laden button!!
-
     double relativeZoom = ui->spinBox_zoom->value();
     if(ui->spinBox_zoom->value() == 0.0)
         ui->spinBox_zoom->setValue( (relativeZoom = 1.0) );
-
 
     // Zoom midposize_t --> new scaling!!!!
     size_t midx =0 ;
     size_t midy =0 ;
     long double nscale = 0;
 
-    if(relativeZoom > 0) {
-        nscale = lastSet.scale * (long double) relativeZoom;
-        midx   = (this->mousePress.point.x() + lastSet.x_verschiebung) * relativeZoom;
-        midy   = (this->mousePress.point.y() + lastSet.y_verschiebung) * relativeZoom;
+    if(this->zoomRect.isShown()) {
+        if(relativeZoom > 0) {
+            nscale = last_img.scale * (long double) relativeZoom;
+            midx   = (this->zoomRect.getMousePos().x() + last_img.x_verschiebung) * relativeZoom;
+            midy   = (this->zoomRect.getMousePos().y() + last_img.y_verschiebung) * relativeZoom;
+        } else {
+            nscale  = -last_img.scale / (long double) relativeZoom;
+            midx    = -(this->zoomRect.getMousePos().x() + last_img.x_verschiebung) / relativeZoom;
+            midy    = -(this->zoomRect.getMousePos().y() + last_img.y_verschiebung) / relativeZoom;
+        }
     } else {
-        nscale  = -lastSet.scale / (long double) relativeZoom;
-        midx    = -(this->mousePress.point.x() + lastSet.x_verschiebung) / relativeZoom;
-        midy    = -(this->mousePress.point.y() + lastSet.y_verschiebung) / relativeZoom;
+        midx = last_img.midPoint.x() ;
+        midy = last_img.midPoint.y() ;
     }
 
-    SETTING s(nscale, Point(midx, midy));
+    ImageSetting s(nscale, Point(midx, midy));
     s.init(this->ui->spinBoxW->value(), this->ui->spinBoxH->value(), ui->spinBoxMaxIterations->value());
     return s;
+
 }
 
-long double MainWindow::getNewScale(SETTING lastSet)
+void MainWindow::updateUiWithImageSetting(ImageSetting imgs)
 {
-    //    check if max is reached!!!
-
+    // nach zurück oder home -> einstellungen laden
 
 }
+
+void MainWindow::startRefresh(ImageSetting set, bool appendToList)
+{
+    if(set.scale == 0) {
+        perror("INVALID SETTING!");
+        return;
+    }
+
+    //reset ui
+    this->state = STATE::RUNNING;
+    ui->widget->setDisabled(true);
+    ui->pushButtonStart->setText("Abbrechen");
+    ui->progressBar->setEnabled(true);
+    ui->frameButtons->setEnabled(false);
+
+    // Reset Zahlenfolge
+    zahlenfolge.removeZahlenfolge();
+
+    //calc work for each thread
+    size_t tc = std::max(std::min( ui->spinBox_threads->value(), (int)set.img_w), 1);
+    ssize_t parts = set.img_w / tc;
+
+    //fill image with background color:
+    set.painter->fillRect(set.image->rect(), QColor(ui->comboBox_background_color->currentText()));
+    this->updateImage();
+
+    //reset progress bar
+    this->ui->progressBar->setMaximum(set.img_w);
+    this->ui->progressBar->setValue(0);
+
+    //calc consts for normalised iteration count
+    set.logEscape = log(log(ui->doubleSpinBoxEscapeR->value()));
+
+    // Verschiebung so, dass ecke bei (0|0) --> verschiebung == echte ecke
+    ssize_t x_left_corner = set.x_verschiebung;
+    ssize_t y_left_corner = set.y_verschiebung;
+
+    // add new settings to list ( bei neuladen wird setting nicht hinzugefügt )
+    if(appendToList) {
+        settingsList.push_back(set);
+        currentImg = set;
+    }
+
+    //start workers
+    for( size_t tn = 0; tn < tc; tn++) {
+        WorkerThread * wt = new WorkerThread(this);
+        this->tworkers.append( wt );
+        std::cout << " -> Starte Thread bei x = " << x_left_corner << " ..." << std::endl;
+
+        wt->startCalc(x_left_corner + parts * tn,
+                      x_left_corner + parts * (tn + 1) + ( (tn + 1 == tc ) ? (set.img_w - parts * (tn + 1)) : 0), // wenn breite mit threadzahl nicht aufgeht -> letzter thread noch etwas breiter
+                      parts * (tn + 1) + ( (tn + 1 == tc ) ? (set.img_w - parts * (tn + 1)) : 0),
+                      y_left_corner,
+                      y_left_corner + set.img_h,
+                      ui->spinBoxMaxIterations->value(),
+                      ui->doubleSpinBoxEscapeR->value(),
+                      ((double long)1.0 / set.scale),
+                      this->ui->comboBox_precession->currentIndex() == 0 ? WorkerThread::PRECESSION::DOUBLE : WorkerThread::PRECESSION::LONG_DOUBLE );
+
+        connect(wt, SIGNAL(finishedLine(QList<WorkerThread::Pixel>*)), this, SLOT(finishedLine(QList<WorkerThread::Pixel>*)));
+        connect(wt, SIGNAL(finished()), this, SLOT(threadFinished()));
+
+        // warte 20ms für den nächsten Thread
+        QTime dieTime= QTime::currentTime().addMSecs(20);
+            while (QTime::currentTime() < dieTime)
+                QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+    }
+
+}
+
 
 void MainWindow::setColor(QPainter * mpainter, size_t iters, std::complex<long double> z_n)
 {
@@ -253,7 +326,7 @@ void MainWindow::setColor(QPainter * mpainter, size_t iters, std::complex<long d
     // normalizing
     if(iters != 0) {
         if(this->ui->radioButton_normalized->isChecked())
-            n = abs(iters + (( this->logEscape - log(log(abs(z_n))) ) / this->log2));
+            n = abs(iters + (( this->currentImg.logEscape - log(log(abs(z_n))) ) / this->log2));
         else
             n = iters;
     }
@@ -281,7 +354,7 @@ void MainWindow::setColor(QPainter * mpainter, size_t iters, std::complex<long d
                 mpainter->setPen(QColor(Qt::black));
             } else {
                 // hsv = [powf((i / max) * 360, 1.5) % 360, 100, (i / max) * 100]
-                QColor c = QColor::fromHsv( size_t(pow( (n / (double)settings.last().maxIterations) * 358 , 1.5)) % 358, 100, (n / (double)settings.last().maxIterations) * 250);
+                QColor c = QColor::fromHsv( size_t(pow( (n / (double)currentImg.maxIterations) * 358 , 1.5)) % 358, 100, (n / (double)currentImg.maxIterations) * 250);
                 mpainter->setPen(c);
             }
             break;
@@ -289,7 +362,7 @@ void MainWindow::setColor(QPainter * mpainter, size_t iters, std::complex<long d
             if(iters == 0) {
                 mpainter->setPen(QColor(Qt::black));
             } else {
-                mpainter->setPen(QColor::fromHsv(int( (358.0 * n) / (double)settings.last().maxIterations ), 255, 255));
+                mpainter->setPen(QColor::fromHsv(int( (358.0 * n) / (double)currentImg.maxIterations ), 255, 255));
             }
             break;
         default:
@@ -303,7 +376,7 @@ void MainWindow::setColor(QPainter * mpainter, size_t iters, std::complex<long d
 #include <algorithm>
 
 
-void MainWindow::afterColoring(SETTING)
+void MainWindow::afterColoring(ImageSetting)
 {
 //    size_t * NumIterationsPerPixel = new size_t[set.maxIterations];
 //    memset(NumIterationsPerPixel, 0, sizeof(int) * set.maxIterations );
@@ -386,74 +459,6 @@ void MainWindow::setOperationMode(OP_MODE o)
 
 }
 
-void MainWindow::startRefresh(SETTING set, bool zoom)
-{
-    if(set.scale == 0) {
-        perror("INVALID SETTING!");
-        return;
-    }
-
-    //reset ui
-    this->state = STATE::RUNNING;
-    ui->widget->setDisabled(true);
-    ui->pushButtonStart->setText("Abbrechen");
-    ui->progressBar->setEnabled(true);
-    ui->frameButtons->setEnabled(false);
-
-    zahlenfolge.removeZahlenfolge();
-
-
-    //calc work for each thread
-    size_t tc = std::max(std::min( ui->spinBox_threads->value(), (int)set.img_w), 1);
-    ssize_t parts = set.img_w / tc;
-
-    //fill image with background color:
-    set.painter->fillRect(set.image->rect(), QColor(ui->comboBox_background_color->currentText()));
-    this->ui->labelFraktal->setFixedSize( set.img_w, set.img_h);
-    this->updateImage();
-
-    //reset progress bar
-    this->ui->progressBar->setMaximum(set.img_w);
-    this->ui->progressBar->setValue(0);
-
-    //calc consts for normalised iteration count
-    this->logEscape = log(log(ui->doubleSpinBoxEscapeR->value()));
-    this->log2 = log(2);
-
-    // Verschiebung so, dass ecke bei (0|0) --> verschiebung == echte ecke
-    ssize_t x_left_corner = set.x_verschiebung;
-    ssize_t y_left_corner = set.y_verschiebung;
-
-    // wenn nicht nur neuladen --> add new settings to list
-    if(zoom)
-        settings.push_back(set);
-
-
-    //start workers
-    for( size_t tn = 0; tn < tc; tn++) {
-        WorkerThread * wt = new WorkerThread(this);
-        this->tworkers.append( wt );
-
-        qDebug() << "ssstart with: " << x_left_corner;
-
-        wt->startCalc(x_left_corner + parts * tn,
-                      x_left_corner + parts * (tn + 1) + ( (tn + 1 == tc ) ? (set.img_w - parts * (tn + 1)) : 0), // wenn breite mit threadzahl nicht aufgeht -> letzter thread noch etwas breiter
-                      parts * (tn + 1) + ( (tn + 1 == tc ) ? (set.img_w - parts * (tn + 1)) : 0),
-                      y_left_corner,
-                      y_left_corner + set.img_h,
-                      ui->spinBoxMaxIterations->value(),
-                      ui->doubleSpinBoxEscapeR->value(),
-                      ((double long)1.0 / set.scale),
-                      this->ui->comboBox_precession->currentIndex() == 0 ? WorkerThread::PRECESSION::DOUBLE : WorkerThread::PRECESSION::LONG_DOUBLE );
-
-        connect(wt, SIGNAL(finishedLine(QList<WorkerThread::Pixel>*)), this, SLOT(finishedLine(QList<WorkerThread::Pixel>*)));
-        connect(wt, SIGNAL(finished()), this, SLOT(threadFinished()));
-
-        QTime dieTime= QTime::currentTime().addMSecs(20);
-            while (QTime::currentTime() < dieTime)
-                QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
-    }
-}
 
 void MainWindow::endRefresh()
 {
@@ -461,40 +466,23 @@ void MainWindow::endRefresh()
     ui->widget->setDisabled(false);
     ui->pushButtonStart->setText("Neu Laden");
     this->setOperationMode(OP_MODE::RESET);
+
     ui->progressBar->setEnabled(false);
     ui->pushButtonSaveImg->setEnabled(true);
     ui->frameButtons->setEnabled(true);
-    ui->lineEditScaleAbs->setText("1:" + QString::number((double)settings.last().scale));
+
+    ui->lineEditScaleAbs->setText("1: " + QString::number((double)currentImg.scale));
     ui->progressBar->setValue(ui->progressBar->maximum());
-    ui->bmRe->setText(QString::number( (double)(((long double) this->settings.last().midPoint.x()) / this->settings.last().scale) ));
-    ui->bmIm->setText(QString::number( (double)(((long double) this->settings.last().midPoint.y()) / this->settings.last().scale) ) + "i");
-
-    afterColoring(settings.last());
+    ui->bmRe->setText(QString::number( (double)(((long double) this->currentImg.midPoint.x()) / currentImg.scale) ));
+    ui->bmIm->setText(QString::number( (double)(((long double) this->currentImg.midPoint.y()) / currentImg.scale) ) + "i");
+    afterColoring(currentImg);
 }
 
-void MainWindow::loadInitImg()
-{
-    //später das zuletzt verwendete
-//    SETTING newImage(150, Point(-80, 0));
-    SETTING newImage(120, Point(-80, 0));
-    newImage.init(this->ui->spinBoxW->value(), this->ui->spinBoxH->value(), ui->spinBoxMaxIterations->value());
-    newImage.painter->fillRect(newImage.image->rect(), QColor(ui->comboBox_background_color->currentText()));
-
-    this->ui->labelFraktal->setPixmap(QPixmap::fromImage(*newImage.image));
-    this->ui->labelFraktal->setFixedSize( ui->spinBoxW->value(), ui->spinBoxH->value());
-
-    this->startRefresh(newImage, true);
-}
 
 void MainWindow::updateImage()
 {
-    if(settings.empty())
-        return;
-//    auto img = QPixmap::fromImage(*settings.last().image);
-//    if( ! img.isNull())
-//        this->ui->labelFraktal->setPixmap(img);
+    ui->imageView->setImage(*currentImg.image);
     this->update();
-
 }
 
 bool MainWindow::checkForFinished()
@@ -510,7 +498,6 @@ bool MainWindow::checkForFinished()
     }
     return false;
 }
-
 
 void MainWindow::stopThreads()
 {
@@ -538,17 +525,15 @@ void MainWindow::on_pushButtonStart_clicked()
 
 void MainWindow::finishedLine(QList<WorkerThread::Pixel> *list)
 {
-//    this->writequeque.push_back(list);
     for( ssize_t l = 0; l < list->size(); l++) {
-        this->setColor(settings.last().painter, list->at(l).i, list->at(l).z_n);
-        ssize_t x = list->at(l).c_x - settings.last().x_verschiebung,
-            y = list->at(l).c_y -  settings.last().y_verschiebung;
-        settings.last().painter->drawPoint(x, y);
-        if(x >= 0 && x < this->settings.last().img_w && y >= 0 && y < this->settings.last().img_h)
-            settings.last().setIterationCountAt(x, y, list->at(l).i);
+        this->setColor(currentImg.painter, list->at(l).i, list->at(l).z_n);
+        ssize_t x = list->at(l).c_x - currentImg.x_verschiebung,
+            y = list->at(l).c_y -  currentImg.y_verschiebung;
+        currentImg.painter->drawPoint(x, y);
+        if(x >= 0 && x < currentImg.img_w && y >= 0 && y < currentImg.img_h)
+            currentImg.setIterationCountAt(x, y, list->at(l).i);
 
     }
-    //QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
     this->ui->progressBar->setValue(this->ui->progressBar->value() + 1);
     delete list;
     imgUpdateNeeded = true;
@@ -570,7 +555,7 @@ void MainWindow::on_pushButtonSaveImg_clicked()
 {
     QString filename = QFileDialog::getSaveFileName(this, "Bild speichern - Dateiendung nach gewünschtem Format ändern. Standart: .png", "", "Images (*.png *.xpm *.jpg)");
     if( ! filename.isEmpty())
-        if( ! settings.last().image->save(filename + ((!filename.contains(".")) ? ".png" : "")) )
+        if( ! currentImg.image->save(filename + ((!filename.contains(".")) ? ".png" : "")) )
             QMessageBox::warning(this, "Speichern fehlgeschlagen!", "Das Bild konnte nicht gespeichert werden! Haben sie die Dateiendung vergessen?");
 }
 
@@ -597,25 +582,18 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
 void MainWindow::paintEvent(QPaintEvent *)
 {
     switch (state) {
-    case MainWindow::INIT:
-        break;
     case MainWindow::STOPED:
 
-        if(mousePress.isPressed || zahlenfolge.isShown() || this->ui->radioButtonKoords->isChecked()) {
-            QImage img = *this->settings.last().image;
+        if(zoomRect.isShown() || zahlenfolge.isShown() || this->ui->radioButtonKoords->isChecked()) {
+            QImage img = *currentImg.image;
             QPainter painter(&img);
 
-            if(mousePress.isPressed && ui->spinBox_zoom->value() > 0) {
-
-                size_t w = this->ui->spinBoxW->value() / ui->spinBox_zoom->value();
-                size_t h = this->ui->spinBoxH->value() / ui->spinBox_zoom->value();
-                size_t x_left_corner =  mousePress.point.x() - w/2;
-                size_t y_left_corner =  mousePress.point.y() - h/2;
-
+            if(zoomRect.isShown()) {
                 painter.setPen(Qt::black);
-                painter.drawRect(QRect(x_left_corner, y_left_corner, w, h));
+                painter.drawRect(zoomRect.getRect());
                 painter.setPen(Qt::white);
-                painter.drawRect(QRect(x_left_corner - 1, y_left_corner - 1, w + 2, h + 2));
+                //                painter.drawRect(QRect(x_left_corner - 1, y_left_corner - 1, w + 2, h + 2));
+                painter.drawRect(zoomRect.getRect().adjusted(-1, -1, +2, +2));
             }
 
             if(zahlenfolge.isShown()) {
@@ -630,12 +608,14 @@ void MainWindow::paintEvent(QPaintEvent *)
                         last = list.first();
                     }
                     for( unsigned i = 1; i < list.length(); i++ ) {
-                        painter.drawPoint(list.at(i));
+                        painter.setPen(QColor(ui->comboBox_color_zahlenfolge->currentText()));
                         painter.drawLine(last, list.at(i));
                         if(last != list.at(i))
                             last = list.at(i);
 //                        else
 //                            break;
+                        painter.setPen(QColor("cyan"));
+                        painter.drawPoint(list.at(i));
 
                     }
 
@@ -647,8 +627,8 @@ void MainWindow::paintEvent(QPaintEvent *)
             // optimieren -> nur sichtbares zeug berechnen!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             if(this->ui->radioButtonKoords->isChecked()) {
                 painter.setPen(QColor(ui->comboBoxColorKoordSystem->currentText()));
-                auto xA = settings.last().xAchse;
-                auto yA = settings.last().yAchse;
+                auto xA = currentImg.xAchse;
+                auto yA = currentImg.yAchse;
 
                 //Achsen
                 painter.drawLine(xA);
@@ -668,14 +648,14 @@ void MainWindow::paintEvent(QPaintEvent *)
                         painter.drawLine(xA.p1() + QPoint(partsX * i, -5), xA.p1() + QPoint(partsX * i, 5));
 
                         painter.drawText(xA.p1() + QPoint(partsX * i - 10, 20),
-                                         QString::number((double)settings.last().PixelToReal(xA.p1() + QPoint(partsX * i, 0))));
+                                         QString::number((double)currentImg.PixelToReal(xA.p1() + QPoint(partsX * i, 0))));
                     }
 
                     int partsY = yA.dy() / ui->spinBoxBeschriftungenY->value();
                     for(int i = 1; i <= ui->spinBoxBeschriftungenY->value(); i++) {
                         painter.drawLine(yA.p1() + QPoint(-5, partsY * i), yA.p1() + QPoint(5, partsY * i));
                         painter.drawText(yA.p1() + QPoint( -25, partsY * i),
-                                         QString::number( - (double)settings.last().PixelToImag(yA.p1() + QPoint(0, partsY * i))));
+                                         QString::number( - (double)currentImg.PixelToImag(yA.p1() + QPoint(0, partsY * i))));
                     }
                 }
 
@@ -686,12 +666,10 @@ void MainWindow::paintEvent(QPaintEvent *)
 //            this->ui->labelFraktal->setPixmap(QPixmap::fromImage(img));
 //            painter2.drawImage(0, 0, img);
 //            painter2.end();
-            this->ui->labelFraktal->setPixmap(QPixmap::fromImage(img));
-            i->setImg(img);
+            //this->ui->labelFraktal->setPixmap(QPixmap::fromImage(img));
+            ui->imageView->setImage(img);
 
         }
-
-
 
         break;
     case MainWindow::RUNNING:
@@ -714,14 +692,13 @@ void MainWindow::keyReleaseEvent(QKeyEvent *)
 }
 
 
-MainWindow::SETTING::SETTING(long double scale, Point midPoint)
-    : scale(scale), x_verschiebung(0), y_verschiebung(0), midPoint(midPoint)
+ImageSetting::ImageSetting(long double scale, Point midPoint)
+    : midPoint(midPoint), scale(scale), x_verschiebung(0), y_verschiebung(0)
 {
     qDebug() << midPoint.x() << " | " << midPoint.y();
-
 }
 
-void MainWindow::SETTING::init(size_t img_w, size_t img_h, size_t maxIterations)
+void ImageSetting::init(size_t img_w, size_t img_h, size_t maxIterations)
 {
     this->img_w = img_w;
     this->img_h = img_h;
@@ -752,7 +729,7 @@ void MainWindow::SETTING::init(size_t img_w, size_t img_h, size_t maxIterations)
 
 }
 
-void MainWindow::SETTING::setIterationCountAt(size_t x, size_t y, size_t iterations)
+void ::ImageSetting::setIterationCountAt(ssize_t x, ssize_t y, size_t iterations)
 {
     if(x >= 0 && x < this->img_w && y >= 0 && y < this->img_h) {
         this->iterations[x][y] = iterations;
@@ -760,12 +737,12 @@ void MainWindow::SETTING::setIterationCountAt(size_t x, size_t y, size_t iterati
 
 }
 
-size_t MainWindow::SETTING::getIterationCountAt(QPoint pos)
+size_t ImageSetting::getIterationCountAt(QPoint pos)
 {
     return this->getIterationCountAt(pos.x(), pos.y());
 }
 
-size_t MainWindow::SETTING::getIterationCountAt(size_t x, size_t y)
+size_t ImageSetting::getIterationCountAt(ssize_t x, ssize_t y)
 {
     if(x >= 0 && x < this->img_w && y >= 0 && y < this->img_h)
         return this->iterations[x][y];
@@ -773,19 +750,19 @@ size_t MainWindow::SETTING::getIterationCountAt(size_t x, size_t y)
         return -1;
 }
 
-long double MainWindow::SETTING::PixelToImag(QPoint p)
+long double ImageSetting::PixelToImag(QPoint p)
 {
     return (p.y() + this->y_verschiebung) / scale;
 }
 
-long double MainWindow::SETTING::PixelToReal(QPoint p)
+long double ImageSetting::PixelToReal(QPoint p)
 {
     return (p.x() + this->x_verschiebung) / scale;
 }
 
 void MainWindow::on_pushButton_2_clicked()
 {
-    if(this->settings.length() <= 2 )
+    if(this->settingsList.length() <= 2 )
         this->ui->pushButton_2->setDisabled(true);
     zustandWechseln("ZURÜCK");
 }
@@ -796,8 +773,6 @@ void MainWindow::on_pushButton_clicked()
     this->ui->pushButton_2->setDisabled(true);
     zustandWechseln("HOME");
 }
-
-
 
 
 
@@ -888,7 +863,7 @@ void MainWindow::on_radioButton_reload_at_back_toggled(bool checked)
 #include <cmath>
 
 
-void MainWindow::ZahlenFolge::setZahlenfolge(MainWindow::Point c_p, SETTING s)
+void MainWindow::ZahlenFolge::setZahlenfolge(Point c_p, ImageSetting s)
 {
     if(this->isShown())
         this->removeZahlenfolge();
@@ -926,69 +901,131 @@ bool MainWindow::ZahlenFolge::isShown()
 
 void MainWindow::on_pushButton_scale_plus_clicked()
 {
-    auto img = ui->labelFraktal->pixmap();
+//    auto img = ui->labelFraktal->pixmap();
 
-    img = img.scaled( (double)img.width() * 1.1, (double)img.height() * 1.1, Qt::AspectRatioMode::KeepAspectRatio,  Qt::TransformationMode::SmoothTransformation);
-    if( ! img.isNull())
-        this->ui->labelFraktal->setPixmap(img);
+//    img = img.scaled( (double)img.width() * 1.1, (double)img.height() * 1.1, Qt::AspectRatioMode::KeepAspectRatio,  Qt::TransformationMode::SmoothTransformation);
+//    if( ! img.isNull())
+//        this->ui->labelFraktal->setPixmap(img);
 }
-//
+
 
 void MainWindow::on_pushButton_scale_minus_clicked()
 {
-    auto img = ui->labelFraktal->pixmap();
+//    auto img = ui->labelFraktal->pixmap();
 
-    img = img.scaled( (double)img.width() * 0.9, (double)img.height() * 0.9, Qt::AspectRatioMode::KeepAspectRatio,  Qt::TransformationMode::SmoothTransformation);
-    if( ! img.isNull())
-        this->ui->labelFraktal->setPixmap(img);
+//    img = img.scaled( (double)img.width() * 0.9, (double)img.height() * 0.9, Qt::AspectRatioMode::KeepAspectRatio,  Qt::TransformationMode::SmoothTransformation);
+//    if( ! img.isNull())
+//        this->ui->labelFraktal->setPixmap(img);
 }
 
 
-void MainWindow::Point::setX(long long newX)
+void MainWindow::ZoomRect::updateRectPos(Point p)
 {
-    X = newX;
+    this->mousePos = p;
+    this->rect.setTopLeft(p.rountToQPoint() - QPoint(rect.width() / 2, rect.height() / 2));
 }
 
-MainWindow::Point::Point()
+
+
+MainWindow::ZoomRect::ZoomRect()
+{
+    is_shown = false;
+    right_mouse_press = false;
+}
+
+void MainWindow::ZoomRect::setMousePressState(bool isPressed)
+{
+    this->right_mouse_press = isPressed;
+}
+
+void MainWindow::ZoomRect::show()
+{
+    is_shown = false;
+}
+
+void MainWindow::ZoomRect::hide()
+{
+    is_shown = true;
+}
+
+void MainWindow::ZoomRect::updateRectSize(size_t winW, size_t winH, long double scale)
+{
+    if(scale >= 1)
+        this->rect.setSize(QSize(winW / scale, winH / scale));
+}
+
+QRect MainWindow::ZoomRect::getRect()
+{
+    return rect;
+}
+
+Point MainWindow::ZoomRect::getMousePos()
+{
+    return mousePos;
+}
+
+bool MainWindow::ZoomRect::isShown()
+{
+    return is_shown;
+}
+
+bool MainWindow::ZoomRect::rightMouseIsPressed()
+{
+    return right_mouse_press;
+}
+
+Point::Point()
 {
     X = 0;
     Y = 0;
 }
 
-MainWindow::Point::Point(long long X, long long Y)
+Point::Point(long long X, long long Y)
     : X(X), Y(Y)
 {
 
 }
 
-long long MainWindow::Point::y() const
+QPoint Point::rountToQPoint()
+{
+    return QPoint(x(), y());
+}
+
+void Point::setX(long long newX)
+{
+    X = newX;
+}
+
+long long Point::y() const
 {
     return Y;
 }
 
-void MainWindow::Point::setY(long long newY)
+void Point::setY(long long newY)
 {
     Y = newY;
 }
 
-long long MainWindow::Point::x() const
+long long Point::x() const
 {
     return X;
 }
 
 
-MainWindow::MousePress::MousePress()
+void ImageSetting::cleanUP()
 {
+    if(painter) {
+        delete painter;
+        painter = nullptr;
+    }
+    if(image) {
+        delete image;
+        image = nullptr;
+    }
 
+    for(int i = 0; i < img_w; i++ )
+        delete[] iterations[i];
+    delete [] iterations;
+    iterations = nullptr;
 }
 
-void MainWindow::MousePress::updateKoords(Point p, size_t x_left_corner, size_t add_y)
-{
-    point = p;
-    koord = Point(p.x() + x_left_corner, p.y() + add_y);
-}
-
-void MainWindow::MousePress::setPressed()
-{
-    isPressed = true;
-}

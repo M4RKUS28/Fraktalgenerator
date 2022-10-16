@@ -33,6 +33,7 @@
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
+#include "Imageview.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -134,7 +135,7 @@ public:
     QScrollArea *scrollArea;
     QWidget *scrollAreaWidgetContents_2;
     QHBoxLayout *horizontalLayout_5;
-    QLabel *labelFraktal;
+    ImageView *imageView;
     QVBoxLayout *verticalLayout_2;
     QFrame *frame_2;
     QVBoxLayout *verticalLayout_4;
@@ -773,22 +774,10 @@ public:
         scrollAreaWidgetContents_2->setGeometry(QRect(0, 0, 676, 593));
         horizontalLayout_5 = new QHBoxLayout(scrollAreaWidgetContents_2);
         horizontalLayout_5->setObjectName(QString::fromUtf8("horizontalLayout_5"));
-        labelFraktal = new QLabel(scrollAreaWidgetContents_2);
-        labelFraktal->setObjectName(QString::fromUtf8("labelFraktal"));
-        QSizePolicy sizePolicy5(QSizePolicy::Expanding, QSizePolicy::Expanding);
-        sizePolicy5.setHorizontalStretch(0);
-        sizePolicy5.setVerticalStretch(0);
-        sizePolicy5.setHeightForWidth(labelFraktal->sizePolicy().hasHeightForWidth());
-        labelFraktal->setSizePolicy(sizePolicy5);
-        labelFraktal->setMaximumSize(QSize(16777215, 16777215));
-        labelFraktal->setMouseTracking(true);
-        labelFraktal->setFocusPolicy(Qt::StrongFocus);
-        labelFraktal->setFrameShape(QFrame::StyledPanel);
-        labelFraktal->setFrameShadow(QFrame::Plain);
-        labelFraktal->setScaledContents(false);
-        labelFraktal->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop);
+        imageView = new ImageView(scrollAreaWidgetContents_2);
+        imageView->setObjectName(QString::fromUtf8("imageView"));
 
-        horizontalLayout_5->addWidget(labelFraktal);
+        horizontalLayout_5->addWidget(imageView);
 
         scrollArea->setWidget(scrollAreaWidgetContents_2);
 
@@ -863,7 +852,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(2);
+        tabWidget->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -975,7 +964,6 @@ public:
         radioButtonMitBeschriftungen->setText(QCoreApplication::translate("MainWindow", "Mit Skalierung", nullptr));
         label_26->setText(QCoreApplication::translate("MainWindow", "Beschriftungen Y:", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab), QCoreApplication::translate("MainWindow", "\342\232\231Settings", nullptr));
-        labelFraktal->setText(QCoreApplication::translate("MainWindow", "Image", nullptr));
         pushButtonStart->setText(QCoreApplication::translate("MainWindow", "Vergr\303\266\303\237ern", nullptr));
         pushButton_2->setText(QCoreApplication::translate("MainWindow", "Zur\303\274ck", nullptr));
         pushButtonSaveImg->setText(QCoreApplication::translate("MainWindow", "Bild Speichern", nullptr));
