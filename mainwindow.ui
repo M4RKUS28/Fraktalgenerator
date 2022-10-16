@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1011</width>
-    <height>827</height>
+    <width>1031</width>
+    <height>983</height>
    </rect>
   </property>
   <property name="font">
@@ -154,13 +154,6 @@
       </item>
      </layout>
     </item>
-    <item row="4" column="1">
-     <widget class="QLabel" name="label_7">
-      <property name="text">
-       <string>Made by Markus --&gt; mit Linksclick zahelnfolge!</string>
-      </property>
-     </widget>
-    </item>
     <item row="0" column="1">
      <widget class="QWidget" name="widget" native="true">
       <property name="minimumSize">
@@ -180,26 +173,41 @@
          </property>
          <property name="minimumSize">
           <size>
-           <width>280</width>
+           <width>285</width>
            <height>425</height>
           </size>
          </property>
+         <property name="tabPosition">
+          <enum>QTabWidget::North</enum>
+         </property>
+         <property name="tabShape">
+          <enum>QTabWidget::Rounded</enum>
+         </property>
          <property name="currentIndex">
-          <number>2</number>
+          <number>1</number>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>16</width>
+           <height>16</height>
+          </size>
+         </property>
+         <property name="elideMode">
+          <enum>Qt::ElideNone</enum>
          </property>
          <widget class="QWidget" name="tab_3">
           <attribute name="title">
            <string>⭐Übersicht</string>
           </attribute>
           <layout class="QFormLayout" name="formLayout_5">
-           <item row="0" column="0" colspan="2">
+           <item row="2" column="0" colspan="2">
             <widget class="Line" name="line_4">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
             </widget>
            </item>
-           <item row="1" column="0" colspan="2">
+           <item row="3" column="0" colspan="2">
             <widget class="QLabel" name="label_23">
              <property name="font">
               <font>
@@ -212,7 +220,7 @@
              </property>
             </widget>
            </item>
-           <item row="2" column="0">
+           <item row="4" column="0">
             <widget class="QLabel" name="label_12">
              <property name="font">
               <font>
@@ -225,14 +233,21 @@
              </property>
             </widget>
            </item>
-           <item row="2" column="1">
+           <item row="4" column="1">
             <widget class="QLabel" name="lineEditScaleAbs">
              <property name="text">
               <string>1:200</string>
              </property>
             </widget>
            </item>
-           <item row="4" column="0" colspan="2">
+           <item row="5" column="0" colspan="2">
+            <widget class="Line" name="line_5">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="0" colspan="2">
             <widget class="QLabel" name="label_8">
              <property name="font">
               <font>
@@ -245,7 +260,7 @@
              </property>
             </widget>
            </item>
-           <item row="5" column="0">
+           <item row="7" column="0">
             <widget class="QLabel" name="label_16">
              <property name="text">
               <string>     Re.:</string>
@@ -255,14 +270,14 @@
              </property>
             </widget>
            </item>
-           <item row="5" column="1">
+           <item row="7" column="1">
             <widget class="QLabel" name="bmRe">
              <property name="text">
               <string>-</string>
              </property>
             </widget>
            </item>
-           <item row="6" column="0">
+           <item row="8" column="0">
             <widget class="QLabel" name="label_17">
              <property name="text">
               <string>     Im.:</string>
@@ -272,14 +287,21 @@
              </property>
             </widget>
            </item>
-           <item row="6" column="1">
+           <item row="8" column="1">
             <widget class="QLabel" name="bmIm">
              <property name="text">
               <string>-</string>
              </property>
             </widget>
            </item>
-           <item row="8" column="0" colspan="2">
+           <item row="9" column="0" colspan="2">
+            <widget class="Line" name="line_6">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="10" column="0" colspan="2">
             <widget class="QLabel" name="label_18">
              <property name="font">
               <font>
@@ -292,7 +314,7 @@
              </property>
             </widget>
            </item>
-           <item row="9" column="0">
+           <item row="11" column="0">
             <widget class="QLabel" name="label_2">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -314,14 +336,14 @@
              </property>
             </widget>
            </item>
-           <item row="9" column="1">
+           <item row="11" column="1">
             <widget class="QLabel" name="re">
              <property name="text">
               <string>-</string>
              </property>
             </widget>
            </item>
-           <item row="10" column="0">
+           <item row="12" column="0">
             <widget class="QLabel" name="label_13">
              <property name="font">
               <font>
@@ -337,14 +359,14 @@
              </property>
             </widget>
            </item>
-           <item row="10" column="1">
+           <item row="12" column="1">
             <widget class="QLabel" name="img">
              <property name="text">
               <string>-</string>
              </property>
             </widget>
            </item>
-           <item row="11" column="0">
+           <item row="13" column="0">
             <widget class="QLabel" name="label_14">
              <property name="font">
               <font>
@@ -357,28 +379,17 @@
              </property>
             </widget>
            </item>
-           <item row="11" column="1">
+           <item row="13" column="1">
             <widget class="QLabel" name="label_iterations">
              <property name="text">
               <string>-</string>
              </property>
             </widget>
            </item>
-           <item row="3" column="0" colspan="2">
-            <widget class="Line" name="line_5">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
+           <item row="20" column="0" colspan="2">
+            <widget class="QListWidget" name="listWidgetHistory"/>
            </item>
-           <item row="7" column="0" colspan="2">
-            <widget class="Line" name="line_6">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="12" column="0" colspan="2">
+           <item row="22" column="0" colspan="2">
             <spacer name="verticalSpacer_2">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -390,6 +401,108 @@
               </size>
              </property>
             </spacer>
+           </item>
+           <item row="15" column="0" colspan="2">
+            <widget class="Line" name="line_10">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="19" column="0" colspan="2">
+            <widget class="QLabel" name="label_28">
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>Verlauf:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="21" column="0" colspan="2">
+            <widget class="QPushButton" name="pushButton_rm_history">
+             <property name="text">
+              <string>Verlauf löschen</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QComboBox" name="comboBox_Fraktal">
+             <item>
+              <property name="text">
+               <string>Mandelbrot-Menge</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Julia-Menge</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="0" column="0" colspan="2">
+            <widget class="Line" name="line_11">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_29">
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>Fraktal:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="16" column="0" colspan="2">
+            <widget class="QLabel" name="label_30">
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>Julia-Menge:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="17" column="0">
+            <widget class="QLabel" name="label_31">
+             <property name="text">
+              <string>     Re(c):</string>
+             </property>
+            </widget>
+           </item>
+           <item row="17" column="1">
+            <widget class="QLabel" name="label_julia_c">
+             <property name="text">
+              <string>TextLabel</string>
+             </property>
+            </widget>
+           </item>
+           <item row="18" column="0">
+            <widget class="QLabel" name="label_32">
+             <property name="text">
+              <string>     Im(c):</string>
+             </property>
+            </widget>
+           </item>
+           <item row="18" column="1">
+            <widget class="QLabel" name="label_julia_c_im">
+             <property name="text">
+              <string>TextLabel</string>
+             </property>
+            </widget>
            </item>
           </layout>
          </widget>
@@ -414,7 +527,7 @@
               </font>
              </property>
              <property name="title">
-              <string>Mandelbrot-Menge</string>
+              <string>Fraktal-Menge</string>
              </property>
              <property name="checkable">
               <bool>true</bool>
@@ -537,8 +650,13 @@
                 <property name="font">
                  <font>
                   <pointsize>10</pointsize>
+                  <italic>false</italic>
                   <bold>true</bold>
+                  <underline>false</underline>
                  </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(0, 0, 255);</string>
                 </property>
                 <property name="text">
                  <string>Farbpalette:</string>
@@ -1022,6 +1140,9 @@
                <bold>true</bold>
               </font>
              </property>
+             <property name="styleSheet">
+              <string notr="true">color: rgb(0, 0, 255);</string>
+             </property>
              <property name="text">
               <string>Iterationen:</string>
              </property>
@@ -1334,15 +1455,15 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>687</width>
-         <height>694</height>
+         <width>702</width>
+         <height>874</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_5">
         <item>
          <widget class="ImageView" name="imageView" native="true">
           <property name="focusPolicy">
-           <enum>Qt::StrongFocus</enum>
+           <enum>Qt::NoFocus</enum>
           </property>
          </widget>
         </item>
@@ -1440,6 +1561,13 @@
       </item>
      </layout>
     </item>
+    <item row="2" column="1">
+     <widget class="QLabel" name="label_7">
+      <property name="text">
+       <string>Made by Markus --&gt; mit Linksclick zahelnfolge!</string>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -1447,7 +1575,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1011</width>
+     <width>1031</width>
      <height>24</height>
     </rect>
    </property>

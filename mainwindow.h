@@ -5,6 +5,7 @@
 #include "workerthread.h"
 
 #include <QLinearGradient>
+#include <QListWidgetItem>
 
 #include "imageview.h"
 #include "math.h"
@@ -39,7 +40,7 @@ private:
 
 struct ImageSetting {
     ImageSetting(long double scale, Point midPoint );
-    void init(size_t img_w, size_t img_h, size_t maxIterations);
+    void init(size_t img_w, size_t img_h, size_t maxIterations, bool isMandelbrotSet);
     void cleanUP();
     void setIterationCountAt(ssize_t x, ssize_t y, size_t iterations);
 
@@ -64,6 +65,10 @@ struct ImageSetting {
 
     QLine xAchse;
     QLine yAchse;
+
+    std::complex<long double> juliaStart;
+    bool isMandelbrotSet;
+    bool isStart = false;
 
 private:
     size_t **iterations;
@@ -157,7 +162,7 @@ public:
 
     void stopThreads();
 
-    void endRefresh();
+    void endRefresh(bool appendToListHistory );
 
     void setOperationMode(OP_MODE o);
 
@@ -229,6 +234,10 @@ private slots:
     void mouse_move_in_img(QPoint pos);
 
     void on_comboBox_currentIndexChanged(int index);
+
+    void on_pushButton_rm_history_clicked();
+
+    void on_listWidgetHistory_itemDoubleClicked(QListWidgetItem *item);
 
 private:
     Ui::MainWindow *ui;

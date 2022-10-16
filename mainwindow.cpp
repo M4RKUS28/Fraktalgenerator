@@ -17,7 +17,6 @@ MainWindow::MainWindow(QWidget *parent)
     , currentImg(START_SCALE, Point(START_POS_X, START_POS_Y)),
       ui(new Ui::MainWindow)
 {
-
     ui->setupUi(this);
     timerID = this->startTimer(20);
     connect(ui->imageView, SIGNAL(mouseMove(QPoint)), this, SLOT(mouse_move_in_img(QPoint)));
@@ -25,8 +24,9 @@ MainWindow::MainWindow(QWidget *parent)
     // init rect:
     zoomRect.updateRectSize(this->ui->spinBoxW->value(), this->ui->spinBoxH->value(), ui->spinBox_zoom->value());
 
-    currentImg.init(this->ui->spinBoxW->value(), this->ui->spinBoxH->value(), ui->spinBoxMaxIterations->value());
+    currentImg.init(this->ui->spinBoxW->value(), this->ui->spinBoxH->value(), ui->spinBoxMaxIterations->value(), true);
     currentImg.painter->fillRect(currentImg.image->rect(), QColor(ui->comboBox_background_color->currentText()));
+
 
     ui->imageView->setImage(*currentImg.image);
     this->startRefresh(currentImg, true);
@@ -70,7 +70,7 @@ void MainWindow::zustandWechseln(QString aktion, QString, QPoint m_pos, QMouseEv
         } else if(aktion == "BUTTON_REFRESH_AND_STOP") {
             qDebug() << this->op_mode;
 
-            if(this->op_mode == OP_MODE::REFRESH) {
+            if(this->op_mode == OP_MODE::REFRESH ) {
                 //Aktualiseren
                 this->startRefresh(currentImg);
 
@@ -169,44 +169,49 @@ void MainWindow::zustandWechseln(QString aktion, QString, QPoint m_pos, QMouseEv
 
 
         } else if(aktion == "ZURÜCK") {
-            if(settingsList.length() > 1) {
-                auto s = settingsList.takeLast();
-                s.cleanUP();
-            }
-            this->currentImg = settingsList.last();
-            if(ui->radioButton_reload_at_back->isChecked())
-                this->startRefresh(settingsList.last());
-            else {
-                this->endRefresh();
-                updateImage();
+            if(settingsList.length() >= 2) {
+                this->currentImg = settingsList.at(settingsList.length() - 2);
+                if(ui->radioButton_reload_at_back->isChecked())
+                    this->startRefresh(currentImg);
+                else {
+                    this->endRefresh(false);
+                    updateImage();
+                }
             }
 
+
         } else if(aktion == "HOME") {
-            while(settingsList.length() > 1) {
-                auto s = settingsList.takeLast();
-                s.cleanUP();
+            if(ui->comboBox_Fraktal->currentIndex() == 0) {
+                if (settingsList.length() >= 1) {
+                    this->currentImg = settingsList.at(0);
+
+                }
+            } else {
+                for( int i = settingsList.length() - 1; i >= 0; i--) {
+                    if(settingsList.at(i).isStart) {
+                        this->currentImg = settingsList.at(i);
+                        break;
+                    }
+                }
             }
-            this->currentImg = settingsList.last();
             if(ui->radioButton_reload_at_back->isChecked())
-                this->startRefresh(settingsList.last());
+                this->startRefresh(currentImg);
             else {
-                this->endRefresh();
+                this->endRefresh(false);
                 updateImage();
             }
         }
-
-
         break;
     case MainWindow::RUNNING:
         if(aktion == "TIMER") {
             if(imgUpdateNeeded)
                 updateImage();
             if(checkForFinished())
-                endRefresh();
+                endRefresh(op_mode != OP_MODE::REFRESH);
 
         } else if(aktion == "BUTTON_REFRESH_AND_STOP") {
             this->stopThreads();
-            this->endRefresh();
+            this->endRefresh(op_mode != OP_MODE::REFRESH);
         }
 
         break;
@@ -216,42 +221,76 @@ void MainWindow::zustandWechseln(QString aktion, QString, QPoint m_pos, QMouseEv
 
 ImageSetting MainWindow::getNewScaledSetting(ImageSetting last_img)
 {
-    //es wird davon ausgegangen, dass diese Funktion dann aufgerufen wird, wenn mousePress gesetzt ist! Wenn nicht, dann sollte lastSetGeladen werden.
-    // entweder zoomfeld gesetzt und davon mitte, egal ob doppelklick oder button, oder reines neu laden button!!
-    double relativeZoom = ui->spinBox_zoom->value();
-    if(ui->spinBox_zoom->value() == 0.0)
-        ui->spinBox_zoom->setValue( (relativeZoom = 1.0) );
-
     // Zoom midposize_t --> new scaling!!!!
     size_t midx =0 ;
     size_t midy =0 ;
     long double nscale = 0;
 
-    if(this->zoomRect.isShown()) {
-        if(relativeZoom > 0) {
-            nscale = last_img.scale * (long double) relativeZoom;
-            midx   = (this->zoomRect.getMousePos().x() + last_img.x_verschiebung) * relativeZoom;
-            midy   = (this->zoomRect.getMousePos().y() + last_img.y_verschiebung) * relativeZoom;
-        } else {
-            nscale  = -last_img.scale / (long double) relativeZoom;
-            midx    = -(this->zoomRect.getMousePos().x() + last_img.x_verschiebung) / relativeZoom;
-            midy    = -(this->zoomRect.getMousePos().y() + last_img.y_verschiebung) / relativeZoom;
-        }
-    } else {
-        nscale = last_img.scale ;
-        midx = last_img.midPoint.x() ;
-        midy = last_img.midPoint.y() ;
-    }
+    // 3 möglichkeiten: wechsel von mandelbrot zu julia --> calc julia an stelle mauspos der mandelbrot menge
+    //  wechsel von julia zu mandelbrot --> starteinstellungen der mandelbrot menge
+    // zoom in fraktal ( mit speicherung der alten julia einstellungen )
 
-    ImageSetting s(nscale, Point(midx, midy));
-    s.init(this->ui->spinBoxW->value(), this->ui->spinBoxH->value(), ui->spinBoxMaxIterations->value());
-    return s;
+    if(last_img.isMandelbrotSet && ui->comboBox_Fraktal->currentIndex() == 1 /*julia*/ ) {
+        long double c_x, c_y;
+        if(this->zoomRect.isShown()) {
+            c_x   = (this->zoomRect.getMousePos().x() + last_img.x_verschiebung) / (long double)last_img.scale;
+            c_y   = (this->zoomRect.getMousePos().y() + last_img.y_verschiebung) / (long double)last_img.scale;
+        } else {
+            c_x = last_img.midPoint.x() / (long double)last_img.scale;
+            c_y = last_img.midPoint.y() / (long double)last_img.scale;
+        }
+
+        qDebug() << "create julia";
+
+        //create new julia-funktion on midbpoint of last mandelbrot-funktion
+        ImageSetting j(START_SCALE, Point(START_POS_X, START_POS_Y));
+        j.init(this->ui->spinBoxW->value(), this->ui->spinBoxH->value(), ui->spinBoxMaxIterations->value(), false /*julia menge!*/ );
+        j.juliaStart = std::complex<long double>(c_x, c_y);
+        j.isStart = true; // save start for hom button
+        return j;
+    } else if( ! last_img.isMandelbrotSet && ui->comboBox_Fraktal->currentIndex() == 0 /*mandelbrot*/) {
+        ImageSetting m(START_SCALE, Point(START_POS_X, START_POS_Y));
+        m.init(ui->spinBoxW->value(), ui->spinBoxH->value(), ui->spinBoxMaxIterations->value(), true);
+        return m;
+    } else {
+
+        //es wird davon ausgegangen, dass diese Funktion dann aufgerufen wird, wenn mousePress gesetzt ist! Wenn nicht, dann sollte lastSetGeladen werden.
+        // entweder zoomfeld gesetzt und davon mitte, egal ob doppelklick oder button, oder reines neu laden button!!
+        double relativeZoom = ui->spinBox_zoom->value();
+        if(ui->spinBox_zoom->value() == 0.0)
+            ui->spinBox_zoom->setValue( (relativeZoom = 1.0) );
+        if(this->zoomRect.isShown()) {
+            if(relativeZoom > 0) {
+                nscale = last_img.scale * (long double) relativeZoom;
+                midx   = (this->zoomRect.getMousePos().x() + last_img.x_verschiebung) * relativeZoom;
+                midy   = (this->zoomRect.getMousePos().y() + last_img.y_verschiebung) * relativeZoom;
+            } else {
+                nscale  = -last_img.scale / (long double) relativeZoom;
+                midx    = -(this->zoomRect.getMousePos().x() + last_img.x_verschiebung) / relativeZoom;
+                midy    = -(this->zoomRect.getMousePos().y() + last_img.y_verschiebung) / relativeZoom;
+            }
+        } else {
+            nscale = last_img.scale ;
+            midx = last_img.midPoint.x() ;
+            midy = last_img.midPoint.y() ;
+        }
+
+        ImageSetting s(nscale, Point(midx, midy));
+        s.init(this->ui->spinBoxW->value(), this->ui->spinBoxH->value(), ui->spinBoxMaxIterations->value(), ui->comboBox_Fraktal->currentIndex() == 0 /*is mandelbrot*/ );
+
+        if(ui->comboBox_Fraktal->currentIndex() == 1)
+            s.juliaStart = last_img.juliaStart;
+        return s;
+    }
 
 }
 
 void MainWindow::updateUiWithImageSetting(ImageSetting imgs)
 {
     // nach zurück oder home -> einstellungen laden
+    this->ui->spinBoxW->setValue(imgs.img_w);
+    this->ui->spinBoxH->setValue(imgs.img_h);
+    this->ui->spinBoxMaxIterations->setValue(imgs.maxIterations);
 
 }
 
@@ -311,7 +350,9 @@ void MainWindow::startRefresh(ImageSetting set, bool appendToList)
                       ui->spinBoxMaxIterations->value(),
                       ui->doubleSpinBoxEscapeR->value(),
                       ((double long)1.0 / set.scale),
-                      this->ui->comboBox_precession->currentIndex() == 0 ? WorkerThread::PRECESSION::DOUBLE : WorkerThread::PRECESSION::LONG_DOUBLE );
+                      this->ui->comboBox_precession->currentIndex() == 0 ? WorkerThread::PRECESSION::DOUBLE : WorkerThread::PRECESSION::LONG_DOUBLE,
+                      currentImg.isMandelbrotSet,
+                      currentImg.juliaStart);
 
         connect(wt, SIGNAL(finishedLine(QList<WorkerThread::Pixel>*)), this, SLOT(finishedLine(QList<WorkerThread::Pixel>*)));
         connect(wt, SIGNAL(finished()), this, SLOT(threadFinished()));
@@ -471,7 +512,7 @@ void MainWindow::setOperationMode(OP_MODE o)
 }
 
 
-void MainWindow::endRefresh()
+void MainWindow::endRefresh(bool appendToListHistory)
 {
     this->state = STATE::STOPED;
     ui->widget->setDisabled(false);
@@ -483,10 +524,32 @@ void MainWindow::endRefresh()
     ui->frameButtons->setEnabled(true);
 
     ui->lineEditScaleAbs->setText("1: " + QString::number((double)currentImg.scale));
+    if(currentImg.isMandelbrotSet) {
+        ui->label_julia_c->setText("-");
+        ui->label_julia_c_im->setText("-");
+    } else {
+        ui->label_julia_c->setText(QString::number( (double)(currentImg.juliaStart.real()) ));
+        ui->label_julia_c_im->setText(QString::number( (double)(currentImg.juliaStart.imag()) ) + " i");
+    }
+
     ui->progressBar->setValue(ui->progressBar->maximum());
     ui->bmRe->setText(QString::number( (double)(((long double) this->currentImg.midPoint.x()) / currentImg.scale) ));
     ui->bmIm->setText(QString::number( (double)(((long double) this->currentImg.midPoint.y()) / currentImg.scale) ) + "i");
     afterColoring(currentImg);
+
+    if(appendToListHistory) {
+        auto i = new QListWidgetItem("Re(" + QString::number( (double)(((long double) this->currentImg.midPoint.x()) / currentImg.scale) ) +
+                                     ") Img(" +  QString::number( (double)(((long double) this->currentImg.midPoint.y()) / currentImg.scale) ) + "i)");
+        i->setIcon(QIcon(QPixmap::fromImage(*this->currentImg.image).scaled(QSize(256, 256), Qt::AspectRatioMode::KeepAspectRatio, Qt::TransformationMode::FastTransformation)));
+        i->setData(187, settingsList.length() - 1);
+
+        ui->listWidgetHistory->addItem(i);
+        ui->listWidgetHistory->setCurrentItem(i);
+    }
+
+    this->updateUiWithImageSetting( currentImg );
+
+
 }
 
 
@@ -605,11 +668,21 @@ void MainWindow::paintEvent(QPaintEvent *)
             QPainter painter(&img);
 
             if(zoomRect.isShown()) {
-                painter.setPen(Qt::black);
-                painter.drawRect(zoomRect.getRect());
-                painter.setPen(Qt::white);
-                //                painter.drawRect(QRect(x_left_corner - 1, y_left_corner - 1, w + 2, h + 2));
-                painter.drawRect(zoomRect.getRect().adjusted(-1, -1, +1, +1));
+                if(!( currentImg.isMandelbrotSet && ui->comboBox_Fraktal->currentIndex() == 1)) {
+                    painter.setPen(Qt::black);
+                    painter.drawRect(zoomRect.getRect());
+                    painter.setPen(Qt::white);
+                    //                painter.drawRect(QRect(x_left_corner - 1, y_left_corner - 1, w + 2, h + 2));
+                    painter.drawRect(zoomRect.getRect().adjusted(-1, -1, +1, +1));
+                } else {
+                    painter.setPen(Qt::black);
+                    painter.drawEllipse(zoomRect.getMousePos().rountToQPoint(), 4, 4);
+                    painter.setPen(Qt::white);
+                    painter.drawEllipse(zoomRect.getMousePos().rountToQPoint(), 5, 5);
+                    painter.drawPoint(zoomRect.getMousePos().rountToQPoint());
+
+                }
+
             }
 
             if(zahlenfolge.isShown()) {
@@ -714,11 +787,13 @@ ImageSetting::ImageSetting(long double scale, Point midPoint)
     qDebug() << midPoint.x() << " | " << midPoint.y();
 }
 
-void ImageSetting::init(size_t img_w, size_t img_h, size_t maxIterations)
+void ImageSetting::init(size_t img_w, size_t img_h, size_t maxIterations, bool isMandelbrotSet)
 {
     this->img_w = img_w;
     this->img_h = img_h;
     this->maxIterations = maxIterations;
+    this->isMandelbrotSet = isMandelbrotSet;
+    isStart = false;
 
     this->image = new QImage(img_w, img_h, QImage::Format_ARGB32_Premultiplied);
     this->painter = new QPainter(this->image);
@@ -1091,4 +1166,37 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
 
 
 
+
+
+void MainWindow::on_pushButton_rm_history_clicked()
+{
+    for(int i = 1; i < settingsList.length() - 1; i++) {
+        auto s = settingsList.takeAt(i);
+        s.cleanUP();
+    }
+    this->currentImg = settingsList.last();
+    if(ui->radioButton_reload_at_back->isChecked())
+        this->startRefresh(settingsList.last());
+    else {
+        this->endRefresh(false);
+        updateImage();
+    }
+    for(int i = 1; i < ui->listWidgetHistory->count() - 1; i++)
+        delete ui->listWidgetHistory->takeItem(i--);
+}
+
+
+void MainWindow::on_listWidgetHistory_itemDoubleClicked(QListWidgetItem *item)
+{
+    int in = item->data(187).toInt();
+    if(in >= 0 && in < settingsList.length()) {
+        this->currentImg = settingsList.at(in);
+        if(ui->radioButton_reload_at_back->isChecked())
+            this->startRefresh(settingsList.at(in));
+        else {
+            this->endRefresh(false);
+            updateImage();
+        }
+    }
+}
 
