@@ -13,7 +13,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
 */
-/*
+
 #include "switch.h"
 
 Animator::Animator(QObject* target, QObject* parent) : QVariantAnimation(parent) {
@@ -118,19 +118,19 @@ void SelectionControl::nextCheckState() {
 void Switch::init() {
     setFont(style.font);
     setObjectName("Switch");
-    / * setup animations * /
+    /* setup animations */
     thumbBrushAnimation = new Animator{ this, this };
     trackBrushAnimation = new Animator{ this, this };
     thumbPosAniamtion = new Animator{ this, this };
     thumbPosAniamtion->setup(style.thumbPosAniamtion.duration, style.thumbPosAniamtion.easing);
     trackBrushAnimation->setup(style.trackBrushAnimation.duration, style.trackBrushAnimation.easing);
     thumbBrushAnimation->setup(style.thumbBrushAnimation.duration, style.thumbBrushAnimation.easing);
-    / * set init values * /
+    /* set init values */
     trackBrushAnimation->setStartValue(colorFromOpacity(style.trackOffBrush, style.trackOffOpacity));
     trackBrushAnimation->setEndValue(colorFromOpacity(style.trackOffBrush, style.trackOffOpacity));
     thumbBrushAnimation->setStartValue(colorFromOpacity(style.thumbOffBrush, style.thumbOffOpacity));
     thumbBrushAnimation->setEndValue(colorFromOpacity(style.thumbOffBrush, style.thumbOffOpacity));
-    / * set standard palettes * /
+    /* set standard palettes */
     auto p = palette();
     p.setColor(QPalette::Active, QPalette::ButtonText, style.textColor);
     p.setColor(QPalette::Disabled, QPalette::ButtonText, style.textColor);
@@ -174,7 +174,7 @@ QSize Switch::sizeHint() const {
 }
 
 void Switch::paintEvent(QPaintEvent*) {
-    /// * for desktop usage we do not need Radial reaction * /
+    ///* for desktop usage we do not need Radial reaction */
 
     QPainter p(this);
 
@@ -188,12 +188,12 @@ void Switch::paintEvent(QPaintEvent*) {
     if (isEnabled()) {
         p.setOpacity(1.0);
         p.setPen(Qt::NoPen);
-        / * draw track * /
+        /* draw track */
         p.setBrush(trackBrushAnimation->currentValue().value<QColor>());
         p.setRenderHint(QPainter::Antialiasing, true);
         p.drawRoundedRect(trackRect, CORNER_RADIUS, CORNER_RADIUS);
         p.setRenderHint(QPainter::Antialiasing, false);
-        / * draw thumb * /
+        /* draw thumb */
         trackRect.setX(trackRect.x() - trackMargin.left() - trackMargin.right() - 2 + thumbPosAniamtion->currentValue().toInt());
         auto thumbRect = trackRect;
 
@@ -206,7 +206,7 @@ void Switch::paintEvent(QPaintEvent*) {
         p.drawEllipse(thumbRect.center(), THUMB_RADIUS - SHADOW_ELEVATION - 1.0, THUMB_RADIUS - SHADOW_ELEVATION - 1.0);
         p.setRenderHint(QPainter::Antialiasing, false);
 
-        / * draw text * /
+        /* draw text */
         if (text().isEmpty())
             return;
 
@@ -238,7 +238,7 @@ void Switch::paintEvent(QPaintEvent*) {
         p.setRenderHint(QPainter::Antialiasing, true);
         p.drawEllipse(thumbRect.center(), THUMB_RADIUS - SHADOW_ELEVATION - 1.0, THUMB_RADIUS - SHADOW_ELEVATION - 1.0);
 
-        / * draw text * /
+        /* draw text */
         if (text().isEmpty())
             return;
 
@@ -285,4 +285,4 @@ void Switch::toggle(Qt::CheckState state) {
         }
     }
 }
-*/
+

@@ -5,103 +5,105 @@
 #include "workerthread.h"
 
 #include <QLinearGradient>
+#include <QListWidgetItem>
 
 #include "imageview.h"
+#include "math.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
 
+#define START_SCALE 120
+#define START_POS_X -80
+#define START_POS_Y 0
+
+struct Point{
+    Point();
+    Point(ssize_t X, ssize_t Y);
+
+public:
+    ssize_t y() const;
+    void setY(ssize_t newY);
+    ssize_t x() const;
+    void setX(ssize_t newX);
+
+    QPoint rountToQPoint();
+
+private:
+    ssize_t X;
+    ssize_t Y;
+
+};
+
+struct ImageSetting {
+    ImageSetting(long double scale, Point midPoint );
+    void init(size_t img_w, size_t img_h, size_t maxIterations, bool isMandelbrotSet);
+    void cleanUP();
+    void setIterationCountAt(ssize_t x, ssize_t y, size_t iterations);
+
+    size_t getIterationCountAt(QPoint pos);
+    size_t getIterationCountAt(ssize_t x, ssize_t y);
+
+    long double PixelToImag(QPoint p);
+    long double PixelToReal(QPoint p);
+
+    QImage * image;
+    QPainter * painter;
+    Point midPoint;
+
+    long double scale;
+    long double logEscape;
+
+    ssize_t x_verschiebung;
+    ssize_t y_verschiebung;
+    ssize_t img_w;
+    ssize_t img_h;
+    ssize_t maxIterations;
+
+    QLine xAchse;
+    QLine yAchse;
+
+    std::complex<long double> juliaStart;
+    bool isMandelbrotSet;
+    bool isStart = false;
+
+private:
+    size_t **iterations;
+};
+
+
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
-    enum STATE {
-        INIT,
-        STOPED,
-        RUNNING
+    struct ZoomRect{
+        ZoomRect();
+        void show();
+        void hide();
+        void updateRectSize(size_t winW, size_t winH, long double scale);
+        void updateRectPos(Point p);
+        void setMousePressState(bool isPressed);
 
-    } state = STATE::INIT;
-public:
-
-    struct Point{
-        Point();
-        Point(long long X, long long Y);
-
-        long long X;
-        long long Y;
+        QRect getRect();
+        Point getMousePos();
+        bool isShown();
+        bool rightMouseIsPressed();
 
 
-    public:
-        long long y() const;
-        void setY(long long newY);
-        long long x() const;
-        void setX(long long newX);
-
-    };
-
-    struct SETTING {
-        SETTING(long double scale, Point midPoint );
-        void init(size_t img_w, size_t img_h, size_t maxIterations);
-        void setIterationCountAt(size_t x, size_t y, size_t iterations);
-        size_t getIterationCountAt(QPoint pos);
-        size_t getIterationCountAt(size_t x, size_t y);
-
-        long double PixelToImag(QPoint p);
-        long double PixelToReal(QPoint p);
-
-
-        QImage * image;
-        QPainter * painter;
-        long double scale;
-        ssize_t x_verschiebung,
-            y_verschiebung,
-            img_w,
-            img_h;
-        Point midPoint;
-        size_t maxIterations;
-
-        QLine xAchse, yAchse;
     private:
-        size_t **iterations;
+        Point mousePos;
+        QRect rect;
+        bool is_shown = false;
+        bool right_mouse_press = false;
 
-        //alle anderen auch!!!!!
     };
-
-    QList<SETTING> settings;
-
-
-    QList<class WorkerThread* > tworkers;
-//    QList<QList<WorkerThread::Pixel>> writequeque;
-
-    long double logEscape,
-                log2;
-
-    struct MousePress{
-        MousePress();
-        void setPressed();
-        void updateKoords(Point p, size_t x_left_corner, size_t add_y);
-        Point point,
-            koord;
-        //for moving / in paintevent
-        bool isPressed = false;
-    } mousePress;
-
-    // timer only update img if there are changes
-    bool imgUpdateNeeded = false;
-
-    enum OP_MODE {
-        ZOOM_TO_SELECTED,
-        REFRESH,
-        APPLY_SETTINGS,
-        APPLY_SETTINGS_AND_ZOOM,
-        RESET
-    } op_mode;
-
 
     struct ZahlenFolge {
-        void setZahlenfolge(Point c_p, SETTING s);
+        void setZahlenfolge(Point c_p, ImageSetting s);
         void removeZahlenfolge();
 
         QList<QPoint> getZahlenfolge();
@@ -111,40 +113,74 @@ public:
         QList<QPoint> zahlenfolge;
         bool show = false;
 
-    } zahlenfolge;
+    };
 
-    ImageView * i;
+    enum OP_MODE {
+        ZOOM_TO_SELECTED,
+        REFRESH,
+        APPLY_SETTINGS,
+        APPLY_SETTINGS_AND_ZOOM,
+        RESET
+    };
+
 
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    // Liste für Zurück-Funktion
+    QList<ImageSetting> settingsList;
+    // Liste mit Threads für Berechnung
+    QList<class WorkerThread* > tworkers;
+    // Für Normalized Iteration Count Berechnung
+    static constexpr long double log2 = 0.69314718055994530941723212145818;//0.30102999566398119521373889472449;
+    // für größenvorschau && speicherung der letzten Mausposition
+    ZoomRect zoomRect;
+    // timer only update img if there are changes
+    bool imgUpdateNeeded = false;
+    // Operation mode -> reload, zoom, applay settings etc.
+    OP_MODE op_mode;
+    // Für anzeige der benötigten Iterationen
+    ZahlenFolge zahlenfolge;
+    //Timer für TimerEvent
+    int timerID;
+    // derzeitiges Bild
+    ImageSetting currentImg;
 
+private:
+    enum STATE {
+        STOPED,
+        RUNNING
+    } state = STATE::STOPED;
 
-    void timerEvent(QTimerEvent *);
+public:
+    ImageSetting getNewScaledSetting(ImageSetting last_img);
 
-    void zustandWechseln(QString aktion, QString wert_s = "", size_t wert_i = 0, QMouseEvent * keyInput = nullptr);
+    void updateUiWithImageSetting(ImageSetting imgs);
 
-    SETTING getNewScaledSetting(SETTING last);
-    long double getNewScale(SETTING lastSet);
+    void startRefresh(ImageSetting set, bool appendToList = false);
 
     void stopThreads();
 
+    void endRefresh(bool appendToListHistory );
+
+    void setOperationMode(OP_MODE o);
+
     void setColor(QPainter *mpainter, size_t iters, std::complex<long double> z_n);
 
-    void startRefresh(SETTING set, bool zoom = false);
-
-    void endRefresh();
-
-    void loadInitImg();
-
-    void updateImage();
+    void timerEvent(QTimerEvent *);
 
     bool checkForFinished();
 
-    void afterColoring(SETTING set);
+    void afterColoring(ImageSetting set);
 
-    void setOperationMode(OP_MODE o);
+
+    void zustandWechseln(QString aktion, QString wert_s = "", QPoint p = QPoint(), QMouseEvent * keyInput = nullptr);
+
+    void updateImage();
+
+
+
 
 
 
@@ -173,8 +209,6 @@ private slots:
 
     void on_radioButton_toggled(bool checked);
 
-    void on_spinBox_zoom_valueChanged(int arg1);
-
     void on_spinBoxW_valueChanged(int arg1);
 
     void on_spinBoxH_valueChanged(int arg1);
@@ -194,6 +228,16 @@ private slots:
     void on_pushButton_scale_plus_clicked();
 
     void on_pushButton_scale_minus_clicked();
+
+    void on_spinBox_zoom_valueChanged(double arg1);
+
+    void mouse_move_in_img(QPoint pos);
+
+    void on_comboBox_currentIndexChanged(int index);
+
+    void on_pushButton_rm_history_clicked();
+
+    void on_listWidgetHistory_itemDoubleClicked(QListWidgetItem *item);
 
 private:
     Ui::MainWindow *ui;

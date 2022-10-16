@@ -15,7 +15,8 @@ WorkerThread::~WorkerThread()
 }
 #include <limits>
 
-void WorkerThread::startCalc(ssize_t x_left_corner, ssize_t x_right_corner, ssize_t test, ssize_t y_left_corner, ssize_t y_right_corner, ssize_t iters, long double escape_radius, long double zoom, PRECESSION p)
+void WorkerThread::startCalc(ssize_t x_left_corner, ssize_t x_right_corner, ssize_t test, ssize_t y_left_corner, ssize_t y_right_corner,
+                             ssize_t iters, long double escape_radius, long double zoom, PRECESSION p, bool mandelbrot, std::complex<long double> startJulia)
 {
 
     if (this->isRunning())
@@ -32,6 +33,8 @@ void WorkerThread::startCalc(ssize_t x_left_corner, ssize_t x_right_corner, ssiz
     this->iters = iters;
     this->escape_radius = escape_radius;
     this->precession = p;
+    this->isMandelbrot = mandelbrot;
+    this->startJulia = startJulia;
 
     this->start();
 }
@@ -39,12 +42,7 @@ void WorkerThread::startCalc(ssize_t x_left_corner, ssize_t x_right_corner, ssiz
 
 void WorkerThread::run()
 {
-    // qDebug() << "  x -> [" << x_left_corner << "\t; " << x_right_corner << "\t] y: [" << y_left_corner << "; " << y_right_corner << "]";
-    try {
-        std::cout << "x" << x_right_corner << " zoom: " << zoom << "  x:" << ((long double)x_right_corner * zoom) << "   " << (- (long double)y_right_corner * zoom) << " low" << std::numeric_limits<double>::lowest() << std::endl;;
-    } catch (std::error_condition e) {
-        qDebug() << e.message().c_str();
-    }
+    qDebug() << "  x -> [" << x_left_corner << "\t; " << x_right_corner << "\t] y: [" << y_left_corner << "; " << y_right_corner << "]";
 
     switch ( this->precession ) {
     case WorkerThread::DOUBLE:
@@ -52,11 +50,17 @@ void WorkerThread::run()
             QList<Pixel> *line = new QList<Pixel>;
 
             for(ssize_t y = y_left_corner; y < y_right_corner; y++) {
-                std::complex<double> c(x * zoom, - y * zoom);
-                std::complex<double> z = 0;
+                std::complex<double> z, c;
+                if(isMandelbrot /*mandelbrot-menge*/) {
+                    z = 0;
+                    c = std::complex<double>((double)x * zoom, - (double)y * zoom);
 
+                } else { // julia Menge
+                    z = std::complex<double>((double)x * zoom, - (double)y * zoom);
+                    c = startJulia;
+                }
                 ssize_t i;
-                for( i = 0; i < iters && std::abs( (z = z*z + c) ) < escape_radius; i++) {}
+                for( i = 1; i < iters && std::abs( (z = z*z + c) ) < escape_radius; i++) {}
 
                 if( i == iters ) {
                     line->append(Pixel(x, y, 0, z));
@@ -73,10 +77,18 @@ void WorkerThread::run()
             QList<Pixel> *line = new QList<Pixel>;
 
             for(ssize_t y = y_left_corner; y < y_right_corner; y++) {
-                std::complex<long double> c(x * zoom, - y * zoom);
-                std::complex<long double> z = 0;
+                std::complex<long double> z, c;
+                if(isMandelbrot /*mandelbrot-menge*/) {
+                    z = 0;
+                    c = std::complex<long double>((long double)x * zoom, - (long double)y * zoom);
+
+                } else { // julia Menge
+                    z = std::complex<long double>((long double)x * zoom, - (long double)y * zoom);
+                    c = startJulia;
+                }
+
                 ssize_t i;
-                for( i = 0; i < iters && std::abs( (z = z*z + c) ) < escape_radius; i++) {
+                for( i = 1; i < iters && std::abs( (z = z*z + c) ) < escape_radius; i++) {
 
                 }
                 if( i == iters ) {

@@ -17,7 +17,7 @@
 #ifndef SWITCH_H
 #define SWITCH_H
 
-/*
+
 #include <QtWidgets>
 #include "style.h"
 
@@ -109,5 +109,5 @@ class Switch final : public SelectionControl {
     QPointer<Animator> trackBrushAnimation;
     QPointer<Animator> thumbPosAniamtion;
 };
-*/
+
 #endif // SWITCH_H

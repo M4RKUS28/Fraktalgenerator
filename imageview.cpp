@@ -1,32 +1,68 @@
 #include "imageview.h"
 
+#include <QMouseEvent>
 #include <QPainter>
 
 ImageView::ImageView(QWidget *parent)
     : QWidget(parent)
 {
-
+    // auto
+    hdpi_multiplicator = (double)this->devicePixelRatio();
+    hdpi_scale = 1.0 / hdpi_multiplicator;
 }
 
-void ImageView::setImg(QImage i)
-{
-    this->img = i;
-    this->setFixedSize(i.size());
-    this->update();
-
-}
 
 ImageView::~ImageView()
 {
 
 }
 
-void ImageView::paintEvent(QPaintEvent *event)
+void ImageView::setImage(QImage img)
+{
+    this->img = img;
+    this->setFixedSize(img.size() * hdpi_scale);
+    this->update();
+}
+
+void ImageView::setHdpiScale(double multiplikator)
+{
+    hdpi_multiplicator = multiplikator;
+    hdpi_scale = 1.0 / hdpi_multiplicator;
+}
+
+double ImageView::getHdpi_scale() const
+{
+    return hdpi_scale;
+}
+
+double ImageView::getHdpi_multiplicator() const
+{
+    return hdpi_multiplicator;
+}
+
+
+void ImageView::paintEvent(QPaintEvent *)
 {
     auto p = QPainter(this);
-    qreal inverseDPR = 1.0 / this->devicePixelRatio();
-    p.scale(inverseDPR, inverseDPR);
+    // wegen hdpi bildschirmen -> hoch auflösendere Bilder!
+    p.scale(hdpi_scale, hdpi_scale);
+
+    // zeichne Bild
     p.drawImage(0,0,img);
-
-
 }
+
+void ImageView::mouseMoveEvent(QMouseEvent *event)
+{
+    emit mouseMove(event->pos() * hdpi_multiplicator);
+}
+
+
+//void ImageView::mousePressEvent(QMouseEvent *event)
+//{
+//    qDebug() << "press";
+//}
+
+//void ImageView::mouseReleaseEvent(QMouseEvent *event)
+//{
+//    qDebug() << "ress";
+//}
