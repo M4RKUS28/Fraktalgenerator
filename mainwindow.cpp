@@ -956,17 +956,23 @@ void MainWindow::ZahlenFolge::setZahlenfolge(Point c_p, ImageSetting s)
     if(this->isShown())
         this->removeZahlenfolge();
 
-    std::complex<long double> z = std::complex<long double> (0, 0);
-    std::complex<long double> c = std::complex<long double>( ((long double)c_p.x() + s.x_verschiebung) / s.scale, - ((long double)c_p.y() + s.y_verschiebung) / s.scale );
 
-    for(long double i = 0; i < s.maxIterations; i++) {
+    std::complex<double> z, c;
+    if ( s.isMandelbrotSet ) {
+        z = std::complex<long double> (0, 0);
+        c = std::complex<long double>( ((long double)c_p.x() + s.x_verschiebung) / s.scale, - ((long double)c_p.y() + s.y_verschiebung) / s.scale );
+    } else {
+        z = std::complex<long double>( ((long double)c_p.x() + s.x_verschiebung) / s.scale, - ((long double)c_p.y() + s.y_verschiebung) / s.scale );
+        c = s.juliaStart;
+    }
+
+
+    for(long long i = 0; i < s.maxIterations; i++) {
         z = z*z + c;
         if(!std::isfinite(z.real()) || !std::isfinite(z.imag()))
             break;
-//        qDebug() << "z:" << (double)z.real() << " + " << (double)z.imag() << "i" << " start: " << (double)c.real() << " + " << (double)c.imag() << "i" ;
         this->zahlenfolge.push_back( QPoint(((z.real() * s.scale)  - s.x_verschiebung) , ( (z.imag() * s.scale) - s.y_verschiebung) ));
     }
-//    qDebug() << "this->zahlenfolge:" << this->zahlenfolge ;
 
     this->show = true;
 }

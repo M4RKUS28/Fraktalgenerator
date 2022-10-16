@@ -169,7 +169,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(1031, 983);
+        MainWindow->resize(1119, 737);
         QFont font;
         font.setPointSize(10);
         MainWindow->setFont(font);
@@ -675,7 +675,7 @@ public:
         sizePolicy3.setHeightForWidth(spinBoxW->sizePolicy().hasHeightForWidth());
         spinBoxW->setSizePolicy(sizePolicy3);
         spinBoxW->setMaximum(9999);
-        spinBoxW->setValue(1200);
+        spinBoxW->setValue(900);
 
         horizontalLayout->addWidget(spinBoxW);
 
@@ -878,7 +878,7 @@ public:
         scrollArea->setWidgetResizable(true);
         scrollAreaWidgetContents_2 = new QWidget();
         scrollAreaWidgetContents_2->setObjectName(QString::fromUtf8("scrollAreaWidgetContents_2"));
-        scrollAreaWidgetContents_2->setGeometry(QRect(0, 0, 702, 874));
+        scrollAreaWidgetContents_2->setGeometry(QRect(0, 0, 790, 628));
         horizontalLayout_5 = new QHBoxLayout(scrollAreaWidgetContents_2);
         horizontalLayout_5->setObjectName(QString::fromUtf8("horizontalLayout_5"));
         imageView = new ImageView(scrollAreaWidgetContents_2);
@@ -953,7 +953,7 @@ public:
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 1031, 24));
+        menubar->setGeometry(QRect(0, 0, 1119, 24));
         menuSettings = new QMenu(menubar);
         menuSettings->setObjectName(QString::fromUtf8("menuSettings"));
         MainWindow->setMenuBar(menubar);
@@ -1004,7 +1004,7 @@ public:
         label_32->setText(QCoreApplication::translate("MainWindow", "     Im(c):", nullptr));
         label_julia_c_im->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_3), QCoreApplication::translate("MainWindow", "\342\255\220\303\234bersicht", nullptr));
-        groupBoxMandelFarbe->setTitle(QCoreApplication::translate("MainWindow", "Mandelbrot-Menge", nullptr));
+        groupBoxMandelFarbe->setTitle(QCoreApplication::translate("MainWindow", "Fraktal-Menge", nullptr));
         comboBoxMandelColor->setItemText(0, QCoreApplication::translate("MainWindow", "black", nullptr));
         comboBoxMandelColor->setItemText(1, QCoreApplication::translate("MainWindow", "white", nullptr));
         comboBoxMandelColor->setItemText(2, QCoreApplication::translate("MainWindow", "cyan", nullptr));

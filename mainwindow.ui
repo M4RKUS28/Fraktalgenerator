@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1031</width>
-    <height>983</height>
+    <width>1119</width>
+    <height>737</height>
    </rect>
   </property>
   <property name="font">
@@ -184,7 +184,7 @@
           <enum>QTabWidget::Rounded</enum>
          </property>
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <property name="iconSize">
           <size>
@@ -1094,7 +1094,7 @@
                 <number>9999</number>
                </property>
                <property name="value">
-                <number>1200</number>
+                <number>900</number>
                </property>
               </widget>
              </item>
@@ -1455,8 +1455,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>702</width>
-         <height>874</height>
+         <width>790</width>
+         <height>628</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_5">
@@ -1575,7 +1575,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1031</width>
+     <width>1119</width>
      <height>24</height>
     </rect>
    </property>
