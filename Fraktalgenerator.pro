@@ -12,14 +12,11 @@ SOURCES += \
     imageview.cpp \
     main.cpp \
     mainwindow.cpp \
-    switch.cpp \
     workerthread.cpp
 
 HEADERS += \
     imageview.h \
     mainwindow.h \
-    style.h \
-    switch.h \
     workerthread.h
 
 FORMS += \

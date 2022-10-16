@@ -17,7 +17,7 @@
 
 #ifndef STYLE_H
 #define STYLE_H
-/*
+
 #include <QtCore/qeasingcurve.h>
 
 #include <QImage>
@@ -129,6 +129,6 @@ namespace Style {
 
 } // namespace Style
 
-*/
+
 
 #endif // STYLE_H

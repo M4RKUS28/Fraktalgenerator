@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1000</width>
-    <height>726</height>
+    <width>1011</width>
+    <height>827</height>
    </rect>
   </property>
   <property name="font">
@@ -185,7 +185,7 @@
           </size>
          </property>
          <property name="currentIndex">
-          <number>1</number>
+          <number>2</number>
          </property>
          <widget class="QWidget" name="tab_3">
           <attribute name="title">
@@ -1089,6 +1089,19 @@
              </property>
             </widget>
            </item>
+           <item row="6" column="0" colspan="2">
+            <widget class="QRadioButton" name="radioButtonMitBeschriftungen">
+             <property name="text">
+              <string>Mit Skalierung</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+             <property name="autoExclusive">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
            <item row="7" column="0">
             <widget class="QLabel" name="label_25">
              <property name="text">
@@ -1100,6 +1113,20 @@
             <widget class="QSpinBox" name="spinBoxBeschriftungen">
              <property name="value">
               <number>16</number>
+             </property>
+            </widget>
+           </item>
+           <item row="8" column="0">
+            <widget class="QLabel" name="label_26">
+             <property name="text">
+              <string>Beschriftungen Y:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="8" column="1">
+            <widget class="QSpinBox" name="spinBoxBeschriftungenY">
+             <property name="value">
+              <number>10</number>
              </property>
             </widget>
            </item>
@@ -1233,7 +1260,7 @@
              </item>
             </widget>
            </item>
-           <item row="16" column="0" colspan="2">
+           <item row="17" column="0" colspan="2">
             <spacer name="verticalSpacer">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -1246,30 +1273,16 @@
              </property>
             </spacer>
            </item>
-           <item row="6" column="0" colspan="2">
-            <widget class="QRadioButton" name="radioButtonMitBeschriftungen">
+           <item row="16" column="0" colspan="2">
+            <widget class="QRadioButton" name="radioButtonHDPI">
              <property name="text">
-              <string>Mit Skalierung</string>
+              <string>HDPI Scaling</string>
              </property>
              <property name="checked">
               <bool>true</bool>
              </property>
              <property name="autoExclusive">
               <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="8" column="0">
-            <widget class="QLabel" name="label_26">
-             <property name="text">
-              <string>Beschriftungen Y:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="8" column="1">
-            <widget class="QSpinBox" name="spinBoxBeschriftungenY">
-             <property name="value">
-              <number>10</number>
              </property>
             </widget>
            </item>
@@ -1293,13 +1306,17 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>676</width>
-         <height>593</height>
+         <width>687</width>
+         <height>694</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_5">
         <item>
-         <widget class="ImageView" name="imageView" native="true"/>
+         <widget class="ImageView" name="imageView" native="true">
+          <property name="focusPolicy">
+           <enum>Qt::StrongFocus</enum>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -1402,7 +1419,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1000</width>
+     <width>1011</width>
      <height>24</height>
     </rect>
    </property>

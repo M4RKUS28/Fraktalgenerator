@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->setupUi(this);
     timerID = this->startTimer(20);
+    connect(ui->imageView, SIGNAL(mouseMove(QPoint)), this, SLOT(mouse_move_in_img(QPoint)));
 
     // init rect:
     zoomRect.updateRectSize(this->ui->spinBoxW->value(), this->ui->spinBoxH->value(), ui->spinBox_zoom->value());
@@ -56,7 +57,7 @@ void MainWindow::timerEvent(QTimerEvent *)
 }
 
 
-void MainWindow::zustandWechseln(QString aktion, QString, size_t, QMouseEvent *m_event)
+void MainWindow::zustandWechseln(QString aktion, QString, QPoint m_pos, QMouseEvent *m_event)
 {
     if(aktion != "TIMER" && aktion != "mouseMoveEvent")
         qDebug() << "zustandWechseln "<< aktion;
@@ -97,12 +98,11 @@ void MainWindow::zustandWechseln(QString aktion, QString, size_t, QMouseEvent *m
                 this->update();
             }
 
-        } else if(aktion == "mouseMoveEvent" && m_event) {
-
-            auto qpos = this->ui->imageView->mapFrom(this, m_event->pos());
+        } else if(aktion == "mouseMoveEvent") {
+            auto qpos = m_pos; // this->ui->imageView->mapFrom(this, m_pos);
             auto pos = Point(qpos.x(), qpos.y());
+//            qDebug() << qpos;
 
-            qDebug() << qpos;
             if(pos.x() >= 0 && pos.x() < currentImg.img_w && pos.y() >= 0 && pos.y() < currentImg.img_h) {
                 this->zoomRect.updateRectPos( pos );
 
@@ -572,22 +572,27 @@ void MainWindow::on_pushButtonSaveImg_clicked()
 
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
-    zustandWechseln("mousePressEvent", "", 0, event);
+    zustandWechseln("mousePressEvent", "", QPoint(), event);
 }
 
 void MainWindow::mouseDoubleClickEvent(QMouseEvent *event)
 {
-    zustandWechseln("DOPPELKLICK_IN_BILD", "", 0, event);
+    zustandWechseln("DOPPELKLICK_IN_BILD", "", QPoint(), event);
 }
 
 void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 {
-    zustandWechseln("mouseReleaseEvent", "", 0, event);
+    zustandWechseln("mouseReleaseEvent", "", QPoint(), event);
 }
 
 void MainWindow::mouseMoveEvent(QMouseEvent *event)
 {
-    zustandWechseln("mouseMoveEvent", "", 0, event);
+//    zustandWechseln("mouseMoveEvent", "", QPoint(), event);
+}
+
+void MainWindow::mouse_move_in_img(QPoint pos)
+{
+    zustandWechseln("mouseMoveEvent", "", pos);
 }
 
 void MainWindow::paintEvent(QPaintEvent *)
@@ -605,7 +610,6 @@ void MainWindow::paintEvent(QPaintEvent *)
                 painter.setPen(Qt::white);
                 //                painter.drawRect(QRect(x_left_corner - 1, y_left_corner - 1, w + 2, h + 2));
                 painter.drawRect(zoomRect.getRect().adjusted(-1, -1, +2, +2));
-                qDebug() << "DRAW RECT";
             }
 
             if(zahlenfolge.isShown()) {
@@ -1049,5 +1053,12 @@ void MainWindow::on_spinBox_zoom_valueChanged(double arg1)
     zoomRect.updateRectSize(this->ui->spinBoxW->value(), this->ui->spinBoxH->value(), ui->spinBox_zoom->value());
     this->setOperationMode(OP_MODE::APPLY_SETTINGS);
     this->updateImage();
+}
+
+
+
+void MainWindow::on_radioButtonHDPI_toggled(bool checked)
+{
+    ui->imageView->setHdpiScaleEnabled(checked);
 }
 

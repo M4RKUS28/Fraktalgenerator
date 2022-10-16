@@ -116,8 +116,11 @@ public:
     QDoubleSpinBox *spinBox_zoom;
     QFrame *line_3;
     QRadioButton *radioButtonKoords;
+    QRadioButton *radioButtonMitBeschriftungen;
     QLabel *label_25;
     QSpinBox *spinBoxBeschriftungen;
+    QLabel *label_26;
+    QSpinBox *spinBoxBeschriftungenY;
     QFrame *line_9;
     QRadioButton *radioButton_zahelnfolge_bei_mousemove;
     QRadioButton *radioButton_reload_at_back;
@@ -129,9 +132,7 @@ public:
     QLabel *label_10;
     QComboBox *comboBox_precession;
     QSpacerItem *verticalSpacer;
-    QRadioButton *radioButtonMitBeschriftungen;
-    QLabel *label_26;
-    QSpinBox *spinBoxBeschriftungenY;
+    QRadioButton *radioButtonHDPI;
     QScrollArea *scrollArea;
     QWidget *scrollAreaWidgetContents_2;
     QHBoxLayout *horizontalLayout_5;
@@ -154,7 +155,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(1000, 726);
+        MainWindow->resize(1011, 827);
         QFont font;
         font.setPointSize(10);
         MainWindow->setFont(font);
@@ -651,6 +652,13 @@ public:
 
         formLayout_2->setWidget(5, QFormLayout::SpanningRole, radioButtonKoords);
 
+        radioButtonMitBeschriftungen = new QRadioButton(tab);
+        radioButtonMitBeschriftungen->setObjectName(QString::fromUtf8("radioButtonMitBeschriftungen"));
+        radioButtonMitBeschriftungen->setChecked(true);
+        radioButtonMitBeschriftungen->setAutoExclusive(false);
+
+        formLayout_2->setWidget(6, QFormLayout::SpanningRole, radioButtonMitBeschriftungen);
+
         label_25 = new QLabel(tab);
         label_25->setObjectName(QString::fromUtf8("label_25"));
 
@@ -661,6 +669,17 @@ public:
         spinBoxBeschriftungen->setValue(16);
 
         formLayout_2->setWidget(7, QFormLayout::FieldRole, spinBoxBeschriftungen);
+
+        label_26 = new QLabel(tab);
+        label_26->setObjectName(QString::fromUtf8("label_26"));
+
+        formLayout_2->setWidget(8, QFormLayout::LabelRole, label_26);
+
+        spinBoxBeschriftungenY = new QSpinBox(tab);
+        spinBoxBeschriftungenY->setObjectName(QString::fromUtf8("spinBoxBeschriftungenY"));
+        spinBoxBeschriftungenY->setValue(10);
+
+        formLayout_2->setWidget(8, QFormLayout::FieldRole, spinBoxBeschriftungenY);
 
         line_9 = new QFrame(tab);
         line_9->setObjectName(QString::fromUtf8("line_9"));
@@ -739,25 +758,14 @@ public:
 
         verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
-        formLayout_2->setItem(16, QFormLayout::SpanningRole, verticalSpacer);
+        formLayout_2->setItem(17, QFormLayout::SpanningRole, verticalSpacer);
 
-        radioButtonMitBeschriftungen = new QRadioButton(tab);
-        radioButtonMitBeschriftungen->setObjectName(QString::fromUtf8("radioButtonMitBeschriftungen"));
-        radioButtonMitBeschriftungen->setChecked(true);
-        radioButtonMitBeschriftungen->setAutoExclusive(false);
+        radioButtonHDPI = new QRadioButton(tab);
+        radioButtonHDPI->setObjectName(QString::fromUtf8("radioButtonHDPI"));
+        radioButtonHDPI->setChecked(true);
+        radioButtonHDPI->setAutoExclusive(false);
 
-        formLayout_2->setWidget(6, QFormLayout::SpanningRole, radioButtonMitBeschriftungen);
-
-        label_26 = new QLabel(tab);
-        label_26->setObjectName(QString::fromUtf8("label_26"));
-
-        formLayout_2->setWidget(8, QFormLayout::LabelRole, label_26);
-
-        spinBoxBeschriftungenY = new QSpinBox(tab);
-        spinBoxBeschriftungenY->setObjectName(QString::fromUtf8("spinBoxBeschriftungenY"));
-        spinBoxBeschriftungenY->setValue(10);
-
-        formLayout_2->setWidget(8, QFormLayout::FieldRole, spinBoxBeschriftungenY);
+        formLayout_2->setWidget(16, QFormLayout::SpanningRole, radioButtonHDPI);
 
         tabWidget->addTab(tab, QString());
 
@@ -772,11 +780,12 @@ public:
         scrollArea->setWidgetResizable(true);
         scrollAreaWidgetContents_2 = new QWidget();
         scrollAreaWidgetContents_2->setObjectName(QString::fromUtf8("scrollAreaWidgetContents_2"));
-        scrollAreaWidgetContents_2->setGeometry(QRect(0, 0, 676, 593));
+        scrollAreaWidgetContents_2->setGeometry(QRect(0, 0, 687, 694));
         horizontalLayout_5 = new QHBoxLayout(scrollAreaWidgetContents_2);
         horizontalLayout_5->setObjectName(QString::fromUtf8("horizontalLayout_5"));
         imageView = new ImageView(scrollAreaWidgetContents_2);
         imageView->setObjectName(QString::fromUtf8("imageView"));
+        imageView->setFocusPolicy(Qt::StrongFocus);
 
         horizontalLayout_5->addWidget(imageView);
 
@@ -841,7 +850,7 @@ public:
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 1000, 24));
+        menubar->setGeometry(QRect(0, 0, 1011, 24));
         menuSettings = new QMenu(menubar);
         menuSettings->setObjectName(QString::fromUtf8("menuSettings"));
         MainWindow->setMenuBar(menubar);
@@ -853,7 +862,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(1);
+        tabWidget->setCurrentIndex(2);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -954,7 +963,9 @@ public:
         label_4->setText(QCoreApplication::translate("MainWindow", "Zoomfaktor:", nullptr));
         spinBox_zoom->setPrefix(QCoreApplication::translate("MainWindow", " x ", nullptr));
         radioButtonKoords->setText(QCoreApplication::translate("MainWindow", "Koordinatensystem anzeigen", nullptr));
+        radioButtonMitBeschriftungen->setText(QCoreApplication::translate("MainWindow", "Mit Skalierung", nullptr));
         label_25->setText(QCoreApplication::translate("MainWindow", "Beschriftungen X:", nullptr));
+        label_26->setText(QCoreApplication::translate("MainWindow", "Beschriftungen Y:", nullptr));
         radioButton_zahelnfolge_bei_mousemove->setText(QCoreApplication::translate("MainWindow", "Zahlenfolge bei Bausbewegung", nullptr));
         radioButton_reload_at_back->setText(QCoreApplication::translate("MainWindow", "Lade Bilder bei Zur\303\274ck neu", nullptr));
         label_5->setText(QCoreApplication::translate("MainWindow", "Threads:", nullptr));
@@ -963,8 +974,7 @@ public:
         comboBox_precession->setItemText(0, QCoreApplication::translate("MainWindow", "double<8 Bit>", nullptr));
         comboBox_precession->setItemText(1, QCoreApplication::translate("MainWindow", "double<16 Bit>", nullptr));
 
-        radioButtonMitBeschriftungen->setText(QCoreApplication::translate("MainWindow", "Mit Skalierung", nullptr));
-        label_26->setText(QCoreApplication::translate("MainWindow", "Beschriftungen Y:", nullptr));
+        radioButtonHDPI->setText(QCoreApplication::translate("MainWindow", "HDPI Scaling", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab), QCoreApplication::translate("MainWindow", "\342\232\231Settings", nullptr));
         pushButtonStart->setText(QCoreApplication::translate("MainWindow", "Vergr\303\266\303\237ern", nullptr));
         pushButton_2->setText(QCoreApplication::translate("MainWindow", "Zur\303\274ck", nullptr));

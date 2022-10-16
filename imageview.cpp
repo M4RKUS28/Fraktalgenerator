@@ -6,7 +6,8 @@
 ImageView::ImageView(QWidget *parent)
     : QWidget(parent)
 {
-
+    hdpi_scale = 1.0 / (double)this->devicePixelRatio();
+    use_hdpi = true;
 }
 
 ImageView::~ImageView()
@@ -21,18 +22,23 @@ void ImageView::setImage(QImage img)
     this->update();
 }
 
+void ImageView::setHdpiScaleEnabled(bool status)
+{
+    use_hdpi = status;
+}
+
 void ImageView::paintEvent(QPaintEvent *)
 {
     auto p = QPainter(this);
     // wegen hdpi bildschirmen -> hoch auflösendere Bilder!
-        qreal inverseDPR = 1.0 / this->devicePixelRatio();
-        p.scale(inverseDPR, inverseDPR);
+    if(use_hdpi)
+        p.scale(hdpi_scale, hdpi_scale);
     // zeichne Bild
     p.drawImage(0,0,img);
 }
 
 void ImageView::mouseMoveEvent(QMouseEvent *event)
 {
-    qDebug() << event;
+    emit mouseMove(event->pos());
 }
 

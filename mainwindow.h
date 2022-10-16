@@ -170,7 +170,7 @@ public:
     void afterColoring(ImageSetting set);
 
 
-    void zustandWechseln(QString aktion, QString wert_s = "", size_t wert_i = 0, QMouseEvent * keyInput = nullptr);
+    void zustandWechseln(QString aktion, QString wert_s = "", QPoint p = QPoint(), QMouseEvent * keyInput = nullptr);
 
     void updateImage();
 
@@ -225,6 +225,10 @@ private slots:
     void on_pushButton_scale_minus_clicked();
 
     void on_spinBox_zoom_valueChanged(double arg1);
+
+    void mouse_move_in_img(QPoint pos);
+
+    void on_radioButtonHDPI_toggled(bool checked);
 
 private:
     Ui::MainWindow *ui;
