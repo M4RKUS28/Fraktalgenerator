@@ -21,6 +21,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     timerID = this->startTimer(20);
 
+    // init rect:
+    zoomRect.updateRectSize(this->ui->spinBoxW->value(), this->ui->spinBoxH->value(), ui->spinBox_zoom->value());
+
     currentImg.init(this->ui->spinBoxW->value(), this->ui->spinBoxH->value(), ui->spinBoxMaxIterations->value());
     currentImg.painter->fillRect(currentImg.image->rect(), QColor(ui->comboBox_background_color->currentText()));
 
@@ -132,7 +135,11 @@ void MainWindow::zustandWechseln(QString aktion, QString, size_t, QMouseEvent *m
             if(pos.x() >= 0 && pos.x() < currentImg.img_w && pos.y() >= 0 && pos.y() < currentImg.img_h) {
                 if(m_event->button() == Qt::LeftButton) {
                     zoomRect.setMousePressState(true);
+                    zoomRect.show();
+
                     this->zoomRect.updateRectPos(pos);
+                    this->updateImage();
+
                     this->setOperationMode(OP_MODE::ZOOM_TO_SELECTED);
 
                     ui->label_iterations->setText(QString::number(currentImg.getIterationCountAt(qpos)));
@@ -146,10 +153,11 @@ void MainWindow::zustandWechseln(QString aktion, QString, size_t, QMouseEvent *m
                     this->zahlenfolge.setZahlenfolge(pos, currentImg);
                 }
 
-                this->update();
+                this->updateImage();
             } else {
                 this->setOperationMode(OP_MODE::REFRESH);
                 zoomRect.setMousePressState(false);
+                zoomRect.hide();
 
                 ui->re->setText("-");
                 ui->img->setText("-");
@@ -165,6 +173,7 @@ void MainWindow::zustandWechseln(QString aktion, QString, size_t, QMouseEvent *m
                 auto s = settingsList.takeLast();
                 s.cleanUP();
             }
+            this->currentImg = settingsList.last();
             if(ui->radioButton_reload_at_back->isChecked())
                 this->startRefresh(settingsList.last());
             else {
@@ -177,6 +186,7 @@ void MainWindow::zustandWechseln(QString aktion, QString, size_t, QMouseEvent *m
                 auto s = settingsList.takeLast();
                 s.cleanUP();
             }
+            this->currentImg = settingsList.last();
             if(ui->radioButton_reload_at_back->isChecked())
                 this->startRefresh(settingsList.last());
             else {
@@ -228,6 +238,7 @@ ImageSetting MainWindow::getNewScaledSetting(ImageSetting last_img)
             midy    = -(this->zoomRect.getMousePos().y() + last_img.y_verschiebung) / relativeZoom;
         }
     } else {
+        nscale = last_img.scale ;
         midx = last_img.midPoint.x() ;
         midy = last_img.midPoint.y() ;
     }
@@ -594,6 +605,7 @@ void MainWindow::paintEvent(QPaintEvent *)
                 painter.setPen(Qt::white);
                 //                painter.drawRect(QRect(x_left_corner - 1, y_left_corner - 1, w + 2, h + 2));
                 painter.drawRect(zoomRect.getRect().adjusted(-1, -1, +2, +2));
+                qDebug() << "DRAW RECT";
             }
 
             if(zahlenfolge.isShown()) {
@@ -614,8 +626,8 @@ void MainWindow::paintEvent(QPaintEvent *)
                             last = list.at(i);
 //                        else
 //                            break;
-                        painter.setPen(QColor("cyan"));
-                        painter.drawPoint(list.at(i));
+                        if(ui->comboBox_drawStyle_zahlenfolge->currentIndex() == 2)
+                            painter.drawEllipse(last, 3, 3);
 
                     }
 
@@ -805,22 +817,19 @@ void MainWindow::on_radioButton_toggled(bool checked)
     this->setOperationMode(OP_MODE::APPLY_SETTINGS);
 }
 
-
-void MainWindow::on_spinBox_zoom_valueChanged(int arg1)
-{
-    this->setOperationMode(OP_MODE::APPLY_SETTINGS);
-}
-
-
 void MainWindow::on_spinBoxW_valueChanged(int arg1)
 {
+    zoomRect.updateRectSize(this->ui->spinBoxW->value(), this->ui->spinBoxH->value(), ui->spinBox_zoom->value());
     this->setOperationMode(OP_MODE::APPLY_SETTINGS);
+    this->updateImage();
 }
 
 
 void MainWindow::on_spinBoxH_valueChanged(int arg1)
 {
+    zoomRect.updateRectSize(this->ui->spinBoxW->value(), this->ui->spinBoxH->value(), ui->spinBox_zoom->value());
     this->setOperationMode(OP_MODE::APPLY_SETTINGS);
+    this->updateImage();
 }
 
 
@@ -922,7 +931,10 @@ void MainWindow::on_pushButton_scale_minus_clicked()
 void MainWindow::ZoomRect::updateRectPos(Point p)
 {
     this->mousePos = p;
-    this->rect.setTopLeft(p.rountToQPoint() - QPoint(rect.width() / 2, rect.height() / 2));
+    auto left_top = p.rountToQPoint() - QPoint(rect.width() / 2, rect.height() / 2);
+    this->rect.moveTopLeft(left_top);
+    //    this->rect.setRect(left_top.x(), left_top.y(), rect.width(), rect.height());
+
 }
 
 
@@ -940,18 +952,20 @@ void MainWindow::ZoomRect::setMousePressState(bool isPressed)
 
 void MainWindow::ZoomRect::show()
 {
-    is_shown = false;
+    is_shown = true;
 }
 
 void MainWindow::ZoomRect::hide()
 {
-    is_shown = true;
+    is_shown = false;
 }
 
 void MainWindow::ZoomRect::updateRectSize(size_t winW, size_t winH, long double scale)
 {
-    if(scale >= 1)
-        this->rect.setSize(QSize(winW / scale, winH / scale));
+    if(scale >= 1) {
+        this->rect.setSize(QSize(winW / scale, (double)winH / scale));
+        this->updateRectPos(this->mousePos);
+    }
 }
 
 QRect MainWindow::ZoomRect::getRect()
@@ -1027,5 +1041,13 @@ void ImageSetting::cleanUP()
         delete[] iterations[i];
     delete [] iterations;
     iterations = nullptr;
+}
+
+
+void MainWindow::on_spinBox_zoom_valueChanged(double arg1)
+{
+    zoomRect.updateRectSize(this->ui->spinBoxW->value(), this->ui->spinBoxH->value(), ui->spinBox_zoom->value());
+    this->setOperationMode(OP_MODE::APPLY_SETTINGS);
+    this->updateImage();
 }
 

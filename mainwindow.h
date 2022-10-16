@@ -204,8 +204,6 @@ private slots:
 
     void on_radioButton_toggled(bool checked);
 
-    void on_spinBox_zoom_valueChanged(int arg1);
-
     void on_spinBoxW_valueChanged(int arg1);
 
     void on_spinBoxH_valueChanged(int arg1);
@@ -225,6 +223,8 @@ private slots:
     void on_pushButton_scale_plus_clicked();
 
     void on_pushButton_scale_minus_clicked();
+
+    void on_spinBox_zoom_valueChanged(double arg1);
 
 private:
     Ui::MainWindow *ui;

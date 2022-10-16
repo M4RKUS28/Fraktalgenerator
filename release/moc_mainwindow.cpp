@@ -47,17 +47,17 @@ QT_MOC_LITERAL(258, 33), // "on_radioButton_normalized_tog..."
 QT_MOC_LITERAL(292, 7), // "checked"
 QT_MOC_LITERAL(300, 29), // "on_radioButton_invert_toggled"
 QT_MOC_LITERAL(330, 22), // "on_radioButton_toggled"
-QT_MOC_LITERAL(353, 28), // "on_spinBox_zoom_valueChanged"
-QT_MOC_LITERAL(382, 24), // "on_spinBoxW_valueChanged"
-QT_MOC_LITERAL(407, 24), // "on_spinBoxH_valueChanged"
-QT_MOC_LITERAL(432, 48), // "on_comboBox_background_color_..."
-QT_MOC_LITERAL(481, 30), // "on_groupBoxMandelFarbe_toggled"
-QT_MOC_LITERAL(512, 42), // "on_comboBoxMandelColor_curren..."
-QT_MOC_LITERAL(555, 42), // "on_comboBox_precession_curren..."
-QT_MOC_LITERAL(598, 36), // "on_doubleSpinBoxEscapeR_value..."
-QT_MOC_LITERAL(635, 37), // "on_radioButton_reload_at_back..."
-QT_MOC_LITERAL(673, 32), // "on_pushButton_scale_plus_clicked"
-QT_MOC_LITERAL(706, 33) // "on_pushButton_scale_minus_cli..."
+QT_MOC_LITERAL(353, 24), // "on_spinBoxW_valueChanged"
+QT_MOC_LITERAL(378, 24), // "on_spinBoxH_valueChanged"
+QT_MOC_LITERAL(403, 48), // "on_comboBox_background_color_..."
+QT_MOC_LITERAL(452, 30), // "on_groupBoxMandelFarbe_toggled"
+QT_MOC_LITERAL(483, 42), // "on_comboBoxMandelColor_curren..."
+QT_MOC_LITERAL(526, 42), // "on_comboBox_precession_curren..."
+QT_MOC_LITERAL(569, 36), // "on_doubleSpinBoxEscapeR_value..."
+QT_MOC_LITERAL(606, 37), // "on_radioButton_reload_at_back..."
+QT_MOC_LITERAL(644, 32), // "on_pushButton_scale_plus_clicked"
+QT_MOC_LITERAL(677, 33), // "on_pushButton_scale_minus_cli..."
+QT_MOC_LITERAL(711, 28) // "on_spinBox_zoom_valueChanged"
 
     },
     "MainWindow\0on_pushButtonStart_clicked\0"
@@ -68,9 +68,7 @@ QT_MOC_LITERAL(706, 33) // "on_pushButton_scale_minus_cli..."
     "arg1\0on_comboBox_palette_currentIndexChanged\0"
     "index\0on_radioButton_normalized_toggled\0"
     "checked\0on_radioButton_invert_toggled\0"
-    "on_radioButton_toggled\0"
-    "on_spinBox_zoom_valueChanged\0"
-    "on_spinBoxW_valueChanged\0"
+    "on_radioButton_toggled\0on_spinBoxW_valueChanged\0"
     "on_spinBoxH_valueChanged\0"
     "on_comboBox_background_color_currentIndexChanged\0"
     "on_groupBoxMandelFarbe_toggled\0"
@@ -79,7 +77,8 @@ QT_MOC_LITERAL(706, 33) // "on_pushButton_scale_minus_cli..."
     "on_doubleSpinBoxEscapeR_valueChanged\0"
     "on_radioButton_reload_at_back_toggled\0"
     "on_pushButton_scale_plus_clicked\0"
-    "on_pushButton_scale_minus_clicked"
+    "on_pushButton_scale_minus_clicked\0"
+    "on_spinBox_zoom_valueChanged"
 };
 #undef QT_MOC_LITERAL
 
@@ -116,9 +115,9 @@ static const uint qt_meta_data_MainWindow[] = {
       22,    1,  184,    2, 0x08,   28 /* Private */,
       23,    1,  187,    2, 0x08,   30 /* Private */,
       24,    1,  190,    2, 0x08,   32 /* Private */,
-      25,    1,  193,    2, 0x08,   34 /* Private */,
-      26,    0,  196,    2, 0x08,   36 /* Private */,
-      27,    0,  197,    2, 0x08,   37 /* Private */,
+      25,    0,  193,    2, 0x08,   34 /* Private */,
+      26,    0,  194,    2, 0x08,   35 /* Private */,
+      27,    1,  195,    2, 0x08,   36 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
@@ -134,7 +133,6 @@ static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Void, QMetaType::Bool,   14,
     QMetaType::Void, QMetaType::Int,   10,
     QMetaType::Void, QMetaType::Int,   10,
-    QMetaType::Void, QMetaType::Int,   10,
     QMetaType::Void, QMetaType::Int,   12,
     QMetaType::Void, QMetaType::Bool,   10,
     QMetaType::Void, QMetaType::Int,   12,
@@ -143,6 +141,7 @@ static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Void, QMetaType::Bool,   14,
     QMetaType::Void,
     QMetaType::Void,
+    QMetaType::Void, QMetaType::Double,   10,
 
        0        // eod
 };
@@ -164,17 +163,17 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 8: _t->on_radioButton_normalized_toggled((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 9: _t->on_radioButton_invert_toggled((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 10: _t->on_radioButton_toggled((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 11: _t->on_spinBox_zoom_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 12: _t->on_spinBoxW_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 13: _t->on_spinBoxH_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 14: _t->on_comboBox_background_color_currentIndexChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 15: _t->on_groupBoxMandelFarbe_toggled((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 16: _t->on_comboBoxMandelColor_currentIndexChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 17: _t->on_comboBox_precession_currentIndexChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 18: _t->on_doubleSpinBoxEscapeR_valueChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
-        case 19: _t->on_radioButton_reload_at_back_toggled((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 20: _t->on_pushButton_scale_plus_clicked(); break;
-        case 21: _t->on_pushButton_scale_minus_clicked(); break;
+        case 11: _t->on_spinBoxW_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 12: _t->on_spinBoxH_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 13: _t->on_comboBox_background_color_currentIndexChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 14: _t->on_groupBoxMandelFarbe_toggled((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 15: _t->on_comboBoxMandelColor_currentIndexChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 16: _t->on_comboBox_precession_currentIndexChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 17: _t->on_doubleSpinBoxEscapeR_valueChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
+        case 18: _t->on_radioButton_reload_at_back_toggled((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 19: _t->on_pushButton_scale_plus_clicked(); break;
+        case 20: _t->on_pushButton_scale_minus_clicked(); break;
+        case 21: _t->on_spinBox_zoom_valueChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
         default: ;
         }
     }
@@ -188,7 +187,7 @@ const QMetaObject MainWindow::staticMetaObject = { {
     nullptr,
 qt_incomplete_metaTypeArray<qt_meta_stringdata_MainWindow_t
 , QtPrivate::TypeAndForceComplete<MainWindow, std::true_type>
-, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<QList<WorkerThread::Pixel> *, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<int, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<int, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<bool, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<bool, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<bool, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<int, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<int, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<int, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<int, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<bool, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<int, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<int, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<double, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<bool, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>
+, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<QList<WorkerThread::Pixel> *, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<int, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<int, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<bool, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<bool, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<bool, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<int, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<int, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<int, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<bool, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<int, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<int, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<double, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<bool, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<double, std::false_type>
 
 
 >,

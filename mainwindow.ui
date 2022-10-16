@@ -815,6 +815,11 @@
                   <string>Verbundene Linien</string>
                  </property>
                 </item>
+                <item>
+                 <property name="text">
+                  <string>Linien mit Kreise</string>
+                 </property>
+                </item>
                </widget>
               </item>
              </layout>

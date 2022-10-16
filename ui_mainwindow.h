@@ -514,6 +514,7 @@ public:
         comboBox_drawStyle_zahlenfolge = new QComboBox(groupBox_2);
         comboBox_drawStyle_zahlenfolge->addItem(QString());
         comboBox_drawStyle_zahlenfolge->addItem(QString());
+        comboBox_drawStyle_zahlenfolge->addItem(QString());
         comboBox_drawStyle_zahlenfolge->setObjectName(QString::fromUtf8("comboBox_drawStyle_zahlenfolge"));
         comboBox_drawStyle_zahlenfolge->setFont(font2);
 
@@ -931,6 +932,7 @@ public:
         label_21->setText(QCoreApplication::translate("MainWindow", "Zeichenstil:", nullptr));
         comboBox_drawStyle_zahlenfolge->setItemText(0, QCoreApplication::translate("MainWindow", "Punkte", nullptr));
         comboBox_drawStyle_zahlenfolge->setItemText(1, QCoreApplication::translate("MainWindow", "Verbundene Linien", nullptr));
+        comboBox_drawStyle_zahlenfolge->setItemText(2, QCoreApplication::translate("MainWindow", "Linien mit Kreise", nullptr));
 
         groupBox_3->setTitle(QCoreApplication::translate("MainWindow", "Koordinatensystem:", nullptr));
         label_24->setText(QCoreApplication::translate("MainWindow", "Farbe:", nullptr));
