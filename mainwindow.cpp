@@ -268,8 +268,8 @@ ImageSetting MainWindow::getNewScaledSetting(ImageSetting last_img)
        if(this->zoomRect.isShown() /*&& (last_img.scale * relativeZoom) < (std::pow(10, 16))*/) {
             if(relativeZoom > 0) {
                 nscale = last_img.scale * relativeZoom;
-                midx   = (this->zoomRect.getMousePos().x() - last_img.x_verschiebung) * relativeZoom;
-                midy   = (this->zoomRect.getMousePos().y() - last_img.y_verschiebung) * relativeZoom;
+                midx   = (this->zoomRect.getMousePos().x() + last_img.x_verschiebung) * relativeZoom;
+                midy   = (this->zoomRect.getMousePos().y() + last_img.y_verschiebung) * relativeZoom;
             } else {
                 nscale  = -last_img.scale / relativeZoom;
                 midx    = -(this->zoomRect.getMousePos().x() + last_img.x_verschiebung) / relativeZoom;
@@ -443,48 +443,59 @@ void MainWindow::startRefresh(ImageSetting set, bool appendToList)
 #include <algorithm>
 
 
-void MainWindow::afterColoring(ImageSetting)
+void MainWindow::afterColoring(ImageSetting set)
 {
-//    size_t * NumIterationsPerPixel = new size_t[set.maxIterations];
-//    memset(NumIterationsPerPixel, 0, sizeof(int) * set.maxIterations );
+    size_t * NumIterationsPerPixel = new size_t[set.maxIterations + 2];
+    memset(NumIterationsPerPixel, 0, sizeof(size_t) * (set.maxIterations + 2) );
 
-//    for(size_t x = 0; x < set.img_w; x++) {
-//        for(size_t y = 0; y < set.img_h; y++) {
-//            size_t i = set.getIterationCountAt(x, y);
-//            if(i >= 0 && i < set.maxIterations)
-//                NumIterationsPerPixel[i]++;
-//        }
-//    }
+    for(ssize_t x = 0; x < set.img_w; x++) {
+        for(ssize_t y = 0; y < set.img_h; y++) {
+            size_t i = set.getIterationCountAt(x, y);
+            if(i >= 0 && i <= set.maxIterations)
+                NumIterationsPerPixel[i]++;
+        }
+    }
 
-//    size_t total = 0;
-//    for (size_t i = 0; i < set.maxIterations; i++)
-//        total += NumIterationsPerPixel[i];
+    size_t total = 0;
+    for (size_t i = 0; i <= set.maxIterations; i++) {
+        total += NumIterationsPerPixel[i];
+        qDebug() << i << " - Iterationen gab es " << NumIterationsPerPixel[i];
+    }
+    qDebug() << "Insgesammt gab es " << total;
 
-//    auto * img = new QImage(set.img_w, set.img_h, QImage::Format_ARGB32_Premultiplied);
-//    auto * p =  new QPainter(img);
 
+    double ** hue = new double*[set.img_w];
+    for(int i = 0; i < set.img_w; i++) {
+        hue[i] = new double[set.img_h];
+        memset(hue[i], 0, sizeof(double) * set.img_h );
+    }
+    QImage i = *currentImg.image;
+    QPainter p = QPainter(&i);
 
-//    for(size_t x = 0; x < set.img_w; x++) {
-//        for(size_t y = 0; y < set.img_h; y++) {
+    for(ssize_t x = 0; x < set.img_w; x++) {
+        for(ssize_t y = 0; y < set.img_h; y++) {
 
-//        size_t iteration= set.getIterationCountAt(x, y);
-//        double hue = 0;
-//        for (size_t i = 0; i < iteration; i++) {
-//            hue += (double)NumIterationsPerPixel[i] / (double)total; /* Must be floating-posize_t division. */
-//        }
-////        qDebug() << "p("<<x<<"|"<<y<<"): i="<<iteration<< " ---> hue: " << size_t(hue*358.0) % 358;
-////        QColor c = QColor::fromHsv(hue , 100, (iteration / (double)settings.last().maxIterations) * 250);
-//        auto c = QColor::fromHsv(int(hue*360), 1, 1);
-////        p->setPen(c);
-////        p->drawPoint(x, y);
+        size_t iteration= set.getIterationCountAt(x, y);
 
-//        }
+        for (size_t i = 0; i <= iteration; i++) {
+            hue[x][y] += (double)NumIterationsPerPixel[i] / (double)total; /* Must be floating-posize_t division. */
+        }
 
-//    }
-////    this->ui->labelFraktal->setPixmap(QPixmap::fromImage(*img));
+//        QColor::fromHsvF();
+        p.setPen(QColor::fromHsvF((hue[x][y] + std::min( 0.8* std::abs(set.iterations_normal[x][y] - set.getIterationCountAt(x, y)) , 1.0)) / 2.0, 0.8, 1.0 - std::min(  0.1 *std::pow( std::abs(set.iterations_normal[x][y] - set.getIterationCountAt(x, y)), 1.5) , 1.0)));
+        p.drawPoint(x, y);
 
-//    delete[] NumIterationsPerPixel;
-    //    return;
+        }
+    }
+
+    *currentImg.image = i;
+    ui->imageView->setImage(i);
+
+//    this->ui->labelFraktal->setPixmap(QPixmap::fromImage(*img));
+
+    delete[] NumIterationsPerPixel;
+    return;
+
 }
 
 void MainWindow::setOperationMode(OP_MODE o)
@@ -629,8 +640,10 @@ void MainWindow::finishedLine(QList<Pixel> *list)
                 y = list->at(l).c_y -  currentImg.y_verschiebung;
         currentImg.painter->drawPoint(x, y);
 
-        if(x >= 0 && x < currentImg.img_w && y >= 0 && y < currentImg.img_h)
+        if(x >= 0 && x < currentImg.img_w && y >= 0 && y < currentImg.img_h) {
             currentImg.setIterationCountAt(x, y, list->at(l).iters);
+            currentImg.iterations_normal[x][y] = list->at(l).normalized_iters;
+        }
 
     }
     this->ui->progressBar->setValue(this->ui->progressBar->value() + 1);
@@ -834,7 +847,13 @@ void ImageSetting::init(size_t img_w, size_t img_h, size_t maxIterations, bool i
     this->iterations = new size_t*[img_w];
     for( size_t i = 0; i < img_w; i++) {
         this->iterations[i] = new size_t[img_h];
-        memset(this->iterations[i], 0, sizeof(int) * img_h );
+        memset(this->iterations[i], 0, sizeof(size_t) * img_h );
+    }
+
+    this->iterations_normal = new double*[img_w];
+    for( size_t i = 0; i < img_w; i++) {
+        this->iterations_normal[i] = new double[img_h];
+        memset(this->iterations_normal[i], 0, sizeof(double) * img_h );
     }
 
     QPoint startX = QPoint ((-2.5 * scale) - x_verschiebung,
@@ -1002,10 +1021,8 @@ void MainWindow::ZahlenFolge::setZahlenfolge(Point c_p, ImageSetting s)
     }
 
 
-    for(long long i = 0; i < s.maxIterations; i++) {
+    for(unsigned long long i = 0; i < s.maxIterations; i++) {
         z = z*z + c;
-        if(!std::isfinite(z.real()) || !std::isfinite(z.imag()))
-            break;
         this->zahlenfolge.push_back( QPoint(((z.real() * s.scale)  - s.x_verschiebung) , ( (z.imag() * s.scale) - s.y_verschiebung) ));
     }
 

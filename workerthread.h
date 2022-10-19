@@ -68,8 +68,11 @@ struct ImageSetting {
     bool fixedColor, inverted, normalized;
     QString fixFraktalColor;
 
+
+    double **iterations_normal;
 private:
     size_t **iterations;
+
 };
 
 struct Pixel {

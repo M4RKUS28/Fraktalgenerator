@@ -25,8 +25,6 @@ QT_END_NAMESPACE
 #define START_POS_Y 0
 
 
-
-
 class MainWindow : public QMainWindow
 {
     Q_OBJECT

@@ -89,22 +89,19 @@ void WorkerThread::run()
                     c_imag =  - this->settings.juliaStart_img;
                 }
 
-                size_t i = 1;
+                size_t i = 0;
                 if( (z_real*z_real) + (z_imag*z_imag) <= escapeQuadrat) {
-                    for(; i < maxIt; i++) {
+                    for(i = 0; i < maxIt &&  (z_real*z_real) + (z_imag*z_imag) < escapeQuadrat; i++) {
                         const double z_real2 = (z_real * z_real) - (z_imag * z_imag) + c_real;
                         const double z_imag2 = (2.0 * z_real * z_imag) + c_imag;
-                        if( (z_real2*z_real2) + (z_imag2*z_imag2) > escapeQuadrat || i >= maxIt ) {
+                        i++;
+                        if( (z_real2*z_real2) + (z_imag2*z_imag2) > escapeQuadrat || i > maxIt-1 ) {
                             z_real = z_real2;
                             z_imag = z_imag2;
                             break;
-                        } else {
-                            i++;
                         }
                         z_real = (z_real2 * z_real2) - (z_imag2 * z_imag2) + c_real;
                         z_imag = (2.0 * z_real2 * z_imag2) + c_imag;
-                        if( (z_real*z_real) + (z_imag*z_imag) > escapeQuadrat )
-                            break;
                     }
                 }
 
@@ -167,6 +164,8 @@ QColor WorkerThread::getPreColor(size_t iters, double normalizedItC)
     int val = 0;
     size_t maxIt = this->settings.maxIterations;
 
+    QColor test;
+
     if(iters == maxIt && this->settings.fixedColor) {
         return QColor(this->settings.fixFraktalColor);
 
@@ -175,7 +174,10 @@ QColor WorkerThread::getPreColor(size_t iters, double normalizedItC)
         switch ( preColorMode ) {
         case 0:
             val = (iters >= maxIt) ? 255 : (int)(n*10.0) % 255;
-            return QColor::fromRgb(0, 0, 0, this->settings.inverted ? 255 - val : val );
+            test = QColor::fromRgb(0, 0, 0, this->settings.inverted ? 255 - val : val );
+            if(!test.isValid())
+                qDebug() << "WEIL: n=" << n << " und color: " << (this->settings.inverted ? 255 - val : val);
+            return test;
             break;
         case 1:
             v = (iters >= maxIt) ? 255.0 /*Mandelbrot-Set-Alpha*/ : ((double)((int)(n*3.0) % 255) / 255.0);
@@ -213,7 +215,7 @@ QColor WorkerThread::getPreColor(size_t iters, double normalizedItC)
 
 double WorkerThread::getNormalizedIterationCount(size_t iters, double z_real, double z_imag)
 {
-    if(this->settings.normalized && iters < this->settings.maxIterations)
+    if(this->settings.normalized && iters < this->settings.maxIterations && iters > 1)
         return (double)iters + ((this->settings.logEscape - log(log(sqrt( (z_real * z_real) + (z_imag * z_imag) ))) ) / this->log2);
     else
         return iters;
