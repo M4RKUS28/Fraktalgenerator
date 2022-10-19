@@ -18,6 +18,9 @@ MainWindow::MainWindow(QWidget *parent)
       ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->ui->spinBoxW->setValue( (int)(QApplication::screens().at(0)->availableGeometry().width() * 0.08) * 10);
+    this->ui->spinBoxH->setValue( (int)(QApplication::screens().at(0)->availableGeometry().height() * 0.085) * 10);
+
     timerID = this->startTimer(20);
     connect(ui->imageView, SIGNAL(mouseMove(QPoint)), this, SLOT(mouse_move_in_img(QPoint)));
 
@@ -84,7 +87,7 @@ void MainWindow::zustandWechseln(QString aktion, QString, QPoint m_pos, QMouseEv
             }
 
         } else if( aktion == "DOPPELKLICK_IN_BILD" && m_event) {
-            auto pos = this->ui->imageView->mapFrom(this, m_event->pos());
+            auto pos = this->ui->imageView->mapFrom(this, m_event->pos() * ui->imageView->getHdpi_multiplicator());
             if(m_event->button() == Qt::LeftButton && pos.x() >= 0 && pos.x() < currentImg.img_w && pos.y() >= 0 && pos.y() < currentImg.img_h) {
                 ImageSetting newSetting = getNewScaledSetting(currentImg);
                 this->startRefresh(newSetting, true);
@@ -112,8 +115,8 @@ void MainWindow::zustandWechseln(QString aktion, QString, QPoint m_pos, QMouseEv
                 }
                 ui->label_iterations->setText(QString::number(currentImg.getIterationCountAt(qpos)));
 
-                ui->re->setText(QString::number((double( (this->zoomRect.getMousePos().x() + currentImg.x_verschiebung) / currentImg.scale))));
-                ui->img->setText(QString::number( - (double( (this->zoomRect.getMousePos().y() + currentImg.y_verschiebung) / currentImg.scale)))  + "i");
+                ui->re->setValue(((double( (this->zoomRect.getMousePos().x() + currentImg.x_verschiebung) / currentImg.scale))));
+                ui->im->setValue(( - (double( (this->zoomRect.getMousePos().y() + currentImg.y_verschiebung) / currentImg.scale))));
 
 
                 if( ui->radioButton_zahelnfolge_bei_mousemove->isChecked() && zahlenfolge.isShown() ) {
@@ -123,8 +126,8 @@ void MainWindow::zustandWechseln(QString aktion, QString, QPoint m_pos, QMouseEv
 
             } else {
                 ui->label_iterations->setText("-");
-                ui->re->setText("-");
-                ui->img->setText("-");
+                ui->re->setValue(0);
+                ui->im->setValue(0);
             }
 
         } else if(aktion == "mousePressEvent"  && m_event) {
@@ -144,8 +147,8 @@ void MainWindow::zustandWechseln(QString aktion, QString, QPoint m_pos, QMouseEv
 
                     ui->label_iterations->setText(QString::number(currentImg.getIterationCountAt(qpos)));
 
-                    ui->re->setText(QString::number((double( (this->zoomRect.getMousePos().x() + currentImg.x_verschiebung) / currentImg.scale))));
-                    ui->img->setText(QString::number( - (double( (this->zoomRect.getMousePos().y() + currentImg.y_verschiebung) / currentImg.scale)))  + "i");
+                    ui->re->setValue(((double( (this->zoomRect.getMousePos().x() + currentImg.x_verschiebung) / currentImg.scale))));
+                    ui->im->setValue(( - (double( (this->zoomRect.getMousePos().y() + currentImg.y_verschiebung) / currentImg.scale))));
 
                     if(zahlenfolge.isShown())
                         this->zahlenfolge.removeZahlenfolge();
@@ -159,8 +162,8 @@ void MainWindow::zustandWechseln(QString aktion, QString, QPoint m_pos, QMouseEv
                 zoomRect.setMousePressState(false);
                 zoomRect.hide();
 
-                ui->re->setText("-");
-                ui->img->setText("-");
+                ui->re->setValue(0);
+                ui->im->setValue(0);
                 ui->label_iterations->setText("-");
                 this->zahlenfolge.removeZahlenfolge();
 
@@ -224,20 +227,20 @@ ImageSetting MainWindow::getNewScaledSetting(ImageSetting last_img)
     // Zoom midposize_t --> new scaling!!!!
     size_t midx =0 ;
     size_t midy =0 ;
-    long double nscale = 0;
+    double nscale = 0;
 
     // 3 möglichkeiten: wechsel von mandelbrot zu julia --> calc julia an stelle mauspos der mandelbrot menge
     //  wechsel von julia zu mandelbrot --> starteinstellungen der mandelbrot menge
     // zoom in fraktal ( mit speicherung der alten julia einstellungen )
 
     if(last_img.isMandelbrotSet && ui->comboBox_Fraktal->currentIndex() == 1 /*julia*/ ) {
-        long double c_x, c_y;
+        double c_x, c_y;
         if(this->zoomRect.isShown()) {
-            c_x   = (this->zoomRect.getMousePos().x() + last_img.x_verschiebung) / (long double)last_img.scale;
-            c_y   = (this->zoomRect.getMousePos().y() + last_img.y_verschiebung) / (long double)last_img.scale;
+            c_x   = (this->zoomRect.getMousePos().x() + last_img.x_verschiebung) / last_img.scale;
+            c_y   = (this->zoomRect.getMousePos().y() + last_img.y_verschiebung) / last_img.scale;
         } else {
-            c_x = last_img.midPoint.x() / (long double)last_img.scale;
-            c_y = last_img.midPoint.y() / (long double)last_img.scale;
+            c_x = last_img.midPoint.x() / last_img.scale;
+            c_y = last_img.midPoint.y() / last_img.scale;
         }
 
         qDebug() << "create julia";
@@ -245,7 +248,9 @@ ImageSetting MainWindow::getNewScaledSetting(ImageSetting last_img)
         //create new julia-funktion on midbpoint of last mandelbrot-funktion
         ImageSetting j(START_SCALE, Point(START_POS_X, START_POS_Y));
         j.init(this->ui->spinBoxW->value(), this->ui->spinBoxH->value(), ui->spinBoxMaxIterations->value(), false /*julia menge!*/ );
-        j.juliaStart = std::complex<long double>(c_x, c_y);
+        j.juliaStart_real = c_x;
+        j.juliaStart_img = c_y;
+
         j.isStart = true; // save start for hom button
         return j;
     } else if( ! last_img.isMandelbrotSet && ui->comboBox_Fraktal->currentIndex() == 0 /*mandelbrot*/) {
@@ -259,27 +264,33 @@ ImageSetting MainWindow::getNewScaledSetting(ImageSetting last_img)
         double relativeZoom = ui->spinBox_zoom->value();
         if(ui->spinBox_zoom->value() == 0.0)
             ui->spinBox_zoom->setValue( (relativeZoom = 1.0) );
-        if(this->zoomRect.isShown()) {
+
+       if(this->zoomRect.isShown() /*&& (last_img.scale * relativeZoom) < (std::pow(10, 16))*/) {
             if(relativeZoom > 0) {
-                nscale = last_img.scale * (long double) relativeZoom;
-                midx   = (this->zoomRect.getMousePos().x() + last_img.x_verschiebung) * relativeZoom;
-                midy   = (this->zoomRect.getMousePos().y() + last_img.y_verschiebung) * relativeZoom;
+                nscale = last_img.scale * relativeZoom;
+                midx   = (this->zoomRect.getMousePos().x() - last_img.x_verschiebung) * relativeZoom;
+                midy   = (this->zoomRect.getMousePos().y() - last_img.y_verschiebung) * relativeZoom;
             } else {
-                nscale  = -last_img.scale / (long double) relativeZoom;
+                nscale  = -last_img.scale / relativeZoom;
                 midx    = -(this->zoomRect.getMousePos().x() + last_img.x_verschiebung) / relativeZoom;
                 midy    = -(this->zoomRect.getMousePos().y() + last_img.y_verschiebung) / relativeZoom;
             }
         } else {
+//           if((last_img.scale * relativeZoom) > (std::pow(10, 16)))
+//               QMessageBox::warning(this, "Vergrößerungslimit Limit erreicht!", "Vergrößerungslimit Limit erreicht! Es wird die letzte Zoomstufe verwendet.");
             nscale = last_img.scale ;
             midx = last_img.midPoint.x() ;
             midy = last_img.midPoint.y() ;
         }
 
+
         ImageSetting s(nscale, Point(midx, midy));
         s.init(this->ui->spinBoxW->value(), this->ui->spinBoxH->value(), ui->spinBoxMaxIterations->value(), ui->comboBox_Fraktal->currentIndex() == 0 /*is mandelbrot*/ );
 
-        if(ui->comboBox_Fraktal->currentIndex() == 1)
-            s.juliaStart = last_img.juliaStart;
+        if(ui->comboBox_Fraktal->currentIndex() == 1) {
+            s.juliaStart_img = last_img.juliaStart_img;
+            s.juliaStart_real = last_img.juliaStart_real;
+        }
         return s;
     }
 
@@ -323,8 +334,13 @@ void MainWindow::startRefresh(ImageSetting set, bool appendToList)
     this->ui->progressBar->setMaximum(set.img_w);
     this->ui->progressBar->setValue(0);
 
-    //calc consts for normalised iteration count
-    set.logEscape = log(log(ui->doubleSpinBoxEscapeR->value()));
+    //
+    set.setColorSettings(ui->radioButton_normalized->isChecked(),
+                         log(log(ui->doubleSpinBoxEscapeR->value())),
+                         ui->groupBoxMandelFarbe->isChecked(),
+                         ui->comboBoxMandelColor->currentText(),
+                         ui->radioButton_invert->isChecked(),
+                         ui->doubleSpinBoxEscapeR->value());
 
     // Verschiebung so, dass ecke bei (0|0) --> verschiebung == echte ecke
     ssize_t x_left_corner = set.x_verschiebung;
@@ -340,21 +356,18 @@ void MainWindow::startRefresh(ImageSetting set, bool appendToList)
     for( size_t tn = 0; tn < tc; tn++) {
         WorkerThread * wt = new WorkerThread(this);
         this->tworkers.append( wt );
+
         std::cout << " -> Starte Thread bei x = " << x_left_corner << " ..." << std::endl;
 
-        wt->startCalc(x_left_corner + parts * tn,
-                      x_left_corner + parts * (tn + 1) + ( (tn + 1 == tc ) ? (set.img_w - parts * (tn + 1)) : 0), // wenn breite mit threadzahl nicht aufgeht -> letzter thread noch etwas breiter
-                      parts * (tn + 1) + ( (tn + 1 == tc ) ? (set.img_w - parts * (tn + 1)) : 0),
-                      y_left_corner,
-                      y_left_corner + set.img_h,
-                      ui->spinBoxMaxIterations->value(),
-                      ui->doubleSpinBoxEscapeR->value(),
-                      ((double long)1.0 / set.scale),
-                      this->ui->comboBox_precession->currentIndex() == 0 ? WorkerThread::PRECESSION::DOUBLE : WorkerThread::PRECESSION::LONG_DOUBLE,
-                      currentImg.isMandelbrotSet,
-                      currentImg.juliaStart);
+        const ssize_t x_left_corner_part = (x_left_corner + parts * tn);
+        const ssize_t x_right_corner_part = (x_left_corner + parts * (tn + 1) + ( ( tn + 1 == tc ) ? (set.img_w - parts * (tn + 1)) : 0));
+        const ssize_t y_top_corner = y_left_corner;
+        const ssize_t y_bottom_corner = y_left_corner + set.img_h;
 
-        connect(wt, SIGNAL(finishedLine(QList<WorkerThread::Pixel>*)), this, SLOT(finishedLine(QList<WorkerThread::Pixel>*)));
+        wt->setRange(x_left_corner_part, x_right_corner_part, y_top_corner, y_bottom_corner);
+        wt->startCalc(set, this->ui->comboBox_precession->currentIndex(), this->ui->comboBox_palette->currentIndex());
+
+        connect(wt, SIGNAL(finishedLine(QList<Pixel>*)), this, SLOT(finishedLine(QList<Pixel>*)));
         connect(wt, SIGNAL(finished()), this, SLOT(threadFinished()));
 
         // warte 20ms für den nächsten Thread
@@ -366,64 +379,66 @@ void MainWindow::startRefresh(ImageSetting set, bool appendToList)
 }
 
 
-void MainWindow::setColor(QPainter * mpainter, size_t iters, std::complex<long double> z_n)
-{
-    if(!mpainter)
-        return;
+//void MainWindow::setColor(QPainter * mpainter, size_t iters, std::complex<double> z_n)
+//{
+//    if(!mpainter)
+//        return;
 
-    double n;
-    double alpha;
-    double v = 0;
+//    double n = 0.0;
+//    double alpha;
+//    double v = 0;
+//    size_t maxIters = currentImg.maxIterations;
 
-    // normalizing
-    if(iters != 0) {
-        if(this->ui->radioButton_normalized->isChecked())
-            n = abs(iters + (( this->currentImg.logEscape - log(log(abs(z_n))) ) / this->log2));
-        else
-            n = iters;
-    }
+//    // normalizing
+//    if(iters < maxIters) {
+//        if(this->ui->radioButton_normalized->isChecked())
+//            n = abs(iters + (( this->currentImg.logEscape - log(log(abs(z_n))) ) / this->log2));
+//        else
+//            n = iters;
+//    }
 
-    if((iters == 0) && ui->groupBoxMandelFarbe->isChecked()) {
-        mpainter->setPen(QColor(ui->comboBoxMandelColor->currentText()));
-    } else {
-        //coloring
-        switch (ui->comboBox_palette->currentIndex()) {
-        case 0:
-            alpha = (iters == 0) ? 1.0 /*Mandelbrot-Set-Alpha*/ : (double)((int)(n*10.0) % 255) / 255.0; /*Outside*/
-            mpainter->setPen(QColor::fromRgbF(0, 0, 0, ui->radioButton_invert->isChecked() ? 1.0 - alpha : alpha ));
-            break;
-        case 1:
-            v = (iters == 0) ? 255.0 /*Mandelbrot-Set-Alpha*/ : ((double)((int)(n*3.0) % 255) / 255.0);
-            v = ui->radioButton_invert->isChecked() ? 255.0 - v : v;
-            mpainter->setPen(QColor::fromRgbF(1, v, v, 1 ));
-            break;
-        case 3:
-            alpha = (iters == 0) ? 1.0 /*Mandelbrot-Set-Alpha*/ : (double)((int)(n) % ui->spinBoxMaxIterations->value()) / ((double)ui->spinBoxMaxIterations->value()); /*Outside*/
-            mpainter->setPen(QColor::fromRgbF(0, 0, 0, ui->radioButton_invert->isChecked() ? 1.0 - alpha : alpha ));
-            break;
-        case 4:
-            if(iters == 0) {
-                mpainter->setPen(QColor(Qt::black));
-            } else {
-                // hsv = [powf((i / max) * 360, 1.5) % 360, 100, (i / max) * 100]
-                QColor c = QColor::fromHsv( size_t(pow( (n / (double)currentImg.maxIterations) * 358 , 1.5)) % 358, 100, (n / (double)currentImg.maxIterations) * 250);
-                mpainter->setPen(c);
-            }
-            break;
-        case 5:
-            if(iters == 0) {
-                mpainter->setPen(QColor(Qt::black));
-            } else {
-                mpainter->setPen(QColor::fromHsv(int( (358.0 * n) / (double)currentImg.maxIterations ), 255, 255));
-            }
-            break;
-        default:
-            alpha = (iters == 0) ? 1.0 /*Mandelbrot-Set-Alpha*/ : 0.0; /*Outside*/
-            mpainter->setPen(QColor::fromRgbF(0, 0, 0, ui->radioButton_invert->isChecked() ? 1.0 - alpha : alpha ));
-            break;
-        }
-    }
-}
+//    if((iters == (size_t)currentImg.maxIterations) && ui->groupBoxMandelFarbe->isChecked()) {
+//        mpainter->setPen(QColor(ui->comboBoxMandelColor->currentText()));
+
+//    } else {
+//        //coloring
+//        switch (ui->comboBox_palette->currentIndex()) {
+//        case 0:
+//            alpha = (iters >= maxIters) ? 1.0 /*Mandelbrot-Set-Alpha*/ : (double)((int)(n*10.0) % 255) / 255.0; /*Outside*/
+//            mpainter->setPen(QColor::fromRgbF(0, 0, 0, ui->radioButton_invert->isChecked() ? 1.0 - alpha : alpha ));
+//            break;
+//        case 1:
+//            v = (iters >= maxIters) ? 255.0 /*Mandelbrot-Set-Alpha*/ : ((double)((int)(n*3.0) % 255) / 255.0);
+//            v = ui->radioButton_invert->isChecked() ? 255.0 - v : v;
+//            mpainter->setPen(QColor::fromRgbF(1, v, v, 1 ));
+//            break;
+//        case 3:
+//            alpha = (iters >= maxIters) ? 1.0 /*Mandelbrot-Set-Alpha*/ : (double)((int)(n) % ui->spinBoxMaxIterations->value()) / ((double)ui->spinBoxMaxIterations->value()); /*Outside*/
+//            mpainter->setPen(QColor::fromRgbF(0, 0, 0, ui->radioButton_invert->isChecked() ? 1.0 - alpha : alpha ));
+//            break;
+//        case 4:
+//            if(iters >= maxIters) {
+//                mpainter->setPen(QColor(Qt::black));
+//            } else {
+//                // hsv = [powf((i / max) * 360, 1.5) % 360, 100, (i / max) * 100]
+//                QColor c = QColor::fromHsv( size_t(pow( (n / (double)currentImg.maxIterations) * 358 , 1.5)) % 358, 100, (n / (double)currentImg.maxIterations) * 250);
+//                mpainter->setPen(c);
+//            }
+//            break;
+//        case 5:
+//            if(iters >= maxIters) {
+//                mpainter->setPen(QColor(Qt::black));
+//            } else {
+//                mpainter->setPen(QColor::fromHsv(int( (358.0 * n) / (double)currentImg.maxIterations ), 255, 255));
+//            }
+//            break;
+//        default:
+//            alpha = (iters >= maxIters) ? 1.0 /*Mandelbrot-Set-Alpha*/ : 0.0; /*Outside*/
+//            mpainter->setPen(QColor::fromRgbF(0, 0, 0, ui->radioButton_invert->isChecked() ? 1.0 - alpha : alpha ));
+//            break;
+//        }
+//    }
+//}
 
 #include <algorithm>
 
@@ -528,18 +543,24 @@ void MainWindow::endRefresh(bool appendToListHistory)
         ui->label_julia_c->setText("-");
         ui->label_julia_c_im->setText("-");
     } else {
-        ui->label_julia_c->setText(QString::number( (double)(currentImg.juliaStart.real()) ));
-        ui->label_julia_c_im->setText(QString::number( (double)(currentImg.juliaStart.imag()) ) + " i");
+        ui->label_julia_c->setText(QString::number( (double)(currentImg.juliaStart_real) )) ;
+        ui->label_julia_c_im->setText(QString::number( (double)(currentImg.juliaStart_img) ) + " i");
     }
 
     ui->progressBar->setValue(ui->progressBar->maximum());
-    ui->bmRe->setText(QString::number( (double)(((long double) this->currentImg.midPoint.x()) / currentImg.scale) ));
-    ui->bmIm->setText(QString::number( (double)(((long double) this->currentImg.midPoint.y()) / currentImg.scale) ) + "i");
+    ui->bmRe->setText(QString::number( (double)((( double) this->currentImg.midPoint.x()) / currentImg.scale) ));
+    ui->bmIm->setText(QString::number( (double)((( double) this->currentImg.midPoint.y()) / currentImg.scale) ) + "i");
     afterColoring(currentImg);
+    updateImage();
+
+    if(ui->radioButtonAutoScroll->isChecked()) {
+        ui->scrollArea->verticalScrollBar()->setValue(ui->scrollArea->verticalScrollBar()->maximum() / 2);
+        ui->scrollArea->horizontalScrollBar()->setValue(ui->scrollArea->horizontalScrollBar()->maximum() / 2);
+    }
 
     if(appendToListHistory) {
-        auto i = new QListWidgetItem("Re(" + QString::number( (double)(((long double) this->currentImg.midPoint.x()) / currentImg.scale) ) +
-                                     ") Img(" +  QString::number( (double)(((long double) this->currentImg.midPoint.y()) / currentImg.scale) ) + "i)");
+        auto i = new QListWidgetItem("Re(" + QString::number( (double)((( double) this->currentImg.midPoint.x()) / currentImg.scale) ) +
+                                     ") Img(" +  QString::number( (double)((( double) this->currentImg.midPoint.y()) / currentImg.scale) ) + "i)");
         i->setIcon(QIcon(QPixmap::fromImage(*this->currentImg.image).scaled(QSize(256, 256), Qt::AspectRatioMode::KeepAspectRatio, Qt::TransformationMode::FastTransformation)));
         i->setData(187, settingsList.length() - 1);
 
@@ -549,13 +570,13 @@ void MainWindow::endRefresh(bool appendToListHistory)
 
     this->updateUiWithImageSetting( currentImg );
 
-
 }
 
 
 void MainWindow::updateImage()
 {
-    ui->imageView->setImage(*currentImg.image);
+    if(currentImg.image)
+        ui->imageView->setImage(*currentImg.image);
     this->update();
 }
 
@@ -597,15 +618,19 @@ void MainWindow::on_pushButtonStart_clicked()
     zustandWechseln("BUTTON_REFRESH_AND_STOP");
 }
 
-void MainWindow::finishedLine(QList<WorkerThread::Pixel> *list)
+#include<complex>
+
+void MainWindow::finishedLine(QList<Pixel> *list)
 {
     for( ssize_t l = 0; l < list->size(); l++) {
-        this->setColor(currentImg.painter, list->at(l).i, list->at(l).z_n);
+        currentImg.painter->setPen(list->at(l).color);
+
         ssize_t x = list->at(l).c_x - currentImg.x_verschiebung,
-            y = list->at(l).c_y -  currentImg.y_verschiebung;
+                y = list->at(l).c_y -  currentImg.y_verschiebung;
         currentImg.painter->drawPoint(x, y);
+
         if(x >= 0 && x < currentImg.img_w && y >= 0 && y < currentImg.img_h)
-            currentImg.setIterationCountAt(x, y, list->at(l).i);
+            currentImg.setIterationCountAt(x, y, list->at(l).iters);
 
     }
     this->ui->progressBar->setValue(this->ui->progressBar->value() + 1);
@@ -781,7 +806,12 @@ void MainWindow::keyReleaseEvent(QKeyEvent *)
 }
 
 
-ImageSetting::ImageSetting(long double scale, Point midPoint)
+ImageSetting::ImageSetting()
+{
+
+}
+
+ImageSetting::ImageSetting(double scale, Point midPoint)
     : midPoint(midPoint), scale(scale), x_verschiebung(0), y_verschiebung(0)
 {
     qDebug() << midPoint.x() << " | " << midPoint.y();
@@ -828,6 +858,16 @@ void ::ImageSetting::setIterationCountAt(ssize_t x, ssize_t y, size_t iterations
 
 }
 
+void ImageSetting::setColorSettings(bool normalized, double logEscape, bool fixedColor, QString fixFraktalColor, bool inverted, double escape_radius)
+{
+    this->normalized = normalized;
+    this->logEscape = logEscape;
+    this->fixedColor = fixedColor;
+    this->fixFraktalColor = fixFraktalColor;
+    this->inverted = inverted;
+    this->escape_radius = escape_radius;
+}
+
 size_t ImageSetting::getIterationCountAt(QPoint pos)
 {
     return this->getIterationCountAt(pos.x(), pos.y());
@@ -841,12 +881,12 @@ size_t ImageSetting::getIterationCountAt(ssize_t x, ssize_t y)
         return -1;
 }
 
-long double ImageSetting::PixelToImag(QPoint p)
+double ImageSetting::PixelToImag(QPoint p)
 {
     return (p.y() + this->y_verschiebung) / scale;
 }
 
-long double ImageSetting::PixelToReal(QPoint p)
+double ImageSetting::PixelToReal(QPoint p)
 {
     return (p.x() + this->x_verschiebung) / scale;
 }
@@ -890,11 +930,6 @@ void MainWindow::on_radioButton_invert_toggled(bool checked)
     this->setOperationMode(OP_MODE::APPLY_SETTINGS);
 }
 
-
-void MainWindow::on_radioButton_toggled(bool checked)
-{
-    this->setOperationMode(OP_MODE::APPLY_SETTINGS);
-}
 
 void MainWindow::on_spinBoxW_valueChanged(int arg1)
 {
@@ -959,11 +994,11 @@ void MainWindow::ZahlenFolge::setZahlenfolge(Point c_p, ImageSetting s)
 
     std::complex<double> z, c;
     if ( s.isMandelbrotSet ) {
-        z = std::complex<long double> (0, 0);
-        c = std::complex<long double>( ((long double)c_p.x() + s.x_verschiebung) / s.scale, - ((long double)c_p.y() + s.y_verschiebung) / s.scale );
+        z = std::complex< double> (0, 0);
+        c = std::complex< double>( (( double)c_p.x() + s.x_verschiebung) / s.scale, - (( double)c_p.y() + s.y_verschiebung) / s.scale );
     } else {
-        z = std::complex<long double>( ((long double)c_p.x() + s.x_verschiebung) / s.scale, - ((long double)c_p.y() + s.y_verschiebung) / s.scale );
-        c = s.juliaStart;
+        z = std::complex< double>( (( double)c_p.x() + s.x_verschiebung) / s.scale, - (( double)c_p.y() + s.y_verschiebung) / s.scale );
+        c = std::complex<double>(s.juliaStart_real, s.juliaStart_img);
     }
 
 
@@ -1045,7 +1080,7 @@ void MainWindow::ZoomRect::hide()
     is_shown = false;
 }
 
-void MainWindow::ZoomRect::updateRectSize(size_t winW, size_t winH, long double scale)
+void MainWindow::ZoomRect::updateRectSize(size_t winW, size_t winH, double scale)
 {
     if(scale >= 1) {
         this->rect.setSize(QSize(winW / scale, (double)winH / scale));
@@ -1205,4 +1240,3 @@ void MainWindow::on_listWidgetHistory_itemDoubleClicked(QListWidgetItem *item)
         }
     }
 }
-

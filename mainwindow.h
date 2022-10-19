@@ -3,9 +3,13 @@
 
 #include <QMainWindow>
 #include "workerthread.h"
+#include<complex>
+
 
 #include <QLinearGradient>
 #include <QListWidgetItem>
+#include <QScrollBar>
+
 
 #include "imageview.h"
 #include "math.h"
@@ -20,59 +24,6 @@ QT_END_NAMESPACE
 #define START_POS_X -80
 #define START_POS_Y 0
 
-struct Point{
-    Point();
-    Point(ssize_t X, ssize_t Y);
-
-public:
-    ssize_t y() const;
-    void setY(ssize_t newY);
-    ssize_t x() const;
-    void setX(ssize_t newX);
-
-    QPoint rountToQPoint();
-
-private:
-    ssize_t X;
-    ssize_t Y;
-
-};
-
-struct ImageSetting {
-    ImageSetting(long double scale, Point midPoint );
-    void init(size_t img_w, size_t img_h, size_t maxIterations, bool isMandelbrotSet);
-    void cleanUP();
-    void setIterationCountAt(ssize_t x, ssize_t y, size_t iterations);
-
-    size_t getIterationCountAt(QPoint pos);
-    size_t getIterationCountAt(ssize_t x, ssize_t y);
-
-    long double PixelToImag(QPoint p);
-    long double PixelToReal(QPoint p);
-
-    QImage * image;
-    QPainter * painter;
-    Point midPoint;
-
-    long double scale;
-    long double logEscape;
-
-    ssize_t x_verschiebung;
-    ssize_t y_verschiebung;
-    ssize_t img_w;
-    ssize_t img_h;
-    ssize_t maxIterations;
-
-    QLine xAchse;
-    QLine yAchse;
-
-    std::complex<long double> juliaStart;
-    bool isMandelbrotSet;
-    bool isStart = false;
-
-private:
-    size_t **iterations;
-};
 
 
 
@@ -84,7 +35,7 @@ class MainWindow : public QMainWindow
         ZoomRect();
         void show();
         void hide();
-        void updateRectSize(size_t winW, size_t winH, long double scale);
+        void updateRectSize(size_t winW, size_t winH, double scale);
         void updateRectPos(Point p);
         void setMousePressState(bool isPressed);
 
@@ -132,8 +83,7 @@ public:
     QList<ImageSetting> settingsList;
     // Liste mit Threads für Berechnung
     QList<class WorkerThread* > tworkers;
-    // Für Normalized Iteration Count Berechnung
-    static constexpr long double log2 = 0.69314718055994530941723212145818;//0.30102999566398119521373889472449;
+
     // für größenvorschau && speicherung der letzten Mausposition
     ZoomRect zoomRect;
     // timer only update img if there are changes
@@ -166,7 +116,7 @@ public:
 
     void setOperationMode(OP_MODE o);
 
-    void setColor(QPainter *mpainter, size_t iters, std::complex<long double> z_n);
+//    void setColor(QPainter *mpainter, size_t iters, std::complex<double> z_n);
 
     void timerEvent(QTimerEvent *);
 
@@ -188,7 +138,7 @@ public:
 private slots:
     void on_pushButtonStart_clicked();
 
-    void finishedLine(QList<WorkerThread::Pixel> *);
+    void finishedLine(QList<Pixel> *);
 
     void threadFinished();
 
@@ -206,8 +156,6 @@ private slots:
     void on_radioButton_normalized_toggled(bool checked);
 
     void on_radioButton_invert_toggled(bool checked);
-
-    void on_radioButton_toggled(bool checked);
 
     void on_spinBoxW_valueChanged(int arg1);
 

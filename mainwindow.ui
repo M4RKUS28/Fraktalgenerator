@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1119</width>
-    <height>737</height>
+    <height>830</height>
    </rect>
   </property>
   <property name="font">
@@ -60,98 +60,6 @@
         </property>
        </spacer>
       </item>
-      <item>
-       <widget class="QLabel" name="label_19">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="text">
-         <string>Skalierung:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton_scale_plus">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>35</width>
-          <height>35</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>35</width>
-          <height>35</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>+</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton_scale_minus">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>35</width>
-          <height>35</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>35</width>
-          <height>35</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="horizontalSpacer_3">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
-       <spacer name="horizontalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
      </layout>
     </item>
     <item row="0" column="1">
@@ -184,7 +92,7 @@
           <enum>QTabWidget::Rounded</enum>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>2</number>
          </property>
          <property name="iconSize">
           <size>
@@ -200,6 +108,40 @@
            <string>⭐Übersicht</string>
           </attribute>
           <layout class="QFormLayout" name="formLayout_5">
+           <item row="0" column="0" colspan="2">
+            <widget class="Line" name="line_11">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_29">
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>Fraktal:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QComboBox" name="comboBox_Fraktal">
+             <item>
+              <property name="text">
+               <string>Mandelbrot-Menge</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Julia-Menge</string>
+              </property>
+             </item>
+            </widget>
+           </item>
            <item row="2" column="0" colspan="2">
             <widget class="Line" name="line_4">
              <property name="orientation">
@@ -336,13 +278,6 @@
              </property>
             </widget>
            </item>
-           <item row="11" column="1">
-            <widget class="QLabel" name="re">
-             <property name="text">
-              <string>-</string>
-             </property>
-            </widget>
-           </item>
            <item row="12" column="0">
             <widget class="QLabel" name="label_13">
              <property name="font">
@@ -356,13 +291,6 @@
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="12" column="1">
-            <widget class="QLabel" name="img">
-             <property name="text">
-              <string>-</string>
              </property>
             </widget>
            </item>
@@ -386,80 +314,10 @@
              </property>
             </widget>
            </item>
-           <item row="20" column="0" colspan="2">
-            <widget class="QListWidget" name="listWidgetHistory"/>
-           </item>
-           <item row="22" column="0" colspan="2">
-            <spacer name="verticalSpacer_2">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
            <item row="15" column="0" colspan="2">
             <widget class="Line" name="line_10">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="19" column="0" colspan="2">
-            <widget class="QLabel" name="label_28">
-             <property name="font">
-              <font>
-               <pointsize>10</pointsize>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="text">
-              <string>Verlauf:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="21" column="0" colspan="2">
-            <widget class="QPushButton" name="pushButton_rm_history">
-             <property name="text">
-              <string>Verlauf löschen</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QComboBox" name="comboBox_Fraktal">
-             <item>
-              <property name="text">
-               <string>Mandelbrot-Menge</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Julia-Menge</string>
-              </property>
-             </item>
-            </widget>
-           </item>
-           <item row="0" column="0" colspan="2">
-            <widget class="Line" name="line_11">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_29">
-             <property name="font">
-              <font>
-               <pointsize>10</pointsize>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="text">
-              <string>Fraktal:</string>
              </property>
             </widget>
            </item>
@@ -486,7 +344,7 @@
            <item row="17" column="1">
             <widget class="QLabel" name="label_julia_c">
              <property name="text">
-              <string>TextLabel</string>
+              <string>-</string>
              </property>
             </widget>
            </item>
@@ -500,7 +358,66 @@
            <item row="18" column="1">
             <widget class="QLabel" name="label_julia_c_im">
              <property name="text">
-              <string>TextLabel</string>
+              <string>-</string>
+             </property>
+            </widget>
+           </item>
+           <item row="19" column="0" colspan="2">
+            <widget class="QLabel" name="label_28">
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>Verlauf:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="20" column="0" colspan="2">
+            <widget class="QListWidget" name="listWidgetHistory"/>
+           </item>
+           <item row="21" column="0" colspan="2">
+            <widget class="QPushButton" name="pushButton_rm_history">
+             <property name="text">
+              <string>Verlauf löschen</string>
+             </property>
+            </widget>
+           </item>
+           <item row="22" column="0" colspan="2">
+            <spacer name="verticalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="11" column="1">
+            <widget class="QDoubleSpinBox" name="re">
+             <property name="decimals">
+              <number>15</number>
+             </property>
+             <property name="minimum">
+              <double>-99.000000000000000</double>
+             </property>
+            </widget>
+           </item>
+           <item row="12" column="1">
+            <widget class="QDoubleSpinBox" name="im">
+             <property name="suffix">
+              <string>i</string>
+             </property>
+             <property name="decimals">
+              <number>15</number>
+             </property>
+             <property name="minimum">
+              <double>-99.000000000000000</double>
              </property>
             </widget>
            </item>
@@ -1284,14 +1201,14 @@
              </property>
             </widget>
            </item>
-           <item row="12" column="0" colspan="2">
+           <item row="13" column="0" colspan="2">
             <widget class="Line" name="line_12">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
             </widget>
            </item>
-           <item row="13" column="0">
+           <item row="14" column="0">
             <widget class="QLabel" name="label_5">
              <property name="font">
               <font>
@@ -1304,7 +1221,7 @@
              </property>
             </widget>
            </item>
-           <item row="13" column="1">
+           <item row="14" column="1">
             <widget class="QSpinBox" name="spinBox_threads">
              <property name="minimum">
               <number>1</number>
@@ -1317,14 +1234,14 @@
              </property>
             </widget>
            </item>
-           <item row="14" column="0">
+           <item row="15" column="0">
             <widget class="QLabel" name="label_15">
              <property name="text">
               <string>Fluchradius:</string>
              </property>
             </widget>
            </item>
-           <item row="14" column="1">
+           <item row="15" column="1">
             <widget class="QDoubleSpinBox" name="doubleSpinBoxEscapeR">
              <property name="minimum">
               <double>2.000000000000000</double>
@@ -1337,7 +1254,7 @@
              </property>
             </widget>
            </item>
-           <item row="15" column="0">
+           <item row="16" column="0">
             <widget class="QLabel" name="label_10">
              <property name="font">
               <font>
@@ -1346,11 +1263,11 @@
               </font>
              </property>
              <property name="text">
-              <string>Genauigkeit:</string>
+              <string>Rechenart</string>
              </property>
             </widget>
            </item>
-           <item row="15" column="1">
+           <item row="16" column="1">
             <widget class="QComboBox" name="comboBox_precession">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -1371,17 +1288,22 @@
              </property>
              <item>
               <property name="text">
-               <string>double&lt;8 Bit&gt;</string>
+               <string>double_img_real</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>double&lt;16 Bit&gt;</string>
+               <string>complex&lt;double&gt;</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>crazy_mode</string>
               </property>
              </item>
             </widget>
            </item>
-           <item row="17" column="0" colspan="2">
+           <item row="18" column="0" colspan="2">
             <spacer name="verticalSpacer">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -1394,14 +1316,14 @@
              </property>
             </spacer>
            </item>
-           <item row="16" column="0">
+           <item row="17" column="0">
             <widget class="QLabel" name="label_27">
              <property name="text">
               <string>HDPI Scaling:</string>
              </property>
             </widget>
            </item>
-           <item row="16" column="1">
+           <item row="17" column="1">
             <widget class="QComboBox" name="comboBox">
              <item>
               <property name="text">
@@ -1435,6 +1357,19 @@
              </item>
             </widget>
            </item>
+           <item row="12" column="0" colspan="2">
+            <widget class="QRadioButton" name="radioButtonAutoScroll">
+             <property name="text">
+              <string>Autoscroll nach Vergrößerung</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+             <property name="autoExclusive">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
           </layout>
          </widget>
         </widget>
@@ -1455,8 +1390,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>790</width>
-         <height>628</height>
+         <width>787</width>
+         <height>736</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_5">

@@ -46,16 +46,14 @@ public:
     QHBoxLayout *horizontalLayout_3;
     QProgressBar *progressBar;
     QSpacerItem *horizontalSpacer;
-    QLabel *label_19;
-    QPushButton *pushButton_scale_plus;
-    QPushButton *pushButton_scale_minus;
-    QSpacerItem *horizontalSpacer_3;
-    QSpacerItem *horizontalSpacer_2;
     QWidget *widget;
     QVBoxLayout *verticalLayout;
     QTabWidget *tabWidget;
     QWidget *tab_3;
     QFormLayout *formLayout_5;
+    QFrame *line_11;
+    QLabel *label_29;
+    QComboBox *comboBox_Fraktal;
     QFrame *line_4;
     QLabel *label_23;
     QLabel *label_12;
@@ -69,24 +67,21 @@ public:
     QFrame *line_6;
     QLabel *label_18;
     QLabel *label_2;
-    QLabel *re;
     QLabel *label_13;
-    QLabel *img;
     QLabel *label_14;
     QLabel *label_iterations;
-    QListWidget *listWidgetHistory;
-    QSpacerItem *verticalSpacer_2;
     QFrame *line_10;
-    QLabel *label_28;
-    QPushButton *pushButton_rm_history;
-    QComboBox *comboBox_Fraktal;
-    QFrame *line_11;
-    QLabel *label_29;
     QLabel *label_30;
     QLabel *label_31;
     QLabel *label_julia_c;
     QLabel *label_32;
     QLabel *label_julia_c_im;
+    QLabel *label_28;
+    QListWidget *listWidgetHistory;
+    QPushButton *pushButton_rm_history;
+    QSpacerItem *verticalSpacer_2;
+    QDoubleSpinBox *re;
+    QDoubleSpinBox *im;
     QWidget *tab_2;
     QVBoxLayout *verticalLayout_5;
     QFrame *line_8;
@@ -146,6 +141,7 @@ public:
     QSpacerItem *verticalSpacer;
     QLabel *label_27;
     QComboBox *comboBox;
+    QRadioButton *radioButtonAutoScroll;
     QScrollArea *scrollArea;
     QWidget *scrollAreaWidgetContents_2;
     QHBoxLayout *horizontalLayout_5;
@@ -169,7 +165,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(1119, 737);
+        MainWindow->resize(1119, 830);
         QFont font;
         font.setPointSize(10);
         MainWindow->setFont(font);
@@ -197,40 +193,6 @@ public:
 
         horizontalLayout_3->addItem(horizontalSpacer);
 
-        label_19 = new QLabel(centralwidget);
-        label_19->setObjectName(QString::fromUtf8("label_19"));
-        label_19->setEnabled(false);
-
-        horizontalLayout_3->addWidget(label_19);
-
-        pushButton_scale_plus = new QPushButton(centralwidget);
-        pushButton_scale_plus->setObjectName(QString::fromUtf8("pushButton_scale_plus"));
-        pushButton_scale_plus->setEnabled(false);
-        sizePolicy.setHeightForWidth(pushButton_scale_plus->sizePolicy().hasHeightForWidth());
-        pushButton_scale_plus->setSizePolicy(sizePolicy);
-        pushButton_scale_plus->setMinimumSize(QSize(35, 35));
-        pushButton_scale_plus->setMaximumSize(QSize(35, 35));
-
-        horizontalLayout_3->addWidget(pushButton_scale_plus);
-
-        pushButton_scale_minus = new QPushButton(centralwidget);
-        pushButton_scale_minus->setObjectName(QString::fromUtf8("pushButton_scale_minus"));
-        pushButton_scale_minus->setEnabled(false);
-        sizePolicy.setHeightForWidth(pushButton_scale_minus->sizePolicy().hasHeightForWidth());
-        pushButton_scale_minus->setSizePolicy(sizePolicy);
-        pushButton_scale_minus->setMinimumSize(QSize(35, 35));
-        pushButton_scale_minus->setMaximumSize(QSize(35, 35));
-
-        horizontalLayout_3->addWidget(pushButton_scale_minus);
-
-        horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        horizontalLayout_3->addItem(horizontalSpacer_3);
-
-        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        horizontalLayout_3->addItem(horizontalSpacer_2);
-
 
         gridLayout->addLayout(horizontalLayout_3, 2, 0, 1, 1);
 
@@ -255,6 +217,29 @@ public:
         tab_3->setObjectName(QString::fromUtf8("tab_3"));
         formLayout_5 = new QFormLayout(tab_3);
         formLayout_5->setObjectName(QString::fromUtf8("formLayout_5"));
+        line_11 = new QFrame(tab_3);
+        line_11->setObjectName(QString::fromUtf8("line_11"));
+        line_11->setFrameShape(QFrame::HLine);
+        line_11->setFrameShadow(QFrame::Sunken);
+
+        formLayout_5->setWidget(0, QFormLayout::SpanningRole, line_11);
+
+        label_29 = new QLabel(tab_3);
+        label_29->setObjectName(QString::fromUtf8("label_29"));
+        QFont font1;
+        font1.setPointSize(10);
+        font1.setBold(true);
+        label_29->setFont(font1);
+
+        formLayout_5->setWidget(1, QFormLayout::LabelRole, label_29);
+
+        comboBox_Fraktal = new QComboBox(tab_3);
+        comboBox_Fraktal->addItem(QString());
+        comboBox_Fraktal->addItem(QString());
+        comboBox_Fraktal->setObjectName(QString::fromUtf8("comboBox_Fraktal"));
+
+        formLayout_5->setWidget(1, QFormLayout::FieldRole, comboBox_Fraktal);
+
         line_4 = new QFrame(tab_3);
         line_4->setObjectName(QString::fromUtf8("line_4"));
         line_4->setFrameShape(QFrame::HLine);
@@ -264,9 +249,6 @@ public:
 
         label_23 = new QLabel(tab_3);
         label_23->setObjectName(QString::fromUtf8("label_23"));
-        QFont font1;
-        font1.setPointSize(10);
-        font1.setBold(true);
         label_23->setFont(font1);
 
         formLayout_5->setWidget(3, QFormLayout::SpanningRole, label_23);
@@ -345,22 +327,12 @@ public:
 
         formLayout_5->setWidget(11, QFormLayout::LabelRole, label_2);
 
-        re = new QLabel(tab_3);
-        re->setObjectName(QString::fromUtf8("re"));
-
-        formLayout_5->setWidget(11, QFormLayout::FieldRole, re);
-
         label_13 = new QLabel(tab_3);
         label_13->setObjectName(QString::fromUtf8("label_13"));
         label_13->setFont(font2);
         label_13->setAlignment(Qt::AlignCenter);
 
         formLayout_5->setWidget(12, QFormLayout::LabelRole, label_13);
-
-        img = new QLabel(tab_3);
-        img->setObjectName(QString::fromUtf8("img"));
-
-        formLayout_5->setWidget(12, QFormLayout::FieldRole, img);
 
         label_14 = new QLabel(tab_3);
         label_14->setObjectName(QString::fromUtf8("label_14"));
@@ -373,52 +345,12 @@ public:
 
         formLayout_5->setWidget(13, QFormLayout::FieldRole, label_iterations);
 
-        listWidgetHistory = new QListWidget(tab_3);
-        listWidgetHistory->setObjectName(QString::fromUtf8("listWidgetHistory"));
-
-        formLayout_5->setWidget(20, QFormLayout::SpanningRole, listWidgetHistory);
-
-        verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
-
-        formLayout_5->setItem(22, QFormLayout::SpanningRole, verticalSpacer_2);
-
         line_10 = new QFrame(tab_3);
         line_10->setObjectName(QString::fromUtf8("line_10"));
         line_10->setFrameShape(QFrame::HLine);
         line_10->setFrameShadow(QFrame::Sunken);
 
         formLayout_5->setWidget(15, QFormLayout::SpanningRole, line_10);
-
-        label_28 = new QLabel(tab_3);
-        label_28->setObjectName(QString::fromUtf8("label_28"));
-        label_28->setFont(font1);
-
-        formLayout_5->setWidget(19, QFormLayout::SpanningRole, label_28);
-
-        pushButton_rm_history = new QPushButton(tab_3);
-        pushButton_rm_history->setObjectName(QString::fromUtf8("pushButton_rm_history"));
-
-        formLayout_5->setWidget(21, QFormLayout::SpanningRole, pushButton_rm_history);
-
-        comboBox_Fraktal = new QComboBox(tab_3);
-        comboBox_Fraktal->addItem(QString());
-        comboBox_Fraktal->addItem(QString());
-        comboBox_Fraktal->setObjectName(QString::fromUtf8("comboBox_Fraktal"));
-
-        formLayout_5->setWidget(1, QFormLayout::FieldRole, comboBox_Fraktal);
-
-        line_11 = new QFrame(tab_3);
-        line_11->setObjectName(QString::fromUtf8("line_11"));
-        line_11->setFrameShape(QFrame::HLine);
-        line_11->setFrameShadow(QFrame::Sunken);
-
-        formLayout_5->setWidget(0, QFormLayout::SpanningRole, line_11);
-
-        label_29 = new QLabel(tab_3);
-        label_29->setObjectName(QString::fromUtf8("label_29"));
-        label_29->setFont(font1);
-
-        formLayout_5->setWidget(1, QFormLayout::LabelRole, label_29);
 
         label_30 = new QLabel(tab_3);
         label_30->setObjectName(QString::fromUtf8("label_30"));
@@ -445,6 +377,40 @@ public:
         label_julia_c_im->setObjectName(QString::fromUtf8("label_julia_c_im"));
 
         formLayout_5->setWidget(18, QFormLayout::FieldRole, label_julia_c_im);
+
+        label_28 = new QLabel(tab_3);
+        label_28->setObjectName(QString::fromUtf8("label_28"));
+        label_28->setFont(font1);
+
+        formLayout_5->setWidget(19, QFormLayout::SpanningRole, label_28);
+
+        listWidgetHistory = new QListWidget(tab_3);
+        listWidgetHistory->setObjectName(QString::fromUtf8("listWidgetHistory"));
+
+        formLayout_5->setWidget(20, QFormLayout::SpanningRole, listWidgetHistory);
+
+        pushButton_rm_history = new QPushButton(tab_3);
+        pushButton_rm_history->setObjectName(QString::fromUtf8("pushButton_rm_history"));
+
+        formLayout_5->setWidget(21, QFormLayout::SpanningRole, pushButton_rm_history);
+
+        verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        formLayout_5->setItem(22, QFormLayout::SpanningRole, verticalSpacer_2);
+
+        re = new QDoubleSpinBox(tab_3);
+        re->setObjectName(QString::fromUtf8("re"));
+        re->setDecimals(15);
+        re->setMinimum(-99.000000000000000);
+
+        formLayout_5->setWidget(11, QFormLayout::FieldRole, re);
+
+        im = new QDoubleSpinBox(tab_3);
+        im->setObjectName(QString::fromUtf8("im"));
+        im->setDecimals(15);
+        im->setMinimum(-99.000000000000000);
+
+        formLayout_5->setWidget(12, QFormLayout::FieldRole, im);
 
         tabWidget->addTab(tab_3, QString());
         tab_2 = new QWidget();
@@ -796,13 +762,13 @@ public:
         line_12->setFrameShape(QFrame::HLine);
         line_12->setFrameShadow(QFrame::Sunken);
 
-        formLayout_2->setWidget(12, QFormLayout::SpanningRole, line_12);
+        formLayout_2->setWidget(13, QFormLayout::SpanningRole, line_12);
 
         label_5 = new QLabel(tab);
         label_5->setObjectName(QString::fromUtf8("label_5"));
         label_5->setFont(font2);
 
-        formLayout_2->setWidget(13, QFormLayout::LabelRole, label_5);
+        formLayout_2->setWidget(14, QFormLayout::LabelRole, label_5);
 
         spinBox_threads = new QSpinBox(tab);
         spinBox_threads->setObjectName(QString::fromUtf8("spinBox_threads"));
@@ -810,12 +776,12 @@ public:
         spinBox_threads->setMaximum(999);
         spinBox_threads->setValue(20);
 
-        formLayout_2->setWidget(13, QFormLayout::FieldRole, spinBox_threads);
+        formLayout_2->setWidget(14, QFormLayout::FieldRole, spinBox_threads);
 
         label_15 = new QLabel(tab);
         label_15->setObjectName(QString::fromUtf8("label_15"));
 
-        formLayout_2->setWidget(14, QFormLayout::LabelRole, label_15);
+        formLayout_2->setWidget(15, QFormLayout::LabelRole, label_15);
 
         doubleSpinBoxEscapeR = new QDoubleSpinBox(tab);
         doubleSpinBoxEscapeR->setObjectName(QString::fromUtf8("doubleSpinBoxEscapeR"));
@@ -823,15 +789,16 @@ public:
         doubleSpinBoxEscapeR->setMaximum(9999.989999999999782);
         doubleSpinBoxEscapeR->setValue(8.000000000000000);
 
-        formLayout_2->setWidget(14, QFormLayout::FieldRole, doubleSpinBoxEscapeR);
+        formLayout_2->setWidget(15, QFormLayout::FieldRole, doubleSpinBoxEscapeR);
 
         label_10 = new QLabel(tab);
         label_10->setObjectName(QString::fromUtf8("label_10"));
         label_10->setFont(font2);
 
-        formLayout_2->setWidget(15, QFormLayout::LabelRole, label_10);
+        formLayout_2->setWidget(16, QFormLayout::LabelRole, label_10);
 
         comboBox_precession = new QComboBox(tab);
+        comboBox_precession->addItem(QString());
         comboBox_precession->addItem(QString());
         comboBox_precession->addItem(QString());
         comboBox_precession->setObjectName(QString::fromUtf8("comboBox_precession"));
@@ -843,16 +810,16 @@ public:
         comboBox_precession->setMinimumSize(QSize(0, 0));
         comboBox_precession->setFont(font);
 
-        formLayout_2->setWidget(15, QFormLayout::FieldRole, comboBox_precession);
+        formLayout_2->setWidget(16, QFormLayout::FieldRole, comboBox_precession);
 
         verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
-        formLayout_2->setItem(17, QFormLayout::SpanningRole, verticalSpacer);
+        formLayout_2->setItem(18, QFormLayout::SpanningRole, verticalSpacer);
 
         label_27 = new QLabel(tab);
         label_27->setObjectName(QString::fromUtf8("label_27"));
 
-        formLayout_2->setWidget(16, QFormLayout::LabelRole, label_27);
+        formLayout_2->setWidget(17, QFormLayout::LabelRole, label_27);
 
         comboBox = new QComboBox(tab);
         comboBox->addItem(QString());
@@ -863,7 +830,14 @@ public:
         comboBox->addItem(QString());
         comboBox->setObjectName(QString::fromUtf8("comboBox"));
 
-        formLayout_2->setWidget(16, QFormLayout::FieldRole, comboBox);
+        formLayout_2->setWidget(17, QFormLayout::FieldRole, comboBox);
+
+        radioButtonAutoScroll = new QRadioButton(tab);
+        radioButtonAutoScroll->setObjectName(QString::fromUtf8("radioButtonAutoScroll"));
+        radioButtonAutoScroll->setChecked(true);
+        radioButtonAutoScroll->setAutoExclusive(false);
+
+        formLayout_2->setWidget(12, QFormLayout::SpanningRole, radioButtonAutoScroll);
 
         tabWidget->addTab(tab, QString());
 
@@ -878,7 +852,7 @@ public:
         scrollArea->setWidgetResizable(true);
         scrollAreaWidgetContents_2 = new QWidget();
         scrollAreaWidgetContents_2->setObjectName(QString::fromUtf8("scrollAreaWidgetContents_2"));
-        scrollAreaWidgetContents_2->setGeometry(QRect(0, 0, 790, 628));
+        scrollAreaWidgetContents_2->setGeometry(QRect(0, 0, 787, 736));
         horizontalLayout_5 = new QHBoxLayout(scrollAreaWidgetContents_2);
         horizontalLayout_5->setObjectName(QString::fromUtf8("horizontalLayout_5"));
         imageView = new ImageView(scrollAreaWidgetContents_2);
@@ -965,7 +939,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(0);
+        tabWidget->setCurrentIndex(2);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -974,9 +948,10 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
-        label_19->setText(QCoreApplication::translate("MainWindow", "Skalierung:", nullptr));
-        pushButton_scale_plus->setText(QCoreApplication::translate("MainWindow", "+", nullptr));
-        pushButton_scale_minus->setText(QCoreApplication::translate("MainWindow", "-", nullptr));
+        label_29->setText(QCoreApplication::translate("MainWindow", "Fraktal:", nullptr));
+        comboBox_Fraktal->setItemText(0, QCoreApplication::translate("MainWindow", "Mandelbrot-Menge", nullptr));
+        comboBox_Fraktal->setItemText(1, QCoreApplication::translate("MainWindow", "Julia-Menge", nullptr));
+
         label_23->setText(QCoreApplication::translate("MainWindow", "Aktuelles Bild:", nullptr));
         label_12->setText(QCoreApplication::translate("MainWindow", "     Vergr\303\266\303\237erung:", nullptr));
         lineEditScaleAbs->setText(QCoreApplication::translate("MainWindow", "1:200", nullptr));
@@ -987,22 +962,17 @@ public:
         bmIm->setText(QCoreApplication::translate("MainWindow", "-", nullptr));
         label_18->setText(QCoreApplication::translate("MainWindow", "Mausposition:", nullptr));
         label_2->setText(QCoreApplication::translate("MainWindow", "     Re.:", nullptr));
-        re->setText(QCoreApplication::translate("MainWindow", "-", nullptr));
         label_13->setText(QCoreApplication::translate("MainWindow", "     Im.:", nullptr));
-        img->setText(QCoreApplication::translate("MainWindow", "-", nullptr));
         label_14->setText(QCoreApplication::translate("MainWindow", "     Iterationen:", nullptr));
         label_iterations->setText(QCoreApplication::translate("MainWindow", "-", nullptr));
-        label_28->setText(QCoreApplication::translate("MainWindow", "Verlauf:", nullptr));
-        pushButton_rm_history->setText(QCoreApplication::translate("MainWindow", "Verlauf l\303\266schen", nullptr));
-        comboBox_Fraktal->setItemText(0, QCoreApplication::translate("MainWindow", "Mandelbrot-Menge", nullptr));
-        comboBox_Fraktal->setItemText(1, QCoreApplication::translate("MainWindow", "Julia-Menge", nullptr));
-
-        label_29->setText(QCoreApplication::translate("MainWindow", "Fraktal:", nullptr));
         label_30->setText(QCoreApplication::translate("MainWindow", "Julia-Menge:", nullptr));
         label_31->setText(QCoreApplication::translate("MainWindow", "     Re(c):", nullptr));
-        label_julia_c->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        label_julia_c->setText(QCoreApplication::translate("MainWindow", "-", nullptr));
         label_32->setText(QCoreApplication::translate("MainWindow", "     Im(c):", nullptr));
-        label_julia_c_im->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        label_julia_c_im->setText(QCoreApplication::translate("MainWindow", "-", nullptr));
+        label_28->setText(QCoreApplication::translate("MainWindow", "Verlauf:", nullptr));
+        pushButton_rm_history->setText(QCoreApplication::translate("MainWindow", "Verlauf l\303\266schen", nullptr));
+        im->setSuffix(QCoreApplication::translate("MainWindow", "i", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_3), QCoreApplication::translate("MainWindow", "\342\255\220\303\234bersicht", nullptr));
         groupBoxMandelFarbe->setTitle(QCoreApplication::translate("MainWindow", "Fraktal-Menge", nullptr));
         comboBoxMandelColor->setItemText(0, QCoreApplication::translate("MainWindow", "black", nullptr));
@@ -1083,9 +1053,10 @@ public:
         radioButton_reload_at_back->setText(QCoreApplication::translate("MainWindow", "Lade Bilder bei Zur\303\274ck neu", nullptr));
         label_5->setText(QCoreApplication::translate("MainWindow", "Threads:", nullptr));
         label_15->setText(QCoreApplication::translate("MainWindow", "Fluchradius:", nullptr));
-        label_10->setText(QCoreApplication::translate("MainWindow", "Genauigkeit:", nullptr));
-        comboBox_precession->setItemText(0, QCoreApplication::translate("MainWindow", "double<8 Bit>", nullptr));
-        comboBox_precession->setItemText(1, QCoreApplication::translate("MainWindow", "double<16 Bit>", nullptr));
+        label_10->setText(QCoreApplication::translate("MainWindow", "Rechenart", nullptr));
+        comboBox_precession->setItemText(0, QCoreApplication::translate("MainWindow", "double_img_real", nullptr));
+        comboBox_precession->setItemText(1, QCoreApplication::translate("MainWindow", "complex<double>", nullptr));
+        comboBox_precession->setItemText(2, QCoreApplication::translate("MainWindow", "crazy_mode", nullptr));
 
         label_27->setText(QCoreApplication::translate("MainWindow", "HDPI Scaling:", nullptr));
         comboBox->setItemText(0, QCoreApplication::translate("MainWindow", "auto", nullptr));
@@ -1095,6 +1066,7 @@ public:
         comboBox->setItemText(4, QCoreApplication::translate("MainWindow", "200%", nullptr));
         comboBox->setItemText(5, QCoreApplication::translate("MainWindow", "400%", nullptr));
 
+        radioButtonAutoScroll->setText(QCoreApplication::translate("MainWindow", "Autoscroll nach Vergr\303\266\303\237erung", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab), QCoreApplication::translate("MainWindow", "\342\232\231Settings", nullptr));
         pushButtonStart->setText(QCoreApplication::translate("MainWindow", "Vergr\303\266\303\237ern", nullptr));
         pushButton_2->setText(QCoreApplication::translate("MainWindow", "Zur\303\274ck", nullptr));
