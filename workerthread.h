@@ -30,10 +30,11 @@ private:
 struct ImageSetting {
     ImageSetting();
     ImageSetting(double scale, Point midPoint);
+
     void init(size_t img_w, size_t img_h, size_t maxIterations, bool isMandelbrotSet);
     void cleanUP();
     void setIterationCountAt(ssize_t x, ssize_t y, size_t iterations);
-    void setColorSettings(bool normalized, double logEscape, bool fixedColor, QString fixFraktalColor, bool inverted, double escape_radius);
+    void setColorSettings(int palette, bool normalized, double logEscape, bool fixedColor, QString fixFraktalColor, bool inverted, double escape_radius);
 
     size_t getIterationCountAt(QPoint pos);
     size_t getIterationCountAt(ssize_t x, ssize_t y);
@@ -65,13 +66,25 @@ struct ImageSetting {
     bool isStart = false;
 
     //Color settings
-    bool fixedColor, inverted, normalized;
+    bool fixedColor, inverted, normalized, has_hue;
+    int palette;
     QString fixFraktalColor;
 
 
     double **iterations_normal;
+    double **hue;
+
+
+public:
+    size_t getNumIterationsPerPixelAt(size_t i) const;
+    void addNumIterationsPerPixel(size_t iteration);
+
+    void setHue(double ** hue, size_t totalIters );
+    bool hueIsSetted();
 private:
     size_t **iterations;
+    size_t * NumIterationsPerPixel;
+    size_t totalIters;
 
 };
 
@@ -100,19 +113,16 @@ public:
             y_left_corner,
             y_right_corner;
 
-    // Für Normalized Iteration Count Berechnung
-    static constexpr double log2 = 0.69314718055994530941723212145818;//0.30102999566398119521373889472449;
-
-    int calc_mode, preColorMode;
+    int calc_mode;
     ImageSetting settings;
 
     void setRange(ssize_t x_left_corner, ssize_t x_right_corner, ssize_t y_left_corner, ssize_t y_right_corner);
 
-    void startCalc(ImageSetting settings, int calc_mode, int preColorMode);
+    void startCalc(ImageSetting settings, int calc_mode);
 
     void run();
-    QColor getPreColor(size_t iters, double normalizedItC);
-    double getNormalizedIterationCount(size_t iters, double z_real, double z_imag);
+    static QColor getPreColor(size_t iters, double normalizedItC, const ImageSetting *imgS);
+    static double getNormalizedIterationCount(size_t iters, double z_real, double z_imag, ImageSetting *imS);
 
 
 signals:

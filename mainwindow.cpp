@@ -15,23 +15,36 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , currentImg(START_SCALE, Point(START_POS_X, START_POS_Y)),
+      ignoreXPosEdited(false),
+      ignoreYPosEdited(false),
       ui(new Ui::MainWindow)
 {
+    //setup ui
     ui->setupUi(this);
-    this->ui->spinBoxW->setValue( (int)(QApplication::screens().at(0)->availableGeometry().width() * 0.08) * 10);
-    this->ui->spinBoxH->setValue( (int)(QApplication::screens().at(0)->availableGeometry().height() * 0.085) * 10);
 
-    timerID = this->startTimer(20);
+    //save start size
+    int width = (int)(QApplication::screens().at(0)->availableGeometry().width() *this->devicePixelRatio()* 0.075) * 10,
+        height = (int)(QApplication::screens().at(0)->availableGeometry().height() *this->devicePixelRatio()* 0.085) * 10;
+
+    //setup currentImage
+    currentImg.init(width, height, ui->spinBoxMaxIterations->value(), true);
+    currentImg.painter->fillRect(currentImg.image->rect(), QColor(ui->comboBox_background_color->currentText()));
+
+    // connect signals
     connect(ui->imageView, SIGNAL(mouseMove(QPoint)), this, SLOT(mouse_move_in_img(QPoint)));
 
     // init rect:
     zoomRect.updateRectSize(this->ui->spinBoxW->value(), this->ui->spinBoxH->value(), ui->spinBox_zoom->value());
+    zoomRect.updateRectPos(Point(-currentImg.x_verschiebung, -currentImg.y_verschiebung));
 
-    currentImg.init(this->ui->spinBoxW->value(), this->ui->spinBoxH->value(), ui->spinBoxMaxIterations->value(), true);
-    currentImg.painter->fillRect(currentImg.image->rect(), QColor(ui->comboBox_background_color->currentText()));
+    //setup ui values
+    this->ui->spinBoxW->setValue( width );
+    this->ui->spinBoxH->setValue( height );
 
+    //start timer
+    timerID = this->startTimer(20);
 
-    ui->imageView->setImage(*currentImg.image);
+    updateImage();
     this->startRefresh(currentImg, true);
 
 }
@@ -51,6 +64,22 @@ MainWindow::~MainWindow()
 
     delete ui;
     ui = nullptr;
+
+}
+
+void MainWindow::updateMidPos(bool clear)
+{
+
+    this->ignoreXPosEdited = true;
+    this->ignoreYPosEdited = true;
+    if(clear) {
+
+        ui->re->setValue(0);
+        ui->im->setValue(0);
+    } else {
+        ui->re->setValue(((double( (this->zoomRect.getMousePos().x() + currentImg.x_verschiebung) / currentImg.scale))));
+        ui->im->setValue(( - (double( (this->zoomRect.getMousePos().y() + currentImg.y_verschiebung) / currentImg.scale))));
+    }
 
 }
 
@@ -115,8 +144,7 @@ void MainWindow::zustandWechseln(QString aktion, QString, QPoint m_pos, QMouseEv
                 }
                 ui->label_iterations->setText(QString::number(currentImg.getIterationCountAt(qpos)));
 
-                ui->re->setValue(((double( (this->zoomRect.getMousePos().x() + currentImg.x_verschiebung) / currentImg.scale))));
-                ui->im->setValue(( - (double( (this->zoomRect.getMousePos().y() + currentImg.y_verschiebung) / currentImg.scale))));
+                updateMidPos();
 
 
                 if( ui->radioButton_zahelnfolge_bei_mousemove->isChecked() && zahlenfolge.isShown() ) {
@@ -126,8 +154,8 @@ void MainWindow::zustandWechseln(QString aktion, QString, QPoint m_pos, QMouseEv
 
             } else {
                 ui->label_iterations->setText("-");
-                ui->re->setValue(0);
-                ui->im->setValue(0);
+//                ui->re->setValue(0);
+//                ui->im->setValue(0);
             }
 
         } else if(aktion == "mousePressEvent"  && m_event) {
@@ -135,7 +163,9 @@ void MainWindow::zustandWechseln(QString aktion, QString, QPoint m_pos, QMouseEv
             auto qpos = this->ui->imageView->mapFrom(this, m_event->pos()) * ui->imageView->getHdpi_multiplicator();
             auto pos = Point(qpos.x(), qpos.y());
 
-            if(pos.x() >= 0 && pos.x() < currentImg.img_w && pos.y() >= 0 && pos.y() < currentImg.img_h) {
+            if(pos.x() >= 0 && pos.x() < currentImg.img_w && pos.y() >= 0 && pos.y() < currentImg.img_h
+                    && m_event->pos().x() < ui->scrollArea->width() + ui->scrollArea->pos().x() + 10
+                    && m_event->pos().y() < ui->scrollArea->height() + ui->scrollArea->pos().y() + 10) {
                 if(m_event->button() == Qt::LeftButton) {
                     zoomRect.setMousePressState(true);
                     zoomRect.show();
@@ -147,8 +177,7 @@ void MainWindow::zustandWechseln(QString aktion, QString, QPoint m_pos, QMouseEv
 
                     ui->label_iterations->setText(QString::number(currentImg.getIterationCountAt(qpos)));
 
-                    ui->re->setValue(((double( (this->zoomRect.getMousePos().x() + currentImg.x_verschiebung) / currentImg.scale))));
-                    ui->im->setValue(( - (double( (this->zoomRect.getMousePos().y() + currentImg.y_verschiebung) / currentImg.scale))));
+                    updateMidPos();
 
                     if(zahlenfolge.isShown())
                         this->zahlenfolge.removeZahlenfolge();
@@ -158,12 +187,14 @@ void MainWindow::zustandWechseln(QString aktion, QString, QPoint m_pos, QMouseEv
 
                 this->updateImage();
             } else {
-                this->setOperationMode(OP_MODE::REFRESH);
-                zoomRect.setMousePressState(false);
-                zoomRect.hide();
+                if(m_event->button() != Qt::LeftButton) {
+                    this->setOperationMode(OP_MODE::REFRESH);
+                    zoomRect.setMousePressState(false);
+                    zoomRect.hide();
 
-                ui->re->setValue(0);
-                ui->im->setValue(0);
+    //                updateMidPos(true);
+                }
+
                 ui->label_iterations->setText("-");
                 this->zahlenfolge.removeZahlenfolge();
 
@@ -172,8 +203,33 @@ void MainWindow::zustandWechseln(QString aktion, QString, QPoint m_pos, QMouseEv
 
 
         } else if(aktion == "ZURÜCK") {
-            if(settingsList.length() >= 2) {
-                this->currentImg = settingsList.at(settingsList.length() - 2);
+            int pos = - 1;
+            for(int i = 0; i < settingsList.length(); i++)
+                if(settingsList.at(i).image == currentImg.image)
+                    pos = i - 1;
+
+            if(pos >= 0 && pos < settingsList.length()) {
+                //HIER AKTUELLES AUWÄHLEN!!!!
+                //ui->listWidgetHistory->setCurrentRow(pos);
+
+                this->currentImg = settingsList.at(pos);
+                if(ui->radioButton_reload_at_back->isChecked())
+                    this->startRefresh(currentImg);
+                else {
+                    this->endRefresh(false);
+                    updateImage();
+                }
+            }
+
+
+        } else if(aktion == "VOR") {
+            int pos = - 1;
+            for(int i = 0; i < settingsList.length(); i++)
+                if(settingsList.at(i).image == currentImg.image)
+                    pos = i + 1;
+
+            if(pos >= 0 && pos < settingsList.length()) {
+                this->currentImg = settingsList.at(pos);
                 if(ui->radioButton_reload_at_back->isChecked())
                     this->startRefresh(currentImg);
                 else {
@@ -236,8 +292,18 @@ ImageSetting MainWindow::getNewScaledSetting(ImageSetting last_img)
     if(last_img.isMandelbrotSet && ui->comboBox_Fraktal->currentIndex() == 1 /*julia*/ ) {
         double c_x, c_y;
         if(this->zoomRect.isShown()) {
-            c_x   = (this->zoomRect.getMousePos().x() + last_img.x_verschiebung) / last_img.scale;
-            c_y   = (this->zoomRect.getMousePos().y() + last_img.y_verschiebung) / last_img.scale;
+
+            // Anti Rundungsfehler!!
+            if(ui->re->value() != 0.0 )
+                c_x   = ui->re->value();
+            else
+                c_x   = (this->zoomRect.getMousePos().x() + last_img.x_verschiebung) / last_img.scale;
+
+            if(ui->im->value() != 0.0 )
+                c_y   = -ui->im->value();
+            else
+                c_y   = (this->zoomRect.getMousePos().y() + last_img.y_verschiebung) / last_img.scale;
+
         } else {
             c_x = last_img.midPoint.x() / last_img.scale;
             c_y = last_img.midPoint.y() / last_img.scale;
@@ -302,6 +368,10 @@ void MainWindow::updateUiWithImageSetting(ImageSetting imgs)
     this->ui->spinBoxW->setValue(imgs.img_w);
     this->ui->spinBoxH->setValue(imgs.img_h);
     this->ui->spinBoxMaxIterations->setValue(imgs.maxIterations);
+    ui->comboBox_Fraktal->setCurrentIndex(imgs.isMandelbrotSet ? 0 : 1);
+    ui->comboBox_palette->setCurrentIndex(imgs.palette);
+    ui->radioButton_normalized->setChecked( imgs.normalized );
+    ui->radioButton_invert->setChecked( imgs.inverted );
 
 }
 
@@ -335,7 +405,8 @@ void MainWindow::startRefresh(ImageSetting set, bool appendToList)
     this->ui->progressBar->setValue(0);
 
     //
-    set.setColorSettings(ui->radioButton_normalized->isChecked(),
+    set.setColorSettings(this->ui->comboBox_palette->currentIndex(),
+                         ui->radioButton_normalized->isChecked(),
                          log(log(ui->doubleSpinBoxEscapeR->value())),
                          ui->groupBoxMandelFarbe->isChecked(),
                          ui->comboBoxMandelColor->currentText(),
@@ -365,7 +436,7 @@ void MainWindow::startRefresh(ImageSetting set, bool appendToList)
         const ssize_t y_bottom_corner = y_left_corner + set.img_h;
 
         wt->setRange(x_left_corner_part, x_right_corner_part, y_top_corner, y_bottom_corner);
-        wt->startCalc(set, this->ui->comboBox_precession->currentIndex(), this->ui->comboBox_palette->currentIndex());
+        wt->startCalc(set, this->ui->comboBox_precession->currentIndex());
 
         connect(wt, SIGNAL(finishedLine(QList<Pixel>*)), this, SLOT(finishedLine(QList<Pixel>*)));
         connect(wt, SIGNAL(finished()), this, SLOT(threadFinished()));
@@ -445,57 +516,46 @@ void MainWindow::startRefresh(ImageSetting set, bool appendToList)
 
 void MainWindow::afterColoring(ImageSetting set)
 {
-    size_t * NumIterationsPerPixel = new size_t[set.maxIterations + 2];
-    memset(NumIterationsPerPixel, 0, sizeof(size_t) * (set.maxIterations + 2) );
-
-    for(ssize_t x = 0; x < set.img_w; x++) {
-        for(ssize_t y = 0; y < set.img_h; y++) {
-            size_t i = set.getIterationCountAt(x, y);
-            if(i >= 0 && i <= set.maxIterations)
-                NumIterationsPerPixel[i]++;
-        }
-    }
-
     size_t total = 0;
-    for (size_t i = 0; i <= set.maxIterations; i++) {
-        total += NumIterationsPerPixel[i];
-        qDebug() << i << " - Iterationen gab es " << NumIterationsPerPixel[i];
-    }
-    qDebug() << "Insgesammt gab es " << total;
+    QImage img;
 
+    switch(set.palette) {
+        case 6:
+        if( ! set.hueIsSetted() ) {
+            ui->progressBar->setValue(ui->progressBar->maximum() / 2);
+            QApplication::processEvents();
+            for (size_t i = 0; i <= set.maxIterations; i++)
+                total += set.getNumIterationsPerPixelAt(i);
+            double ** hue = new double*[set.img_w];
+            for(int i = 0; i < set.img_w; i++) {
+                hue[i] = new double[set.img_h];
+                memset(hue[i], 0, sizeof(double) * set.img_h );
+            }
 
-    double ** hue = new double*[set.img_w];
-    for(int i = 0; i < set.img_w; i++) {
-        hue[i] = new double[set.img_h];
-        memset(hue[i], 0, sizeof(double) * set.img_h );
-    }
-    QImage i = *currentImg.image;
-    QPainter p = QPainter(&i);
-
-    for(ssize_t x = 0; x < set.img_w; x++) {
-        for(ssize_t y = 0; y < set.img_h; y++) {
-
-        size_t iteration= set.getIterationCountAt(x, y);
-
-        for (size_t i = 0; i <= iteration; i++) {
-            hue[x][y] += (double)NumIterationsPerPixel[i] / (double)total; /* Must be floating-posize_t division. */
+            for(ssize_t x = 0; x < set.img_w; x++) {
+                for(ssize_t y = 0; y < set.img_h; y++) {
+                    size_t iteration = set.getIterationCountAt(x, y);
+                    for (size_t i = 0; i <= iteration; i++)
+                        hue[x][y] += (double)set.getNumIterationsPerPixelAt(i) / (double)total; /* Must be floating-posize_t division. */
+                }
+            }
+            set.setHue(hue, total);
+            ui->progressBar->setValue(ui->progressBar->maximum());
         }
+        for(ssize_t x = 0; x < set.img_w; x++) {
+            for(ssize_t y = 0; y < set.img_h; y++) {
+            currentImg.painter->setPen(QColor::fromHsvF(set.hue[x][y], 0.8 , 1.0));
+            currentImg.painter->drawPoint(x, y);
 
-//        QColor::fromHsvF();
-        p.setPen(QColor::fromHsvF((hue[x][y] + std::min( 0.8* std::abs(set.iterations_normal[x][y] - set.getIterationCountAt(x, y)) , 1.0)) / 2.0, 0.8, 1.0 - std::min(  0.1 *std::pow( std::abs(set.iterations_normal[x][y] - set.getIterationCountAt(x, y)), 1.5) , 1.0)));
-        p.drawPoint(x, y);
-
+            }
         }
+        break;
     }
 
-    *currentImg.image = i;
-    ui->imageView->setImage(i);
-
-//    this->ui->labelFraktal->setPixmap(QPixmap::fromImage(*img));
-
-    delete[] NumIterationsPerPixel;
-    return;
-
+    if( ! img.isNull()) {
+        currentImg.image->swap(img);
+        updateImage();
+    }
 }
 
 void MainWindow::setOperationMode(OP_MODE o)
@@ -544,6 +604,7 @@ void MainWindow::endRefresh(bool appendToListHistory)
     ui->widget->setDisabled(false);
     ui->pushButtonStart->setText("Neu Laden");
     this->setOperationMode(OP_MODE::RESET);
+    this->zoomRect.hide();
 
     ui->progressBar->setEnabled(false);
     ui->pushButtonSaveImg->setEnabled(true);
@@ -555,12 +616,14 @@ void MainWindow::endRefresh(bool appendToListHistory)
         ui->label_julia_c_im->setText("-");
     } else {
         ui->label_julia_c->setText(QString::number( (double)(currentImg.juliaStart_real) )) ;
-        ui->label_julia_c_im->setText(QString::number( (double)(currentImg.juliaStart_img) ) + " i");
+        ui->label_julia_c_im->setText(QString::number( -(double)(currentImg.juliaStart_img) ) + " i");
     }
 
     ui->progressBar->setValue(ui->progressBar->maximum());
     ui->bmRe->setText(QString::number( (double)((( double) this->currentImg.midPoint.x()) / currentImg.scale) ));
     ui->bmIm->setText(QString::number( (double)((( double) this->currentImg.midPoint.y()) / currentImg.scale) ) + "i");
+
+
     afterColoring(currentImg);
     updateImage();
 
@@ -570,8 +633,8 @@ void MainWindow::endRefresh(bool appendToListHistory)
     }
 
     if(appendToListHistory) {
-        auto i = new QListWidgetItem("Re(" + QString::number( (double)((( double) this->currentImg.midPoint.x()) / currentImg.scale) ) +
-                                     ") Img(" +  QString::number( (double)((( double) this->currentImg.midPoint.y()) / currentImg.scale) ) + "i)");
+        auto i = new QListWidgetItem("[" + QString(currentImg.isMandelbrotSet ? "M" : "J" ) + "]: Re(" + QString::number( (double)((( double) this->currentImg.midPoint.x()) / currentImg.scale) ) +
+                                     ") Img(" +  QString::number( -(double)((( double) this->currentImg.midPoint.y()) / currentImg.scale) ) + "i)");
         i->setIcon(QIcon(QPixmap::fromImage(*this->currentImg.image).scaled(QSize(256, 256), Qt::AspectRatioMode::KeepAspectRatio, Qt::TransformationMode::FastTransformation)));
         i->setData(187, settingsList.length() - 1);
 
@@ -643,6 +706,8 @@ void MainWindow::finishedLine(QList<Pixel> *list)
         if(x >= 0 && x < currentImg.img_w && y >= 0 && y < currentImg.img_h) {
             currentImg.setIterationCountAt(x, y, list->at(l).iters);
             currentImg.iterations_normal[x][y] = list->at(l).normalized_iters;
+            //Histogramm
+            currentImg.addNumIterationsPerPixel(list->at(l).iters);
         }
 
     }
@@ -694,6 +759,11 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
 void MainWindow::mouse_move_in_img(QPoint pos)
 {
     zustandWechseln("mouseMoveEvent", "", pos);
+}
+
+void MainWindow::on_pushButton_vor_clicked()
+{
+    zustandWechseln("VOR");
 }
 
 void MainWindow::paintEvent(QPaintEvent *)
@@ -815,19 +885,18 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 
 void MainWindow::keyReleaseEvent(QKeyEvent *)
 {
-
 }
 
 
 ImageSetting::ImageSetting()
 {
-
+    has_hue = false;
 }
 
 ImageSetting::ImageSetting(double scale, Point midPoint)
-    : midPoint(midPoint), scale(scale), x_verschiebung(0), y_verschiebung(0)
+    : midPoint(midPoint), scale(scale), x_verschiebung(0), y_verschiebung(0), has_hue(false), hue(nullptr)
 {
-    qDebug() << midPoint.x() << " | " << midPoint.y();
+//    qDebug() << midPoint.x() << " | " << midPoint.y();
 }
 
 void ImageSetting::init(size_t img_w, size_t img_h, size_t maxIterations, bool isMandelbrotSet)
@@ -856,6 +925,10 @@ void ImageSetting::init(size_t img_w, size_t img_h, size_t maxIterations, bool i
         memset(this->iterations_normal[i], 0, sizeof(double) * img_h );
     }
 
+    // For Histogram
+    NumIterationsPerPixel = new size_t[maxIterations + 2];
+    memset(NumIterationsPerPixel, 0, sizeof(size_t) * (maxIterations + 2) );
+
     QPoint startX = QPoint ((-2.5 * scale) - x_verschiebung,
                             ( 0.0 * scale) - y_verschiebung);
     QPoint endeX = QPoint (( 1.5 * scale) - x_verschiebung,
@@ -871,13 +944,10 @@ void ImageSetting::init(size_t img_w, size_t img_h, size_t maxIterations, bool i
 
 void ::ImageSetting::setIterationCountAt(ssize_t x, ssize_t y, size_t iterations)
 {
-    if(x >= 0 && x < this->img_w && y >= 0 && y < this->img_h) {
-        this->iterations[x][y] = iterations;
-    }
-
+    this->iterations[x][y] = iterations;
 }
 
-void ImageSetting::setColorSettings(bool normalized, double logEscape, bool fixedColor, QString fixFraktalColor, bool inverted, double escape_radius)
+void ImageSetting::setColorSettings(int palette, bool normalized, double logEscape, bool fixedColor, QString fixFraktalColor, bool inverted, double escape_radius)
 {
     this->normalized = normalized;
     this->logEscape = logEscape;
@@ -885,6 +955,8 @@ void ImageSetting::setColorSettings(bool normalized, double logEscape, bool fixe
     this->fixFraktalColor = fixFraktalColor;
     this->inverted = inverted;
     this->escape_radius = escape_radius;
+    this->palette = palette;
+
 }
 
 size_t ImageSetting::getIterationCountAt(QPoint pos)
@@ -909,6 +981,8 @@ double ImageSetting::PixelToReal(QPoint p)
 {
     return (p.x() + this->x_verschiebung) / scale;
 }
+
+
 
 void MainWindow::on_pushButton_2_clicked()
 {
@@ -1178,6 +1252,11 @@ void ImageSetting::cleanUP()
         delete[] iterations[i];
     delete [] iterations;
     iterations = nullptr;
+
+    for(int i = 0; i < img_w; i++ )
+        delete[] iterations_normal[i];
+    delete [] iterations_normal;
+    iterations_normal = nullptr;
 }
 
 
@@ -1257,3 +1336,33 @@ void MainWindow::on_listWidgetHistory_itemDoubleClicked(QListWidgetItem *item)
         }
     }
 }
+
+
+void MainWindow::on_re_valueChanged(double arg1)
+{
+    if(ignoreXPosEdited) {
+        ignoreXPosEdited = false;
+        return;
+    }
+    this->zoomRect.updateRectPos(Point(arg1 * currentImg.scale - currentImg.x_verschiebung, zoomRect.getMousePos().y()));
+    this->zoomRect.show();
+    this->setOperationMode(OP_MODE::ZOOM_TO_SELECTED);
+
+    updateImage();
+}
+
+
+void MainWindow::on_im_valueChanged(double arg1)
+{
+    if(ignoreYPosEdited) {
+        ignoreYPosEdited = false;
+        return;
+    }
+
+    this->zoomRect.updateRectPos(Point(zoomRect.getMousePos().x(), -arg1 * currentImg.scale - currentImg.y_verschiebung));
+    this->zoomRect.show();
+    this->setOperationMode(OP_MODE::ZOOM_TO_SELECTED);
+
+    updateImage();
+}
+

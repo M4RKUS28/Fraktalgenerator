@@ -20,7 +20,7 @@ namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
 
-#define START_SCALE 120
+#define START_SCALE 220
 #define START_POS_X -80
 #define START_POS_Y 0
 
@@ -95,6 +95,9 @@ public:
     // derzeitiges Bild
     ImageSetting currentImg;
 
+    bool ignoreXPosEdited, ignoreYPosEdited;
+    void updateMidPos(bool clear = false);
+
 private:
     enum STATE {
         STOPED,
@@ -126,7 +129,6 @@ public:
     void zustandWechseln(QString aktion, QString wert_s = "", QPoint p = QPoint(), QMouseEvent * keyInput = nullptr);
 
     void updateImage();
-
 
 
 
@@ -184,6 +186,12 @@ private slots:
     void on_pushButton_rm_history_clicked();
 
     void on_listWidgetHistory_itemDoubleClicked(QListWidgetItem *item);
+
+    void on_pushButton_vor_clicked();
+
+    void on_re_valueChanged(double arg1);
+
+    void on_im_valueChanged(double arg1);
 
 private:
     Ui::MainWindow *ui;

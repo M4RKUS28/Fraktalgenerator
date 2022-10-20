@@ -92,7 +92,7 @@
           <enum>QTabWidget::Rounded</enum>
          </property>
          <property name="currentIndex">
-          <number>2</number>
+          <number>0</number>
          </property>
          <property name="iconSize">
           <size>
@@ -616,6 +616,11 @@
                 <item>
                  <property name="text">
                   <string>HSL</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>KA</string>
                  </property>
                 </item>
                </widget>
@@ -1390,7 +1395,7 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>787</width>
+         <width>790</width>
          <height>736</height>
         </rect>
        </property>
@@ -1458,14 +1463,25 @@
           <number>20</number>
          </property>
          <item>
-          <widget class="QPushButton" name="pushButton_2">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="text">
-            <string>Zurück</string>
-           </property>
-          </widget>
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <item>
+            <widget class="QPushButton" name="pushButton_2">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Zurück</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_vor">
+             <property name="text">
+              <string>Vorwärts</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
          <item>
           <widget class="QPushButton" name="pushButtonSaveImg">

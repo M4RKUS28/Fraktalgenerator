@@ -152,7 +152,9 @@ public:
     QPushButton *pushButtonStart;
     QFrame *frameButtons;
     QVBoxLayout *verticalLayout_3;
+    QHBoxLayout *horizontalLayout_2;
     QPushButton *pushButton_2;
+    QPushButton *pushButton_vor;
     QPushButton *pushButtonSaveImg;
     QPushButton *pushButton;
     QFrame *line;
@@ -476,6 +478,7 @@ public:
         formLayout_3->setWidget(0, QFormLayout::LabelRole, label_9);
 
         comboBox_palette = new QComboBox(groupBox);
+        comboBox_palette->addItem(QString());
         comboBox_palette->addItem(QString());
         comboBox_palette->addItem(QString());
         comboBox_palette->addItem(QString());
@@ -852,7 +855,7 @@ public:
         scrollArea->setWidgetResizable(true);
         scrollAreaWidgetContents_2 = new QWidget();
         scrollAreaWidgetContents_2->setObjectName(QString::fromUtf8("scrollAreaWidgetContents_2"));
-        scrollAreaWidgetContents_2->setGeometry(QRect(0, 0, 787, 736));
+        scrollAreaWidgetContents_2->setGeometry(QRect(0, 0, 790, 736));
         horizontalLayout_5 = new QHBoxLayout(scrollAreaWidgetContents_2);
         horizontalLayout_5->setObjectName(QString::fromUtf8("horizontalLayout_5"));
         imageView = new ImageView(scrollAreaWidgetContents_2);
@@ -889,11 +892,21 @@ public:
         verticalLayout_3 = new QVBoxLayout(frameButtons);
         verticalLayout_3->setObjectName(QString::fromUtf8("verticalLayout_3"));
         verticalLayout_3->setContentsMargins(20, 0, 20, -1);
+        horizontalLayout_2 = new QHBoxLayout();
+        horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
         pushButton_2 = new QPushButton(frameButtons);
         pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
         pushButton_2->setEnabled(false);
 
-        verticalLayout_3->addWidget(pushButton_2);
+        horizontalLayout_2->addWidget(pushButton_2);
+
+        pushButton_vor = new QPushButton(frameButtons);
+        pushButton_vor->setObjectName(QString::fromUtf8("pushButton_vor"));
+
+        horizontalLayout_2->addWidget(pushButton_vor);
+
+
+        verticalLayout_3->addLayout(horizontalLayout_2);
 
         pushButtonSaveImg = new QPushButton(frameButtons);
         pushButtonSaveImg->setObjectName(QString::fromUtf8("pushButtonSaveImg"));
@@ -939,7 +952,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(2);
+        tabWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -995,6 +1008,7 @@ public:
         comboBox_palette->setItemText(3, QCoreApplication::translate("MainWindow", "Alpha2", nullptr));
         comboBox_palette->setItemText(4, QCoreApplication::translate("MainWindow", "HSV", nullptr));
         comboBox_palette->setItemText(5, QCoreApplication::translate("MainWindow", "HSL", nullptr));
+        comboBox_palette->setItemText(6, QCoreApplication::translate("MainWindow", "KA", nullptr));
 
         label->setText(QCoreApplication::translate("MainWindow", "Hintergrundfarbe:", nullptr));
         comboBox_background_color->setItemText(0, QCoreApplication::translate("MainWindow", "cyan", nullptr));
@@ -1070,6 +1084,7 @@ public:
         tabWidget->setTabText(tabWidget->indexOf(tab), QCoreApplication::translate("MainWindow", "\342\232\231Settings", nullptr));
         pushButtonStart->setText(QCoreApplication::translate("MainWindow", "Vergr\303\266\303\237ern", nullptr));
         pushButton_2->setText(QCoreApplication::translate("MainWindow", "Zur\303\274ck", nullptr));
+        pushButton_vor->setText(QCoreApplication::translate("MainWindow", "Vorw\303\244rts", nullptr));
         pushButtonSaveImg->setText(QCoreApplication::translate("MainWindow", "Bild Speichern", nullptr));
         pushButton->setText(QCoreApplication::translate("MainWindow", "Home", nullptr));
         label_7->setText(QCoreApplication::translate("MainWindow", "Made by Markus --> mit Linksclick zahelnfolge!", nullptr));
