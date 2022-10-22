@@ -29,7 +29,7 @@ private:
 
 struct ImageSetting {
     ImageSetting();
-    ImageSetting(double scale, Point midPoint);
+    ImageSetting(int id, double scale, double re, double im);
 
     void init(size_t img_w, size_t img_h, size_t maxIterations, bool isMandelbrotSet);
     void cleanUP();
@@ -39,19 +39,28 @@ struct ImageSetting {
     size_t getIterationCountAt(QPoint pos);
     size_t getIterationCountAt(ssize_t x, ssize_t y);
 
-    double PixelToImag(QPoint p);
-    double PixelToReal(QPoint p);
+    double mapImgPosReToGaus(ssize_t img_pos_re);
+    long double mapImgPosReToGausLong(ssize_t img_pos_re);
+    ssize_t mapGausReToImgPos(double gaus_re);
+    double gaus_mid_re;
+    double re_verscheibung;
+
+    double mapImgPosImToGaus(ssize_t img_pos_im);
+    long double mapImgPosImToGausLong(ssize_t img_pos_im);
+    ssize_t mapGausImToImgPos(double gaus_im);
+    double gaus_mid_im;
+    double im_verscheibung;
 
     QImage * image;
     QPainter * painter;
-    Point midPoint;
+    int id;
 
-    double scale,
+    double scale();
+
+    double scaleValue,
            logEscape,
-            escape_radius;
+           escape_radius;
 
-    ssize_t x_verschiebung;
-    ssize_t y_verschiebung;
     ssize_t img_w;
     ssize_t img_h;
     size_t maxIterations;
@@ -63,13 +72,14 @@ struct ImageSetting {
            juliaStart_real;
 
     bool isMandelbrotSet;
-    bool isStart = false;
 
     //Color settings
     bool fixedColor, inverted, normalized, has_hue;
     int palette;
     QString fixFraktalColor;
 
+    QColor rgb1[3];
+    unsigned hsv_saturation, spinBoxHSV_value, spinBoxHSV_alpha, farbwechselIntervall;
 
     double **iterations_normal;
     double **hue;

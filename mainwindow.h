@@ -21,8 +21,12 @@ QT_END_NAMESPACE
 
 
 #define START_SCALE 220
-#define START_POS_X -80
-#define START_POS_Y 0
+#define START_POS_X -0.75
+#define START_POS_Y 0.0
+
+#define START_POS_X_JUL -0.75
+#define START_POS_Y_JUL 0.0
+
 
 
 class MainWindow : public QMainWindow
@@ -69,6 +73,12 @@ class MainWindow : public QMainWindow
         REFRESH,
         APPLY_SETTINGS,
         APPLY_SETTINGS_AND_ZOOM,
+
+        CALC_JULIA,
+        CALC_JULIA_SETTINGS,
+
+        BACK_TO_MANDELBROT,
+
         RESET
     };
 
@@ -94,6 +104,9 @@ public:
     int timerID;
     // derzeitiges Bild
     ImageSetting currentImg;
+    //id counter für liste und listwidget mapping
+    size_t lastImgStructID;
+
 
     bool ignoreXPosEdited, ignoreYPosEdited;
     void updateMidPos(bool clear = false);
@@ -115,7 +128,9 @@ public:
 
     void endRefresh(bool appendToListHistory );
 
-    void setOperationMode(OP_MODE o);
+    void setOperationMode(OP_MODE action);
+    void setOperationBasedTexts();
+
 
 //    void setColor(QPainter *mpainter, size_t iters, std::complex<double> z_n);
 
@@ -143,11 +158,6 @@ private slots:
     void threadFinished();
 
     void on_pushButtonSaveImg_clicked();
-
-    void on_pushButton_2_clicked();
-
-    void on_pushButton_clicked();
-
 
     void on_spinBoxMaxIterations_valueChanged(int arg1);
 
@@ -193,6 +203,12 @@ private slots:
 
     void on_im_valueChanged(double arg1);
 
+    void on_pushButton_copy_clicked();
+
+    void on_pushButton_back_clicked();
+
+    void on_pushButtonHome_clicked();
+
 private:
     Ui::MainWindow *ui;
 
@@ -200,7 +216,6 @@ private:
 protected:
     virtual void mousePressEvent(QMouseEvent *event);
     virtual void mouseReleaseEvent(QMouseEvent *event);
-    virtual void mouseMoveEvent(QMouseEvent *event);
     virtual void mouseDoubleClickEvent(QMouseEvent *event);
 
 

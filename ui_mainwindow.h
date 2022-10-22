@@ -30,6 +30,7 @@
 #include <QtWidgets/QScrollArea>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QSpinBox>
+#include <QtWidgets/QStackedWidget>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QVBoxLayout>
@@ -67,7 +68,9 @@ public:
     QFrame *line_6;
     QLabel *label_18;
     QLabel *label_2;
+    QDoubleSpinBox *re;
     QLabel *label_13;
+    QDoubleSpinBox *im;
     QLabel *label_14;
     QLabel *label_iterations;
     QFrame *line_10;
@@ -78,10 +81,11 @@ public:
     QLabel *label_julia_c_im;
     QLabel *label_28;
     QListWidget *listWidgetHistory;
+    QHBoxLayout *horizontalLayout_6;
+    QSpacerItem *horizontalSpacer_2;
     QPushButton *pushButton_rm_history;
+    QSpacerItem *horizontalSpacer_3;
     QSpacerItem *verticalSpacer_2;
-    QDoubleSpinBox *re;
-    QDoubleSpinBox *im;
     QWidget *tab_2;
     QVBoxLayout *verticalLayout_5;
     QFrame *line_8;
@@ -91,8 +95,45 @@ public:
     QLabel *label_22;
     QGroupBox *groupBox;
     QFormLayout *formLayout_3;
+    QHBoxLayout *horizontalLayout_11;
     QLabel *label_9;
     QComboBox *comboBox_palette;
+    QStackedWidget *stackedWidgetExtraSettings;
+    QWidget *page_6;
+    QWidget *page_5;
+    QWidget *page_4;
+    QWidget *page_3;
+    QFormLayout *formLayout_8;
+    QLabel *label_38;
+    QSpinBox *spinBoxHSV_satursion;
+    QLabel *label_39;
+    QSpinBox *spinBoxHSV_value;
+    QLabel *label_40;
+    QSpinBox *spinBoxHSV_alpha;
+    QWidget *page;
+    QFormLayout *formLayout_7;
+    QHBoxLayout *horizontalLayout_10;
+    QLabel *label_37;
+    QLabel *label_36;
+    QLabel *label_35;
+    QLabel *label_19;
+    QHBoxLayout *horizontalLayout_7;
+    QSpinBox *spinBox_rgb1_r;
+    QSpinBox *spinBox_rgb1_g;
+    QSpinBox *spinBox_rgb1_b;
+    QLabel *label_33;
+    QHBoxLayout *horizontalLayout_8;
+    QSpinBox *spinBox_rgb2_r;
+    QSpinBox *spinBox_rgb2_g;
+    QSpinBox *spinBox_rgb2_b;
+    QLabel *label_34;
+    QHBoxLayout *horizontalLayout_9;
+    QSpinBox *spinBox_rgb3_r;
+    QSpinBox *spinBox_rgb3_g;
+    QSpinBox *spinBox_rgb3_b;
+    QLabel *label_farbwechselintervall;
+    QSpinBox *spinBoxFarbWechselIntervall;
+    QWidget *page_2;
     QLabel *label;
     QComboBox *comboBox_background_color;
     QFrame *line_2;
@@ -153,10 +194,12 @@ public:
     QFrame *frameButtons;
     QVBoxLayout *verticalLayout_3;
     QHBoxLayout *horizontalLayout_2;
-    QPushButton *pushButton_2;
+    QPushButton *pushButton_back;
+    QPushButton *pushButtonHome;
     QPushButton *pushButton_vor;
+    QHBoxLayout *horizontalLayout_4;
+    QPushButton *pushButton_copy;
     QPushButton *pushButtonSaveImg;
-    QPushButton *pushButton;
     QFrame *line;
     QLabel *label_7;
     QMenuBar *menubar;
@@ -167,7 +210,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(1119, 830);
+        MainWindow->resize(955, 903);
         QFont font;
         font.setPointSize(10);
         MainWindow->setFont(font);
@@ -329,12 +372,26 @@ public:
 
         formLayout_5->setWidget(11, QFormLayout::LabelRole, label_2);
 
+        re = new QDoubleSpinBox(tab_3);
+        re->setObjectName(QString::fromUtf8("re"));
+        re->setDecimals(15);
+        re->setMinimum(-99.000000000000000);
+
+        formLayout_5->setWidget(11, QFormLayout::FieldRole, re);
+
         label_13 = new QLabel(tab_3);
         label_13->setObjectName(QString::fromUtf8("label_13"));
         label_13->setFont(font2);
         label_13->setAlignment(Qt::AlignCenter);
 
         formLayout_5->setWidget(12, QFormLayout::LabelRole, label_13);
+
+        im = new QDoubleSpinBox(tab_3);
+        im->setObjectName(QString::fromUtf8("im"));
+        im->setDecimals(15);
+        im->setMinimum(-99.000000000000000);
+
+        formLayout_5->setWidget(12, QFormLayout::FieldRole, im);
 
         label_14 = new QLabel(tab_3);
         label_14->setObjectName(QString::fromUtf8("label_14"));
@@ -391,28 +448,29 @@ public:
 
         formLayout_5->setWidget(20, QFormLayout::SpanningRole, listWidgetHistory);
 
+        horizontalLayout_6 = new QHBoxLayout();
+        horizontalLayout_6->setObjectName(QString::fromUtf8("horizontalLayout_6"));
+        horizontalSpacer_2 = new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_6->addItem(horizontalSpacer_2);
+
         pushButton_rm_history = new QPushButton(tab_3);
         pushButton_rm_history->setObjectName(QString::fromUtf8("pushButton_rm_history"));
+        sizePolicy.setHeightForWidth(pushButton_rm_history->sizePolicy().hasHeightForWidth());
+        pushButton_rm_history->setSizePolicy(sizePolicy);
 
-        formLayout_5->setWidget(21, QFormLayout::SpanningRole, pushButton_rm_history);
+        horizontalLayout_6->addWidget(pushButton_rm_history);
+
+        horizontalSpacer_3 = new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_6->addItem(horizontalSpacer_3);
+
+
+        formLayout_5->setLayout(21, QFormLayout::SpanningRole, horizontalLayout_6);
 
         verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
         formLayout_5->setItem(22, QFormLayout::SpanningRole, verticalSpacer_2);
-
-        re = new QDoubleSpinBox(tab_3);
-        re->setObjectName(QString::fromUtf8("re"));
-        re->setDecimals(15);
-        re->setMinimum(-99.000000000000000);
-
-        formLayout_5->setWidget(11, QFormLayout::FieldRole, re);
-
-        im = new QDoubleSpinBox(tab_3);
-        im->setObjectName(QString::fromUtf8("im"));
-        im->setDecimals(15);
-        im->setMinimum(-99.000000000000000);
-
-        formLayout_5->setWidget(12, QFormLayout::FieldRole, im);
 
         tabWidget->addTab(tab_3, QString());
         tab_2 = new QWidget();
@@ -464,7 +522,12 @@ public:
         groupBox->setFont(font1);
         formLayout_3 = new QFormLayout(groupBox);
         formLayout_3->setObjectName(QString::fromUtf8("formLayout_3"));
-        formLayout_3->setContentsMargins(25, 1, 9, 1);
+        formLayout_3->setContentsMargins(25, 1, 9, 9);
+        horizontalLayout_11 = new QHBoxLayout();
+        horizontalLayout_11->setObjectName(QString::fromUtf8("horizontalLayout_11"));
+
+        formLayout_3->setLayout(0, QFormLayout::LabelRole, horizontalLayout_11);
+
         label_9 = new QLabel(groupBox);
         label_9->setObjectName(QString::fromUtf8("label_9"));
         QFont font3;
@@ -475,9 +538,10 @@ public:
         label_9->setFont(font3);
         label_9->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 255);"));
 
-        formLayout_3->setWidget(0, QFormLayout::LabelRole, label_9);
+        formLayout_3->setWidget(1, QFormLayout::SpanningRole, label_9);
 
         comboBox_palette = new QComboBox(groupBox);
+        comboBox_palette->addItem(QString());
         comboBox_palette->addItem(QString());
         comboBox_palette->addItem(QString());
         comboBox_palette->addItem(QString());
@@ -488,13 +552,227 @@ public:
         comboBox_palette->setObjectName(QString::fromUtf8("comboBox_palette"));
         comboBox_palette->setFont(font2);
 
-        formLayout_3->setWidget(0, QFormLayout::FieldRole, comboBox_palette);
+        formLayout_3->setWidget(2, QFormLayout::SpanningRole, comboBox_palette);
+
+        stackedWidgetExtraSettings = new QStackedWidget(groupBox);
+        stackedWidgetExtraSettings->setObjectName(QString::fromUtf8("stackedWidgetExtraSettings"));
+        stackedWidgetExtraSettings->setFrameShape(QFrame::StyledPanel);
+        stackedWidgetExtraSettings->setLineWidth(1);
+        page_6 = new QWidget();
+        page_6->setObjectName(QString::fromUtf8("page_6"));
+        stackedWidgetExtraSettings->addWidget(page_6);
+        page_5 = new QWidget();
+        page_5->setObjectName(QString::fromUtf8("page_5"));
+        stackedWidgetExtraSettings->addWidget(page_5);
+        page_4 = new QWidget();
+        page_4->setObjectName(QString::fromUtf8("page_4"));
+        stackedWidgetExtraSettings->addWidget(page_4);
+        page_3 = new QWidget();
+        page_3->setObjectName(QString::fromUtf8("page_3"));
+        formLayout_8 = new QFormLayout(page_3);
+        formLayout_8->setObjectName(QString::fromUtf8("formLayout_8"));
+        label_38 = new QLabel(page_3);
+        label_38->setObjectName(QString::fromUtf8("label_38"));
+        label_38->setFont(font2);
+
+        formLayout_8->setWidget(0, QFormLayout::LabelRole, label_38);
+
+        spinBoxHSV_satursion = new QSpinBox(page_3);
+        spinBoxHSV_satursion->setObjectName(QString::fromUtf8("spinBoxHSV_satursion"));
+        spinBoxHSV_satursion->setFont(font2);
+        spinBoxHSV_satursion->setMaximum(255);
+        spinBoxHSV_satursion->setValue(255);
+
+        formLayout_8->setWidget(0, QFormLayout::FieldRole, spinBoxHSV_satursion);
+
+        label_39 = new QLabel(page_3);
+        label_39->setObjectName(QString::fromUtf8("label_39"));
+        label_39->setEnabled(true);
+        label_39->setFont(font2);
+
+        formLayout_8->setWidget(1, QFormLayout::LabelRole, label_39);
+
+        spinBoxHSV_value = new QSpinBox(page_3);
+        spinBoxHSV_value->setObjectName(QString::fromUtf8("spinBoxHSV_value"));
+        spinBoxHSV_value->setEnabled(true);
+        spinBoxHSV_value->setFont(font2);
+        spinBoxHSV_value->setMaximum(255);
+        spinBoxHSV_value->setValue(255);
+
+        formLayout_8->setWidget(1, QFormLayout::FieldRole, spinBoxHSV_value);
+
+        label_40 = new QLabel(page_3);
+        label_40->setObjectName(QString::fromUtf8("label_40"));
+        label_40->setEnabled(true);
+        label_40->setFont(font2);
+
+        formLayout_8->setWidget(2, QFormLayout::LabelRole, label_40);
+
+        spinBoxHSV_alpha = new QSpinBox(page_3);
+        spinBoxHSV_alpha->setObjectName(QString::fromUtf8("spinBoxHSV_alpha"));
+        spinBoxHSV_alpha->setFont(font2);
+        spinBoxHSV_alpha->setMaximum(255);
+        spinBoxHSV_alpha->setValue(255);
+
+        formLayout_8->setWidget(2, QFormLayout::FieldRole, spinBoxHSV_alpha);
+
+        stackedWidgetExtraSettings->addWidget(page_3);
+        page = new QWidget();
+        page->setObjectName(QString::fromUtf8("page"));
+        formLayout_7 = new QFormLayout(page);
+        formLayout_7->setObjectName(QString::fromUtf8("formLayout_7"));
+        formLayout_7->setContentsMargins(9, -1, 9, -1);
+        horizontalLayout_10 = new QHBoxLayout();
+        horizontalLayout_10->setObjectName(QString::fromUtf8("horizontalLayout_10"));
+        label_37 = new QLabel(page);
+        label_37->setObjectName(QString::fromUtf8("label_37"));
+        label_37->setFont(font2);
+        label_37->setAlignment(Qt::AlignCenter);
+
+        horizontalLayout_10->addWidget(label_37);
+
+        label_36 = new QLabel(page);
+        label_36->setObjectName(QString::fromUtf8("label_36"));
+        label_36->setFont(font2);
+        label_36->setAlignment(Qt::AlignCenter);
+
+        horizontalLayout_10->addWidget(label_36);
+
+        label_35 = new QLabel(page);
+        label_35->setObjectName(QString::fromUtf8("label_35"));
+        label_35->setFont(font2);
+        label_35->setAlignment(Qt::AlignCenter);
+
+        horizontalLayout_10->addWidget(label_35);
+
+
+        formLayout_7->setLayout(0, QFormLayout::FieldRole, horizontalLayout_10);
+
+        label_19 = new QLabel(page);
+        label_19->setObjectName(QString::fromUtf8("label_19"));
+        label_19->setFont(font2);
+
+        formLayout_7->setWidget(1, QFormLayout::LabelRole, label_19);
+
+        horizontalLayout_7 = new QHBoxLayout();
+        horizontalLayout_7->setObjectName(QString::fromUtf8("horizontalLayout_7"));
+        spinBox_rgb1_r = new QSpinBox(page);
+        spinBox_rgb1_r->setObjectName(QString::fromUtf8("spinBox_rgb1_r"));
+        spinBox_rgb1_r->setFont(font2);
+        spinBox_rgb1_r->setMaximum(255);
+
+        horizontalLayout_7->addWidget(spinBox_rgb1_r);
+
+        spinBox_rgb1_g = new QSpinBox(page);
+        spinBox_rgb1_g->setObjectName(QString::fromUtf8("spinBox_rgb1_g"));
+        spinBox_rgb1_g->setFont(font2);
+        spinBox_rgb1_g->setMaximum(255);
+
+        horizontalLayout_7->addWidget(spinBox_rgb1_g);
+
+        spinBox_rgb1_b = new QSpinBox(page);
+        spinBox_rgb1_b->setObjectName(QString::fromUtf8("spinBox_rgb1_b"));
+        spinBox_rgb1_b->setFont(font2);
+        spinBox_rgb1_b->setMaximum(255);
+        spinBox_rgb1_b->setValue(255);
+
+        horizontalLayout_7->addWidget(spinBox_rgb1_b);
+
+
+        formLayout_7->setLayout(1, QFormLayout::FieldRole, horizontalLayout_7);
+
+        label_33 = new QLabel(page);
+        label_33->setObjectName(QString::fromUtf8("label_33"));
+        label_33->setFont(font2);
+
+        formLayout_7->setWidget(2, QFormLayout::LabelRole, label_33);
+
+        horizontalLayout_8 = new QHBoxLayout();
+        horizontalLayout_8->setObjectName(QString::fromUtf8("horizontalLayout_8"));
+        spinBox_rgb2_r = new QSpinBox(page);
+        spinBox_rgb2_r->setObjectName(QString::fromUtf8("spinBox_rgb2_r"));
+        spinBox_rgb2_r->setFont(font2);
+        spinBox_rgb2_r->setMaximum(255);
+
+        horizontalLayout_8->addWidget(spinBox_rgb2_r);
+
+        spinBox_rgb2_g = new QSpinBox(page);
+        spinBox_rgb2_g->setObjectName(QString::fromUtf8("spinBox_rgb2_g"));
+        spinBox_rgb2_g->setFont(font2);
+        spinBox_rgb2_g->setMaximum(255);
+        spinBox_rgb2_g->setValue(255);
+
+        horizontalLayout_8->addWidget(spinBox_rgb2_g);
+
+        spinBox_rgb2_b = new QSpinBox(page);
+        spinBox_rgb2_b->setObjectName(QString::fromUtf8("spinBox_rgb2_b"));
+        spinBox_rgb2_b->setFont(font2);
+        spinBox_rgb2_b->setMaximum(255);
+
+        horizontalLayout_8->addWidget(spinBox_rgb2_b);
+
+
+        formLayout_7->setLayout(2, QFormLayout::FieldRole, horizontalLayout_8);
+
+        label_34 = new QLabel(page);
+        label_34->setObjectName(QString::fromUtf8("label_34"));
+        label_34->setFont(font2);
+
+        formLayout_7->setWidget(3, QFormLayout::LabelRole, label_34);
+
+        horizontalLayout_9 = new QHBoxLayout();
+        horizontalLayout_9->setObjectName(QString::fromUtf8("horizontalLayout_9"));
+        spinBox_rgb3_r = new QSpinBox(page);
+        spinBox_rgb3_r->setObjectName(QString::fromUtf8("spinBox_rgb3_r"));
+        spinBox_rgb3_r->setFont(font2);
+        spinBox_rgb3_r->setMaximum(255);
+        spinBox_rgb3_r->setValue(255);
+
+        horizontalLayout_9->addWidget(spinBox_rgb3_r);
+
+        spinBox_rgb3_g = new QSpinBox(page);
+        spinBox_rgb3_g->setObjectName(QString::fromUtf8("spinBox_rgb3_g"));
+        spinBox_rgb3_g->setFont(font2);
+        spinBox_rgb3_g->setMaximum(255);
+
+        horizontalLayout_9->addWidget(spinBox_rgb3_g);
+
+        spinBox_rgb3_b = new QSpinBox(page);
+        spinBox_rgb3_b->setObjectName(QString::fromUtf8("spinBox_rgb3_b"));
+        spinBox_rgb3_b->setFont(font2);
+        spinBox_rgb3_b->setMaximum(255);
+
+        horizontalLayout_9->addWidget(spinBox_rgb3_b);
+
+
+        formLayout_7->setLayout(3, QFormLayout::FieldRole, horizontalLayout_9);
+
+        label_farbwechselintervall = new QLabel(page);
+        label_farbwechselintervall->setObjectName(QString::fromUtf8("label_farbwechselintervall"));
+        label_farbwechselintervall->setFont(font2);
+
+        formLayout_7->setWidget(4, QFormLayout::SpanningRole, label_farbwechselintervall);
+
+        spinBoxFarbWechselIntervall = new QSpinBox(page);
+        spinBoxFarbWechselIntervall->setObjectName(QString::fromUtf8("spinBoxFarbWechselIntervall"));
+        spinBoxFarbWechselIntervall->setFont(font2);
+        spinBoxFarbWechselIntervall->setMaximum(999999);
+        spinBoxFarbWechselIntervall->setValue(200);
+
+        formLayout_7->setWidget(5, QFormLayout::FieldRole, spinBoxFarbWechselIntervall);
+
+        stackedWidgetExtraSettings->addWidget(page);
+        page_2 = new QWidget();
+        page_2->setObjectName(QString::fromUtf8("page_2"));
+        stackedWidgetExtraSettings->addWidget(page_2);
+
+        formLayout_3->setWidget(3, QFormLayout::SpanningRole, stackedWidgetExtraSettings);
 
         label = new QLabel(groupBox);
         label->setObjectName(QString::fromUtf8("label"));
         label->setFont(font2);
 
-        formLayout_3->setWidget(1, QFormLayout::LabelRole, label);
+        formLayout_3->setWidget(4, QFormLayout::LabelRole, label);
 
         comboBox_background_color = new QComboBox(groupBox);
         comboBox_background_color->addItem(QString());
@@ -509,14 +787,14 @@ public:
         comboBox_background_color->setObjectName(QString::fromUtf8("comboBox_background_color"));
         comboBox_background_color->setFont(font2);
 
-        formLayout_3->setWidget(1, QFormLayout::FieldRole, comboBox_background_color);
+        formLayout_3->setWidget(4, QFormLayout::FieldRole, comboBox_background_color);
 
         line_2 = new QFrame(groupBox);
         line_2->setObjectName(QString::fromUtf8("line_2"));
         line_2->setFrameShape(QFrame::HLine);
         line_2->setFrameShadow(QFrame::Sunken);
 
-        formLayout_3->setWidget(2, QFormLayout::SpanningRole, line_2);
+        formLayout_3->setWidget(5, QFormLayout::SpanningRole, line_2);
 
         radioButton_normalized = new QRadioButton(groupBox);
         radioButton_normalized->setObjectName(QString::fromUtf8("radioButton_normalized"));
@@ -524,14 +802,14 @@ public:
         radioButton_normalized->setChecked(true);
         radioButton_normalized->setAutoExclusive(false);
 
-        formLayout_3->setWidget(3, QFormLayout::SpanningRole, radioButton_normalized);
+        formLayout_3->setWidget(6, QFormLayout::SpanningRole, radioButton_normalized);
 
         radioButton_invert = new QRadioButton(groupBox);
         radioButton_invert->setObjectName(QString::fromUtf8("radioButton_invert"));
         radioButton_invert->setFont(font2);
         radioButton_invert->setAutoExclusive(false);
 
-        formLayout_3->setWidget(4, QFormLayout::SpanningRole, radioButton_invert);
+        formLayout_3->setWidget(7, QFormLayout::SpanningRole, radioButton_invert);
 
 
         verticalLayout_5->addWidget(groupBox);
@@ -803,7 +1081,6 @@ public:
         comboBox_precession = new QComboBox(tab);
         comboBox_precession->addItem(QString());
         comboBox_precession->addItem(QString());
-        comboBox_precession->addItem(QString());
         comboBox_precession->setObjectName(QString::fromUtf8("comboBox_precession"));
         QSizePolicy sizePolicy4(QSizePolicy::Preferred, QSizePolicy::Fixed);
         sizePolicy4.setHorizontalStretch(0);
@@ -855,7 +1132,7 @@ public:
         scrollArea->setWidgetResizable(true);
         scrollAreaWidgetContents_2 = new QWidget();
         scrollAreaWidgetContents_2->setObjectName(QString::fromUtf8("scrollAreaWidgetContents_2"));
-        scrollAreaWidgetContents_2->setGeometry(QRect(0, 0, 790, 736));
+        scrollAreaWidgetContents_2->setGeometry(QRect(0, 0, 621, 809));
         horizontalLayout_5 = new QHBoxLayout(scrollAreaWidgetContents_2);
         horizontalLayout_5->setObjectName(QString::fromUtf8("horizontalLayout_5"));
         imageView = new ImageView(scrollAreaWidgetContents_2);
@@ -870,6 +1147,7 @@ public:
 
         verticalLayout_2 = new QVBoxLayout();
         verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
+        verticalLayout_2->setContentsMargins(-1, 5, -1, -1);
         frame_2 = new QFrame(centralwidget);
         frame_2->setObjectName(QString::fromUtf8("frame_2"));
         frame_2->setFrameShape(QFrame::StyledPanel);
@@ -879,6 +1157,7 @@ public:
         verticalLayout_4->setContentsMargins(20, 0, 20, 0);
         pushButtonStart = new QPushButton(frame_2);
         pushButtonStart->setObjectName(QString::fromUtf8("pushButtonStart"));
+        pushButtonStart->setMinimumSize(QSize(0, 30));
 
         verticalLayout_4->addWidget(pushButtonStart);
 
@@ -894,30 +1173,46 @@ public:
         verticalLayout_3->setContentsMargins(20, 0, 20, -1);
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
-        pushButton_2 = new QPushButton(frameButtons);
-        pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
-        pushButton_2->setEnabled(false);
+        pushButton_back = new QPushButton(frameButtons);
+        pushButton_back->setObjectName(QString::fromUtf8("pushButton_back"));
+        pushButton_back->setEnabled(false);
+        pushButton_back->setMinimumSize(QSize(0, 28));
 
-        horizontalLayout_2->addWidget(pushButton_2);
+        horizontalLayout_2->addWidget(pushButton_back);
+
+        pushButtonHome = new QPushButton(frameButtons);
+        pushButtonHome->setObjectName(QString::fromUtf8("pushButtonHome"));
+        pushButtonHome->setMinimumSize(QSize(0, 28));
+
+        horizontalLayout_2->addWidget(pushButtonHome);
 
         pushButton_vor = new QPushButton(frameButtons);
         pushButton_vor->setObjectName(QString::fromUtf8("pushButton_vor"));
+        pushButton_vor->setEnabled(false);
+        pushButton_vor->setMinimumSize(QSize(0, 28));
 
         horizontalLayout_2->addWidget(pushButton_vor);
 
 
         verticalLayout_3->addLayout(horizontalLayout_2);
 
+        horizontalLayout_4 = new QHBoxLayout();
+        horizontalLayout_4->setObjectName(QString::fromUtf8("horizontalLayout_4"));
+        pushButton_copy = new QPushButton(frameButtons);
+        pushButton_copy->setObjectName(QString::fromUtf8("pushButton_copy"));
+        pushButton_copy->setMinimumSize(QSize(0, 28));
+
+        horizontalLayout_4->addWidget(pushButton_copy);
+
         pushButtonSaveImg = new QPushButton(frameButtons);
         pushButtonSaveImg->setObjectName(QString::fromUtf8("pushButtonSaveImg"));
         pushButtonSaveImg->setEnabled(false);
+        pushButtonSaveImg->setMinimumSize(QSize(0, 28));
 
-        verticalLayout_3->addWidget(pushButtonSaveImg);
+        horizontalLayout_4->addWidget(pushButtonSaveImg);
 
-        pushButton = new QPushButton(frameButtons);
-        pushButton->setObjectName(QString::fromUtf8("pushButton"));
 
-        verticalLayout_3->addWidget(pushButton);
+        verticalLayout_3->addLayout(horizontalLayout_4);
 
 
         verticalLayout_2->addWidget(frameButtons);
@@ -940,7 +1235,7 @@ public:
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 1119, 24));
+        menubar->setGeometry(QRect(0, 0, 955, 24));
         menuSettings = new QMenu(menubar);
         menuSettings->setObjectName(QString::fromUtf8("menuSettings"));
         MainWindow->setMenuBar(menubar);
@@ -953,6 +1248,7 @@ public:
         retranslateUi(MainWindow);
 
         tabWidget->setCurrentIndex(0);
+        stackedWidgetExtraSettings->setCurrentIndex(4);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -976,6 +1272,7 @@ public:
         label_18->setText(QCoreApplication::translate("MainWindow", "Mausposition:", nullptr));
         label_2->setText(QCoreApplication::translate("MainWindow", "     Re.:", nullptr));
         label_13->setText(QCoreApplication::translate("MainWindow", "     Im.:", nullptr));
+        im->setSuffix(QCoreApplication::translate("MainWindow", "i", nullptr));
         label_14->setText(QCoreApplication::translate("MainWindow", "     Iterationen:", nullptr));
         label_iterations->setText(QCoreApplication::translate("MainWindow", "-", nullptr));
         label_30->setText(QCoreApplication::translate("MainWindow", "Julia-Menge:", nullptr));
@@ -985,9 +1282,8 @@ public:
         label_julia_c_im->setText(QCoreApplication::translate("MainWindow", "-", nullptr));
         label_28->setText(QCoreApplication::translate("MainWindow", "Verlauf:", nullptr));
         pushButton_rm_history->setText(QCoreApplication::translate("MainWindow", "Verlauf l\303\266schen", nullptr));
-        im->setSuffix(QCoreApplication::translate("MainWindow", "i", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_3), QCoreApplication::translate("MainWindow", "\342\255\220\303\234bersicht", nullptr));
-        groupBoxMandelFarbe->setTitle(QCoreApplication::translate("MainWindow", "Fraktal-Menge", nullptr));
+        groupBoxMandelFarbe->setTitle(QCoreApplication::translate("MainWindow", "Fraktale-Menge", nullptr));
         comboBoxMandelColor->setItemText(0, QCoreApplication::translate("MainWindow", "black", nullptr));
         comboBoxMandelColor->setItemText(1, QCoreApplication::translate("MainWindow", "white", nullptr));
         comboBoxMandelColor->setItemText(2, QCoreApplication::translate("MainWindow", "cyan", nullptr));
@@ -999,17 +1295,28 @@ public:
         comboBoxMandelColor->setItemText(8, QCoreApplication::translate("MainWindow", "orange", nullptr));
         comboBoxMandelColor->setItemText(9, QCoreApplication::translate("MainWindow", "red", nullptr));
 
-        label_22->setText(QCoreApplication::translate("MainWindow", "Farbe:", nullptr));
+        label_22->setText(QCoreApplication::translate("MainWindow", "Feste Farbe:", nullptr));
         groupBox->setTitle(QCoreApplication::translate("MainWindow", "Flucht-Menge:", nullptr));
         label_9->setText(QCoreApplication::translate("MainWindow", "Farbpalette:", nullptr));
-        comboBox_palette->setItemText(0, QCoreApplication::translate("MainWindow", "Alpha Wert", nullptr));
-        comboBox_palette->setItemText(1, QCoreApplication::translate("MainWindow", "KA RGB", nullptr));
-        comboBox_palette->setItemText(2, QCoreApplication::translate("MainWindow", "SchwarzWeis", nullptr));
-        comboBox_palette->setItemText(3, QCoreApplication::translate("MainWindow", "Alpha2", nullptr));
-        comboBox_palette->setItemText(4, QCoreApplication::translate("MainWindow", "HSV", nullptr));
-        comboBox_palette->setItemText(5, QCoreApplication::translate("MainWindow", "HSL", nullptr));
-        comboBox_palette->setItemText(6, QCoreApplication::translate("MainWindow", "KA", nullptr));
+        comboBox_palette->setItemText(0, QCoreApplication::translate("MainWindow", "Alphawert Verlauf", nullptr));
+        comboBox_palette->setItemText(1, QCoreApplication::translate("MainWindow", "absoluter Farbverlauf", nullptr));
+        comboBox_palette->setItemText(2, QCoreApplication::translate("MainWindow", "relativer Farbverlauf", nullptr));
+        comboBox_palette->setItemText(3, QCoreApplication::translate("MainWindow", "ohne Farbe", nullptr));
+        comboBox_palette->setItemText(4, QCoreApplication::translate("MainWindow", "HSV ^ 1.5", nullptr));
+        comboBox_palette->setItemText(5, QCoreApplication::translate("MainWindow", "HSV", nullptr));
+        comboBox_palette->setItemText(6, QCoreApplication::translate("MainWindow", "Histogramm", nullptr));
+        comboBox_palette->setItemText(7, QCoreApplication::translate("MainWindow", "KA", nullptr));
 
+        label_38->setText(QCoreApplication::translate("MainWindow", "S\303\244ttigung:", nullptr));
+        label_39->setText(QCoreApplication::translate("MainWindow", "Wert:", nullptr));
+        label_40->setText(QCoreApplication::translate("MainWindow", "Alpha: ", nullptr));
+        label_37->setText(QCoreApplication::translate("MainWindow", "rot", nullptr));
+        label_36->setText(QCoreApplication::translate("MainWindow", "gr\303\274n", nullptr));
+        label_35->setText(QCoreApplication::translate("MainWindow", "blau", nullptr));
+        label_19->setText(QCoreApplication::translate("MainWindow", "Farbe 1: ", nullptr));
+        label_33->setText(QCoreApplication::translate("MainWindow", "Farbe 2:", nullptr));
+        label_34->setText(QCoreApplication::translate("MainWindow", "Farbe 3:", nullptr));
+        label_farbwechselintervall->setText(QCoreApplication::translate("MainWindow", "Farbwechselintervall:", nullptr));
         label->setText(QCoreApplication::translate("MainWindow", "Hintergrundfarbe:", nullptr));
         comboBox_background_color->setItemText(0, QCoreApplication::translate("MainWindow", "cyan", nullptr));
         comboBox_background_color->setItemText(1, QCoreApplication::translate("MainWindow", "blue", nullptr));
@@ -1069,8 +1376,7 @@ public:
         label_15->setText(QCoreApplication::translate("MainWindow", "Fluchradius:", nullptr));
         label_10->setText(QCoreApplication::translate("MainWindow", "Rechenart", nullptr));
         comboBox_precession->setItemText(0, QCoreApplication::translate("MainWindow", "double_img_real", nullptr));
-        comboBox_precession->setItemText(1, QCoreApplication::translate("MainWindow", "complex<double>", nullptr));
-        comboBox_precession->setItemText(2, QCoreApplication::translate("MainWindow", "crazy_mode", nullptr));
+        comboBox_precession->setItemText(1, QCoreApplication::translate("MainWindow", "complex<long double>", nullptr));
 
         label_27->setText(QCoreApplication::translate("MainWindow", "HDPI Scaling:", nullptr));
         comboBox->setItemText(0, QCoreApplication::translate("MainWindow", "auto", nullptr));
@@ -1083,10 +1389,11 @@ public:
         radioButtonAutoScroll->setText(QCoreApplication::translate("MainWindow", "Autoscroll nach Vergr\303\266\303\237erung", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab), QCoreApplication::translate("MainWindow", "\342\232\231Settings", nullptr));
         pushButtonStart->setText(QCoreApplication::translate("MainWindow", "Vergr\303\266\303\237ern", nullptr));
-        pushButton_2->setText(QCoreApplication::translate("MainWindow", "Zur\303\274ck", nullptr));
-        pushButton_vor->setText(QCoreApplication::translate("MainWindow", "Vorw\303\244rts", nullptr));
-        pushButtonSaveImg->setText(QCoreApplication::translate("MainWindow", "Bild Speichern", nullptr));
-        pushButton->setText(QCoreApplication::translate("MainWindow", "Home", nullptr));
+        pushButton_back->setText(QCoreApplication::translate("MainWindow", "<Zur\303\274ck", nullptr));
+        pushButtonHome->setText(QCoreApplication::translate("MainWindow", "\342\214\202 Home", nullptr));
+        pushButton_vor->setText(QCoreApplication::translate("MainWindow", "Vorw\303\244rts >", nullptr));
+        pushButton_copy->setText(QCoreApplication::translate("MainWindow", "\342\216\230 Bild kopieren", nullptr));
+        pushButtonSaveImg->setText(QCoreApplication::translate("MainWindow", "Bild speichern unter", nullptr));
         label_7->setText(QCoreApplication::translate("MainWindow", "Made by Markus --> mit Linksclick zahelnfolge!", nullptr));
         menuSettings->setTitle(QCoreApplication::translate("MainWindow", "Settings", nullptr));
     } // retranslateUi

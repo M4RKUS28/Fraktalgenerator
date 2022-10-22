@@ -44,17 +44,20 @@ void WorkerThread::run()
     case 1:
         for(ssize_t x = x_left_corner; x < x_right_corner; x++) {
             QList<Pixel> *line = new QList<Pixel>;
-            std::complex<double> z, c;
+            std::complex<long double> z, c;
 
             for(ssize_t y = y_left_corner; y < y_right_corner; y++) {
 
                 if(this->settings.isMandelbrotSet) {
                     z = 0;
-                    c = std::complex<double>((double)x / this->settings.scale, - (double)y / this->settings.scale);
+                    c = std::complex<long double>(settings.mapImgPosReToGausLong(x),
+                                             - settings.mapImgPosImToGausLong(y));
 
                 } else { // julia Menge
-                    z = std::complex<double>((double)x / this->settings.scale, - (double)y / this->settings.scale);
-                    c =  std::complex<double>(this->settings.juliaStart_real, - this->settings.juliaStart_img);
+                    z = std::complex<long double>(settings.mapImgPosReToGausLong(x),
+                                             - settings.mapImgPosImToGausLong(y));
+                    c =  std::complex<long double>(this->settings.juliaStart_real,
+                                              - this->settings.juliaStart_img);
                 }
 
                 size_t i = 1;
@@ -78,12 +81,12 @@ void WorkerThread::run()
                     z_real = 0.0;
                     z_imag = 0.0;
 
-                    c_real =    (double)x / this->settings.scale;
-                    c_imag =  - (double)y / this->settings.scale;
+                    c_real =    settings.mapImgPosReToGaus(x);
+                    c_imag =  - settings.mapImgPosImToGaus(y);;
 
                 } else { // julia Menge
-                    z_real =   (double)x / this->settings.scale;
-                    z_imag = - (double)y / this->settings.scale;
+                    z_real =   settings.mapImgPosReToGaus(x);
+                    z_imag = - settings.mapImgPosImToGaus(y);
 
                     c_real =   this->settings.juliaStart_real;
                     c_imag =  - this->settings.juliaStart_img;
@@ -111,46 +114,46 @@ void WorkerThread::run()
             emit finishedLine(line);
         }
         break;
-    case 2:
-        for(ssize_t x = x_left_corner; x < x_right_corner; x++) {
-            QList<Pixel> *line = new QList<Pixel>;
-            double z_real, z_imag, c_real, c_imag;
+//    case 2:
+//        for(ssize_t x = x_left_corner; x < x_right_corner; x++) {
+//            QList<Pixel> *line = new QList<Pixel>;
+//            double z_real, z_imag, c_real, c_imag;
 
-            for(ssize_t y = y_left_corner; y < y_right_corner; y++) {
+//            for(ssize_t y = y_left_corner; y < y_right_corner; y++) {
 
-                if(this->settings.isMandelbrotSet) {
-                    z_real = 0.0;
-                    z_imag = 0.0;
+//                if(this->settings.isMandelbrotSet) {
+//                    z_real = 0.0;
+//                    z_imag = 0.0;
 
-                    c_real =    (double)x / this->settings.scale;
-                    c_imag =  - (double)y / this->settings.scale;
+//                    c_real =    settings.mapImgPosReToGaus(x);
+//                    c_imag =  - settings.mapImgPosImToGaus(y);;
 
-                } else {
-                    z_real =   (double)x / this->settings.scale;
-                    z_imag = - (double)y / this->settings.scale;
+//                } else { // julia Menge
+//                    z_real =   settings.mapImgPosReToGaus(x);
+//                    z_imag = - settings.mapImgPosImToGaus(y);
 
-                    c_real =   this->settings.juliaStart_real;
-                    c_imag =  - this->settings.juliaStart_img;
-                }
+//                    c_real =   this->settings.juliaStart_real;
+//                    c_imag =  - this->settings.juliaStart_img;
+//                }
 
-                size_t i = 1;
-                for(; i < maxIt; i++) {
-                    const double z_real2 = (z_real * z_real) - (z_imag * z_imag) + c_real;
-                    const double z_imag2 = (2.0 * z_real * z_imag) + c_imag;
-                    if(((z_real*z_real) + (c_imag*c_imag)) > escapeQuadrat)
-                        break;
-                    z_real = (z_real2 * z_real2) - (z_imag2 * z_imag2) + c_real;
-                    z_imag = (2.0 * z_real2 * z_imag2) + c_imag;
-                    if( ((z_real*z_real) + (c_imag*c_imag)) > escapeQuadrat)
-                        break;
-                }
+//                size_t i = 1;
+//                for(; i < maxIt; i++) {
+//                    const double z_real2 = (z_real * z_real) - (z_imag * z_imag) + c_real;
+//                    const double z_imag2 = (2.0 * z_real * z_imag) + c_imag;
+//                    if(((z_real*z_real) + (c_imag*c_imag)) > escapeQuadrat)
+//                        break;
+//                    z_real = (z_real2 * z_real2) - (z_imag2 * z_imag2) + c_real;
+//                    z_imag = (2.0 * z_real2 * z_imag2) + c_imag;
+//                    if( ((z_real*z_real) + (c_imag*c_imag)) > escapeQuadrat)
+//                        break;
+//                }
 
-                const double normItCount = getNormalizedIterationCount(i, z_real, z_imag, &this->settings);
-                line->append(Pixel(x, y, i, z_real, z_imag, normItCount, getPreColor(i, normItCount, &this->settings)));
-            }
-            emit finishedLine(line);
-        }
-        break;
+//                const double normItCount = getNormalizedIterationCount(i, z_real, z_imag, &this->settings);
+//                line->append(Pixel(x, y, i, z_real, z_imag, normItCount, getPreColor(i, normItCount, &this->settings)));
+//            }
+//            emit finishedLine(line);
+//        }
+//        break;
     }
 
 
@@ -160,65 +163,175 @@ QColor WorkerThread::getPreColor(size_t iters, double normalizedItC, const Image
 {
     double n = normalizedItC;
     double alpha;
-    double v = 0;
     int val = 0;
+
     size_t maxIt = imgS->maxIterations;
 
-    QColor test;
+    double anteil;
+    size_t farbSchritt = imgS->farbwechselIntervall;
+    QColor returnColor = Qt::black;
+    unsigned farbstufe = 0,
+            farbschrittCount = 3; // später auch erweiterbar mit mehreren farben
+
+    if(iters > maxIt || maxIt == 0) {
+        return Qt::black;
+    }
 
     if(iters == maxIt && imgS->fixedColor) {
         return QColor(imgS->fixFraktalColor);
-
-    } else {
-        //coloring
-        switch ( imgS->palette ) {
-        case 0:
-            val = (iters >= maxIt) ? 255 : (int)(n*10.0) % 255;
-            test = QColor::fromRgb(0, 0, 0, imgS->inverted ? 255 - val : val );
-            if(!test.isValid())
-                qDebug() << "WEIL: n=" << n << " und color: " << (imgS->inverted ? 255 - val : val);
-            return test;
-            break;
-        case 1:
-            v = (iters >= maxIt) ? 255.0 /*Mandelbrot-Set-Alpha*/ : ((double)((int)(n*3.0) % 255) / 255.0);
-            v = imgS->inverted ? 255.0 - v : v;
-            return QColor::fromRgbF(1, v, v, 1 );
-            break;
-        case 3:
-//            alpha = (iters >= maxIt) ? 1.0 /*Mandelbrot-Set-Alpha*/ : (double)(std::min( n + ((n*n)/(maxIt/40)), (double)maxIt) / (double)maxIt  ); /*Outside*/
-            alpha = (iters >= maxIt) ? 1.0 /*Mandelbrot-Set-Alpha*/ : (double)(std::min( n * ( (1000000/maxIt) / (n + 50)  ), (double)maxIt) / (double)maxIt  ); /*Outside*/
-            return QColor::fromRgbF(0, 0, 0, imgS->inverted ? 1.0 - alpha : alpha );
-            break;
-        case 4:
-            if(iters >= maxIt) {
-                return QColor(Qt::black);
-            } else {
-                // hsv = [powf((i / max) * 360, 1.5) % 360, 100, (i / max) * 100]
-                QColor c = QColor::fromHsv( size_t(pow( (n / maxIt) * 358 , 1.5)) % 358, 100, (n / maxIt) * 250);
-                return c;
-            }
-            break;
-        case 5:
-            if(iters >= maxIt) {
-                return QColor(Qt::black);
-            } else {
-                return QColor::fromHsv(int( (358.0 * n) / maxIt ), 255, 255);
-            }
-            break;
-        case 6:
-            if(iters >= maxIt) {
-                return QColor(Qt::black);
-            } else {
-                return QColor::fromHsl( ((int)std::pow(n / double(maxIt+1) * 360.0, 1.5) % 360), 50, (n / double(maxIt+1)) * 100 );
-            }
-            break;
-        default:
-            alpha = (iters >= maxIt) ? 1.0 /*Mandelbrot-Set-Alpha*/ : 0.0; /*Outside*/
-            return QColor::fromRgbF(0, 0, 0, imgS->inverted ? 1.0 - alpha : alpha );
-            break;
-        }
     }
 
+    //coloring
+    switch ( imgS->palette ) {
+    case 0:
+        val = (iters >= maxIt) ? 255 : (int)(n*10.0) % 255;
+        returnColor = QColor::fromRgb(0, 0, 0, imgS->inverted ? 255 - val : val );
+        break;
+
+    case 6:
+    case 3: // farblos
+        returnColor = (iters == maxIt) ? (imgS->inverted ? Qt::white : Qt::black) : (imgS->inverted ? Qt::black : Qt::white);
+        break;
+
+    case 4:
+      returnColor =  (iters == maxIt) ? Qt::black : QColor::fromHsv( size_t(pow( (n / maxIt) * 359 , 1.5)) % 359,
+                                                                     imgS->hsv_saturation,  imgS->spinBoxHSV_value, imgS->spinBoxHSV_alpha);
+        break;
+
+    case 5:
+        returnColor = (iters == maxIt) ? Qt::black : QColor::fromHsv(int( (358.0 * n) / maxIt ), imgS->hsv_saturation,  imgS->spinBoxHSV_value, imgS->spinBoxHSV_alpha);
+        break;
+
+
+    case 2:
+        if(iters == maxIt || maxIt == 0)
+            return Qt::black;
+
+        iters = normalizedItC;
+//        while( iters > 0 && iters > farbSchritt * farbschrittCount)
+//            iters -= (farbSchritt * farbschrittCount);
+        iters %= farbSchritt * farbschrittCount;
+
+        farbstufe = iters / farbSchritt; // iters < farbSchritt --> 0, iters < 2*farbSchritt --> 1, ..., wenn farbstufe == farbschrittCount --> iters == max --> black
+        if(farbstufe >= farbschrittCount)
+            returnColor = Qt::black;
+        else {
+            iters -= farbSchritt * farbstufe;
+            anteil = ((double)iters / (double)farbSchritt);
+            // FARBE = START + ( ZIEL - START ) * STEP
+            returnColor = QColor::fromRgb(imgS->rgb1[farbstufe].red() + (double)(imgS->rgb1[farbstufe == 2 ? 0 : farbstufe + 1].red() - imgS->rgb1[farbstufe].red()) * anteil,
+                                                       imgS->rgb1[farbstufe].green()  + (double)(imgS->rgb1[farbstufe == 2 ? 0 : farbstufe + 1].green() - imgS->rgb1[farbstufe].green()) * anteil,
+                                                       imgS->rgb1[farbstufe].blue()  + (double)(imgS->rgb1[farbstufe == 2 ? 0 : farbstufe + 1].blue() - imgS->rgb1[farbstufe].blue()) * anteil);
+        }
+        break;
+
+    case 1:
+        if(iters == maxIt || maxIt == 0)
+            return Qt::black;
+
+        iters = (iters * farbSchritt * farbschrittCount) / maxIt ;
+
+        farbstufe = iters / farbSchritt; // iters < farbSchritt --> 0, iters < 2*farbSchritt --> 1, ..., wenn farbstufe == farbschrittCount --> iters == max --> black
+        if(farbstufe >= farbschrittCount)
+            returnColor = Qt::black;
+        else {
+            iters -= farbSchritt * farbstufe;
+            anteil = std::min((double)iters / (double)farbSchritt, 1.0);
+            returnColor = QColor::fromRgb(imgS->rgb1[farbstufe].red() + (double)(imgS->rgb1[farbstufe == 2 ? 0 : farbstufe + 1].red() - imgS->rgb1[farbstufe].red()) * anteil,
+                                                       imgS->rgb1[farbstufe].green()  + (double)(imgS->rgb1[farbstufe == 2 ? 0 : farbstufe + 1].green() - imgS->rgb1[farbstufe].green()) * anteil,
+                                                       imgS->rgb1[farbstufe].blue()  + (double)(imgS->rgb1[farbstufe == 2 ? 0 : farbstufe + 1].blue() - imgS->rgb1[farbstufe].blue()) * anteil);
+        }
+        break;
+
+//        if( iters < farbSchritt) { // farbstufe 1
+//            anteil = ((double)iters / (double)farbSchritt);
+
+//            return QColor::fromRgb(imgS->rgb1[0].red() + (double)(imgS->rgb1[1].red() - imgS->rgb1[0].red()) * anteil,
+//                                   imgS->rgb1[0].green()  + (double)(imgS->rgb1[1].green() - imgS->rgb1[0].green()) * anteil,
+//                                   imgS->rgb1[0].blue()  + (double)(imgS->rgb1[1].blue() - imgS->rgb1[0].blue()) * anteil);
+
+//        } else if( iters < farbSchritt*2) { // farbstufe 2
+//            iters -= farbSchritt;
+//            anteil = ((double)iters / (double)farbSchritt);
+
+//            return QColor::fromRgb(imgS->rgb1[1].red()  + (imgS->rgb1[2].red() - imgS->rgb1[1].red()) * anteil,
+//                                   imgS->rgb1[1].green()  + (imgS->rgb1[2].green() - imgS->rgb1[1].green()) * anteil,
+//                                   imgS->rgb1[1].blue()  + (imgS->rgb1[2].blue() - imgS->rgb1[1].blue()) * anteil);
+//        } else if( iters < farbSchritt*3) { //  farbstufe 3
+//            iters -= farbSchritt*2;
+//            anteil = ((double)iters / (double)farbSchritt);
+
+//            return QColor::fromRgb(imgS->rgb1[2].red()  + (imgS->rgb1[0].red() - imgS->rgb1[2].red()) * anteil,
+//                                   imgS->rgb1[2].green()  + (imgS->rgb1[0].green() - imgS->rgb1[2].green()) * anteil,
+//                                   imgS->rgb1[2].blue()  + (imgS->rgb1[0].blue() - imgS->rgb1[2].blue()) * anteil);
+//        } else return QColor(Qt::black);
+
+    default:
+        alpha = (iters >= maxIt) ? 1.0 /*Mandelbrot-Set-Alpha*/ : 0.0; /*Outside*/
+        return QColor::fromRgbF(0, 0, 0, imgS->inverted ? 1.0 - alpha : alpha );
+    }
+
+
+//        case 7:
+//            iters = (iters * farbSchritt * 3) / maxIt ;
+//            iters %= (farbSchritt * 3);
+
+//            if( iters < farbSchritt) { // farbstufe 1
+//                anteil = (iters / farbSchritt);
+//                // FARBE = START + ( ZIEL - START ) * STEP
+
+//                return QColor::fromRgb(iters , 0, 255 - iters);
+
+//            } else if( iters < farbSchritt*2) { // farbstufe 2
+//                iters -= farbSchritt;
+//                anteil = (iters / farbSchritt) * 255;
+
+//                return QColor::fromRgb(255 - iters, iters, 0);
+
+//            } else if( iters < farbSchritt*3) { //  farbstufe 3
+//                iters -= farbSchritt*2;
+//                anteil = (iters / farbSchritt) * 255;
+
+//                return QColor::fromRgb(0, 255 - iters, iters);
+
+//            } else return QColor(Qt::black);
+//        case 7:
+//            if(iters == maxIt)
+//                return Qt::black;
+
+//            iters = (iters * farbSchritt * 3) / maxIt ;
+//            iters %= (farbSchritt * 3);
+
+//            if( iters < farbSchritt) { // farbstufe 1
+//                anteil = ((double)iters / (double)farbSchritt);
+//                // FARBE = START + ( ZIEL - START ) * STEP
+
+//                return QColor::fromRgb((double)imgS->rgb1[0].red() * anteil+ (double)(imgS->rgb1[2].red() - imgS->rgb1[0].red()) * anteil,
+//                                       (double)imgS->rgb1[0].green() * anteil + (double)(imgS->rgb1[2].green() - imgS->rgb1[0].green()) * anteil,
+//                                       (double)imgS->rgb1[0].blue() * anteil + (double)(imgS->rgb1[2].blue() - imgS->rgb1[0].blue()) * anteil);
+
+//            } else if( iters < farbSchritt*2) { // farbstufe 2
+//                iters -= farbSchritt;
+//                anteil = ((double)iters / (double)farbSchritt);
+
+//                return QColor::fromRgb((double)imgS->rgb1[1].red() * anteil + (imgS->rgb1[0].red() - imgS->rgb1[1].red()) * anteil,
+//                                       (double)imgS->rgb1[1].green() * anteil + (imgS->rgb1[0].green() - imgS->rgb1[1].green()) * anteil,
+//                                       (double)imgS->rgb1[1].blue() * anteil + (imgS->rgb1[0].blue() - imgS->rgb1[1].blue()) * anteil);
+//            } else if( iters < farbSchritt*3) { //  farbstufe 3
+//                iters -= farbSchritt*2;
+//                anteil = ((double)iters / (double)farbSchritt);
+
+//                return QColor::fromRgb((double)imgS->rgb1[2].red() * anteil + (imgS->rgb1[1].red() - imgS->rgb1[2].red()) * anteil,
+//                                       (double)imgS->rgb1[2].green() * anteil + (imgS->rgb1[1].green() - imgS->rgb1[2].green()) * anteil,
+//                                       (double)imgS->rgb1[2].blue() * anteil + (imgS->rgb1[1].blue() - imgS->rgb1[2].blue()) * anteil);
+//            } else return QColor(Qt::black);
+
+
+
+//        }
+//    }
+
+    return returnColor.isValid() ? returnColor : Qt::black;
 }
 
 double WorkerThread::getNormalizedIterationCount(size_t iters, double z_real, double z_imag, ImageSetting * imS)
