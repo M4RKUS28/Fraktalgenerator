@@ -840,46 +840,40 @@ void MainWindow::paintEvent(QPaintEvent *)
                     double x_step = ui->spinBoxBeschriftungen->value();
                     double minX = currentImg.mapImgPosReToGaus(xA.x1());
                     double maxX = currentImg.mapImgPosReToGaus(xA.x2());
-                    double x = 0;
+                    double x = x_step;
                     for(int i = 0 ; i < 9999 && x < maxX; i++) {
-                        x += x_step;
                         int x_pos = currentImg.mapGausReToImgPos(x);
                         painter.drawLine(QPoint(x_pos, xA.y1() -5), QPoint(x_pos, xA.y1() + 5));
                         painter.drawText(QPoint(x_pos - 6, xA.y1() - 10), QString::number( x  ));
+                        x += x_step;
                     }
 
-                    x = 0;
+                    x = - x_step;
                     for(int i = 0 ; i < 9999 && x > minX; i++) {
-                        x -= x_step;
                         int x_pos = currentImg.mapGausReToImgPos(x);
                         painter.drawLine(QPoint(x_pos, xA.y1() -5), QPoint(x_pos, xA.y1() + 5));
                         painter.drawText(QPoint(x_pos - 6, xA.y1() - 10), QString::number(  x  ));
+                        x -= x_step;
                     }
 
                     double y_step = ui->spinBoxBeschriftungenY->value();
                     double minY = currentImg.mapImgPosImToGaus(yA.y1());
                     double maxY = currentImg.mapImgPosImToGaus(yA.y2());
-                    double y = 0;
+                    double y = y_step;
                     for(int i = 0 ; i < 9999 && y < maxY; i++ ) {
-                        y += y_step;
                         int y_pos = currentImg.mapGausImToImgPos(y);
                         painter.drawLine(QPoint(yA.x1() - 5, y_pos ), QPoint(yA.x1() + 5, y_pos ));
                         painter.drawText(QPoint(yA.x1() + 10, y_pos + 5), QString::number( y  ));
+                        y += y_step;
                     }
-                    y = 0;
+                    y = -y_step;
                     for(int i = 0 ; i < 9999 && y > minY; i++ ) {
-                        y -= y_step;
                         int y_pos = currentImg.mapGausImToImgPos(y);
                         painter.drawLine(QPoint(yA.x1() - 5, y_pos ), QPoint(yA.x1() + 5, y_pos ));
                         painter.drawText(QPoint(yA.x1() + 10, y_pos + 5), QString::number( -y  ));
+                        y -= y_step;
                     }
 
-//                    int partsY = yA.dy() / ui->spinBoxBeschriftungenY->value();
-//                    for(int i = 1; i <= ui->spinBoxBeschriftungenY->value(); i++) {
-//                        painter.drawLine(yA.p1() + QPoint(-5, partsY * i), yA.p1() + QPoint(5, partsY * i));
-//                        painter.drawText(yA.p1() + QPoint( -25, partsY * i),
-//                                         QString::number( - (double)currentImg.mapImgPosImToGaus(yA.p1().y() + partsY * i)));
-//                    }
                 }
 
             }
@@ -932,6 +926,7 @@ void MainWindow::on_comboBox_palette_currentIndexChanged(int index)
     ui->spinBoxFarbWechselIntervall->setVisible(false);
     ui->label_farbwechselintervall->setVisible(false);
     ui->radioButton_normalized->setEnabled(true);
+    ui->radioButton_invert->setEnabled(false);
 
 
     switch(index) {
@@ -940,16 +935,18 @@ void MainWindow::on_comboBox_palette_currentIndexChanged(int index)
         ui->label_farbwechselintervall->setVisible(true);
         ui->stackedWidgetExtraSettings->setCurrentIndex(4);
         ui->stackedWidgetExtraSettings->setVisible(true);
-        ui->radioButton_normalized->setEnabled(false);
         break;
     case 1:
         ui->stackedWidgetExtraSettings->setCurrentIndex(4);
         ui->stackedWidgetExtraSettings->setVisible(true);
-        ui->radioButton_normalized->setEnabled(false);
         break;
 
     case 3:
         ui->radioButton_normalized->setEnabled(false);
+        ui->radioButton_invert->setEnabled(true);
+        break;
+    case 0:
+        ui->radioButton_invert->setEnabled(true);
         break;
 
     case 4:

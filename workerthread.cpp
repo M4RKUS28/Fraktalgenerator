@@ -190,7 +190,8 @@ QColor WorkerThread::getPreColor(size_t iters, double normalizedItC, const Image
 
     case 6:
     case 3: // farblos
-        returnColor = (iters == maxIt) ? (imgS->inverted ? Qt::white : Qt::black) : (imgS->inverted ? Qt::black : Qt::white);
+        returnColor = (iters == maxIt) ? (imgS->inverted ? QColor::fromRgb(0, 0, 0, 0) : QColor::fromRgb(0, 0, 0, 255)) :
+                                         (imgS->inverted ? QColor::fromRgb(0, 0, 0, 255) : QColor::fromRgb(0, 0, 0, 0));
         break;
 
     case 4:
@@ -203,14 +204,14 @@ QColor WorkerThread::getPreColor(size_t iters, double normalizedItC, const Image
         break;
 
 
-    case 2:
+    case 2: {
         if(iters == maxIt || maxIt == 0)
             return Qt::black;
 
-        iters = normalizedItC;
-//        while( iters > 0 && iters > farbSchritt * farbschrittCount)
-//            iters -= (farbSchritt * farbschrittCount);
-        iters %= farbSchritt * farbschrittCount;
+        double iters = normalizedItC;
+        while( iters > 0 && iters > farbSchritt * farbschrittCount)
+            iters -= (farbSchritt * farbschrittCount);
+//        iters %= farbSchritt * farbschrittCount;
 
         farbstufe = iters / farbSchritt; // iters < farbSchritt --> 0, iters < 2*farbSchritt --> 1, ..., wenn farbstufe == farbschrittCount --> iters == max --> black
         if(farbstufe >= farbschrittCount)
@@ -225,11 +226,11 @@ QColor WorkerThread::getPreColor(size_t iters, double normalizedItC, const Image
         }
         break;
 
-    case 1:
+    } case 1: {
         if(iters == maxIt || maxIt == 0)
             return Qt::black;
 
-        iters = (iters * farbSchritt * farbschrittCount) / maxIt ;
+        double iters = (normalizedItC * farbSchritt * farbschrittCount) / maxIt ;
 
         farbstufe = iters / farbSchritt; // iters < farbSchritt --> 0, iters < 2*farbSchritt --> 1, ..., wenn farbstufe == farbschrittCount --> iters == max --> black
         if(farbstufe >= farbschrittCount)
@@ -242,6 +243,7 @@ QColor WorkerThread::getPreColor(size_t iters, double normalizedItC, const Image
                                                        imgS->rgb1[farbstufe].blue()  + (double)(imgS->rgb1[farbstufe == 2 ? 0 : farbstufe + 1].blue() - imgS->rgb1[farbstufe].blue()) * anteil);
         }
         break;
+    }
 
 //        if( iters < farbSchritt) { // farbstufe 1
 //            anteil = ((double)iters / (double)farbSchritt);

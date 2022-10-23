@@ -545,7 +545,6 @@ public:
         comboBox_palette->addItem(QString());
         comboBox_palette->addItem(QString());
         comboBox_palette->addItem(QString());
-        comboBox_palette->addItem(QString());
         comboBox_palette->setObjectName(QString::fromUtf8("comboBox_palette"));
         comboBox_palette->setFont(font2);
 
@@ -757,7 +756,7 @@ public:
         spinBoxFarbWechselIntervall->setObjectName(QString::fromUtf8("spinBoxFarbWechselIntervall"));
         spinBoxFarbWechselIntervall->setFont(font2);
         spinBoxFarbWechselIntervall->setMaximum(999999);
-        spinBoxFarbWechselIntervall->setValue(200);
+        spinBoxFarbWechselIntervall->setValue(20);
 
         formLayout_7->setWidget(5, QFormLayout::FieldRole, spinBoxFarbWechselIntervall);
 
@@ -1278,8 +1277,8 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(0);
-        stackedWidgetExtraSettings->setCurrentIndex(3);
+        tabWidget->setCurrentIndex(1);
+        stackedWidgetExtraSettings->setCurrentIndex(4);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -1336,7 +1335,6 @@ public:
         comboBox_palette->setItemText(4, QCoreApplication::translate("MainWindow", "HSV ^ 1.5", nullptr));
         comboBox_palette->setItemText(5, QCoreApplication::translate("MainWindow", "HSV", nullptr));
         comboBox_palette->setItemText(6, QCoreApplication::translate("MainWindow", "Histogramm", nullptr));
-        comboBox_palette->setItemText(7, QCoreApplication::translate("MainWindow", "KA", nullptr));
 
         label_38->setText(QCoreApplication::translate("MainWindow", "S\303\244ttigung:", nullptr));
         label_39->setText(QCoreApplication::translate("MainWindow", "Wert:", nullptr));
