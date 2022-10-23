@@ -9,7 +9,8 @@
 #include <QPixmap>
 #include <QTime>
 #include <iostream>
-
+#include <QScreen>
+#include <QApplication>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -818,7 +819,7 @@ void MainWindow::paintEvent(QPaintEvent *)
 
 
             // optimieren -> nur sichtbares zeug berechnen!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            if(this->ui->radioButtonKoords_2->isChecked()) {
+            if(this->ui->radioButtonKoords_2->isChecked() && currentImg.kkordSystemisInImage) {
                 painter.setPen(QPen(QColor(ui->comboBoxColorKoordSystem->currentText()), ui->spinBoxKoordPenThickness->value()));
                 auto xA = currentImg.xAchse;
                 auto yA = currentImg.yAchse;
@@ -862,6 +863,9 @@ void MainWindow::paintEvent(QPaintEvent *)
                     double y = y_step;
                     for(int i = 0 ; i < 9999 && y < maxY; i++ ) {
                         int y_pos = currentImg.mapGausImToImgPos(y);
+//                        qDebug() << y_pos;
+//                        if(y_pos + 5 > yA.x2())
+//                            break;
                         painter.drawLine(QPoint(yA.x1() - 5, y_pos ), QPoint(yA.x1() + 5, y_pos ));
                         painter.drawText(QPoint(yA.x1() + 10, y_pos + 5), QString::number( y  ));
                         y += y_step;

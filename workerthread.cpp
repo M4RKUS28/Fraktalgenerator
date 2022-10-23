@@ -359,7 +359,7 @@ Point::Point()
     Y = 0;
 }
 
-Point::Point(long long X, long long Y)
+Point::Point(ssize_t X, ssize_t Y)
     : X(X), Y(Y)
 {
 
@@ -370,22 +370,22 @@ QPoint Point::rountToQPoint()
     return QPoint(x(), y());
 }
 
-void Point::setX(long long newX)
+void Point::setX(ssize_t newX)
 {
     X = newX;
 }
 
-long long Point::y() const
+ssize_t Point::y() const
 {
     return Y;
 }
 
-void Point::setY(long long newY)
+void Point::setY(ssize_t newY)
 {
     Y = newY;
 }
 
-long long Point::x() const
+ssize_t Point::x() const
 {
     return X;
 }
@@ -441,6 +441,13 @@ void ImageSetting::init(size_t img_w, size_t img_h, size_t maxIterations, bool i
 
     this->xAchse = QLine(startX, endeX);
     this->yAchse = QLine(startY, endeY);
+
+    QRect r(0, 0, img_w, img_h);
+
+    if(r.contains(startX) || r.contains(endeX) || r.contains(startY) || r.contains(endeY))
+        this->kkordSystemisInImage = true;
+    else
+        this->kkordSystemisInImage = true; //false;
 
 }
 

@@ -1898,7 +1898,7 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>781</width>
+         <width>786</width>
          <height>831</height>
         </rect>
        </property>
@@ -2107,7 +2107,7 @@
   <customwidget>
    <class>ImageView</class>
    <extends>QWidget</extends>
-   <header>Imageview.h</header>
+   <header>imageview.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

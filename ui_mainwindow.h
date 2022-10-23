@@ -35,7 +35,7 @@
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
-#include "Imageview.h"
+#include "imageview.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -836,6 +836,7 @@ public:
         comboBox_color_zahlenfolge->addItem(QString());
         comboBox_color_zahlenfolge->addItem(QString());
         comboBox_color_zahlenfolge->addItem(QString());
+        comboBox_color_zahlenfolge->addItem(QString());
         comboBox_color_zahlenfolge->setObjectName(QString::fromUtf8("comboBox_color_zahlenfolge"));
         comboBox_color_zahlenfolge->setFont(font2);
 
@@ -1158,7 +1159,7 @@ public:
         scrollArea->setWidgetResizable(true);
         scrollAreaWidgetContents_2 = new QWidget();
         scrollAreaWidgetContents_2->setObjectName(QString::fromUtf8("scrollAreaWidgetContents_2"));
-        scrollAreaWidgetContents_2->setGeometry(QRect(0, 0, 781, 831));
+        scrollAreaWidgetContents_2->setGeometry(QRect(0, 0, 786, 831));
         horizontalLayout_5 = new QHBoxLayout(scrollAreaWidgetContents_2);
         horizontalLayout_5->setObjectName(QString::fromUtf8("horizontalLayout_5"));
         imageView = new ImageView(scrollAreaWidgetContents_2);
@@ -1370,6 +1371,7 @@ public:
         comboBox_color_zahlenfolge->setItemText(6, QCoreApplication::translate("MainWindow", "pink", nullptr));
         comboBox_color_zahlenfolge->setItemText(7, QCoreApplication::translate("MainWindow", "green", nullptr));
         comboBox_color_zahlenfolge->setItemText(8, QCoreApplication::translate("MainWindow", "orange", nullptr));
+        comboBox_color_zahlenfolge->setItemText(9, QCoreApplication::translate("MainWindow", "gray", nullptr));
 
         label_21->setText(QCoreApplication::translate("MainWindow", "Zeichenstil:", nullptr));
         comboBox_drawStyle_zahlenfolge->setItemText(0, QCoreApplication::translate("MainWindow", "Punkte", nullptr));

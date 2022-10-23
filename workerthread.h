@@ -68,6 +68,7 @@ struct ImageSetting {
 
     QLine xAchse;
     QLine yAchse;
+    bool kkordSystemisInImage;
 
     double juliaStart_img,
            juliaStart_real;
