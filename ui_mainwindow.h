@@ -171,6 +171,8 @@ public:
     QSpinBox *spinBoxKoordPenThickness;
     QLabel *label_24;
     QComboBox *comboBoxColorKoordSystem;
+    QLabel *label_43;
+    QLabel *label_44;
     QFrame *line_9;
     QRadioButton *radioButton_reload_at_back;
     QRadioButton *radioButtonAutoScroll;
@@ -990,7 +992,7 @@ public:
         spinBoxBeschriftungen = new QDoubleSpinBox(radioButtonKoords_2);
         spinBoxBeschriftungen->setObjectName(QString::fromUtf8("spinBoxBeschriftungen"));
         spinBoxBeschriftungen->setFont(font2);
-        spinBoxBeschriftungen->setDecimals(10);
+        spinBoxBeschriftungen->setDecimals(6);
         spinBoxBeschriftungen->setMinimum(0.000001000000000);
         spinBoxBeschriftungen->setValue(0.250000000000000);
 
@@ -1005,7 +1007,7 @@ public:
         spinBoxBeschriftungenY = new QDoubleSpinBox(radioButtonKoords_2);
         spinBoxBeschriftungenY->setObjectName(QString::fromUtf8("spinBoxBeschriftungenY"));
         spinBoxBeschriftungenY->setFont(font2);
-        spinBoxBeschriftungenY->setDecimals(10);
+        spinBoxBeschriftungenY->setDecimals(6);
         spinBoxBeschriftungenY->setMinimum(0.000001000000000);
         spinBoxBeschriftungenY->setValue(0.250000000000000);
 
@@ -1015,7 +1017,7 @@ public:
         label_41->setObjectName(QString::fromUtf8("label_41"));
         label_41->setFont(font2);
 
-        formLayout_9->setWidget(3, QFormLayout::LabelRole, label_41);
+        formLayout_9->setWidget(5, QFormLayout::LabelRole, label_41);
 
         spinBoxKoordPenThickness = new QSpinBox(radioButtonKoords_2);
         spinBoxKoordPenThickness->setObjectName(QString::fromUtf8("spinBoxKoordPenThickness"));
@@ -1024,13 +1026,13 @@ public:
         spinBoxKoordPenThickness->setMaximum(5);
         spinBoxKoordPenThickness->setValue(2);
 
-        formLayout_9->setWidget(3, QFormLayout::FieldRole, spinBoxKoordPenThickness);
+        formLayout_9->setWidget(5, QFormLayout::FieldRole, spinBoxKoordPenThickness);
 
         label_24 = new QLabel(radioButtonKoords_2);
         label_24->setObjectName(QString::fromUtf8("label_24"));
         label_24->setFont(font2);
 
-        formLayout_9->setWidget(4, QFormLayout::LabelRole, label_24);
+        formLayout_9->setWidget(6, QFormLayout::LabelRole, label_24);
 
         comboBoxColorKoordSystem = new QComboBox(radioButtonKoords_2);
         comboBoxColorKoordSystem->addItem(QString());
@@ -1046,7 +1048,17 @@ public:
         comboBoxColorKoordSystem->setObjectName(QString::fromUtf8("comboBoxColorKoordSystem"));
         comboBoxColorKoordSystem->setFont(font2);
 
-        formLayout_9->setWidget(4, QFormLayout::FieldRole, comboBoxColorKoordSystem);
+        formLayout_9->setWidget(6, QFormLayout::FieldRole, comboBoxColorKoordSystem);
+
+        label_43 = new QLabel(radioButtonKoords_2);
+        label_43->setObjectName(QString::fromUtf8("label_43"));
+
+        formLayout_9->setWidget(3, QFormLayout::LabelRole, label_43);
+
+        label_44 = new QLabel(radioButtonKoords_2);
+        label_44->setObjectName(QString::fromUtf8("label_44"));
+
+        formLayout_9->setWidget(4, QFormLayout::LabelRole, label_44);
 
 
         formLayout_2->setWidget(5, QFormLayout::SpanningRole, radioButtonKoords_2);
@@ -1278,7 +1290,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(1);
+        tabWidget->setCurrentIndex(2);
         stackedWidgetExtraSettings->setCurrentIndex(4);
 
 
@@ -1403,6 +1415,8 @@ public:
         comboBoxColorKoordSystem->setItemText(8, QCoreApplication::translate("MainWindow", "green", nullptr));
         comboBoxColorKoordSystem->setItemText(9, QCoreApplication::translate("MainWindow", "red", nullptr));
 
+        label_43->setText(QCoreApplication::translate("MainWindow", "x von bis", nullptr));
+        label_44->setText(QCoreApplication::translate("MainWindow", "y von bis", nullptr));
         radioButton_reload_at_back->setText(QCoreApplication::translate("MainWindow", "Lade Bilder bei Zur\303\274ck neu", nullptr));
         radioButtonAutoScroll->setText(QCoreApplication::translate("MainWindow", "Autoscroll nach Vergr\303\266\303\237erung", nullptr));
         label_5->setText(QCoreApplication::translate("MainWindow", "Threads:", nullptr));

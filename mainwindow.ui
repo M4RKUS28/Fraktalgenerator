@@ -92,7 +92,7 @@
           <enum>QTabWidget::Rounded</enum>
          </property>
          <property name="currentIndex">
-          <number>1</number>
+          <number>2</number>
          </property>
          <property name="iconSize">
           <size>
@@ -1541,7 +1541,7 @@
                  </font>
                 </property>
                 <property name="decimals">
-                 <number>10</number>
+                 <number>6</number>
                 </property>
                 <property name="minimum">
                  <double>0.000001000000000</double>
@@ -1576,7 +1576,7 @@
                  <string> i</string>
                 </property>
                 <property name="decimals">
-                 <number>10</number>
+                 <number>6</number>
                 </property>
                 <property name="minimum">
                  <double>0.000001000000000</double>
@@ -1586,7 +1586,7 @@
                 </property>
                </widget>
               </item>
-              <item row="3" column="0">
+              <item row="5" column="0">
                <widget class="QLabel" name="label_41">
                 <property name="font">
                  <font>
@@ -1599,7 +1599,7 @@
                 </property>
                </widget>
               </item>
-              <item row="3" column="1">
+              <item row="5" column="1">
                <widget class="QSpinBox" name="spinBoxKoordPenThickness">
                 <property name="font">
                  <font>
@@ -1618,7 +1618,7 @@
                 </property>
                </widget>
               </item>
-              <item row="4" column="0">
+              <item row="6" column="0">
                <widget class="QLabel" name="label_24">
                 <property name="font">
                  <font>
@@ -1631,7 +1631,7 @@
                 </property>
                </widget>
               </item>
-              <item row="4" column="1">
+              <item row="6" column="1">
                <widget class="QComboBox" name="comboBoxColorKoordSystem">
                 <property name="font">
                  <font>
@@ -1689,6 +1689,20 @@
                   <string>red</string>
                  </property>
                 </item>
+               </widget>
+              </item>
+              <item row="3" column="0">
+               <widget class="QLabel" name="label_43">
+                <property name="text">
+                 <string>x von bis</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="0">
+               <widget class="QLabel" name="label_44">
+                <property name="text">
+                 <string>y von bis</string>
+                </property>
                </widget>
               </item>
              </layout>

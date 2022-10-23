@@ -433,11 +433,11 @@ void ImageSetting::init(size_t img_w, size_t img_h, size_t maxIterations, bool i
     NumIterationsPerPixel = new size_t[maxIterations + 2];
     memset(NumIterationsPerPixel, 0, sizeof(size_t) * (maxIterations + 2) );
 
-    QPoint startX = QPoint(mapGausReToImgPos(-2.5), mapGausImToImgPos(0)); // QPoint(50, img_h / 2);
-    QPoint endeX =  QPoint(mapGausReToImgPos(1.5), mapGausImToImgPos(0)); // QPoint (img_w - 50, startX.y());
+    QPoint startX = QPoint(mapGausReToImgPos(-2.25), mapGausImToImgPos(0)); // QPoint(50, img_h / 2);
+    QPoint endeX =  QPoint(mapGausReToImgPos(1.25), mapGausImToImgPos(0)); // QPoint (img_w - 50, startX.y());
 
-    QPoint startY = QPoint(mapGausReToImgPos(0), mapGausImToImgPos(-1.5)); //QPoint (img_w / 2, 50);
-    QPoint endeY = QPoint(mapGausReToImgPos(0), mapGausImToImgPos(1.5));  //QPoint (startY.x(), img_h - 50 );
+    QPoint startY = QPoint(mapGausReToImgPos(0), mapGausImToImgPos(-1.25)); //QPoint (img_w / 2, 50);
+    QPoint endeY = QPoint(mapGausReToImgPos(0), mapGausImToImgPos(1.25));  //QPoint (startY.x(), img_h - 50 );
 
     this->xAchse = QLine(startX, endeX);
     this->yAchse = QLine(startY, endeY);

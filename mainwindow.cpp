@@ -821,6 +821,10 @@ void MainWindow::paintEvent(QPaintEvent *)
             // optimieren -> nur sichtbares zeug berechnen!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             if(this->ui->radioButtonKoords_2->isChecked() && currentImg.kkordSystemisInImage) {
                 painter.setPen(QPen(QColor(ui->comboBoxColorKoordSystem->currentText()), ui->spinBoxKoordPenThickness->value()));
+                QFont font = painter.font() ;
+                font.setPointSize(8 + 2 * ui->spinBoxKoordPenThickness->value() );
+                painter.setFont(font);
+
                 auto xA = currentImg.xAchse;
                 auto yA = currentImg.yAchse;
 
@@ -835,8 +839,16 @@ void MainWindow::paintEvent(QPaintEvent *)
                 painter.drawLine(yA.p1(), yA.p1() - QPoint(-5, -5));
                 painter.drawLine(yA.p1(), yA.p1() - QPoint(5, -5));
 
+
+
                 if(this->ui->radioButtonMitBeschriftungen->isChecked() && ui->spinBoxBeschriftungen->value() && ui->spinBoxBeschriftungenY->value()) {
                     //Beschriftung
+
+
+                    painter.drawText(yA.p1() + QPoint(10, 5), "Im(c)" );
+                    painter.drawText(xA.p2() + QPoint(-15, -10), "Re(c)");
+
+
 
                     double x_step = ui->spinBoxBeschriftungen->value();
                     double minX = currentImg.mapImgPosReToGaus(xA.x1());
@@ -867,14 +879,14 @@ void MainWindow::paintEvent(QPaintEvent *)
 //                        if(y_pos + 5 > yA.x2())
 //                            break;
                         painter.drawLine(QPoint(yA.x1() - 5, y_pos ), QPoint(yA.x1() + 5, y_pos ));
-                        painter.drawText(QPoint(yA.x1() + 10, y_pos + 5), QString::number( y  ));
+                        painter.drawText(QPoint(yA.x1() + 10, y_pos + 5), QString::number( y  ) + "i");
                         y += y_step;
                     }
                     y = -y_step;
                     for(int i = 0 ; i < 9999 && y > minY; i++ ) {
                         int y_pos = currentImg.mapGausImToImgPos(y);
                         painter.drawLine(QPoint(yA.x1() - 5, y_pos ), QPoint(yA.x1() + 5, y_pos ));
-                        painter.drawText(QPoint(yA.x1() + 10, y_pos + 5), QString::number( -y  ));
+                        painter.drawText(QPoint(yA.x1() + 10, y_pos + 5), QString::number( -y  ) + "i");
                         y -= y_step;
                     }
 
