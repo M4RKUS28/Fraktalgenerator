@@ -14,6 +14,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , currentImg(0, START_SCALE, START_POS_X , START_POS_Y ), lastImgStructID(0),
+      editedSettings(false),
       ignoreXPosEdited(false),
       ignoreYPosEdited(false),
       ui(new Ui::MainWindow)
@@ -79,9 +80,9 @@ void MainWindow::updateMidPos(bool clear)
         ui->im->setValue(0);
     } else {
         ui->re->setValue(currentImg.mapImgPosReToGaus(this->zoomRect.getMousePos().x()));
-        ui->im->setValue(currentImg.mapImgPosImToGaus(this->zoomRect.getMousePos().y()));
+        ui->im->setValue(- currentImg.mapImgPosImToGaus(this->zoomRect.getMousePos().y()));
         ui->statusbar->showMessage("Re(" + QString::number(currentImg.mapImgPosReToGaus(this->zoomRect.getMousePos().x()))
-                                   + ") Im(" + QString::number(currentImg.mapImgPosImToGaus(this->zoomRect.getMousePos().y())) + ")", 2000);
+                                   + ") Im(" + QString::number( - currentImg.mapImgPosImToGaus(this->zoomRect.getMousePos().y())) + ")", 2000);
 
     }
 
@@ -104,14 +105,13 @@ void MainWindow::zustandWechseln(QString aktion, QString, QPoint m_pos, QMouseEv
         if(aktion == "TIMER") {
 
         } else if(aktion == "BUTTON_REFRESH_AND_STOP") {
-            qDebug() << this->op_mode;
 
             if(this->op_mode == OP_MODE::REFRESH ) {
                 //Aktualiseren
                 this->startRefresh(currentImg);
 
-            // wenn: einstellungenverändert == true:
-            } else if(this->op_mode == OP_MODE::APPLY_SETTINGS || this->op_mode == OP_MODE::ZOOM_TO_SELECTED || this->op_mode == OP_MODE::APPLY_SETTINGS_AND_ZOOM) {
+            // sonst speichere in history
+            } else {
                 //Zoomen
                 ImageSetting newSetting = getNewScaledSetting(currentImg);
                 this->startRefresh(newSetting, true);
@@ -146,7 +146,7 @@ void MainWindow::zustandWechseln(QString aktion, QString, QPoint m_pos, QMouseEv
                 this->zoomRect.updateRectPos( pos );
 
                 if(this->zoomRect.rightMouseIsPressed()) {
-                    this->setOperationMode(OP_MODE::ZOOM_TO_SELECTED);
+                    this->setOperationMode();
                     this->updateImage();
                 }
                 ui->label_iterations->setText(QString::number(currentImg.getIterationCountAt(qpos)));
@@ -154,7 +154,7 @@ void MainWindow::zustandWechseln(QString aktion, QString, QPoint m_pos, QMouseEv
                 updateMidPos();
 
 
-                if( ui->radioButton_zahelnfolge_bei_mousemove->isChecked() && zahlenfolge.isShown() ) {
+                if( zahlenfolge.isShown() ) {
                     this->zahlenfolge.setZahlenfolge(pos, currentImg);
                     this->updateImage();
                 }
@@ -179,8 +179,7 @@ void MainWindow::zustandWechseln(QString aktion, QString, QPoint m_pos, QMouseEv
 
                     this->zoomRect.updateRectPos(pos);
                     this->updateImage();
-
-                    this->setOperationMode(OP_MODE::ZOOM_TO_SELECTED);
+                    this->setOperationMode();
 
                     ui->label_iterations->setText(QString::number(currentImg.getIterationCountAt(qpos)));
 
@@ -190,20 +189,22 @@ void MainWindow::zustandWechseln(QString aktion, QString, QPoint m_pos, QMouseEv
                         this->zahlenfolge.removeZahlenfolge();
                 } else  if(m_event->button() == Qt::RightButton) {
                     this->zahlenfolge.setZahlenfolge(pos, currentImg);
+                    this->zoomRect.hide();
+                    this->setOperationMode();
                 }
 
                 this->updateImage();
             } else {
                 if(m_event->button() != Qt::LeftButton) {
-                    this->setOperationMode(OP_MODE::REFRESH);
                     zoomRect.setMousePressState(false);
                     zoomRect.hide();
-
+                    this->setOperationMode();
     //                updateMidPos(true);
                 }
 
                 ui->label_iterations->setText("-");
                 this->zahlenfolge.removeZahlenfolge();
+                this->setOperationMode();
 
                 updateImage();
             }
@@ -309,32 +310,11 @@ ImageSetting MainWindow::getNewScaledSetting(ImageSetting last_img)
 
     // 1)
     if(last_img.isMandelbrotSet && ui->comboBox_Fraktal->currentIndex() == 1 /*julia*/ ) {
-        double c_x = 0.0, c_y = 0.0;
-        if(this->zoomRect.isShown()) {
-
-            // Anti Rundungsfehler!!
-            if(ui->re->value() != 0.0 )
-                c_x   = ui->re->value();
-            else
-                c_x   = last_img.mapImgPosReToGaus(this->zoomRect.getMousePos().x());
-
-            if(ui->im->value() != 0.0 )
-                c_y   = -ui->im->value();
-            else
-                c_y   = last_img.mapImgPosImToGaus(this->zoomRect.getMousePos().y());
-
-        } else {
-            c_x = last_img.gaus_mid_re;
-            c_y = last_img.gaus_mid_im;
-        }
-
-        qDebug() << "create julia";
-
         //create new julia-funktion on midbpoint of last mandelbrot-funktion
         ImageSetting j( (this->lastImgStructID = this->lastImgStructID + 1), START_SCALE, START_POS_X_JUL, START_POS_Y_JUL );
         j.init(this->ui->spinBoxW->value(), this->ui->spinBoxH->value(), ui->spinBoxMaxIterations->value(), false /*julia menge!*/ );
-        j.juliaStart_real = c_x;
-        j.juliaStart_img = c_y;
+        j.juliaStart_real = ui->re->value();;
+        j.juliaStart_img = -ui->im->value();
 
 //        j.isStart = true; // save start for hom button
         return j;
@@ -397,7 +377,27 @@ void MainWindow::updateUiWithImageSetting(ImageSetting imgs)
     ui->comboBox_palette->setCurrentIndex(imgs.palette);
     ui->radioButton_normalized->setChecked( imgs.normalized );
     ui->radioButton_invert->setChecked( imgs.inverted );
+    ui->groupBoxMandelFarbe->setChecked( imgs.fixedColor );
+    ui->comboBoxMandelColor->setCurrentText( imgs.fixFraktalColor );
+    ui->comboBox_background_color->setCurrentText( imgs.backgroundColor );
 
+
+    ui->spinBox_rgb1_r->setValue(imgs.rgb1[0].red());
+    ui->spinBox_rgb1_g->setValue(imgs.rgb1[0].green());
+    ui->spinBox_rgb1_b->setValue(imgs.rgb1[0].blue());
+
+    ui->spinBox_rgb2_r->setValue(imgs.rgb1[1].red());
+    ui->spinBox_rgb2_g->setValue(imgs.rgb1[1].green());
+    ui->spinBox_rgb2_b->setValue(imgs.rgb1[1].blue());
+
+    ui->spinBox_rgb3_r->setValue(imgs.rgb1[2].red());
+    ui->spinBox_rgb3_g->setValue(imgs.rgb1[2].green());
+    ui->spinBox_rgb3_b->setValue(imgs.rgb1[2].blue());
+
+
+    ui->spinBoxHSV_satursion->setValue(imgs.hsv_saturation);
+    ui->spinBoxHSV_value->setValue(imgs.spinBoxHSV_value);
+    ui->spinBoxHSV_alpha->setValue(imgs.spinBoxHSV_alpha);
 }
 
 void MainWindow::startRefresh(ImageSetting set, bool appendToList)
@@ -436,7 +436,8 @@ void MainWindow::startRefresh(ImageSetting set, bool appendToList)
                          ui->groupBoxMandelFarbe->isChecked(),
                          ui->comboBoxMandelColor->currentText(),
                          ui->radioButton_invert->isChecked(),
-                         ui->doubleSpinBoxEscapeR->value());
+                         ui->doubleSpinBoxEscapeR->value(),
+                         ui->comboBox_background_color->currentText());
 
     set.rgb1[0] = QColor::fromRgb(ui->spinBox_rgb1_r->value(), ui->spinBox_rgb1_g->value(), ui->spinBox_rgb1_b->value());
     set.rgb1[1] = QColor::fromRgb(ui->spinBox_rgb2_r->value(), ui->spinBox_rgb2_g->value(), ui->spinBox_rgb2_b->value());
@@ -516,12 +517,13 @@ void MainWindow::afterColoring(ImageSetting set)
         for(ssize_t x = 0; x < set.img_w; x++) {
             for(ssize_t y = 0; y < set.img_h; y++) {
                 if(set.getIterationCountAt(x, y) == set.maxIterations) {
-                    if(set.fixedColor)
-                        currentImg.painter->setPen(QColor::fromHsv(set.hue[x][y] * 359, 255 , 255));
-                    else
+                    if(!set.fixedColor)
                         currentImg.painter->setPen(Qt::black);
+                    else
+                        currentImg.painter->setPen(QColor(ui->comboBoxMandelColor->currentText()));
                 } else {
-                    currentImg.painter->setPen(QColor::fromHsv(set.hue[x][y] * 359, 255 , 255));
+                    currentImg.painter->setPen(QColor::fromHsv(set.hue[x][y] * 359, currentImg.hsv_saturation,
+                                                               currentImg.spinBoxHSV_value , currentImg.spinBoxHSV_alpha));
                 }
                 currentImg.painter->drawPoint(x, y);
 
@@ -537,138 +539,52 @@ void MainWindow::afterColoring(ImageSetting set)
     }
 }
 
-void MainWindow::setOperationMode(OP_MODE o)
+void MainWindow::setOperationMode()
 {
-    //Refresh -->
-    switch (this->op_mode) {
+    // Wenn kein Fraktalwechses vorliegt
+    if((currentImg.isMandelbrotSet && ui->comboBox_Fraktal->currentIndex() == 0) || (!currentImg.isMandelbrotSet && ui->comboBox_Fraktal->currentIndex() == 1)) {
+        // Wenn zoom und einstellungen verändert worden sind
+        if(editedSettings && zoomRect.isShown()) {
+            ui->pushButtonStart->setText("Vergrößern mit neuen Einstellungen");
+            this->op_mode = MainWindow::OP_MODE::APPLY_SETTINGS_AND_ZOOM;
 
-    case MainWindow::ZOOM_TO_SELECTED:
-        // add change settings
-        if(o == OP_MODE::APPLY_SETTINGS) {
-            this->op_mode = OP_MODE::APPLY_SETTINGS_AND_ZOOM;
-        } else {
-            this->op_mode = o;
-        }
-        break;
+        } else if( editedSettings ) {
+            ui->pushButtonStart->setText("Einstellungen übernehmen");
+            this->op_mode = MainWindow::OP_MODE::APPLY_SETTINGS;
 
-    case MainWindow::REFRESH:
-        if(o == OP_MODE::REFRESH) {
-
-        } else {
-            this->op_mode = o;
-        }
-        break;
-
-    case MainWindow::APPLY_SETTINGS:
-        // add zoom
-        if(o == OP_MODE::ZOOM_TO_SELECTED) {
-            this->op_mode = OP_MODE::APPLY_SETTINGS_AND_ZOOM;
-
-        // ignore set refresh
-        } else if(o == OP_MODE::REFRESH) {
+        } else if( zoomRect.isShown() ) {
+            ui->pushButtonStart->setText("Ausschnitt vergrößern");
+            this->op_mode = MainWindow::OP_MODE::ZOOM_TO_SELECTED;
 
         } else {
-            this->op_mode = o;
+            //nichts verändert --> refresh
+            ui->pushButtonStart->setText("Bild neu laden");
+            this->op_mode = MainWindow::OP_MODE::REFRESH;
+
         }
-        break;
 
-    case MainWindow::APPLY_SETTINGS_AND_ZOOM:
-        // JUST REMOVE ZOOM
-        if(o == OP_MODE::REFRESH) {
-            this->op_mode = OP_MODE::APPLY_SETTINGS;
-
-        //ignore set to one if both are settet
-        } else if((o == OP_MODE::ZOOM_TO_SELECTED || o == OP_MODE::APPLY_SETTINGS)) {
-
-        } else {
-            this->op_mode = o;
-        }
-        break;
-
-    case MainWindow::CALC_JULIA:
-        if(o == OP_MODE::BACK_TO_MANDELBROT) {
-            this->op_mode = OP_MODE::REFRESH;
-
-            // ignore other
-        } else {
-        }
-        break;
-
-//    case MainWindow::CALC_JULIA_SETTINGS:
-//        if(o == OP_MODE::BACK_TO_MANDELBROT) {
-//            this->op_mode = OP_MODE::APPLY_SETTINGS;
-
-//            // ignore other
-//        } else {
-//        }
-//        break;
-
-//    case MainWindow:::
-//        if(o == OP_MODE::REFRESH) {
-
-//        } else {
-//            this->op_mode = o;
-//        }
-//        break;
-    case MainWindow::RESET:
-        if(o == OP_MODE::REFRESH) {
-
-        } else {
-            this->op_mode = o;
-        }
-        break;
-
-    default:
-        break;
-    }
-
-    this->setOperationBasedTexts();
-}
-
-void MainWindow::setOperationBasedTexts()
-{
-    switch (this->op_mode) {
-    case MainWindow::BACK_TO_MANDELBROT:
+        // Wechsel zu Mandelbrot Menge
+    } else if((!currentImg.isMandelbrotSet && ui->comboBox_Fraktal->currentIndex() == 0)) {
         ui->pushButtonStart->setText("Zurück zum Apfelmänchen");
-        break;
+        this->op_mode = MainWindow::OP_MODE::BACK_TO_MANDELBROT;
 
-    case MainWindow::CALC_JULIA:
-        ui->pushButtonStart->setText("Zugehörige Julia-Menge berechnen");
-        break;
-
-    case MainWindow::CALC_JULIA_SETTINGS:
-        ui->pushButtonStart->setText("Zugehörige Julia-Menge berechnen");
-        break;
-
-    case MainWindow::APPLY_SETTINGS_AND_ZOOM:
-        ui->pushButtonStart->setText("Vergrößern mit neuen Einstellungen");
-        break;
-
-    case MainWindow::ZOOM_TO_SELECTED:
-        this->op_mode = ZOOM_TO_SELECTED;
-        break;
-
-    case MainWindow::RESET:
-    case MainWindow::REFRESH:
-        ui->pushButtonStart->setText("Bild neu laden");
-        break;
-
-    case MainWindow::APPLY_SETTINGS:
-        ui->pushButtonStart->setText("Einstellungen anwenden");
-        break;
-
-    default:
-        break;
+        // zu fraktal
+    } else {
+        ui->pushButtonStart->setText("Julia-Menge an Mausposition berechnen");
+        this->op_mode = MainWindow::OP_MODE::CALC_JULIA;
     }
+
+
 }
 
 
 void MainWindow::endRefresh(bool appendToListHistory)
 {
     this->state = STATE::STOPED;
-    ui->pushButtonStart->setText("Neu Laden");
-    this->setOperationMode(OP_MODE::RESET);
+    this->editedSettings = false;
     this->zoomRect.hide();
+    this->zahlenfolge.removeZahlenfolge();
+    this->setOperationMode();
 
     ui->progressBar->setEnabled(false);
     ui->pushButtonSaveImg->setEnabled(true);
@@ -684,12 +600,12 @@ void MainWindow::endRefresh(bool appendToListHistory)
         ui->label_julia_c_im->setText("-");
     } else {
         ui->label_julia_c->setText(QString::number( (double)(currentImg.juliaStart_real) )) ;
-        ui->label_julia_c_im->setText(QString::number( -(double)(currentImg.juliaStart_img) ) + " i");
+        ui->label_julia_c_im->setText(QString::number( (double)(currentImg.juliaStart_img) ) + " i");
     }
 
     ui->progressBar->setValue(ui->progressBar->maximum());
     ui->bmRe->setText(QString::number(this->currentImg.gaus_mid_re));
-    ui->bmIm->setText(QString::number(this->currentImg.gaus_mid_im) + " i");
+    ui->bmIm->setText(QString::number( - this->currentImg.gaus_mid_im) + " i");
 
 
     afterColoring(currentImg);
@@ -788,6 +704,7 @@ void MainWindow::finishedLine(QList<Pixel> *list)
 
 
 #include <QFile>
+#include <QImageWriter>
 
 void MainWindow::threadFinished()
 {
@@ -799,16 +716,20 @@ void MainWindow::threadFinished()
 
 void MainWindow::on_pushButtonSaveImg_clicked()
 {
+
+    QImageWriter imgWriter;
     QString info = QString(currentImg.isMandelbrotSet ? "Mandelbrot-Menge" : "Julia-Menge")
             + " Re(" + QString::number(this->currentImg.gaus_mid_re) + ") Im(" + QString::number(this->currentImg.gaus_mid_im) + ") Scale(1 zu " + QString::number(currentImg.scale()) + ")";
     QString filename = QFileDialog::getSaveFileName(this, "Bild speichern - Dateiendung nach gewünschtem Format ändern. Standart: .png", "", "Images (*.png *.xpm *.jpg)");
+
 
     if( ! filename.isEmpty()) {
         currentImg.image->setText("Description", info);
         filename = filename + ((!filename.contains(".")) ? ".png" : "");
         filename.insert(filename.lastIndexOf("."), " - " + info);
+        imgWriter.setFileName(filename);
 
-        if( ! currentImg.image->save(filename))
+        if( ! imgWriter.write( /*ui->radioButtonsaveedits->isChecked() ? *this->currentImg.image : */ ui->imageView->getImg() ))
             QMessageBox::warning(this, "Speichern fehlgeschlagen!", "Das Bild '" + filename + "' konnte nicht gespeichert werden! Haben sie die Dateiendung vergessen?");
         else
             this->ui->statusbar->showMessage("Bild {Re(" + QString::number(this->currentImg.gaus_mid_re) + ") Im(" + QString::number(this->currentImg.gaus_mid_im) + ") 1:"
@@ -849,7 +770,7 @@ void MainWindow::paintEvent(QPaintEvent *)
     switch (state) {
     case MainWindow::STOPED:
 
-        if(zoomRect.isShown() || zahlenfolge.isShown() || this->ui->radioButtonKoords->isChecked()) {
+        if(zoomRect.isShown() || zahlenfolge.isShown() || this->ui->radioButtonKoords_2->isChecked()) {
             QImage img = *currentImg.image;
             QPainter painter(&img);
 
@@ -872,7 +793,7 @@ void MainWindow::paintEvent(QPaintEvent *)
             }
 
             if(zahlenfolge.isShown()) {
-                painter.setPen(QColor(ui->comboBox_color_zahlenfolge->currentText()));
+                painter.setPen(QPen( QColor(ui->comboBox_color_zahlenfolge->currentText()), ui->spinBoxZahlenfolgeLinienbreite->value()) );
                 if( ui->comboBox_drawStyle_zahlenfolge->currentIndex() == 0) {
                     painter.drawPoints(zahlenfolge.getZahlenfolge().data(), zahlenfolge.getZahlenfolge().length());
                 } else {
@@ -883,12 +804,9 @@ void MainWindow::paintEvent(QPaintEvent *)
                         last = list.first();
                     }
                     for( unsigned i = 1; i < list.length(); i++ ) {
-                        painter.setPen(QColor(ui->comboBox_color_zahlenfolge->currentText()));
                         painter.drawLine(last, list.at(i));
                         if(last != list.at(i))
                             last = list.at(i);
-//                        else
-//                            break;
                         if(ui->comboBox_drawStyle_zahlenfolge->currentIndex() == 2)
                             painter.drawEllipse(last, 3, 3);
 
@@ -900,8 +818,8 @@ void MainWindow::paintEvent(QPaintEvent *)
 
 
             // optimieren -> nur sichtbares zeug berechnen!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            if(this->ui->radioButtonKoords->isChecked()) {
-                painter.setPen(QColor(ui->comboBoxColorKoordSystem->currentText()));
+            if(this->ui->radioButtonKoords_2->isChecked()) {
+                painter.setPen(QPen(QColor(ui->comboBoxColorKoordSystem->currentText()), ui->spinBoxKoordPenThickness->value()));
                 auto xA = currentImg.xAchse;
                 auto yA = currentImg.yAchse;
 
@@ -916,22 +834,52 @@ void MainWindow::paintEvent(QPaintEvent *)
                 painter.drawLine(yA.p1(), yA.p1() - QPoint(-5, -5));
                 painter.drawLine(yA.p1(), yA.p1() - QPoint(5, -5));
 
-                if(this->ui->radioButtonMitBeschriftungen->isChecked()) {
+                if(this->ui->radioButtonMitBeschriftungen->isChecked() && ui->spinBoxBeschriftungen->value() && ui->spinBoxBeschriftungenY->value()) {
                     //Beschriftung
-                    int partsX = xA.dx() / ui->spinBoxBeschriftungen->value();
-                    for(int i = 0; i < ui->spinBoxBeschriftungen->value(); i++) {
-                        painter.drawLine(xA.p1() + QPoint(partsX * i, -5), xA.p1() + QPoint(partsX * i, 5));
 
-                        painter.drawText(xA.p1() + QPoint(partsX * i - 10, 20),
-                                         QString::number((double)currentImg.mapImgPosReToGaus(xA.p1().x() + partsX * i)));
+                    double x_step = ui->spinBoxBeschriftungen->value();
+                    double minX = currentImg.mapImgPosReToGaus(xA.x1());
+                    double maxX = currentImg.mapImgPosReToGaus(xA.x2());
+                    double x = 0;
+                    for(int i = 0 ; i < 9999 && x < maxX; i++) {
+                        x += x_step;
+                        int x_pos = currentImg.mapGausReToImgPos(x);
+                        painter.drawLine(QPoint(x_pos, xA.y1() -5), QPoint(x_pos, xA.y1() + 5));
+                        painter.drawText(QPoint(x_pos - 6, xA.y1() - 10), QString::number( x  ));
                     }
 
-                    int partsY = yA.dy() / ui->spinBoxBeschriftungenY->value();
-                    for(int i = 1; i <= ui->spinBoxBeschriftungenY->value(); i++) {
-                        painter.drawLine(yA.p1() + QPoint(-5, partsY * i), yA.p1() + QPoint(5, partsY * i));
-                        painter.drawText(yA.p1() + QPoint( -25, partsY * i),
-                                         QString::number( - (double)currentImg.mapImgPosImToGaus(yA.p1().y() + partsY * i)));
+                    x = 0;
+                    for(int i = 0 ; i < 9999 && x > minX; i++) {
+                        x -= x_step;
+                        int x_pos = currentImg.mapGausReToImgPos(x);
+                        painter.drawLine(QPoint(x_pos, xA.y1() -5), QPoint(x_pos, xA.y1() + 5));
+                        painter.drawText(QPoint(x_pos - 6, xA.y1() - 10), QString::number(  x  ));
                     }
+
+                    double y_step = ui->spinBoxBeschriftungenY->value();
+                    double minY = currentImg.mapImgPosImToGaus(yA.y1());
+                    double maxY = currentImg.mapImgPosImToGaus(yA.y2());
+                    double y = 0;
+                    for(int i = 0 ; i < 9999 && y < maxY; i++ ) {
+                        y += y_step;
+                        int y_pos = currentImg.mapGausImToImgPos(y);
+                        painter.drawLine(QPoint(yA.x1() - 5, y_pos ), QPoint(yA.x1() + 5, y_pos ));
+                        painter.drawText(QPoint(yA.x1() + 10, y_pos + 5), QString::number( y  ));
+                    }
+                    y = 0;
+                    for(int i = 0 ; i < 9999 && y > minY; i++ ) {
+                        y -= y_step;
+                        int y_pos = currentImg.mapGausImToImgPos(y);
+                        painter.drawLine(QPoint(yA.x1() - 5, y_pos ), QPoint(yA.x1() + 5, y_pos ));
+                        painter.drawText(QPoint(yA.x1() + 10, y_pos + 5), QString::number( -y  ));
+                    }
+
+//                    int partsY = yA.dy() / ui->spinBoxBeschriftungenY->value();
+//                    for(int i = 1; i <= ui->spinBoxBeschriftungenY->value(); i++) {
+//                        painter.drawLine(yA.p1() + QPoint(-5, partsY * i), yA.p1() + QPoint(5, partsY * i));
+//                        painter.drawText(yA.p1() + QPoint( -25, partsY * i),
+//                                         QString::number( - (double)currentImg.mapImgPosImToGaus(yA.p1().y() + partsY * i)));
+//                    }
                 }
 
             }
@@ -966,136 +914,19 @@ void MainWindow::keyReleaseEvent(QKeyEvent *)
 }
 
 
-ImageSetting::ImageSetting()
+
+
+void MainWindow::on_spinBoxMaxIterations_valueChanged(int)
 {
-    has_hue = false;
-}
-
-ImageSetting::ImageSetting(int id, double scale, double re, double im)
-    : gaus_mid_re(re), gaus_mid_im(im), scaleValue(scale), has_hue(false), hue(nullptr)
-{
-    this->id = id;
-}
-
-void ImageSetting::init(size_t img_w, size_t img_h, size_t maxIterations, bool isMandelbrotSet)
-{
-    this->img_w = img_w;
-    this->img_h = img_h;
-    this->maxIterations = maxIterations;
-    this->isMandelbrotSet = isMandelbrotSet;
-//    isStart = false;
-
-    this->image = new QImage(img_w, img_h, QImage::Format_ARGB32_Premultiplied);
-    this->painter = new QPainter(this->image);
-
-    this->re_verscheibung = img_w / 2;
-    this->im_verscheibung = img_h / 2;
-
-    this->iterations = new size_t*[img_w];
-    for( size_t i = 0; i < img_w; i++) {
-        this->iterations[i] = new size_t[img_h];
-        memset(this->iterations[i], 0, sizeof(size_t) * img_h );
-    }
-
-    this->iterations_normal = new double*[img_w];
-    for( size_t i = 0; i < img_w; i++) {
-        this->iterations_normal[i] = new double[img_h];
-        memset(this->iterations_normal[i], 0, sizeof(double) * img_h );
-    }
-
-    // For Histogram
-    NumIterationsPerPixel = new size_t[maxIterations + 2];
-    memset(NumIterationsPerPixel, 0, sizeof(size_t) * (maxIterations + 2) );
-
-    QPoint startX = QPoint(10, img_h / 2);
-    QPoint endeX = QPoint (img_w - 10, startX.y());
-
-    QPoint startY = QPoint (img_w / 2, 10);
-    QPoint endeY = QPoint (startY.x(), img_h - 10 );
-
-    this->xAchse = QLine(startX, endeX);
-    this->yAchse = QLine(startY, endeY);
-
-}
-
-void ::ImageSetting::setIterationCountAt(ssize_t x, ssize_t y, size_t iterations)
-{
-    this->iterations[x][y] = iterations;
-}
-
-void ImageSetting::setColorSettings(int palette, bool normalized, double logEscape, bool fixedColor, QString fixFraktalColor, bool inverted, double escape_radius)
-{
-    this->normalized = normalized;
-    this->logEscape = logEscape;
-    this->fixedColor = fixedColor;
-    this->fixFraktalColor = fixFraktalColor;
-    this->inverted = inverted;
-    this->escape_radius = escape_radius;
-    this->palette = palette;
-
-}
-
-size_t ImageSetting::getIterationCountAt(QPoint pos)
-{
-    return this->getIterationCountAt(pos.x(), pos.y());
-}
-
-size_t ImageSetting::getIterationCountAt(ssize_t x, ssize_t y)
-{
-    if(x >= 0 && x < this->img_w && y >= 0 && y < this->img_h)
-        return this->iterations[x][y];
-    else
-        return -1;
-}
-
-double ImageSetting::mapImgPosReToGaus(ssize_t img_pos_re)
-{
-    // mid punkt img == mid punkt gaus -->
-    // x verscheibung == mid_punkt_img
-    return (((double)img_pos_re - re_verscheibung ) / scale()) + gaus_mid_re;
-}
-
-long double ImageSetting::mapImgPosReToGausLong(ssize_t img_pos_re)
-{
-    return (((long double)img_pos_re - (long double)re_verscheibung ) / (long double)scale()) + (long double)gaus_mid_re;
-}
-
-ssize_t ImageSetting::mapGausReToImgPos(double gaus_re)
-{
-    return (gaus_re - gaus_mid_re) * scale() + re_verscheibung;
-}
-
-double ImageSetting::mapImgPosImToGaus(ssize_t img_pos_im)
-{
-    return (((double)img_pos_im - im_verscheibung ) / scale()) + gaus_mid_im;
-}
-
-long double ImageSetting::mapImgPosImToGausLong(ssize_t img_pos_im)
-{
-    return (((long double)img_pos_im - (long double)im_verscheibung ) / (long double)scale()) + (long double)gaus_mid_im;
-}
-
-ssize_t ImageSetting::mapGausImToImgPos(double gaus_im)
-{
-    return (gaus_im - gaus_mid_im) * scale() + im_verscheibung;
-}
-
-double ImageSetting::scale()
-{
-    return (double)scaleValue;
-}
-
-
-
-void MainWindow::on_spinBoxMaxIterations_valueChanged(int arg1)
-{
-    this->setOperationMode(OP_MODE::APPLY_SETTINGS);
+    this->editedSettings = true;
+    this->setOperationMode();
 }
 
 
 void MainWindow::on_comboBox_palette_currentIndexChanged(int index)
 {
-    this->setOperationMode(OP_MODE::APPLY_SETTINGS);
+    this->editedSettings = true;
+    this->setOperationMode();
 
     ui->stackedWidgetExtraSettings->setVisible(false);
     ui->spinBoxFarbWechselIntervall->setVisible(false);
@@ -1129,75 +960,81 @@ void MainWindow::on_comboBox_palette_currentIndexChanged(int index)
 
     case 6:
         ui->radioButton_normalized->setEnabled(false);
-    break;
+        ui->stackedWidgetExtraSettings->setCurrentIndex(3);
+        ui->stackedWidgetExtraSettings->setVisible(true);
+        break;
     }
 
 
 }
 
 
-void MainWindow::on_radioButton_normalized_toggled(bool checked)
+void MainWindow::on_radioButton_normalized_toggled(bool)
 {
-    this->setOperationMode(OP_MODE::APPLY_SETTINGS);
+    this->editedSettings = true;
+    this->setOperationMode();
 }
 
 
-void MainWindow::on_radioButton_invert_toggled(bool checked)
+void MainWindow::on_radioButton_invert_toggled(bool)
 {
-    this->setOperationMode(OP_MODE::APPLY_SETTINGS);
+    this->editedSettings = true;
+    this->setOperationMode();
 }
 
 
-void MainWindow::on_spinBoxW_valueChanged(int arg1)
+void MainWindow::on_spinBoxW_valueChanged(int)
 {
     zoomRect.updateRectSize(this->ui->spinBoxW->value(), this->ui->spinBoxH->value(), ui->spinBox_zoom->value());
-    this->setOperationMode(OP_MODE::APPLY_SETTINGS);
+    this->editedSettings = true;
+    this->setOperationMode();
     this->updateImage();
 }
 
 
-void MainWindow::on_spinBoxH_valueChanged(int arg1)
+void MainWindow::on_spinBoxH_valueChanged(int)
 {
     zoomRect.updateRectSize(this->ui->spinBoxW->value(), this->ui->spinBoxH->value(), ui->spinBox_zoom->value());
-    this->setOperationMode(OP_MODE::APPLY_SETTINGS);
+    this->editedSettings = true;
+    this->setOperationMode();
     this->updateImage();
 }
 
 
-void MainWindow::on_comboBox_background_color_currentIndexChanged(int index)
+void MainWindow::on_comboBox_background_color_currentIndexChanged(int)
 {
-    this->setOperationMode(OP_MODE::APPLY_SETTINGS);
+    this->editedSettings = true;
+    this->setOperationMode();
 }
 
 
-void MainWindow::on_groupBoxMandelFarbe_toggled(bool arg1)
+void MainWindow::on_groupBoxMandelFarbe_toggled(bool)
 {
-    this->setOperationMode(OP_MODE::APPLY_SETTINGS);
+    this->editedSettings = true;
+    this->setOperationMode();
 }
 
 
-void MainWindow::on_comboBoxMandelColor_currentIndexChanged(int index)
+void MainWindow::on_comboBoxMandelColor_currentIndexChanged(int)
 {
-    this->setOperationMode(OP_MODE::APPLY_SETTINGS);
+    this->editedSettings = true;
+    this->setOperationMode();
 }
 
 
-void MainWindow::on_comboBox_precession_currentIndexChanged(int index)
+void MainWindow::on_comboBox_precession_currentIndexChanged(int)
 {
-    this->setOperationMode(OP_MODE::APPLY_SETTINGS);
+    this->editedSettings = true;
+    this->setOperationMode();
 }
 
 
-void MainWindow::on_doubleSpinBoxEscapeR_valueChanged(double arg1)
+void MainWindow::on_doubleSpinBoxEscapeR_valueChanged(double)
 {
-    this->setOperationMode(OP_MODE::APPLY_SETTINGS);
+    this->editedSettings = true;
+    this->setOperationMode();
 }
 
-
-void MainWindow::on_radioButton_reload_at_back_toggled(bool checked)
-{
-//no setting
-}
 
 #include <limits>
 #include <cmath>
@@ -1224,6 +1061,8 @@ void MainWindow::ZahlenFolge::setZahlenfolge(Point c_p, ImageSetting s)
         c_re = s.juliaStart_real;
         c_im = s.juliaStart_img;
     }
+
+    qDebug() << "c_re" << c_re << " c_im" << c_im << " z_re " << z_re << " z_im " << z_im;
 //std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
 
     QPoint addPoint;
@@ -1260,26 +1099,6 @@ bool MainWindow::ZahlenFolge::isShown()
 {
     return this->show;
 }
-
-void MainWindow::on_pushButton_scale_plus_clicked()
-{
-//    auto img = ui->labelFraktal->pixmap();
-
-//    img = img.scaled( (double)img.width() * 1.1, (double)img.height() * 1.1, Qt::AspectRatioMode::KeepAspectRatio,  Qt::TransformationMode::SmoothTransformation);
-//    if( ! img.isNull())
-//        this->ui->labelFraktal->setPixmap(img);
-}
-
-
-void MainWindow::on_pushButton_scale_minus_clicked()
-{
-//    auto img = ui->labelFraktal->pixmap();
-
-//    img = img.scaled( (double)img.width() * 0.9, (double)img.height() * 0.9, Qt::AspectRatioMode::KeepAspectRatio,  Qt::TransformationMode::SmoothTransformation);
-//    if( ! img.isNull())
-//        this->ui->labelFraktal->setPixmap(img);
-}
-
 
 void MainWindow::ZoomRect::updateRectPos(Point p)
 {
@@ -1341,42 +1160,6 @@ bool MainWindow::ZoomRect::rightMouseIsPressed()
     return right_mouse_press;
 }
 
-Point::Point()
-{
-    X = 0;
-    Y = 0;
-}
-
-Point::Point(long long X, long long Y)
-    : X(X), Y(Y)
-{
-
-}
-
-QPoint Point::rountToQPoint()
-{
-    return QPoint(x(), y());
-}
-
-void Point::setX(long long newX)
-{
-    X = newX;
-}
-
-long long Point::y() const
-{
-    return Y;
-}
-
-void Point::setY(long long newY)
-{
-    Y = newY;
-}
-
-long long Point::x() const
-{
-    return X;
-}
 
 
 void ImageSetting::cleanUP()
@@ -1413,10 +1196,11 @@ void ImageSetting::cleanUP()
 }
 
 
-void MainWindow::on_spinBox_zoom_valueChanged(double arg1)
+void MainWindow::on_spinBox_zoom_valueChanged(double)
 {
     zoomRect.updateRectSize(this->ui->spinBoxW->value(), this->ui->spinBoxH->value(), ui->spinBox_zoom->value());
-    this->setOperationMode(OP_MODE::APPLY_SETTINGS);
+    editedSettings = true;
+    this->setOperationMode();
     this->updateImage();
 }
 
@@ -1521,7 +1305,8 @@ void MainWindow::on_re_valueChanged(double arg1)
     }
     this->zoomRect.updateRectPos(Point(currentImg.mapGausReToImgPos(arg1), zoomRect.getMousePos().y()));
     this->zoomRect.show();
-    this->setOperationMode(OP_MODE::ZOOM_TO_SELECTED);
+    editedSettings = true;
+    this->setOperationMode();
 
     updateImage();
 }
@@ -1536,12 +1321,14 @@ void MainWindow::on_im_valueChanged(double arg1)
 
     this->zoomRect.updateRectPos(Point(zoomRect.getMousePos().x(), currentImg.mapGausImToImgPos(-1* arg1)));
     this->zoomRect.show();
-    this->setOperationMode(OP_MODE::ZOOM_TO_SELECTED);
+    editedSettings = true;
+    this->setOperationMode();
 
     updateImage();
 }
 
 #include <QClipboard>
+#include <QImageWriter>
 
 void MainWindow::on_pushButton_copy_clicked()
 {
@@ -1560,5 +1347,102 @@ void MainWindow::on_pushButton_back_clicked()
 void MainWindow::on_pushButtonHome_clicked()
 {
     zustandWechseln("HOME");
+}
+
+
+void MainWindow::on_comboBox_Fraktal_currentIndexChanged(int)
+{
+    this->setOperationMode();
+}
+
+
+void MainWindow::on_spinBox_rgb1_r_valueChanged(int)
+{
+    editedSettings = true;
+    this->setOperationMode();
+}
+
+
+void MainWindow::on_spinBox_rgb1_g_valueChanged(int)
+{
+    editedSettings = true;
+    this->setOperationMode();
+}
+
+
+void MainWindow::on_spinBox_rgb1_b_valueChanged(int)
+{
+    editedSettings = true;
+    this->setOperationMode();
+}
+
+
+void MainWindow::on_spinBox_rgb2_r_valueChanged(int)
+{
+    editedSettings = true;
+    this->setOperationMode();
+}
+
+
+void MainWindow::on_spinBox_rgb2_g_valueChanged(int)
+{
+    editedSettings = true;
+    this->setOperationMode();
+}
+
+
+void MainWindow::on_spinBox_rgb2_b_valueChanged(int)
+{
+    editedSettings = true;
+    this->setOperationMode();
+}
+
+
+void MainWindow::on_spinBox_rgb3_r_valueChanged(int)
+{
+    editedSettings = true;
+    this->setOperationMode();
+}
+
+
+void MainWindow::on_spinBox_rgb3_g_valueChanged(int)
+{
+    editedSettings = true;
+    this->setOperationMode();
+}
+
+
+void MainWindow::on_spinBox_rgb3_b_valueChanged(int)
+{
+    editedSettings = true;
+    this->setOperationMode();
+}
+
+
+void MainWindow::on_spinBoxFarbWechselIntervall_valueChanged(int)
+{
+    editedSettings = true;
+    this->setOperationMode();
+}
+
+
+void MainWindow::on_spinBoxHSV_satursion_valueChanged(int)
+{
+    editedSettings = true;
+    this->setOperationMode();
+}
+
+
+void MainWindow::on_spinBoxHSV_value_valueChanged(int)
+{
+    editedSettings = true;
+    this->setOperationMode();
+}
+
+
+void MainWindow::on_spinBoxHSV_alpha_valueChanged(int)
+{
+    editedSettings = true;
+    this->setOperationMode();
 }
 

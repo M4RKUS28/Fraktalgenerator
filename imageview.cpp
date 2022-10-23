@@ -40,6 +40,11 @@ double ImageView::getHdpi_multiplicator() const
     return hdpi_multiplicator;
 }
 
+const QImage &ImageView::getImg() const
+{
+    return img;
+}
+
 
 void ImageView::paintEvent(QPaintEvent *)
 {

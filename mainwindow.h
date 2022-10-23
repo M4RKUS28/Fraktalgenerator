@@ -69,17 +69,16 @@ class MainWindow : public QMainWindow
     };
 
     enum OP_MODE {
-        ZOOM_TO_SELECTED,
         REFRESH,
+
         APPLY_SETTINGS,
+        ZOOM_TO_SELECTED,
         APPLY_SETTINGS_AND_ZOOM,
 
         CALC_JULIA,
         CALC_JULIA_SETTINGS,
 
         BACK_TO_MANDELBROT,
-
-        RESET
     };
 
 
@@ -107,7 +106,9 @@ public:
     //id counter für liste und listwidget mapping
     size_t lastImgStructID;
 
+    bool editedSettings;
 
+    // damit setText niucht als eigene Eingabe für Startwert gewertet wird
     bool ignoreXPosEdited, ignoreYPosEdited;
     void updateMidPos(bool clear = false);
 
@@ -128,8 +129,7 @@ public:
 
     void endRefresh(bool appendToListHistory );
 
-    void setOperationMode(OP_MODE action);
-    void setOperationBasedTexts();
+    void setOperationMode();
 
 
 //    void setColor(QPainter *mpainter, size_t iters, std::complex<double> z_n);
@@ -181,12 +181,6 @@ private slots:
 
     void on_doubleSpinBoxEscapeR_valueChanged(double arg1);
 
-    void on_radioButton_reload_at_back_toggled(bool checked);
-
-    void on_pushButton_scale_plus_clicked();
-
-    void on_pushButton_scale_minus_clicked();
-
     void on_spinBox_zoom_valueChanged(double arg1);
 
     void mouse_move_in_img(QPoint pos);
@@ -208,6 +202,34 @@ private slots:
     void on_pushButton_back_clicked();
 
     void on_pushButtonHome_clicked();
+
+    void on_comboBox_Fraktal_currentIndexChanged(int index);
+
+    void on_spinBox_rgb1_r_valueChanged(int arg1);
+
+    void on_spinBox_rgb1_g_valueChanged(int arg1);
+
+    void on_spinBox_rgb1_b_valueChanged(int arg1);
+
+    void on_spinBox_rgb2_r_valueChanged(int arg1);
+
+    void on_spinBox_rgb2_g_valueChanged(int arg1);
+
+    void on_spinBox_rgb2_b_valueChanged(int arg1);
+
+    void on_spinBox_rgb3_r_valueChanged(int arg1);
+
+    void on_spinBox_rgb3_g_valueChanged(int arg1);
+
+    void on_spinBox_rgb3_b_valueChanged(int arg1);
+
+    void on_spinBoxFarbWechselIntervall_valueChanged(int arg1);
+
+    void on_spinBoxHSV_satursion_valueChanged(int arg1);
+
+    void on_spinBoxHSV_value_valueChanged(int arg1);
+
+    void on_spinBoxHSV_alpha_valueChanged(int arg1);
 
 private:
     Ui::MainWindow *ui;

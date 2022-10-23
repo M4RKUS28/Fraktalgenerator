@@ -26,6 +26,8 @@ public:
 
     double getHdpi_multiplicator() const;
 
+    const QImage &getImg() const;
+
 private:
     QImage img;
     double hdpi_scale;

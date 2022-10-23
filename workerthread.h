@@ -34,7 +34,8 @@ struct ImageSetting {
     void init(size_t img_w, size_t img_h, size_t maxIterations, bool isMandelbrotSet);
     void cleanUP();
     void setIterationCountAt(ssize_t x, ssize_t y, size_t iterations);
-    void setColorSettings(int palette, bool normalized, double logEscape, bool fixedColor, QString fixFraktalColor, bool inverted, double escape_radius);
+    void setColorSettings(int palette, bool normalized, double logEscape, bool fixedColor, QString fixFraktalColor,
+                          bool inverted, double escape_radius, QString backgroundColor);
 
     size_t getIterationCountAt(QPoint pos);
     size_t getIterationCountAt(ssize_t x, ssize_t y);
@@ -76,7 +77,7 @@ struct ImageSetting {
     //Color settings
     bool fixedColor, inverted, normalized, has_hue;
     int palette;
-    QString fixFraktalColor;
+    QString fixFraktalColor, backgroundColor;
 
     QColor rgb1[3];
     unsigned hsv_saturation, spinBoxHSV_value, spinBoxHSV_alpha, farbwechselIntervall;
