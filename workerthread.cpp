@@ -22,7 +22,7 @@ void WorkerThread::setRange(ssize_t x_left_corner, ssize_t x_right_corner, ssize
     this->y_right_corner = y_right_corner;
 }
 
-void WorkerThread::startCalc(ImageSetting settings, int calc_mode)
+void WorkerThread::startCalc(ImageSetting *settings, int calc_mode)
 {
     if (this->isRunning())
         return;
@@ -35,10 +35,10 @@ void WorkerThread::startCalc(ImageSetting settings, int calc_mode)
 
 void WorkerThread::run()
 {
-    double escapeQuadrat = this->settings.escape_radius * this->settings.escape_radius;
+    double escapeQuadrat = this->settings->escape_radius * this->settings->escape_radius;
     qDebug() << "  x -> [" << x_left_corner << "\t; " << x_right_corner << "\t] y: [" << y_left_corner << "; " << y_right_corner << "] >> " << escapeQuadrat;
 
-    size_t maxIt = this->settings.maxIterations;
+    size_t maxIt = this->settings->maxIterations;
 
     switch ( calc_mode ) {
     case 1:
@@ -48,22 +48,22 @@ void WorkerThread::run()
 
             for(ssize_t y = y_left_corner; y < y_right_corner; y++) {
 
-                if(this->settings.isMandelbrotSet) {
+                if(this->settings->isMandelbrotSet) {
                     z = 0;
-                    c = std::complex<long double>(settings.mapImgPosReToGausLong(x),
-                                             - settings.mapImgPosImToGausLong(y));
+                    c = std::complex<long double>(settings->mapImgPosReToGausLong(x),
+                                             - settings->mapImgPosImToGausLong(y));
 
                 } else { // julia Menge
-                    z = std::complex<long double>(settings.mapImgPosReToGausLong(x),
-                                             - settings.mapImgPosImToGausLong(y));
-                    c =  std::complex<long double>(this->settings.juliaStart_real,
-                                              - this->settings.juliaStart_img);
+                    z = std::complex<long double>(settings->mapImgPosReToGausLong(x),
+                                             - settings->mapImgPosImToGausLong(y));
+                    c =  std::complex<long double>(this->settings->juliaStart_real,
+                                              - this->settings->juliaStart_img);
                 }
 
                 size_t i = 1;
-                for(; i < maxIt && std::abs( (z = z*z + c) ) < this->settings.escape_radius; i++) {}
-                const double normItCount = getNormalizedIterationCount(i, z.real(), z.imag(), &this->settings);
-                line->append(Pixel(x, y, i, z.real(), z.imag(), normItCount, this->getPreColor(i, normItCount, &this->settings)));
+                for(; i < maxIt && std::abs( (z = z*z + c) ) < this->settings->escape_radius; i++) {}
+                const double normItCount = getNormalizedIterationCount(i, z.real(), z.imag(), this->settings);
+                line->append(Pixel(x, y, i, z.real(), z.imag(), normItCount, this->getPreColor(i, normItCount, this->settings)));
 
             }
             emit finishedLine(line);
@@ -77,19 +77,19 @@ void WorkerThread::run()
 
             for(ssize_t y = y_left_corner; y < y_right_corner; y++) {
 
-                if(this->settings.isMandelbrotSet) {
+                if(this->settings->isMandelbrotSet) {
                     z_real = 0.0;
                     z_imag = 0.0;
 
-                    c_real =    settings.mapImgPosReToGaus(x);
-                    c_imag =  - settings.mapImgPosImToGaus(y);;
+                    c_real =    settings->mapImgPosReToGaus(x);
+                    c_imag =  - settings->mapImgPosImToGaus(y);
 
                 } else { // julia Menge
-                    z_real =   settings.mapImgPosReToGaus(x);
-                    z_imag = - settings.mapImgPosImToGaus(y);
+                    z_real =   settings->mapImgPosReToGaus(x);
+                    z_imag = - settings->mapImgPosImToGaus(y);
 
-                    c_real =   this->settings.juliaStart_real;
-                    c_imag =  - this->settings.juliaStart_img;
+                    c_real =   this->settings->juliaStart_real;
+                    c_imag =  - this->settings->juliaStart_img;
                 }
 
                 size_t i = 0;
@@ -108,8 +108,8 @@ void WorkerThread::run()
                     }
                 }
 
-                const double normItCount = getNormalizedIterationCount(i, z_real, z_imag, &this->settings);
-                line->append(Pixel(x, y, i, z_real, z_imag, normItCount, getPreColor(i, normItCount, &this->settings)));
+                const double normItCount = getNormalizedIterationCount(i, z_real, z_imag, this->settings);
+                line->append(Pixel(x, y, i, z_real, z_imag, normItCount, getPreColor(i, normItCount, this->settings)));
             }
             emit finishedLine(line);
         }
@@ -391,12 +391,6 @@ ssize_t Point::x() const
 }
 
 
-
-ImageSetting::ImageSetting()
-{
-    has_hue = false;
-}
-
 ImageSetting::ImageSetting(int id, double scale, double re, double im)
     : gaus_mid_re(re), gaus_mid_im(im), scaleValue(scale), has_hue(false), hue(nullptr)
 {
@@ -536,6 +530,7 @@ void ImageSetting::setHue(double **hue, size_t totalIters)
 {
     this->hue = hue;
     this->totalIters = totalIters;
+    this->has_hue = true;
 }
 
 bool ImageSetting::hueIsSetted()

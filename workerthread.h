@@ -28,7 +28,6 @@ private:
 };
 
 struct ImageSetting {
-    ImageSetting();
     ImageSetting(int id, double scale, double re, double im);
 
     void init(size_t img_w, size_t img_h, size_t maxIterations, bool isMandelbrotSet);
@@ -126,11 +125,11 @@ public:
             y_right_corner;
 
     int calc_mode;
-    ImageSetting settings;
+    ImageSetting *settings;
 
     void setRange(ssize_t x_left_corner, ssize_t x_right_corner, ssize_t y_left_corner, ssize_t y_right_corner);
 
-    void startCalc(ImageSetting settings, int calc_mode);
+    void startCalc(ImageSetting *settings, int calc_mode);
 
     void run();
     static QColor getPreColor(size_t iters, double normalizedItC, const ImageSetting *imgS);

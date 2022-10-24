@@ -10,7 +10,6 @@
 #define UI_MAINWINDOW_H
 
 #include <QtCore/QVariant>
-#include <QtGui/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QDoubleSpinBox>
@@ -20,10 +19,9 @@
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
-#include <QtWidgets/QMenu>
-#include <QtWidgets/QMenuBar>
 #include <QtWidgets/QProgressBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QRadioButton>
@@ -146,6 +144,7 @@ public:
     QComboBox *comboBox_drawStyle_zahlenfolge;
     QLabel *label_42;
     QSpinBox *spinBoxZahlenfolgeLinienbreite;
+    QPushButton *pushButton;
     QSpacerItem *verticalSpacer_3;
     QWidget *tab;
     QFormLayout *formLayout_2;
@@ -186,6 +185,9 @@ public:
     QLabel *label_27;
     QComboBox *comboBox;
     QSpacerItem *verticalSpacer;
+    QRadioButton *radioButtonKeepSettingsAtBack;
+    QLineEdit *lineEdit;
+    QLabel *label_45;
     QScrollArea *scrollArea;
     QWidget *scrollAreaWidgetContents_2;
     QHBoxLayout *horizontalLayout_5;
@@ -205,8 +207,6 @@ public:
     QPushButton *pushButtonSaveImg;
     QFrame *line;
     QLabel *label_7;
-    QMenuBar *menubar;
-    QMenu *menuSettings;
     QStatusBar *statusbar;
 
     void setupUi(QMainWindow *MainWindow)
@@ -218,6 +218,7 @@ public:
         font.setPointSize(10);
         MainWindow->setFont(font);
         MainWindow->setMouseTracking(false);
+        MainWindow->setStyleSheet(QString::fromUtf8(""));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         gridLayout = new QGridLayout(centralwidget);
@@ -232,6 +233,11 @@ public:
         sizePolicy.setHeightForWidth(progressBar->sizePolicy().hasHeightForWidth());
         progressBar->setSizePolicy(sizePolicy);
         progressBar->setMinimumSize(QSize(300, 15));
+        progressBar->setStyleSheet(QString::fromUtf8("QProgressBar {\n"
+"    border: 1px solid grey;\n"
+"    border-radius: 5px;\n"
+"    text-align: center;\n"
+"}"));
         progressBar->setValue(0);
         progressBar->setInvertedAppearance(false);
 
@@ -875,6 +881,11 @@ public:
 
         verticalLayout_5->addWidget(groupBox_2);
 
+        pushButton = new QPushButton(tab_2);
+        pushButton->setObjectName(QString::fromUtf8("pushButton"));
+
+        verticalLayout_5->addWidget(pushButton);
+
         verticalSpacer_3 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
         verticalLayout_5->addItem(verticalSpacer_3);
@@ -1082,20 +1093,20 @@ public:
         radioButtonAutoScroll->setChecked(true);
         radioButtonAutoScroll->setAutoExclusive(false);
 
-        formLayout_2->setWidget(8, QFormLayout::SpanningRole, radioButtonAutoScroll);
+        formLayout_2->setWidget(9, QFormLayout::SpanningRole, radioButtonAutoScroll);
 
         line_12 = new QFrame(tab);
         line_12->setObjectName(QString::fromUtf8("line_12"));
         line_12->setFrameShape(QFrame::HLine);
         line_12->setFrameShadow(QFrame::Sunken);
 
-        formLayout_2->setWidget(9, QFormLayout::SpanningRole, line_12);
+        formLayout_2->setWidget(10, QFormLayout::SpanningRole, line_12);
 
         label_5 = new QLabel(tab);
         label_5->setObjectName(QString::fromUtf8("label_5"));
         label_5->setFont(font2);
 
-        formLayout_2->setWidget(10, QFormLayout::LabelRole, label_5);
+        formLayout_2->setWidget(11, QFormLayout::LabelRole, label_5);
 
         spinBox_threads = new QSpinBox(tab);
         spinBox_threads->setObjectName(QString::fromUtf8("spinBox_threads"));
@@ -1103,12 +1114,12 @@ public:
         spinBox_threads->setMaximum(999);
         spinBox_threads->setValue(20);
 
-        formLayout_2->setWidget(10, QFormLayout::FieldRole, spinBox_threads);
+        formLayout_2->setWidget(11, QFormLayout::FieldRole, spinBox_threads);
 
         label_15 = new QLabel(tab);
         label_15->setObjectName(QString::fromUtf8("label_15"));
 
-        formLayout_2->setWidget(11, QFormLayout::LabelRole, label_15);
+        formLayout_2->setWidget(12, QFormLayout::LabelRole, label_15);
 
         doubleSpinBoxEscapeR = new QDoubleSpinBox(tab);
         doubleSpinBoxEscapeR->setObjectName(QString::fromUtf8("doubleSpinBoxEscapeR"));
@@ -1116,13 +1127,13 @@ public:
         doubleSpinBoxEscapeR->setMaximum(9999.989999999999782);
         doubleSpinBoxEscapeR->setValue(8.000000000000000);
 
-        formLayout_2->setWidget(11, QFormLayout::FieldRole, doubleSpinBoxEscapeR);
+        formLayout_2->setWidget(12, QFormLayout::FieldRole, doubleSpinBoxEscapeR);
 
         label_10 = new QLabel(tab);
         label_10->setObjectName(QString::fromUtf8("label_10"));
         label_10->setFont(font2);
 
-        formLayout_2->setWidget(12, QFormLayout::LabelRole, label_10);
+        formLayout_2->setWidget(13, QFormLayout::LabelRole, label_10);
 
         comboBox_precession = new QComboBox(tab);
         comboBox_precession->addItem(QString());
@@ -1136,12 +1147,12 @@ public:
         comboBox_precession->setMinimumSize(QSize(0, 0));
         comboBox_precession->setFont(font);
 
-        formLayout_2->setWidget(12, QFormLayout::FieldRole, comboBox_precession);
+        formLayout_2->setWidget(13, QFormLayout::FieldRole, comboBox_precession);
 
         label_27 = new QLabel(tab);
         label_27->setObjectName(QString::fromUtf8("label_27"));
 
-        formLayout_2->setWidget(13, QFormLayout::LabelRole, label_27);
+        formLayout_2->setWidget(14, QFormLayout::LabelRole, label_27);
 
         comboBox = new QComboBox(tab);
         comboBox->addItem(QString());
@@ -1152,11 +1163,30 @@ public:
         comboBox->addItem(QString());
         comboBox->setObjectName(QString::fromUtf8("comboBox"));
 
-        formLayout_2->setWidget(13, QFormLayout::FieldRole, comboBox);
+        formLayout_2->setWidget(14, QFormLayout::FieldRole, comboBox);
 
         verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
-        formLayout_2->setItem(14, QFormLayout::SpanningRole, verticalSpacer);
+        formLayout_2->setItem(16, QFormLayout::SpanningRole, verticalSpacer);
+
+        radioButtonKeepSettingsAtBack = new QRadioButton(tab);
+        radioButtonKeepSettingsAtBack->setObjectName(QString::fromUtf8("radioButtonKeepSettingsAtBack"));
+        radioButtonKeepSettingsAtBack->setStyleSheet(QString::fromUtf8("QProgressBar {\n"
+"    border: 2px solid grey;\n"
+"    border-radius: 5px;\n"
+"}"));
+
+        formLayout_2->setWidget(8, QFormLayout::SpanningRole, radioButtonKeepSettingsAtBack);
+
+        lineEdit = new QLineEdit(tab);
+        lineEdit->setObjectName(QString::fromUtf8("lineEdit"));
+
+        formLayout_2->setWidget(15, QFormLayout::FieldRole, lineEdit);
+
+        label_45 = new QLabel(tab);
+        label_45->setObjectName(QString::fromUtf8("label_45"));
+
+        formLayout_2->setWidget(15, QFormLayout::LabelRole, label_45);
 
         tabWidget->addTab(tab, QString());
 
@@ -1171,7 +1201,7 @@ public:
         scrollArea->setWidgetResizable(true);
         scrollAreaWidgetContents_2 = new QWidget();
         scrollAreaWidgetContents_2->setObjectName(QString::fromUtf8("scrollAreaWidgetContents_2"));
-        scrollAreaWidgetContents_2->setGeometry(QRect(0, 0, 786, 831));
+        scrollAreaWidgetContents_2->setGeometry(QRect(0, 0, 786, 856));
         horizontalLayout_5 = new QHBoxLayout(scrollAreaWidgetContents_2);
         horizontalLayout_5->setObjectName(QString::fromUtf8("horizontalLayout_5"));
         imageView = new ImageView(scrollAreaWidgetContents_2);
@@ -1276,17 +1306,9 @@ public:
         gridLayout->addLayout(verticalLayout_2, 1, 1, 2, 1);
 
         MainWindow->setCentralWidget(centralwidget);
-        menubar = new QMenuBar(MainWindow);
-        menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 1115, 24));
-        menuSettings = new QMenu(menubar);
-        menuSettings->setObjectName(QString::fromUtf8("menuSettings"));
-        MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));
         MainWindow->setStatusBar(statusbar);
-
-        menubar->addAction(menuSettings->menuAction());
 
         retranslateUi(MainWindow);
 
@@ -1299,7 +1321,7 @@ public:
 
     void retranslateUi(QMainWindow *MainWindow)
     {
-        MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
+        MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "Fraktalgenerator", nullptr));
         label_29->setText(QCoreApplication::translate("MainWindow", "Fraktal:", nullptr));
         comboBox_Fraktal->setItemText(0, QCoreApplication::translate("MainWindow", "Mandelbrot-Menge", nullptr));
         comboBox_Fraktal->setItemText(1, QCoreApplication::translate("MainWindow", "Julia-Menge", nullptr));
@@ -1391,6 +1413,7 @@ public:
         comboBox_drawStyle_zahlenfolge->setItemText(2, QCoreApplication::translate("MainWindow", "Linien mit Kreise", nullptr));
 
         label_42->setText(QCoreApplication::translate("MainWindow", "Linienbreite:", nullptr));
+        pushButton->setText(QCoreApplication::translate("MainWindow", "PushButton", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QCoreApplication::translate("MainWindow", "\360\237\216\250Farbe", nullptr));
         label_3->setText(QCoreApplication::translate("MainWindow", "Aufl\303\266sung:", nullptr));
         label_11->setText(QCoreApplication::translate("MainWindow", "x", nullptr));
@@ -1433,6 +1456,9 @@ public:
         comboBox->setItemText(4, QCoreApplication::translate("MainWindow", "200%", nullptr));
         comboBox->setItemText(5, QCoreApplication::translate("MainWindow", "400%", nullptr));
 
+        radioButtonKeepSettingsAtBack->setText(QCoreApplication::translate("MainWindow", "Behalte Einstellungen bei Zur\303\274ck bei", nullptr));
+        lineEdit->setText(QCoreApplication::translate("MainWindow", "QPushButton {     border: 2px solid #8f8f91;     border-radius: 6px;     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,                                       stop: 0 #f6f7fa, stop: 1 #dadbde);     min-width: 80px; }  QPushButton:pressed {     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,                                       stop: 0 #dadbde, stop: 1 #f6f7fa); }  QPushButton:flat {     border: none; /* no border for a flat push button */ }  QPushButton:default {     border-color: navy; /* make the default button prominent */ }", nullptr));
+        label_45->setText(QCoreApplication::translate("MainWindow", "UI-Stylesheet:", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab), QCoreApplication::translate("MainWindow", "\342\232\231Settings", nullptr));
         pushButtonStart->setText(QCoreApplication::translate("MainWindow", "Vergr\303\266\303\237ern", nullptr));
         pushButton_back->setText(QCoreApplication::translate("MainWindow", "<Zur\303\274ck", nullptr));
@@ -1441,7 +1467,6 @@ public:
         pushButton_copy->setText(QCoreApplication::translate("MainWindow", "\342\216\230 Bild kopieren", nullptr));
         pushButtonSaveImg->setText(QCoreApplication::translate("MainWindow", "Bild speichern unter", nullptr));
         label_7->setText(QCoreApplication::translate("MainWindow", "Copyright (c) 2022, Markus Huber", nullptr));
-        menuSettings->setTitle(QCoreApplication::translate("MainWindow", "Settings", nullptr));
     } // retranslateUi
 
 };

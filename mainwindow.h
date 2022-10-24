@@ -24,7 +24,7 @@ QT_END_NAMESPACE
 #define START_POS_X -0.75
 #define START_POS_Y 0.0
 
-#define START_POS_X_JUL -0.75
+#define START_POS_X_JUL 0.0
 #define START_POS_Y_JUL 0.0
 
 
@@ -56,7 +56,7 @@ class MainWindow : public QMainWindow
     };
 
     struct ZahlenFolge {
-        void setZahlenfolge(Point c_p, ImageSetting s);
+        void setZahlenfolge(Point c_p, ImageSetting *s);
         void removeZahlenfolge();
 
         QList<QPoint> getZahlenfolge();
@@ -87,7 +87,7 @@ public:
     ~MainWindow();
 
     // Liste für Zurück-Funktion
-    QList<ImageSetting> settingsList;
+    QList<ImageSetting*> settingsList;
     // Liste mit Threads für Berechnung
     QList<class WorkerThread* > tworkers;
 
@@ -102,11 +102,14 @@ public:
     //Timer für TimerEvent
     int timerID;
     // derzeitiges Bild
-    ImageSetting currentImg;
+    ImageSetting *currentImg;
     //id counter für liste und listwidget mapping
     size_t lastImgStructID;
 
     bool editedSettings;
+
+    //lade nicht einstellungen ( bei zurück doer Home )
+    bool noUpdateGui;
 
     // damit setText niucht als eigene Eingabe für Startwert gewertet wird
     bool ignoreXPosEdited, ignoreYPosEdited;
@@ -119,11 +122,11 @@ private:
     } state = STATE::STOPED;
 
 public:
-    ImageSetting getNewScaledSetting(ImageSetting last_img);
+    ImageSetting *getNewScaledSetting(ImageSetting *last_img);
 
-    void updateUiWithImageSetting(ImageSetting imgs);
+    void updateUiWithImageSetting(ImageSetting *imgs);
 
-    void startRefresh(ImageSetting set, bool appendToList = false);
+    void startRefresh(ImageSetting *set, bool appendToList = false);
 
     void stopThreads();
 
@@ -138,7 +141,7 @@ public:
 
     bool checkForFinished();
 
-    void afterColoring(ImageSetting set);
+    void afterColoring(ImageSetting *set);
 
 
     void zustandWechseln(QString aktion, QString wert_s = "", QPoint p = QPoint(), QMouseEvent * keyInput = nullptr);
@@ -230,6 +233,10 @@ private slots:
     void on_spinBoxHSV_value_valueChanged(int arg1);
 
     void on_spinBoxHSV_alpha_valueChanged(int arg1);
+
+    void on_lineEdit_textEdited(const QString &arg1);
+
+    void on_pushButton_clicked();
 
 private:
     Ui::MainWindow *ui;
