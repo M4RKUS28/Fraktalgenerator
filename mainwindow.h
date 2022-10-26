@@ -9,6 +9,7 @@
 #include <QLinearGradient>
 #include <QListWidgetItem>
 #include <QScrollBar>
+#include <QColorDialog>
 
 
 #include "imageview.h"
@@ -26,6 +27,8 @@ QT_END_NAMESPACE
 
 #define START_POS_X_JUL 0.0
 #define START_POS_Y_JUL 0.0
+
+const QString STYLE_SHEET_COLOR_BUTTON = "border: 1px solid black; border-radius: 3px; background-color: ";
 
 
 
@@ -105,15 +108,15 @@ public:
     ImageSetting *currentImg;
     //id counter für liste und listwidget mapping
     size_t lastImgStructID;
-
+    //für buttonmodus
     bool editedSettings;
-
     //lade nicht einstellungen ( bei zurück doer Home )
     bool noUpdateGui;
-
     // damit setText niucht als eigene Eingabe für Startwert gewertet wird
     bool ignoreXPosEdited, ignoreYPosEdited;
     void updateMidPos(bool clear = false);
+    //buttonColors
+    QColor buttonColors[5];
 
 private:
     enum STATE {
@@ -208,24 +211,6 @@ private slots:
 
     void on_comboBox_Fraktal_currentIndexChanged(int index);
 
-    void on_spinBox_rgb1_r_valueChanged(int arg1);
-
-    void on_spinBox_rgb1_g_valueChanged(int arg1);
-
-    void on_spinBox_rgb1_b_valueChanged(int arg1);
-
-    void on_spinBox_rgb2_r_valueChanged(int arg1);
-
-    void on_spinBox_rgb2_g_valueChanged(int arg1);
-
-    void on_spinBox_rgb2_b_valueChanged(int arg1);
-
-    void on_spinBox_rgb3_r_valueChanged(int arg1);
-
-    void on_spinBox_rgb3_g_valueChanged(int arg1);
-
-    void on_spinBox_rgb3_b_valueChanged(int arg1);
-
     void on_spinBoxFarbWechselIntervall_valueChanged(int arg1);
 
     void on_spinBoxHSV_satursion_valueChanged(int arg1);
@@ -236,7 +221,25 @@ private slots:
 
     void on_lineEdit_textEdited(const QString &arg1);
 
-    void on_pushButton_clicked();
+    void on_pushButton_color1_clicked();
+
+    void on_pushButton_color2_clicked();
+
+    void on_pushButton_color3_clicked();
+
+    void on_pushButton_color4_clicked();
+
+    void on_pushButton_color5_clicked();
+
+    void on_radioButtonF1_toggled(bool checked);
+
+    void on_radioButtonF2_toggled(bool checked);
+
+    void on_radioButtonF3_toggled(bool checked);
+
+    void on_radioButtonF4_toggled(bool checked);
+
+    void on_radioButtonF5_toggled(bool checked);
 
 private:
     Ui::MainWindow *ui;

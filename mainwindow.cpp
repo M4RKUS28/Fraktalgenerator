@@ -26,6 +26,18 @@ MainWindow::MainWindow(QWidget *parent)
     ui->comboBox_palette->setCurrentIndex(0);
     ui->stackedWidgetExtraSettings->setHidden(true);
 
+    // setup default color settings:
+    buttonColors[0] = QColor::fromRgb(0, 0, 255);
+    ui->pushButton_color1->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[0].name() );
+    buttonColors[1] = QColor::fromRgb(0, 255, 0);
+    ui->pushButton_color2->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[1].name() );
+    buttonColors[2] = QColor::fromRgb(255, 0, 0);
+    ui->pushButton_color3->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[2].name() );
+    buttonColors[3] = QColor::fromRgb(255, 255, 255);
+    ui->pushButton_color4->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[3].name() );
+    buttonColors[4] = QColor::fromRgb(255, 255, 255);
+    ui->pushButton_color5->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[4].name() );
+
     //save start size
     int width = (int)(QApplication::screens().at(0)->availableGeometry().width() *this->devicePixelRatio()* 0.075) * 10,
         height = (int)(QApplication::screens().at(0)->availableGeometry().height() *this->devicePixelRatio()* 0.085) * 10;
@@ -217,7 +229,7 @@ void MainWindow::zustandWechseln(QString aktion, QString, QPoint m_pos, QMouseEv
         } else if(aktion == "ZURÜCK") {
             int pos = - 1;
             for(int i = 0; i < settingsList.length(); i++)
-                if(settingsList.at(i)->image == currentImg->image)
+                if(settingsList.at(i)->id == currentImg->id)
                     pos = i - 1;
 
             if(pos >= 0 && pos < settingsList.length()) {
@@ -226,8 +238,9 @@ void MainWindow::zustandWechseln(QString aktion, QString, QPoint m_pos, QMouseEv
 
                 this->currentImg = settingsList.at(pos);
 
-                if(ui->radioButtonKeepSettingsAtBack->isChecked())
+                if(ui->radioButtonKeepSettingsAtBack->isChecked()) {
                     this->noUpdateGui = true;
+                }
 
                 if(ui->radioButton_reload_at_back->isChecked())
                     this->startRefresh(currentImg);
@@ -248,11 +261,16 @@ void MainWindow::zustandWechseln(QString aktion, QString, QPoint m_pos, QMouseEv
         } else if(aktion == "VOR") {
             int pos = - 1;
             for(int i = 0; i < settingsList.length(); i++)
-                if(settingsList.at(i)->image == currentImg->image)
+                if(settingsList.at(i)->id == currentImg->id)
                     pos = i + 1;
 
             if(pos >= 0 && pos < settingsList.length()) {
                 this->currentImg = settingsList.at(pos);
+
+                if(ui->radioButtonKeepSettingsAtBack->isChecked()) {
+                    this->noUpdateGui = true;
+                }
+
                 if(ui->radioButton_reload_at_back->isChecked())
                     this->startRefresh(currentImg);
                 else {
@@ -405,18 +423,37 @@ void MainWindow::updateUiWithImageSetting(ImageSetting *imgs)
     ui->comboBox_background_color->setCurrentText( imgs->backgroundColor );
 
 
-    ui->spinBox_rgb1_r->setValue(imgs->rgb1[0].red());
-    ui->spinBox_rgb1_g->setValue(imgs->rgb1[0].green());
-    ui->spinBox_rgb1_b->setValue(imgs->rgb1[0].blue());
 
-    ui->spinBox_rgb2_r->setValue(imgs->rgb1[1].red());
-    ui->spinBox_rgb2_g->setValue(imgs->rgb1[1].green());
-    ui->spinBox_rgb2_b->setValue(imgs->rgb1[1].blue());
+    ui->radioButtonF1->setChecked(false);
+    ui->radioButtonF2->setChecked(false);
+    ui->radioButtonF3->setChecked(false);
+    ui->radioButtonF4->setChecked(false);
+    ui->radioButtonF5->setChecked(false);
+    for(auto & e : imgs->colors) {
+        switch (e.first) {
+        case 1:
+            buttonColors[0] = e.second;
+            ui->radioButtonF1->setChecked(true);
+            break;
+        case 2:
+            buttonColors[1] = e.second;
+            ui->radioButtonF2->setChecked(true);
+            break;
+        case 3:
+            buttonColors[2] = e.second;
+            ui->radioButtonF3->setChecked(true);
+            break;
+        case 4:
+            buttonColors[3] = e.second;
+            ui->radioButtonF4->setChecked(true);
+            break;
+        case 5:
+            buttonColors[4] = e.second;
+            ui->radioButtonF5->setChecked(true);
+            break;
+        }
 
-    ui->spinBox_rgb3_r->setValue(imgs->rgb1[2].red());
-    ui->spinBox_rgb3_g->setValue(imgs->rgb1[2].green());
-    ui->spinBox_rgb3_b->setValue(imgs->rgb1[2].blue());
-
+    }
 
     ui->spinBoxHSV_satursion->setValue(imgs->hsv_saturation);
     ui->spinBoxHSV_value->setValue(imgs->spinBoxHSV_value);
@@ -452,31 +489,41 @@ void MainWindow::startRefresh(ImageSetting *set, bool appendToList)
     this->ui->progressBar->setMaximum(set->img_w);
     this->ui->progressBar->setValue(0);
 
-    //
-    set->setColorSettings(this->ui->comboBox_palette->currentIndex(),
-                         ui->radioButton_normalized->isChecked(),
-                         log(log(ui->doubleSpinBoxEscapeR->value())),
-                         ui->groupBoxMandelFarbe->isChecked(),
-                         ui->comboBoxMandelColor->currentText(),
-                         ui->radioButton_invert->isChecked(),
-                         ui->doubleSpinBoxEscapeR->value(),
-                         ui->comboBox_background_color->currentText());
-
-    set->rgb1[0] = QColor::fromRgb(ui->spinBox_rgb1_r->value(), ui->spinBox_rgb1_g->value(), ui->spinBox_rgb1_b->value());
-    set->rgb1[1] = QColor::fromRgb(ui->spinBox_rgb2_r->value(), ui->spinBox_rgb2_g->value(), ui->spinBox_rgb2_b->value());
-    set->rgb1[2] = QColor::fromRgb(ui->spinBox_rgb3_r->value(), ui->spinBox_rgb3_g->value(), ui->spinBox_rgb3_b->value());
-
-    set->hsv_saturation = ui->spinBoxHSV_satursion->value();
-    set->spinBoxHSV_value = ui->spinBoxHSV_value->value();
-    set->spinBoxHSV_alpha = ui->spinBoxHSV_alpha->value();
-
-    set->farbwechselIntervall = ui->spinBoxFarbWechselIntervall->value();
-
-    // add new settings to list ( bei neuladen wird setting nicht hinzugefügt )
     if(appendToList) {
+
+        set->setColorSettings(this->ui->comboBox_palette->currentIndex(),
+                             ui->radioButton_normalized->isChecked(),
+                             log(log(ui->doubleSpinBoxEscapeR->value())),
+                             ui->groupBoxMandelFarbe->isChecked(),
+                             ui->comboBoxMandelColor->currentText(),
+                             ui->radioButton_invert->isChecked(),
+                             ui->doubleSpinBoxEscapeR->value(),
+                             ui->comboBox_background_color->currentText());
+
+        set->colors.clear();
+        if(ui->radioButtonF1->isChecked())
+            set->colors.push_back(std::pair<int, QColor>(1, buttonColors[0]));
+        if(ui->radioButtonF2->isChecked())
+            set->colors.push_back(std::pair<int, QColor>(2, buttonColors[1]));
+        if(ui->radioButtonF3->isChecked())
+            set->colors.push_back(std::pair<int, QColor>(3, buttonColors[2]));
+        if(ui->radioButtonF4->isChecked())
+            set->colors.push_back(std::pair<int, QColor>(4, buttonColors[3]));
+        if(ui->radioButtonF5->isChecked())
+            set->colors.push_back(std::pair<int, QColor>(5, buttonColors[4]));
+
+        set->hsv_saturation = ui->spinBoxHSV_satursion->value();
+        set->spinBoxHSV_value = ui->spinBoxHSV_value->value();
+        set->spinBoxHSV_alpha = ui->spinBoxHSV_alpha->value();
+
+        set->farbwechselIntervall = ui->spinBoxFarbWechselIntervall->value();
+
+
         settingsList.push_back(set);
         currentImg = set;
+
     }
+
 
     //start workers
     for( size_t tn = 0; tn < tc; tn++) {
@@ -604,26 +651,37 @@ void MainWindow::setOperationMode()
 void MainWindow::endRefresh(bool appendToListHistory)
 {
     stopThreads();
-
     this->state = STATE::STOPED;
-    this->editedSettings = false;
+
     this->zoomRect.hide();
     this->zahlenfolge.removeZahlenfolge();
 
-    this->setOperationMode();
     if(this->currentImg->id == settingsList.at(0)->id) {
         this->ui->pushButtonHome->setText("Reset");
+        // sonderfall reload... auch vor nach refresh möglich!
+        if(settingsList.length() > 1)
+            ui->pushButton_vor->setDisabled(false);
+        else
+            ui->pushButton_vor->setDisabled(true);
+        ui->pushButton_back->setEnabled(false);
     } else {
         this->ui->pushButtonHome->setText("Home");
+        // sonderfall reload... auch vor nach refresh möglich!
+        if(settingsList.length() > 1)
+            ui->pushButton_back->setEnabled(true);
+        else
+            ui->pushButton_back->setEnabled(false);
+        if(this->currentImg->id == settingsList.last()->id)
+            ui->pushButton_vor->setDisabled(true);
+        else
+            ui->pushButton_vor->setDisabled(false);
     }
 
     ui->progressBar->setEnabled(false);
     ui->pushButtonSaveImg->setEnabled(true);
     ui->frameButtons->setEnabled(true);
 
-    if(settingsList.length() > 1)
-        ui->pushButton_back->setEnabled(true);
-    ui->pushButton_vor->setDisabled(true);
+
 
     ui->lineEditScaleAbs->setText("1: " + QString::number((double)currentImg->scale()));
     if(currentImg->isMandelbrotSet) {
@@ -658,6 +716,10 @@ void MainWindow::endRefresh(bool appendToListHistory)
     }
 
     this->updateUiWithImageSetting( currentImg );
+
+
+    this->editedSettings = false;
+    this->setOperationMode();
 
     ui->widget->setDisabled(false);
 }
@@ -1245,8 +1307,6 @@ void ImageSetting::cleanUP()
 void MainWindow::on_spinBox_zoom_valueChanged(double)
 {
     zoomRect.updateRectSize(this->ui->spinBoxW->value(), this->ui->spinBoxH->value(), ui->spinBox_zoom->value());
-    editedSettings = true;
-    this->setOperationMode();
     this->updateImage();
 }
 
@@ -1402,68 +1462,6 @@ void MainWindow::on_comboBox_Fraktal_currentIndexChanged(int)
 }
 
 
-void MainWindow::on_spinBox_rgb1_r_valueChanged(int)
-{
-    editedSettings = true;
-    this->setOperationMode();
-}
-
-
-void MainWindow::on_spinBox_rgb1_g_valueChanged(int)
-{
-    editedSettings = true;
-    this->setOperationMode();
-}
-
-
-void MainWindow::on_spinBox_rgb1_b_valueChanged(int)
-{
-    editedSettings = true;
-    this->setOperationMode();
-}
-
-
-void MainWindow::on_spinBox_rgb2_r_valueChanged(int)
-{
-    editedSettings = true;
-    this->setOperationMode();
-}
-
-
-void MainWindow::on_spinBox_rgb2_g_valueChanged(int)
-{
-    editedSettings = true;
-    this->setOperationMode();
-}
-
-
-void MainWindow::on_spinBox_rgb2_b_valueChanged(int)
-{
-    editedSettings = true;
-    this->setOperationMode();
-}
-
-
-void MainWindow::on_spinBox_rgb3_r_valueChanged(int)
-{
-    editedSettings = true;
-    this->setOperationMode();
-}
-
-
-void MainWindow::on_spinBox_rgb3_g_valueChanged(int)
-{
-    editedSettings = true;
-    this->setOperationMode();
-}
-
-
-void MainWindow::on_spinBox_rgb3_b_valueChanged(int)
-{
-    editedSettings = true;
-    this->setOperationMode();
-}
-
 
 void MainWindow::on_spinBoxFarbWechselIntervall_valueChanged(int)
 {
@@ -1498,10 +1496,84 @@ void MainWindow::on_lineEdit_textEdited(const QString &arg1)
     this->setStyleSheet(arg1);
 }
 
-#include <QColorDialog>
 
-void MainWindow::on_pushButton_clicked()
+
+void MainWindow::on_pushButton_color1_clicked()
 {
-   qDebug() << QColorDialog::getColor(Qt::white, this, "titel");
+    buttonColors[0] = QColorDialog::getColor(buttonColors[0], this, "Farbe 1");
+    ui->pushButton_color1->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[0].toRgb().name() + ";" );
+    editedSettings = true;
+    this->setOperationMode();
+}
+
+
+void MainWindow::on_pushButton_color2_clicked()
+{
+    buttonColors[1] = QColorDialog::getColor(buttonColors[1], this, "Farbe 2");
+    ui->pushButton_color2->setStyleSheet(STYLE_SHEET_COLOR_BUTTON+ buttonColors[1].name() );
+    editedSettings = true;
+    this->setOperationMode();
+}
+
+
+void MainWindow::on_pushButton_color3_clicked()
+{
+    buttonColors[2] = QColorDialog::getColor(buttonColors[2], this, "Farbe 3");
+    ui->pushButton_color3->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[2].name() );
+    editedSettings = true;
+    this->setOperationMode();
+}
+
+
+void MainWindow::on_pushButton_color4_clicked()
+{
+    buttonColors[3] = QColorDialog::getColor(buttonColors[3], this, "Farbe 4");
+    ui->pushButton_color4->setStyleSheet(STYLE_SHEET_COLOR_BUTTON+ buttonColors[3].name() );
+    editedSettings = true;
+    this->setOperationMode();
+}
+
+
+void MainWindow::on_pushButton_color5_clicked()
+{
+    buttonColors[4] = QColorDialog::getColor(buttonColors[4], this, "Farbe 5");
+    ui->pushButton_color5->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[4].name() );
+    editedSettings = true;
+    this->setOperationMode();
+}
+
+
+void MainWindow::on_radioButtonF1_toggled(bool)
+{
+    editedSettings = true;
+    this->setOperationMode();
+}
+
+
+void MainWindow::on_radioButtonF2_toggled(bool)
+{
+    editedSettings = true;
+    this->setOperationMode();
+}
+
+
+void MainWindow::on_radioButtonF3_toggled(bool)
+{
+    editedSettings = true;
+    this->setOperationMode();
+}
+
+
+void MainWindow::on_radioButtonF4_toggled(bool)
+{
+    editedSettings = true;
+    this->setOperationMode();
+}
+
+
+void MainWindow::on_radioButtonF5_toggled(bool)
+{
+    editedSettings = true;
+    this->setOperationMode();
 }
 

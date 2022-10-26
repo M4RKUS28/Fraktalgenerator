@@ -79,7 +79,7 @@ struct ImageSetting {
     int palette;
     QString fixFraktalColor, backgroundColor;
 
-    QColor rgb1[3];
+    QList<std::pair<int,QColor>> colors;
     unsigned hsv_saturation, spinBoxHSV_value, spinBoxHSV_alpha, farbwechselIntervall;
 
     double **iterations_normal;
