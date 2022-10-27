@@ -112,6 +112,8 @@ public:
     bool editedSettings;
     //lade nicht einstellungen ( bei zurück doer Home )
     bool noUpdateGui;
+    // bei vor zurück oder home setzte settingsedited auf true
+    bool isBackOrVor;
     // damit setText niucht als eigene Eingabe für Startwert gewertet wird
     bool ignoreXPosEdited, ignoreYPosEdited;
     void updateMidPos(bool clear = false);

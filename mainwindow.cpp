@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
     , currentImg(new ImageSetting(0, START_SCALE * this->devicePixelRatio() , START_POS_X , START_POS_Y )), lastImgStructID(0),
       editedSettings(false),
       noUpdateGui(false),
+      isBackOrVor(false),
       ignoreXPosEdited(false),
       ignoreYPosEdited(false),
       ui(new Ui::MainWindow)
@@ -240,6 +241,7 @@ void MainWindow::zustandWechseln(QString aktion, QString, QPoint m_pos, QMouseEv
 
                 if(ui->radioButtonKeepSettingsAtBack->isChecked()) {
                     this->noUpdateGui = true;
+                    this->isBackOrVor = true;
                 }
 
                 if(ui->radioButton_reload_at_back->isChecked())
@@ -269,6 +271,7 @@ void MainWindow::zustandWechseln(QString aktion, QString, QPoint m_pos, QMouseEv
 
                 if(ui->radioButtonKeepSettingsAtBack->isChecked()) {
                     this->noUpdateGui = true;
+                    this->isBackOrVor = true;
                 }
 
                 if(ui->radioButton_reload_at_back->isChecked())
@@ -294,9 +297,20 @@ void MainWindow::zustandWechseln(QString aktion, QString, QPoint m_pos, QMouseEv
             // Reset
             if(this->currentImg->id == settingsList.at(0)->id) {
                 this->noUpdateGui = false;
+                //reset
+
+                if(ui->radioButtonKeepSettingsAtBack->isChecked() && ui->radioButton_reload_at_back->isChecked()) {
+                    this->isBackOrVor = true;
+                }
+
             } else {
                 this->noUpdateGui = true;
+
+                if(ui->radioButtonKeepSettingsAtBack->isChecked()) {
+                    this->isBackOrVor = true;
+                }
             }
+
 
             this->currentImg = settingsList.at(0);
             if(ui->radioButton_reload_at_back->isChecked())
@@ -390,6 +404,13 @@ ImageSetting *MainWindow::getNewScaledSetting(ImageSetting *last_img)
             midy = last_img->gaus_mid_im;
         }
 
+       if(nscale > pow(10, 16)) {
+
+           QMessageBox::warning(this, "Maximale Zoomtiefe erreicht!", "Aufgrund der limitierten Speichergröße der Standart Datentypen kann leider nicht tiefer gezoomt werden!");
+           nscale = last_img->scale();
+           midx = last_img->gaus_mid_re;
+           midy = last_img->gaus_mid_im;
+       }
 
         ImageSetting *s = new ImageSetting((this->lastImgStructID = this->lastImgStructID + 1), nscale, midx, midy);
         s->init(this->ui->spinBoxW->value(), this->ui->spinBoxH->value(), ui->spinBoxMaxIterations->value(), ui->comboBox_Fraktal->currentIndex() == 0 /*is mandelbrot*/ );
@@ -705,7 +726,7 @@ void MainWindow::endRefresh(bool appendToListHistory)
         ui->scrollArea->horizontalScrollBar()->setValue(ui->scrollArea->horizontalScrollBar()->maximum() / 2);
     }
 
-    if(appendToListHistory) {
+    if(appendToListHistory && !this->isBackOrVor) {
         auto i = new QListWidgetItem( QString(currentImg->isMandelbrotSet ? "M" : "J" ) + ": Re(" + QString::number(this->currentImg->gaus_mid_re) +
                                      ") Im(" +  QString::number( - this->currentImg->gaus_mid_im ) + " i)");
         i->setIcon(QIcon(QPixmap::fromImage(*this->currentImg->image).scaled(QSize(256, 256), Qt::AspectRatioMode::KeepAspectRatio, Qt::TransformationMode::FastTransformation)));
@@ -717,8 +738,12 @@ void MainWindow::endRefresh(bool appendToListHistory)
 
     this->updateUiWithImageSetting( currentImg );
 
-
-    this->editedSettings = false;
+    if(!this->isBackOrVor) {
+        this->editedSettings = false;
+    } else {
+        this->editedSettings = true;
+        this->isBackOrVor = false;
+    }
     this->setOperationMode();
 
     ui->widget->setDisabled(false);
