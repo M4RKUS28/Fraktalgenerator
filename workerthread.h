@@ -65,10 +65,6 @@ struct ImageSetting {
     ssize_t img_h;
     size_t maxIterations;
 
-    QLine xAchse;
-    QLine yAchse;
-    bool kkordSystemisInImage;
-
     double juliaStart_img,
            juliaStart_real;
 

@@ -28,11 +28,11 @@ MainWindow::MainWindow(QWidget *parent)
     ui->stackedWidgetExtraSettings->setHidden(true);
 
     // setup default color settings:
-    buttonColors[0] = QColor::fromRgb(0, 0, 255);
+    buttonColors[0] = QColor::fromRgb(37, 27, 255);
     ui->pushButton_color1->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[0].name() );
-    buttonColors[1] = QColor::fromRgb(0, 255, 0);
+    buttonColors[1] = QColor::fromRgb(235, 156, 18);
     ui->pushButton_color2->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[1].name() );
-    buttonColors[2] = QColor::fromRgb(255, 0, 0);
+    buttonColors[2] = QColor::fromRgb(238, 31, 235);
     ui->pushButton_color3->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[2].name() );
     buttonColors[3] = QColor::fromRgb(255, 255, 255);
     ui->pushButton_color4->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[3].name() );
@@ -140,7 +140,7 @@ void MainWindow::zustandWechseln(QString aktion, QString, QPoint m_pos, QMouseEv
             //update rect if no mousemove or mouse press was done --> fix doppelclick no zoom just refresh error
             zustandWechseln("mousePressEvent", "", QPoint(), m_event);
 
-            auto pos = this->ui->imageView->mapFrom(this, m_event->pos() * ui->imageView->getHdpi_multiplicator());
+            auto pos = this->ui->imageView->mapFrom(this, m_event->pos()) * ui->imageView->getHdpi_multiplicator();
 
             if(m_event->button() == Qt::LeftButton && pos.x() >= 0 && pos.x() < currentImg->img_w && pos.y() >= 0 && pos.y() < currentImg->img_h) {
                 ImageSetting *newSetting = getNewScaledSetting(currentImg);
@@ -155,9 +155,9 @@ void MainWindow::zustandWechseln(QString aktion, QString, QPoint m_pos, QMouseEv
             }
 
         } else if(aktion == "mouseMoveEvent") {
-            auto qpos = m_pos; // this->ui->imageView->mapFrom(this, m_pos);
+            auto qpos = m_pos;
             auto pos = Point(qpos.x(), qpos.y());
-//            qDebug() << qpos;
+            qDebug() << "qpos" << qpos;
 
             if(pos.x() >= 0 && pos.x() < currentImg->img_w && pos.y() >= 0 && pos.y() < currentImg->img_h) {
                 this->zoomRect.updateRectPos( pos );
@@ -455,22 +455,32 @@ void MainWindow::updateUiWithImageSetting(ImageSetting *imgs)
         case 1:
             buttonColors[0] = e.second;
             ui->radioButtonF1->setChecked(true);
+            ui->pushButton_color1->setStyleSheet(STYLE_SHEET_COLOR_BUTTON+ buttonColors[0].name() );
+
             break;
         case 2:
             buttonColors[1] = e.second;
             ui->radioButtonF2->setChecked(true);
+            ui->pushButton_color2->setStyleSheet(STYLE_SHEET_COLOR_BUTTON+ buttonColors[1].name() );
+
             break;
         case 3:
             buttonColors[2] = e.second;
             ui->radioButtonF3->setChecked(true);
+            ui->pushButton_color3->setStyleSheet(STYLE_SHEET_COLOR_BUTTON+ buttonColors[2].name() );
+
             break;
         case 4:
             buttonColors[3] = e.second;
             ui->radioButtonF4->setChecked(true);
+            ui->pushButton_color4->setStyleSheet(STYLE_SHEET_COLOR_BUTTON+ buttonColors[3].name() );
+
             break;
         case 5:
             buttonColors[4] = e.second;
             ui->radioButtonF5->setChecked(true);
+            ui->pushButton_color5->setStyleSheet(STYLE_SHEET_COLOR_BUTTON+ buttonColors[4].name() );
+
             break;
         }
 
@@ -937,14 +947,25 @@ void MainWindow::paintEvent(QPaintEvent *)
 
 
             // optimieren -> nur sichtbares zeug berechnen!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            if(this->ui->radioButtonKoords_2->isChecked() && currentImg->kkordSystemisInImage) {
-                painter.setPen(QPen(QColor(ui->comboBoxColorKoordSystem->currentText()), ui->spinBoxKoordPenThickness->value()));
+            if(this->ui->radioButtonKoords_2->isChecked() ) {
+
+                QPoint startX = QPoint(currentImg->mapGausReToImgPos( ui->doubleSpinBox_Koord_x_start->value()  ), currentImg->mapGausImToImgPos(0)); // QPoint(50, img_h / 2);
+                QPoint endeX =  QPoint(currentImg->mapGausReToImgPos(ui->doubleSpinBox_Koord_x_end->value()), currentImg->mapGausImToImgPos(0)); // QPoint (img_w - 50, startX.y());
+
+                QPoint startY = QPoint(currentImg->mapGausReToImgPos(0), currentImg->mapGausImToImgPos(-ui->doubleSpinBox_Koord_y_end->value())); //QPoint (img_w / 2, 50);
+                QPoint endeY = QPoint(currentImg->mapGausReToImgPos(0), currentImg->mapGausImToImgPos(-ui->doubleSpinBox_Koord_y_start->value()));  //QPoint (startY.x(), img_h - 50 );
+
+                QLine xA = QLine(startX, endeX);
+                QLine yA = QLine(startY, endeY);
+                QColor color = QColor(ui->comboBoxColorKoordSystem->currentText());
+
+                painter.setPen(QPen(color, ui->spinBoxKoordPenThickness->value()));
+
+
+
                 QFont font = painter.font() ;
                 font.setPointSize(8 + 2 * ui->spinBoxKoordPenThickness->value() );
                 painter.setFont(font);
-
-                auto xA = currentImg->xAchse;
-                auto yA = currentImg->yAchse;
 
                 //Achsen
                 painter.drawLine(xA);
@@ -1525,7 +1546,12 @@ void MainWindow::on_lineEdit_textEdited(const QString &arg1)
 
 void MainWindow::on_pushButton_color1_clicked()
 {
-    buttonColors[0] = QColorDialog::getColor(buttonColors[0], this, "Farbe 1");
+    auto color = QColorDialog::getColor(buttonColors[0], this, "Farbe 1");
+    if(!color.isValid())
+        return;
+
+    buttonColors[0] = color;
+
     ui->pushButton_color1->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[0].toRgb().name() + ";" );
     editedSettings = true;
     this->setOperationMode();
@@ -1534,7 +1560,11 @@ void MainWindow::on_pushButton_color1_clicked()
 
 void MainWindow::on_pushButton_color2_clicked()
 {
-    buttonColors[1] = QColorDialog::getColor(buttonColors[1], this, "Farbe 2");
+    auto color = QColorDialog::getColor(buttonColors[1], this, "Farbe 2");
+    if(!color.isValid())
+        return;
+    buttonColors[1] = color;
+
     ui->pushButton_color2->setStyleSheet(STYLE_SHEET_COLOR_BUTTON+ buttonColors[1].name() );
     editedSettings = true;
     this->setOperationMode();
@@ -1543,7 +1573,11 @@ void MainWindow::on_pushButton_color2_clicked()
 
 void MainWindow::on_pushButton_color3_clicked()
 {
-    buttonColors[2] = QColorDialog::getColor(buttonColors[2], this, "Farbe 3");
+    auto color = QColorDialog::getColor(buttonColors[2], this, "Farbe 3");
+    if(!color.isValid())
+        return;
+    buttonColors[2] = color;
+
     ui->pushButton_color3->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[2].name() );
     editedSettings = true;
     this->setOperationMode();
@@ -1552,7 +1586,11 @@ void MainWindow::on_pushButton_color3_clicked()
 
 void MainWindow::on_pushButton_color4_clicked()
 {
-    buttonColors[3] = QColorDialog::getColor(buttonColors[3], this, "Farbe 4");
+    auto color = QColorDialog::getColor(buttonColors[3], this, "Farbe 4");
+    if(!color.isValid())
+        return;
+    buttonColors[3] = color;
+
     ui->pushButton_color4->setStyleSheet(STYLE_SHEET_COLOR_BUTTON+ buttonColors[3].name() );
     editedSettings = true;
     this->setOperationMode();
@@ -1561,7 +1599,11 @@ void MainWindow::on_pushButton_color4_clicked()
 
 void MainWindow::on_pushButton_color5_clicked()
 {
-    buttonColors[4] = QColorDialog::getColor(buttonColors[4], this, "Farbe 5");
+    auto color = QColorDialog::getColor(buttonColors[4], this, "Farbe 5");
+    if(!color.isValid())
+        return;
+    buttonColors[4] = color;
+
     ui->pushButton_color5->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[4].name() );
     editedSettings = true;
     this->setOperationMode();
