@@ -720,7 +720,7 @@ void MainWindow::endRefresh(bool appendToListHistory)
         ui->label_julia_c_im->setText("-");
     } else {
         ui->label_julia_c->setText(QString::number( (double)(currentImg->juliaStart_real) )) ;
-        ui->label_julia_c_im->setText(QString::number( (double)(currentImg->juliaStart_img) ) + " i");
+        ui->label_julia_c_im->setText(QString::number( (double)(-currentImg->juliaStart_img) ) + " i");
     }
 
     ui->progressBar->setValue(ui->progressBar->maximum());
