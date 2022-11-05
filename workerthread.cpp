@@ -210,10 +210,11 @@ QColor WorkerThread::getPreColor(size_t iters, double normalizedItC, const Image
 
         double iters = normalizedItC;
         // Hier iters % farbStufenIntervall * farbStufenAnzahl für double, um nachdem alle farben dran kamen wieder bei vorne anzufangen
-        while( iters > 0 && iters > farbStufenIntervall * (farbStufenAnzahl))
+        while( iters > 0 && iters >= farbStufenIntervall * (farbStufenAnzahl))
             iters -= (farbStufenIntervall * (farbStufenAnzahl));
 
         farbstufe = iters / (farbStufenIntervall);
+        //if(iters == )
 
         iters -= farbStufenIntervall * farbstufe;
         anteil = ((double)iters / (double)farbStufenIntervall);

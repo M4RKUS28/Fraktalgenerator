@@ -291,6 +291,7 @@ Makefile: Fraktalgenerator.pro D:/QtNeu/6.2.2/mingw_64/mkspecs/win32-g++/qmake.c
 		D:/QtNeu/6.2.2/mingw_64/mkspecs/features/qt_config.prf \
 		D:/QtNeu/6.2.2/mingw_64/mkspecs/win32-g++/qmake.conf \
 		D:/QtNeu/6.2.2/mingw_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		D:/QtNeu/6.2.2/mingw_64/mkspecs/features/exclusive_builds.prf \
 		D:/QtNeu/6.2.2/mingw_64/mkspecs/features/toolchain.prf \
 		D:/QtNeu/6.2.2/mingw_64/mkspecs/features/default_pre.prf \
@@ -320,7 +321,6 @@ Makefile: Fraktalgenerator.pro D:/QtNeu/6.2.2/mingw_64/mkspecs/win32-g++/qmake.c
 		D:/QtNeu/6.2.2/mingw_64/lib/Qt6Gui.prl \
 		D:/QtNeu/6.2.2/mingw_64/lib/Qt6Core.prl \
 		D:/QtNeu/6.2.2/mingw_64/lib/Qt6EntryPoint.prl \
-		.qmake.stash \
 		D:/QtNeu/6.2.2/mingw_64/mkspecs/features/build_pass.prf
 	$(QMAKE) -o Makefile Fraktalgenerator.pro -spec win32-g++ "CONFIG+=qtquickcompiler"
 D:/QtNeu/6.2.2/mingw_64/mkspecs/features/spec_pre.prf:
@@ -544,6 +544,7 @@ D:/QtNeu/6.2.2/mingw_64/mkspecs/features/qt_functions.prf:
 D:/QtNeu/6.2.2/mingw_64/mkspecs/features/qt_config.prf:
 D:/QtNeu/6.2.2/mingw_64/mkspecs/win32-g++/qmake.conf:
 D:/QtNeu/6.2.2/mingw_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 D:/QtNeu/6.2.2/mingw_64/mkspecs/features/exclusive_builds.prf:
 D:/QtNeu/6.2.2/mingw_64/mkspecs/features/toolchain.prf:
 D:/QtNeu/6.2.2/mingw_64/mkspecs/features/default_pre.prf:
@@ -573,7 +574,6 @@ D:/QtNeu/6.2.2/mingw_64/lib/Qt6Widgets.prl:
 D:/QtNeu/6.2.2/mingw_64/lib/Qt6Gui.prl:
 D:/QtNeu/6.2.2/mingw_64/lib/Qt6Core.prl:
 D:/QtNeu/6.2.2/mingw_64/lib/Qt6EntryPoint.prl:
-.qmake.stash:
 D:/QtNeu/6.2.2/mingw_64/mkspecs/features/build_pass.prf:
 qmake: FORCE
 	@$(QMAKE) -o Makefile Fraktalgenerator.pro -spec win32-g++ "CONFIG+=qtquickcompiler"
