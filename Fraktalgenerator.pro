@@ -4,7 +4,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
 
-win32:RC_ICONS += ./icon/icon.ico
+win32:RC_ICONS += ./qss_icons/icon.ico
 
 
 # You can make your code fail to compile if it uses deprecated APIs.
@@ -12,18 +12,19 @@ win32:RC_ICONS += ./icon/icon.ico
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    imageview.cpp \
-    main.cpp \
-    mainwindow.cpp \
-    workerthread.cpp
+    src/imageview.cpp \
+    src/main.cpp \
+    src/mainwindow.cpp \
+    src/workerthread.cpp
 
 HEADERS += \
-    imageview.h \
-    mainwindow.h \
-    workerthread.h
+    src/imageview.h \
+    src/mainwindow.h \
+    src/ui_mainwindow.h \
+    src/workerthread.h
 
 FORMS += \
-    mainwindow.ui
+    src/mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
