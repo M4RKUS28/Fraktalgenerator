@@ -66,7 +66,11 @@ MainWindow::MainWindow(QWidget *parent)
     updateImage();
     this->startRefresh(currentImg, true);
 
+
+    //light theme als standart
     ui->comboBox_theme->setCurrentIndex(1);
+    // anzahl an cpu cors als standart
+    this->ui->spinBox_threads->setValue(QThread::idealThreadCount());
 
 }
 
