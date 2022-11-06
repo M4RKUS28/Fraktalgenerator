@@ -4,7 +4,9 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
 
-win32:RC_ICONS += ./qss_icons/icon.ico
+INCLUDEPATH += src/
+
+win32:RC_ICONS += src/qss_icons/icon.ico
 
 
 # You can make your code fail to compile if it uses deprecated APIs.
@@ -32,4 +34,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
-    styles.qrc
+    src/styles.qrc
