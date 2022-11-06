@@ -53,13 +53,15 @@ OBJECTS_DIR   = release
 SOURCES       = imageview.cpp \
 		main.cpp \
 		mainwindow.cpp \
-		workerthread.cpp release\moc_imageview.cpp \
+		workerthread.cpp release\qrc_styles.cpp \
+		release\moc_imageview.cpp \
 		release\moc_mainwindow.cpp \
 		release\moc_workerthread.cpp
 OBJECTS       = release/imageview.o \
 		release/main.o \
 		release/mainwindow.o \
 		release/workerthread.o \
+		release/qrc_styles.o \
 		release/moc_imageview.o \
 		release/moc_mainwindow.o \
 		release/moc_workerthread.o
@@ -92,10 +94,10 @@ qmake: FORCE
 qmake_all: FORCE
 
 dist:
-	$(ZIP) Fraktalgenerator.zip $(SOURCES) $(DIST) Fraktalgenerator.pro D:\QtNeu\6.2.2\mingw_64\mkspecs\features\spec_pre.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\device_config.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\common\sanitize.conf D:\QtNeu\6.2.2\mingw_64\mkspecs\common\gcc-base.conf D:\QtNeu\6.2.2\mingw_64\mkspecs\common\g++-base.conf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\win32\windows_vulkan_sdk.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\common\windows-vulkan.conf D:\QtNeu\6.2.2\mingw_64\mkspecs\common\g++-win32.conf D:\QtNeu\6.2.2\mingw_64\mkspecs\common\windows-desktop.conf D:\QtNeu\6.2.2\mingw_64\mkspecs\qconfig.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_ext_freetype.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_ext_libpng.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3danimation.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3danimation_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3dcore.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3dcore_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3dextras.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3dextras_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3dinput.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3dinput_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3dlogic.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3dlogic_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3dquick.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3dquick_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3dquickanimation.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3dquickanimation_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3dquickextras.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3dquickextras_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3dquickinput.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3dquickinput_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3dquickrender.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3dquickrender_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3dquickscene2d.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3dquickscene2d_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3drender.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3drender_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_activeqt.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_activeqt_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_axbase_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_axcontainer.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_axcontainer_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_axserver.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_axserver_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_bluetooth.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_bluetooth_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_bodymovin_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_charts.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_charts_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_chartsqml.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_chartsqml_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_concurrent.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_concurrent_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_core.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_core5compat.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_core5compat_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_core_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_datavisualization.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_datavisualization_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_dbus.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_dbus_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_designer.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_designer_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_designercomponents_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_devicediscovery_support_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_entrypoint_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_fb_support_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_gui.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_gui_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_help.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_help_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_labsanimation.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_labsanimation_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_labsfolderlistmodel.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_labsfolderlistmodel_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_labsqmlmodels.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_labsqmlmodels_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_labssettings.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_labssettings_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_labssharedimage.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_labssharedimage_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_labswavefrontmesh.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_labswavefrontmesh_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_linguist.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_linguist_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_multimedia.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_multimedia_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_multimediaquick_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_multimediawidgets.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_multimediawidgets_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_network.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_network_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_networkauth.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_networkauth_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_nfc.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_nfc_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_opengl.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_opengl_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_openglwidgets.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_openglwidgets_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_packetprotocol_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_positioning.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_positioning_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_positioningquick.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_positioningquick_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_printsupport.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_printsupport_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_qml.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_qml_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_qmlcompiler_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_qmlcore.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_qmlcore_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_qmldebug_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_qmldevtools_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_qmldom_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_qmllocalstorage.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_qmllocalstorage_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_qmlmodels.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_qmlmodels_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_qmltest.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_qmltest_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_qmlworkerscript.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_qmlworkerscript_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_qmlxmllistmodel.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_qmlxmllistmodel_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quick.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quick3d.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quick3d_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quick3dassetimport.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quick3dassetimport_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quick3dassetutils.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quick3dassetutils_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quick3deffects.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quick3deffects_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quick3dhelpers.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quick3dhelpers_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quick3diblbaker.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quick3diblbaker_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quick3dparticles.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quick3dparticles_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quick3druntimerender.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quick3druntimerender_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quick3dutils.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quick3dutils_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quick_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quickcontrols2.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quickcontrols2_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quickcontrols2impl.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quickcontrols2impl_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quickcontrolstestutilsprivate_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quickdialogs2.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quickdialogs2_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quickdialogs2quickimpl.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quickdialogs2quickimpl_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quickdialogs2utils.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quickdialogs2utils_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quicklayouts.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quicklayouts_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quickparticles_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quickshapes_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quicktemplates2.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quicktemplates2_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quicktestutilsprivate_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quicktimeline.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quicktimeline_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quickwidgets.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quickwidgets_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_remoteobjects.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_remoteobjects_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_remoteobjectsqml.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_remoteobjectsqml_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_repparser.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_repparser_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_scxml.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_scxml_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_scxmlqml.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_scxmlqml_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_sensors.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_sensors_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_sensorsquick.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_sensorsquick_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_serialbus.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_serialbus_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_serialport.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_serialport_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_shadertools.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_shadertools_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_sql.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_sql_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_statemachine.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_statemachine_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_statemachineqml.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_statemachineqml_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_svg.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_svg_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_svgwidgets.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_svgwidgets_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_testlib.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_testlib_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_tools_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_uiplugin.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_uitools.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_uitools_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_virtualkeyboard.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_virtualkeyboard_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_webchannel.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_webchannel_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_websockets.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_websockets_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_webview.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_webview_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_webviewquick.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_webviewquick_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_widgets.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_widgets_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_xml.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_xml_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_zlib_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\features\qt_functions.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\qt_config.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\win32-g++\qmake.conf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\spec_post.prf .qmake.stash D:\QtNeu\6.2.2\mingw_64\mkspecs\features\exclusive_builds.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\toolchain.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\default_pre.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\win32\default_pre.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\resolve_config.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\exclusive_builds_post.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\default_post.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\build_pass.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\qtquickcompiler.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\entrypoint.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\precompile_header.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\warn_on.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\qt.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\resources_functions.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\resources.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\moc.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\win32\opengl.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\uic.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\qmake_use.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\file_copies.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\win32\windows.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\testcase_targets.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\exceptions.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\yacc.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\lex.prf Fraktalgenerator.pro D:\QtNeu\6.2.2\mingw_64\lib\Qt6Widgets.prl D:\QtNeu\6.2.2\mingw_64\lib\Qt6Gui.prl D:\QtNeu\6.2.2\mingw_64\lib\Qt6Core.prl D:\QtNeu\6.2.2\mingw_64\lib\Qt6EntryPoint.prl    D:\QtNeu\6.2.2\mingw_64\mkspecs\features\data\dummy.cpp imageview.h mainwindow.h workerthread.h  imageview.cpp main.cpp mainwindow.cpp workerthread.cpp mainwindow.ui    
+	$(ZIP) Fraktalgenerator.zip $(SOURCES) $(DIST) Fraktalgenerator.pro D:\QtNeu\6.2.2\mingw_64\mkspecs\features\spec_pre.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\device_config.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\common\sanitize.conf D:\QtNeu\6.2.2\mingw_64\mkspecs\common\gcc-base.conf D:\QtNeu\6.2.2\mingw_64\mkspecs\common\g++-base.conf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\win32\windows_vulkan_sdk.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\common\windows-vulkan.conf D:\QtNeu\6.2.2\mingw_64\mkspecs\common\g++-win32.conf D:\QtNeu\6.2.2\mingw_64\mkspecs\common\windows-desktop.conf D:\QtNeu\6.2.2\mingw_64\mkspecs\qconfig.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_ext_freetype.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_ext_libpng.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3danimation.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3danimation_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3dcore.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3dcore_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3dextras.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3dextras_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3dinput.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3dinput_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3dlogic.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3dlogic_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3dquick.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3dquick_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3dquickanimation.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3dquickanimation_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3dquickextras.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3dquickextras_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3dquickinput.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3dquickinput_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3dquickrender.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3dquickrender_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3dquickscene2d.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3dquickscene2d_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3drender.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_3drender_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_activeqt.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_activeqt_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_axbase_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_axcontainer.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_axcontainer_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_axserver.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_axserver_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_bluetooth.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_bluetooth_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_bodymovin_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_charts.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_charts_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_chartsqml.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_chartsqml_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_concurrent.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_concurrent_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_core.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_core5compat.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_core5compat_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_core_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_datavisualization.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_datavisualization_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_dbus.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_dbus_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_designer.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_designer_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_designercomponents_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_devicediscovery_support_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_entrypoint_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_fb_support_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_gui.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_gui_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_help.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_help_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_labsanimation.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_labsanimation_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_labsfolderlistmodel.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_labsfolderlistmodel_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_labsqmlmodels.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_labsqmlmodels_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_labssettings.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_labssettings_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_labssharedimage.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_labssharedimage_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_labswavefrontmesh.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_labswavefrontmesh_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_linguist.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_linguist_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_multimedia.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_multimedia_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_multimediaquick_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_multimediawidgets.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_multimediawidgets_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_network.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_network_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_networkauth.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_networkauth_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_nfc.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_nfc_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_opengl.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_opengl_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_openglwidgets.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_openglwidgets_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_packetprotocol_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_positioning.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_positioning_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_positioningquick.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_positioningquick_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_printsupport.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_printsupport_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_qml.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_qml_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_qmlcompiler_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_qmlcore.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_qmlcore_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_qmldebug_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_qmldevtools_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_qmldom_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_qmllocalstorage.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_qmllocalstorage_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_qmlmodels.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_qmlmodels_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_qmltest.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_qmltest_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_qmlworkerscript.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_qmlworkerscript_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_qmlxmllistmodel.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_qmlxmllistmodel_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quick.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quick3d.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quick3d_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quick3dassetimport.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quick3dassetimport_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quick3dassetutils.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quick3dassetutils_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quick3deffects.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quick3deffects_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quick3dhelpers.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quick3dhelpers_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quick3diblbaker.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quick3diblbaker_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quick3dparticles.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quick3dparticles_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quick3druntimerender.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quick3druntimerender_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quick3dutils.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quick3dutils_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quick_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quickcontrols2.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quickcontrols2_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quickcontrols2impl.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quickcontrols2impl_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quickcontrolstestutilsprivate_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quickdialogs2.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quickdialogs2_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quickdialogs2quickimpl.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quickdialogs2quickimpl_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quickdialogs2utils.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quickdialogs2utils_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quicklayouts.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quicklayouts_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quickparticles_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quickshapes_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quicktemplates2.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quicktemplates2_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quicktestutilsprivate_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quicktimeline.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quicktimeline_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quickwidgets.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_quickwidgets_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_remoteobjects.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_remoteobjects_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_remoteobjectsqml.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_remoteobjectsqml_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_repparser.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_repparser_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_scxml.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_scxml_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_scxmlqml.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_scxmlqml_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_sensors.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_sensors_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_sensorsquick.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_sensorsquick_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_serialbus.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_serialbus_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_serialport.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_serialport_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_shadertools.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_shadertools_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_sql.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_sql_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_statemachine.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_statemachine_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_statemachineqml.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_statemachineqml_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_svg.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_svg_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_svgwidgets.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_svgwidgets_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_testlib.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_testlib_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_tools_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_uiplugin.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_uitools.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_uitools_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_virtualkeyboard.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_virtualkeyboard_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_webchannel.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_webchannel_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_websockets.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_websockets_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_webview.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_webview_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_webviewquick.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_webviewquick_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_widgets.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_widgets_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_xml.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_xml_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\modules\qt_lib_zlib_private.pri D:\QtNeu\6.2.2\mingw_64\mkspecs\features\qt_functions.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\qt_config.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\win32-g++\qmake.conf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\spec_post.prf .qmake.stash D:\QtNeu\6.2.2\mingw_64\mkspecs\features\exclusive_builds.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\toolchain.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\default_pre.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\win32\default_pre.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\resolve_config.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\exclusive_builds_post.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\default_post.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\build_pass.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\qtquickcompiler.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\entrypoint.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\precompile_header.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\warn_on.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\qt.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\resources_functions.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\resources.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\moc.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\win32\opengl.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\uic.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\qmake_use.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\file_copies.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\win32\windows.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\testcase_targets.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\exceptions.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\yacc.prf D:\QtNeu\6.2.2\mingw_64\mkspecs\features\lex.prf Fraktalgenerator.pro styles.qrc D:\QtNeu\6.2.2\mingw_64\lib\Qt6Widgets.prl D:\QtNeu\6.2.2\mingw_64\lib\Qt6Gui.prl D:\QtNeu\6.2.2\mingw_64\lib\Qt6Core.prl D:\QtNeu\6.2.2\mingw_64\lib\Qt6EntryPoint.prl   styles.qrc D:\QtNeu\6.2.2\mingw_64\mkspecs\features\data\dummy.cpp imageview.h mainwindow.h workerthread.h  imageview.cpp main.cpp mainwindow.cpp workerthread.cpp mainwindow.ui    
 
 clean: compiler_clean 
-	-$(DEL_FILE) release\imageview.o release\main.o release\mainwindow.o release\workerthread.o release\moc_imageview.o release\moc_mainwindow.o release\moc_workerthread.o
+	-$(DEL_FILE) release\imageview.o release\main.o release\mainwindow.o release\workerthread.o release\qrc_styles.o release\moc_imageview.o release\moc_mainwindow.o release\moc_workerthread.o
 	-$(DEL_FILE) release\Fraktalgenerator_resource_res.o
 
 distclean: clean 
@@ -113,8 +115,433 @@ benchmark: first
 
 compiler_no_pch_compiler_make_all:
 compiler_no_pch_compiler_clean:
-compiler_rcc_make_all:
+compiler_rcc_make_all: release/qrc_styles.cpp
 compiler_rcc_clean:
+	-$(DEL_FILE) release\qrc_styles.cpp
+release/qrc_styles.cpp: styles.qrc \
+		D:/QtNeu/6.2.2/mingw_64/bin/rcc.exe \
+		qss_icons/lightstyle.qss \
+		qss_icons/darkstyle.qss \
+		qss_icons/dark/rc/window_close_focus@2x.png \
+		qss_icons/dark/rc/radio_unchecked_pressed@2x.png \
+		qss_icons/dark/rc/line_vertical_disabled@2x.png \
+		qss_icons/dark/rc/branch_end.png \
+		qss_icons/dark/rc/branch_open_focus.png \
+		qss_icons/dark/rc/toolbar_separator_vertical@2x.png \
+		qss_icons/dark/rc/transparent@2x.png \
+		qss_icons/dark/rc/checkbox_indeterminate_focus@2x.png \
+		qss_icons/dark/rc/toolbar_move_vertical_disabled@2x.png \
+		qss_icons/dark/rc/window_minimize.png \
+		qss_icons/dark/rc/window_grip_focus@2x.png \
+		qss_icons/dark/rc/checkbox_unchecked@2x.png \
+		qss_icons/dark/rc/toolbar_move_horizontal@2x.png \
+		qss_icons/dark/rc/transparent_disabled@2x.png \
+		qss_icons/dark/rc/base_icon_pressed.png \
+		qss_icons/dark/rc/window_undock_focus@2x.png \
+		qss_icons/dark/rc/window_undock@2x.png \
+		qss_icons/dark/rc/window_grip.png \
+		qss_icons/dark/rc/radio_checked_disabled@2x.png \
+		qss_icons/dark/rc/branch_closed_disabled.png \
+		qss_icons/dark/rc/branch_end_disabled@2x.png \
+		qss_icons/dark/rc/.keep \
+		qss_icons/dark/rc/branch_end@2x.png \
+		qss_icons/dark/rc/window_close@2x.png \
+		qss_icons/dark/rc/checkbox_indeterminate_pressed@2x.png \
+		qss_icons/dark/rc/checkbox_unchecked_pressed@2x.png \
+		qss_icons/dark/rc/toolbar_move_horizontal_pressed@2x.png \
+		qss_icons/dark/rc/window_close_disabled@2x.png \
+		qss_icons/dark/rc/toolbar_separator_vertical_disabled.png \
+		qss_icons/dark/rc/line_horizontal_focus.png \
+		qss_icons/dark/rc/window_grip_disabled@2x.png \
+		qss_icons/dark/rc/arrow_up_focus@2x.png \
+		qss_icons/dark/rc/transparent.png \
+		qss_icons/dark/rc/line_vertical.png \
+		qss_icons/dark/rc/toolbar_separator_horizontal_disabled.png \
+		qss_icons/dark/rc/radio_unchecked.png \
+		qss_icons/dark/rc/line_horizontal@2x.png \
+		qss_icons/dark/rc/window_grip@2x.png \
+		qss_icons/dark/rc/toolbar_move_horizontal.png \
+		qss_icons/dark/rc/radio_unchecked_focus.png \
+		qss_icons/dark/rc/arrow_down_focus@2x.png \
+		qss_icons/dark/rc/toolbar_separator_horizontal.png \
+		qss_icons/dark/rc/arrow_down_pressed.png \
+		qss_icons/dark/rc/transparent_pressed@2x.png \
+		qss_icons/dark/rc/toolbar_separator_vertical_focus@2x.png \
+		qss_icons/dark/rc/radio_checked_pressed@2x.png \
+		qss_icons/dark/rc/arrow_down_disabled.png \
+		qss_icons/dark/rc/checkbox_checked_focus@2x.png \
+		qss_icons/dark/rc/base_icon_focus.png \
+		qss_icons/dark/rc/arrow_left_disabled.png \
+		qss_icons/dark/rc/toolbar_move_horizontal_focus@2x.png \
+		qss_icons/dark/rc/branch_line_pressed.png \
+		qss_icons/dark/rc/branch_end_disabled.png \
+		qss_icons/dark/rc/branch_more_pressed.png \
+		qss_icons/dark/rc/branch_end_focus@2x.png \
+		qss_icons/dark/rc/line_horizontal_pressed.png \
+		qss_icons/dark/rc/window_grip_disabled.png \
+		qss_icons/dark/rc/radio_unchecked_pressed.png \
+		qss_icons/dark/rc/radio_checked_disabled.png \
+		qss_icons/dark/rc/toolbar_move_horizontal_pressed.png \
+		qss_icons/dark/rc/window_close.png \
+		qss_icons/dark/rc/branch_line_focus.png \
+		qss_icons/dark/rc/arrow_up_pressed.png \
+		qss_icons/dark/rc/arrow_left_pressed.png \
+		qss_icons/dark/rc/arrow_right_pressed@2x.png \
+		qss_icons/dark/rc/line_vertical_disabled.png \
+		qss_icons/dark/rc/toolbar_move_vertical_focus.png \
+		qss_icons/dark/rc/arrow_right_focus.png \
+		qss_icons/dark/rc/toolbar_separator_vertical_focus.png \
+		qss_icons/dark/rc/branch_end_focus.png \
+		qss_icons/dark/rc/window_grip_focus.png \
+		qss_icons/dark/rc/branch_closed.png \
+		qss_icons/dark/rc/branch_line_focus@2x.png \
+		qss_icons/dark/rc/window_undock_pressed@2x.png \
+		qss_icons/dark/rc/branch_open@2x.png \
+		qss_icons/dark/rc/checkbox_unchecked.png \
+		qss_icons/dark/rc/arrow_up_disabled.png \
+		qss_icons/dark/rc/toolbar_separator_vertical_pressed.png \
+		qss_icons/dark/rc/branch_closed_focus.png \
+		qss_icons/dark/rc/arrow_down_pressed@2x.png \
+		qss_icons/dark/rc/base_icon_disabled.png \
+		qss_icons/dark/rc/base_icon@2x.png \
+		qss_icons/dark/rc/transparent_focus@2x.png \
+		qss_icons/dark/rc/toolbar_separator_horizontal_disabled@2x.png \
+		qss_icons/dark/rc/branch_open_disabled@2x.png \
+		qss_icons/dark/rc/base_icon_pressed@2x.png \
+		qss_icons/dark/rc/branch_line_disabled.png \
+		qss_icons/dark/rc/line_vertical_focus.png \
+		qss_icons/dark/rc/checkbox_checked.png \
+		qss_icons/dark/rc/window_minimize_focus@2x.png \
+		qss_icons/dark/rc/branch_more_pressed@2x.png \
+		qss_icons/dark/rc/branch_more@2x.png \
+		qss_icons/dark/rc/toolbar_move_vertical_disabled.png \
+		qss_icons/dark/rc/checkbox_indeterminate_focus.png \
+		qss_icons/dark/rc/arrow_left_focus.png \
+		qss_icons/dark/rc/branch_more_disabled.png \
+		qss_icons/dark/rc/branch_open_pressed@2x.png \
+		qss_icons/dark/rc/branch_line@2x.png \
+		qss_icons/dark/rc/checkbox_unchecked_disabled.png \
+		qss_icons/dark/rc/toolbar_separator_horizontal_focus@2x.png \
+		qss_icons/dark/rc/transparent_focus.png \
+		qss_icons/dark/rc/branch_more_focus@2x.png \
+		qss_icons/dark/rc/arrow_down.png \
+		qss_icons/dark/rc/line_vertical_pressed.png \
+		qss_icons/dark/rc/window_minimize_pressed@2x.png \
+		qss_icons/dark/rc/window_undock.png \
+		qss_icons/dark/rc/toolbar_separator_horizontal_focus.png \
+		qss_icons/dark/rc/branch_more.png \
+		qss_icons/dark/rc/radio_unchecked_disabled.png \
+		qss_icons/dark/rc/toolbar_move_vertical@2x.png \
+		qss_icons/dark/rc/branch_end_pressed.png \
+		qss_icons/dark/rc/branch_line.png \
+		qss_icons/dark/rc/branch_open_disabled.png \
+		qss_icons/dark/rc/line_horizontal_disabled@2x.png \
+		qss_icons/dark/rc/branch_open_pressed.png \
+		qss_icons/dark/rc/toolbar_move_vertical_focus@2x.png \
+		qss_icons/dark/rc/line_horizontal.png \
+		qss_icons/dark/rc/checkbox_checked_disabled@2x.png \
+		qss_icons/dark/rc/checkbox_unchecked_focus@2x.png \
+		qss_icons/dark/rc/line_vertical_focus@2x.png \
+		qss_icons/dark/rc/base_icon_focus@2x.png \
+		qss_icons/dark/rc/checkbox_checked@2x.png \
+		qss_icons/dark/rc/toolbar_move_horizontal_disabled.png \
+		qss_icons/dark/rc/radio_checked_focus.png \
+		qss_icons/dark/rc/window_minimize_disabled@2x.png \
+		qss_icons/dark/rc/branch_closed_pressed.png \
+		qss_icons/dark/rc/radio_unchecked@2x.png \
+		qss_icons/dark/rc/line_vertical@2x.png \
+		qss_icons/dark/rc/arrow_right@2x.png \
+		qss_icons/dark/rc/window_minimize_disabled.png \
+		qss_icons/dark/rc/branch_end_pressed@2x.png \
+		qss_icons/dark/rc/radio_checked_pressed.png \
+		qss_icons/dark/rc/radio_unchecked_focus@2x.png \
+		qss_icons/dark/rc/checkbox_checked_pressed.png \
+		qss_icons/dark/rc/checkbox_checked_focus.png \
+		qss_icons/dark/rc/radio_checked_focus@2x.png \
+		qss_icons/dark/rc/arrow_left_pressed@2x.png \
+		qss_icons/dark/rc/branch_closed_focus@2x.png \
+		qss_icons/dark/rc/toolbar_separator_vertical.png \
+		qss_icons/dark/rc/toolbar_separator_vertical_disabled@2x.png \
+		qss_icons/dark/rc/toolbar_move_vertical_pressed@2x.png \
+		qss_icons/dark/rc/checkbox_checked_disabled.png \
+		qss_icons/dark/rc/arrow_left_disabled@2x.png \
+		qss_icons/dark/rc/toolbar_move_horizontal_focus.png \
+		qss_icons/dark/rc/toolbar_separator_horizontal_pressed.png \
+		qss_icons/dark/rc/checkbox_indeterminate.png \
+		qss_icons/dark/rc/checkbox_indeterminate_disabled.png \
+		qss_icons/dark/rc/transparent_disabled.png \
+		qss_icons/dark/rc/arrow_left.png \
+		qss_icons/dark/rc/arrow_right_disabled@2x.png \
+		qss_icons/dark/rc/window_undock_disabled.png \
+		qss_icons/dark/rc/arrow_right_disabled.png \
+		qss_icons/dark/rc/window_close_disabled.png \
+		qss_icons/dark/rc/branch_open_focus@2x.png \
+		qss_icons/dark/rc/window_minimize_focus.png \
+		qss_icons/dark/rc/arrow_down_focus.png \
+		qss_icons/dark/rc/arrow_left@2x.png \
+		qss_icons/dark/rc/checkbox_unchecked_focus.png \
+		qss_icons/dark/rc/checkbox_unchecked_pressed.png \
+		qss_icons/dark/rc/window_minimize_pressed.png \
+		qss_icons/dark/rc/window_undock_focus.png \
+		qss_icons/dark/rc/checkbox_unchecked_disabled@2x.png \
+		qss_icons/dark/rc/toolbar_separator_vertical_pressed@2x.png \
+		qss_icons/dark/rc/checkbox_indeterminate_disabled@2x.png \
+		qss_icons/dark/rc/window_minimize@2x.png \
+		qss_icons/dark/rc/transparent_pressed.png \
+		qss_icons/dark/rc/radio_checked@2x.png \
+		qss_icons/dark/rc/branch_closed@2x.png \
+		qss_icons/dark/rc/arrow_left_focus@2x.png \
+		qss_icons/dark/rc/checkbox_indeterminate@2x.png \
+		qss_icons/dark/rc/arrow_right_pressed.png \
+		qss_icons/dark/rc/window_undock_pressed.png \
+		qss_icons/dark/rc/line_vertical_pressed@2x.png \
+		qss_icons/dark/rc/toolbar_separator_horizontal@2x.png \
+		qss_icons/dark/rc/toolbar_separator_horizontal_pressed@2x.png \
+		qss_icons/dark/rc/arrow_down@2x.png \
+		qss_icons/dark/rc/line_horizontal_pressed@2x.png \
+		qss_icons/dark/rc/arrow_up_focus.png \
+		qss_icons/dark/rc/branch_open.png \
+		qss_icons/dark/rc/branch_line_disabled@2x.png \
+		qss_icons/dark/rc/branch_line_pressed@2x.png \
+		qss_icons/dark/rc/line_horizontal_focus@2x.png \
+		qss_icons/dark/rc/branch_more_focus.png \
+		qss_icons/dark/rc/arrow_right.png \
+		qss_icons/dark/rc/arrow_right_focus@2x.png \
+		qss_icons/dark/rc/arrow_up_pressed@2x.png \
+		qss_icons/dark/rc/window_undock_disabled@2x.png \
+		qss_icons/dark/rc/line_horizontal_disabled.png \
+		qss_icons/dark/rc/branch_more_disabled@2x.png \
+		qss_icons/dark/rc/branch_closed_pressed@2x.png \
+		qss_icons/dark/rc/base_icon.png \
+		qss_icons/dark/rc/branch_closed_disabled@2x.png \
+		qss_icons/dark/rc/window_grip_pressed@2x.png \
+		qss_icons/dark/rc/toolbar_move_vertical.png \
+		qss_icons/dark/rc/window_grip_pressed.png \
+		qss_icons/dark/rc/base_icon_disabled@2x.png \
+		qss_icons/dark/rc/window_close_focus.png \
+		qss_icons/dark/rc/toolbar_move_vertical_pressed.png \
+		qss_icons/dark/rc/arrow_up.png \
+		qss_icons/dark/rc/arrow_up_disabled@2x.png \
+		qss_icons/dark/rc/window_close_pressed.png \
+		qss_icons/dark/rc/checkbox_indeterminate_pressed.png \
+		qss_icons/dark/rc/radio_unchecked_disabled@2x.png \
+		qss_icons/dark/rc/checkbox_checked_pressed@2x.png \
+		qss_icons/dark/rc/arrow_down_disabled@2x.png \
+		qss_icons/dark/rc/arrow_up@2x.png \
+		qss_icons/dark/rc/radio_checked.png \
+		qss_icons/dark/rc/window_close_pressed@2x.png \
+		qss_icons/dark/rc/toolbar_move_horizontal_disabled@2x.png \
+		qss_icons/light/rc/window_close_focus@2x.png \
+		qss_icons/light/rc/radio_unchecked_pressed@2x.png \
+		qss_icons/light/rc/line_vertical_disabled@2x.png \
+		qss_icons/light/rc/branch_end.png \
+		qss_icons/light/rc/branch_open_focus.png \
+		qss_icons/light/rc/toolbar_separator_vertical@2x.png \
+		qss_icons/light/rc/transparent@2x.png \
+		qss_icons/light/rc/checkbox_indeterminate_focus@2x.png \
+		qss_icons/light/rc/toolbar_move_vertical_disabled@2x.png \
+		qss_icons/light/rc/window_minimize.png \
+		qss_icons/light/rc/window_grip_focus@2x.png \
+		qss_icons/light/rc/checkbox_unchecked@2x.png \
+		qss_icons/light/rc/toolbar_move_horizontal@2x.png \
+		qss_icons/light/rc/transparent_disabled@2x.png \
+		qss_icons/light/rc/base_icon_pressed.png \
+		qss_icons/light/rc/window_undock_focus@2x.png \
+		qss_icons/light/rc/window_undock@2x.png \
+		qss_icons/light/rc/window_grip.png \
+		qss_icons/light/rc/radio_checked_disabled@2x.png \
+		qss_icons/light/rc/branch_closed_disabled.png \
+		qss_icons/light/rc/branch_end_disabled@2x.png \
+		qss_icons/light/rc/.keep \
+		qss_icons/light/rc/branch_end@2x.png \
+		qss_icons/light/rc/window_close@2x.png \
+		qss_icons/light/rc/checkbox_indeterminate_pressed@2x.png \
+		qss_icons/light/rc/checkbox_unchecked_pressed@2x.png \
+		qss_icons/light/rc/toolbar_move_horizontal_pressed@2x.png \
+		qss_icons/light/rc/window_close_disabled@2x.png \
+		qss_icons/light/rc/toolbar_separator_vertical_disabled.png \
+		qss_icons/light/rc/line_horizontal_focus.png \
+		qss_icons/light/rc/window_grip_disabled@2x.png \
+		qss_icons/light/rc/arrow_up_focus@2x.png \
+		qss_icons/light/rc/transparent.png \
+		qss_icons/light/rc/line_vertical.png \
+		qss_icons/light/rc/toolbar_separator_horizontal_disabled.png \
+		qss_icons/light/rc/radio_unchecked.png \
+		qss_icons/light/rc/line_horizontal@2x.png \
+		qss_icons/light/rc/window_grip@2x.png \
+		qss_icons/light/rc/toolbar_move_horizontal.png \
+		qss_icons/light/rc/radio_unchecked_focus.png \
+		qss_icons/light/rc/arrow_down_focus@2x.png \
+		qss_icons/light/rc/toolbar_separator_horizontal.png \
+		qss_icons/light/rc/arrow_down_pressed.png \
+		qss_icons/light/rc/transparent_pressed@2x.png \
+		qss_icons/light/rc/toolbar_separator_vertical_focus@2x.png \
+		qss_icons/light/rc/radio_checked_pressed@2x.png \
+		qss_icons/light/rc/arrow_down_disabled.png \
+		qss_icons/light/rc/checkbox_checked_focus@2x.png \
+		qss_icons/light/rc/base_icon_focus.png \
+		qss_icons/light/rc/arrow_left_disabled.png \
+		qss_icons/light/rc/toolbar_move_horizontal_focus@2x.png \
+		qss_icons/light/rc/branch_line_pressed.png \
+		qss_icons/light/rc/branch_end_disabled.png \
+		qss_icons/light/rc/branch_more_pressed.png \
+		qss_icons/light/rc/branch_end_focus@2x.png \
+		qss_icons/light/rc/line_horizontal_pressed.png \
+		qss_icons/light/rc/window_grip_disabled.png \
+		qss_icons/light/rc/radio_unchecked_pressed.png \
+		qss_icons/light/rc/radio_checked_disabled.png \
+		qss_icons/light/rc/toolbar_move_horizontal_pressed.png \
+		qss_icons/light/rc/window_close.png \
+		qss_icons/light/rc/branch_line_focus.png \
+		qss_icons/light/rc/arrow_up_pressed.png \
+		qss_icons/light/rc/arrow_left_pressed.png \
+		qss_icons/light/rc/arrow_right_pressed@2x.png \
+		qss_icons/light/rc/line_vertical_disabled.png \
+		qss_icons/light/rc/toolbar_move_vertical_focus.png \
+		qss_icons/light/rc/arrow_right_focus.png \
+		qss_icons/light/rc/toolbar_separator_vertical_focus.png \
+		qss_icons/light/rc/branch_end_focus.png \
+		qss_icons/light/rc/window_grip_focus.png \
+		qss_icons/light/rc/branch_closed.png \
+		qss_icons/light/rc/branch_line_focus@2x.png \
+		qss_icons/light/rc/window_undock_pressed@2x.png \
+		qss_icons/light/rc/branch_open@2x.png \
+		qss_icons/light/rc/checkbox_unchecked.png \
+		qss_icons/light/rc/arrow_up_disabled.png \
+		qss_icons/light/rc/toolbar_separator_vertical_pressed.png \
+		qss_icons/light/rc/branch_closed_focus.png \
+		qss_icons/light/rc/arrow_down_pressed@2x.png \
+		qss_icons/light/rc/base_icon_disabled.png \
+		qss_icons/light/rc/base_icon@2x.png \
+		qss_icons/light/rc/transparent_focus@2x.png \
+		qss_icons/light/rc/toolbar_separator_horizontal_disabled@2x.png \
+		qss_icons/light/rc/branch_open_disabled@2x.png \
+		qss_icons/light/rc/base_icon_pressed@2x.png \
+		qss_icons/light/rc/branch_line_disabled.png \
+		qss_icons/light/rc/line_vertical_focus.png \
+		qss_icons/light/rc/checkbox_checked.png \
+		qss_icons/light/rc/window_minimize_focus@2x.png \
+		qss_icons/light/rc/branch_more_pressed@2x.png \
+		qss_icons/light/rc/branch_more@2x.png \
+		qss_icons/light/rc/toolbar_move_vertical_disabled.png \
+		qss_icons/light/rc/checkbox_indeterminate_focus.png \
+		qss_icons/light/rc/arrow_left_focus.png \
+		qss_icons/light/rc/branch_more_disabled.png \
+		qss_icons/light/rc/branch_open_pressed@2x.png \
+		qss_icons/light/rc/branch_line@2x.png \
+		qss_icons/light/rc/checkbox_unchecked_disabled.png \
+		qss_icons/light/rc/toolbar_separator_horizontal_focus@2x.png \
+		qss_icons/light/rc/transparent_focus.png \
+		qss_icons/light/rc/branch_more_focus@2x.png \
+		qss_icons/light/rc/arrow_down.png \
+		qss_icons/light/rc/line_vertical_pressed.png \
+		qss_icons/light/rc/window_minimize_pressed@2x.png \
+		qss_icons/light/rc/window_undock.png \
+		qss_icons/light/rc/toolbar_separator_horizontal_focus.png \
+		qss_icons/light/rc/branch_more.png \
+		qss_icons/light/rc/radio_unchecked_disabled.png \
+		qss_icons/light/rc/toolbar_move_vertical@2x.png \
+		qss_icons/light/rc/branch_end_pressed.png \
+		qss_icons/light/rc/branch_line.png \
+		qss_icons/light/rc/branch_open_disabled.png \
+		qss_icons/light/rc/line_horizontal_disabled@2x.png \
+		qss_icons/light/rc/branch_open_pressed.png \
+		qss_icons/light/rc/toolbar_move_vertical_focus@2x.png \
+		qss_icons/light/rc/line_horizontal.png \
+		qss_icons/light/rc/checkbox_checked_disabled@2x.png \
+		qss_icons/light/rc/checkbox_unchecked_focus@2x.png \
+		qss_icons/light/rc/line_vertical_focus@2x.png \
+		qss_icons/light/rc/base_icon_focus@2x.png \
+		qss_icons/light/rc/checkbox_checked@2x.png \
+		qss_icons/light/rc/toolbar_move_horizontal_disabled.png \
+		qss_icons/light/rc/radio_checked_focus.png \
+		qss_icons/light/rc/window_minimize_disabled@2x.png \
+		qss_icons/light/rc/branch_closed_pressed.png \
+		qss_icons/light/rc/radio_unchecked@2x.png \
+		qss_icons/light/rc/line_vertical@2x.png \
+		qss_icons/light/rc/arrow_right@2x.png \
+		qss_icons/light/rc/window_minimize_disabled.png \
+		qss_icons/light/rc/branch_end_pressed@2x.png \
+		qss_icons/light/rc/radio_checked_pressed.png \
+		qss_icons/light/rc/radio_unchecked_focus@2x.png \
+		qss_icons/light/rc/checkbox_checked_pressed.png \
+		qss_icons/light/rc/checkbox_checked_focus.png \
+		qss_icons/light/rc/radio_checked_focus@2x.png \
+		qss_icons/light/rc/arrow_left_pressed@2x.png \
+		qss_icons/light/rc/branch_closed_focus@2x.png \
+		qss_icons/light/rc/toolbar_separator_vertical.png \
+		qss_icons/light/rc/toolbar_separator_vertical_disabled@2x.png \
+		qss_icons/light/rc/toolbar_move_vertical_pressed@2x.png \
+		qss_icons/light/rc/checkbox_checked_disabled.png \
+		qss_icons/light/rc/arrow_left_disabled@2x.png \
+		qss_icons/light/rc/toolbar_move_horizontal_focus.png \
+		qss_icons/light/rc/toolbar_separator_horizontal_pressed.png \
+		qss_icons/light/rc/checkbox_indeterminate.png \
+		qss_icons/light/rc/checkbox_indeterminate_disabled.png \
+		qss_icons/light/rc/transparent_disabled.png \
+		qss_icons/light/rc/arrow_left.png \
+		qss_icons/light/rc/arrow_right_disabled@2x.png \
+		qss_icons/light/rc/window_undock_disabled.png \
+		qss_icons/light/rc/arrow_right_disabled.png \
+		qss_icons/light/rc/window_close_disabled.png \
+		qss_icons/light/rc/branch_open_focus@2x.png \
+		qss_icons/light/rc/window_minimize_focus.png \
+		qss_icons/light/rc/arrow_down_focus.png \
+		qss_icons/light/rc/arrow_left@2x.png \
+		qss_icons/light/rc/checkbox_unchecked_focus.png \
+		qss_icons/light/rc/checkbox_unchecked_pressed.png \
+		qss_icons/light/rc/window_minimize_pressed.png \
+		qss_icons/light/rc/window_undock_focus.png \
+		qss_icons/light/rc/checkbox_unchecked_disabled@2x.png \
+		qss_icons/light/rc/toolbar_separator_vertical_pressed@2x.png \
+		qss_icons/light/rc/checkbox_indeterminate_disabled@2x.png \
+		qss_icons/light/rc/window_minimize@2x.png \
+		qss_icons/light/rc/transparent_pressed.png \
+		qss_icons/light/rc/radio_checked@2x.png \
+		qss_icons/light/rc/branch_closed@2x.png \
+		qss_icons/light/rc/arrow_left_focus@2x.png \
+		qss_icons/light/rc/checkbox_indeterminate@2x.png \
+		qss_icons/light/rc/arrow_right_pressed.png \
+		qss_icons/light/rc/window_undock_pressed.png \
+		qss_icons/light/rc/line_vertical_pressed@2x.png \
+		qss_icons/light/rc/toolbar_separator_horizontal@2x.png \
+		qss_icons/light/rc/toolbar_separator_horizontal_pressed@2x.png \
+		qss_icons/light/rc/arrow_down@2x.png \
+		qss_icons/light/rc/line_horizontal_pressed@2x.png \
+		qss_icons/light/rc/arrow_up_focus.png \
+		qss_icons/light/rc/branch_open.png \
+		qss_icons/light/rc/branch_line_disabled@2x.png \
+		qss_icons/light/rc/branch_line_pressed@2x.png \
+		qss_icons/light/rc/line_horizontal_focus@2x.png \
+		qss_icons/light/rc/branch_more_focus.png \
+		qss_icons/light/rc/arrow_right.png \
+		qss_icons/light/rc/arrow_right_focus@2x.png \
+		qss_icons/light/rc/arrow_up_pressed@2x.png \
+		qss_icons/light/rc/window_undock_disabled@2x.png \
+		qss_icons/light/rc/line_horizontal_disabled.png \
+		qss_icons/light/rc/branch_more_disabled@2x.png \
+		qss_icons/light/rc/branch_closed_pressed@2x.png \
+		qss_icons/light/rc/base_icon.png \
+		qss_icons/light/rc/branch_closed_disabled@2x.png \
+		qss_icons/light/rc/window_grip_pressed@2x.png \
+		qss_icons/light/rc/toolbar_move_vertical.png \
+		qss_icons/light/rc/window_grip_pressed.png \
+		qss_icons/light/rc/base_icon_disabled@2x.png \
+		qss_icons/light/rc/window_close_focus.png \
+		qss_icons/light/rc/toolbar_move_vertical_pressed.png \
+		qss_icons/light/rc/arrow_up.png \
+		qss_icons/light/rc/arrow_up_disabled@2x.png \
+		qss_icons/light/rc/window_close_pressed.png \
+		qss_icons/light/rc/checkbox_indeterminate_pressed.png \
+		qss_icons/light/rc/radio_unchecked_disabled@2x.png \
+		qss_icons/light/rc/checkbox_checked_pressed@2x.png \
+		qss_icons/light/rc/arrow_down_disabled@2x.png \
+		qss_icons/light/rc/arrow_up@2x.png \
+		qss_icons/light/rc/radio_checked.png \
+		qss_icons/light/rc/window_close_pressed@2x.png \
+		qss_icons/light/rc/toolbar_move_horizontal_disabled@2x.png
+	D:\QtNeu\6.2.2\mingw_64\bin\rcc.exe -name styles styles.qrc -o release\qrc_styles.cpp
+
 compiler_moc_predefs_make_all: release/moc_predefs.h
 compiler_moc_predefs_clean:
 	-$(DEL_FILE) release\moc_predefs.h
@@ -429,6 +856,7 @@ release/moc_mainwindow.cpp: mainwindow.h \
 		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/QColorDialog \
 		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/qcolordialog.h \
 		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/qdialog.h \
+		D:/QtNeu/6.2.2/mingw_64/include/QtCore/QMap \
 		imageview.h \
 		D:/QtNeu/6.2.2/mingw_64/include/QtGui/QImage \
 		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/QWidget \
@@ -694,7 +1122,7 @@ compiler_yacc_impl_make_all:
 compiler_yacc_impl_clean:
 compiler_lex_make_all:
 compiler_lex_clean:
-compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_uic_clean 
+compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_header_clean compiler_uic_clean 
 
 
 
@@ -1024,6 +1452,7 @@ release/main.o: main.cpp D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/QApplication 
 		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/QColorDialog \
 		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/qcolordialog.h \
 		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/qdialog.h \
+		D:/QtNeu/6.2.2/mingw_64/include/QtCore/QMap \
 		imageview.h \
 		D:/QtNeu/6.2.2/mingw_64/include/QtGui/QImage \
 		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/QWidget \
@@ -1199,26 +1628,13 @@ release/mainwindow.o: mainwindow.cpp mainwindow.h \
 		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/QColorDialog \
 		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/qcolordialog.h \
 		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/qdialog.h \
+		D:/QtNeu/6.2.2/mingw_64/include/QtCore/QMap \
 		imageview.h \
 		D:/QtNeu/6.2.2/mingw_64/include/QtGui/QImage \
 		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/QWidget \
 		D:/QtNeu/6.2.2/mingw_64/include/QtCore/QDebug \
 		ui_mainwindow.h \
-		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/QFileDialog \
-		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/qfiledialog.h \
-		D:/QtNeu/6.2.2/mingw_64/include/QtCore/qdir.h \
-		D:/QtNeu/6.2.2/mingw_64/include/QtCore/qfile.h \
-		D:/QtNeu/6.2.2/mingw_64/include/QtCore/qfiledevice.h \
-		D:/QtNeu/6.2.2/mingw_64/include/QtCore/qfileinfo.h \
-		D:/QtNeu/6.2.2/mingw_64/include/QtCore/qdatetime.h \
-		D:/QtNeu/6.2.2/mingw_64/include/QtCore/qcalendar.h \
-		D:/QtNeu/6.2.2/mingw_64/include/QtGui/QKeyEvent \
-		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/QMessageBox \
-		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/qmessagebox.h \
-		D:/QtNeu/6.2.2/mingw_64/include/QtGui/QMouseEvent \
-		D:/QtNeu/6.2.2/mingw_64/include/QtGui/QPixmap \
-		D:/QtNeu/6.2.2/mingw_64/include/QtCore/QTime \
-		D:/QtNeu/6.2.2/mingw_64/include/QtGui/QScreen \
+		D:/QtNeu/6.2.2/mingw_64/include/QtCore/QVariant \
 		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/QApplication \
 		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/qapplication.h \
 		D:/QtNeu/6.2.2/mingw_64/include/QtCore/qcoreapplication.h \
@@ -1235,6 +1651,63 @@ release/mainwindow.o: mainwindow.cpp mainwindow.h \
 		D:/QtNeu/6.2.2/mingw_64/include/QtGui/qguiapplication.h \
 		D:/QtNeu/6.2.2/mingw_64/include/QtGui/qinputmethod.h \
 		D:/QtNeu/6.2.2/mingw_64/include/QtGui/qguiapplication_platform.h \
+		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/QComboBox \
+		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/qcombobox.h \
+		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/QDoubleSpinBox \
+		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/qspinbox.h \
+		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/QFormLayout \
+		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/qformlayout.h \
+		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/QLayout \
+		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/qlayout.h \
+		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/qlayoutitem.h \
+		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/qboxlayout.h \
+		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/qgridlayout.h \
+		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/QFrame \
+		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/QGridLayout \
+		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/QGroupBox \
+		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/qgroupbox.h \
+		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/QHBoxLayout \
+		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/QLabel \
+		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/qlabel.h \
+		D:/QtNeu/6.2.2/mingw_64/include/QtGui/qpicture.h \
+		D:/QtNeu/6.2.2/mingw_64/include/QtGui/qtextdocument.h \
+		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/QLineEdit \
+		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/qlineedit.h \
+		D:/QtNeu/6.2.2/mingw_64/include/QtGui/qtextcursor.h \
+		D:/QtNeu/6.2.2/mingw_64/include/QtGui/qtextformat.h \
+		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/QListWidget \
+		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/QProgressBar \
+		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/qprogressbar.h \
+		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/QPushButton \
+		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/qpushbutton.h \
+		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/qabstractbutton.h \
+		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/QRadioButton \
+		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/qradiobutton.h \
+		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/QScrollArea \
+		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/qscrollarea.h \
+		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/QSpacerItem \
+		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/QSpinBox \
+		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/QStackedWidget \
+		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/qstackedwidget.h \
+		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/QStatusBar \
+		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/qstatusbar.h \
+		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/QTabWidget \
+		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/QVBoxLayout \
+		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/QFileDialog \
+		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/qfiledialog.h \
+		D:/QtNeu/6.2.2/mingw_64/include/QtCore/qdir.h \
+		D:/QtNeu/6.2.2/mingw_64/include/QtCore/qfile.h \
+		D:/QtNeu/6.2.2/mingw_64/include/QtCore/qfiledevice.h \
+		D:/QtNeu/6.2.2/mingw_64/include/QtCore/qfileinfo.h \
+		D:/QtNeu/6.2.2/mingw_64/include/QtCore/qdatetime.h \
+		D:/QtNeu/6.2.2/mingw_64/include/QtCore/qcalendar.h \
+		D:/QtNeu/6.2.2/mingw_64/include/QtGui/QKeyEvent \
+		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/QMessageBox \
+		D:/QtNeu/6.2.2/mingw_64/include/QtWidgets/qmessagebox.h \
+		D:/QtNeu/6.2.2/mingw_64/include/QtGui/QMouseEvent \
+		D:/QtNeu/6.2.2/mingw_64/include/QtGui/QPixmap \
+		D:/QtNeu/6.2.2/mingw_64/include/QtCore/QTime \
+		D:/QtNeu/6.2.2/mingw_64/include/QtGui/QScreen \
 		D:/QtNeu/6.2.2/mingw_64/include/QtCore/QFile \
 		D:/QtNeu/6.2.2/mingw_64/include/QtGui/QImageWriter \
 		D:/QtNeu/6.2.2/mingw_64/include/QtGui/qimagewriter.h \
@@ -1363,6 +1836,9 @@ release/workerthread.o: workerthread.cpp workerthread.h \
 		D:/QtNeu/6.2.2/mingw_64/include/QtCore/qset.h \
 		D:/QtNeu/6.2.2/mingw_64/include/QtCore/qcontiguouscache.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\workerthread.o workerthread.cpp
+
+release/qrc_styles.o: release/qrc_styles.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\qrc_styles.o release\qrc_styles.cpp
 
 release/moc_imageview.o: release/moc_imageview.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\moc_imageview.o release\moc_imageview.cpp

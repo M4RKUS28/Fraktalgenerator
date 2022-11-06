@@ -10,6 +10,7 @@
 #include <QListWidgetItem>
 #include <QScrollBar>
 #include <QColorDialog>
+#include <QMap>
 
 
 #include "imageview.h"
@@ -119,6 +120,8 @@ public:
     void updateMidPos(bool clear = false);
     //buttonColors
     QColor buttonColors[5];
+
+    QMap<int, bool> keyPressed;
 
 private:
     enum STATE {
@@ -242,6 +245,8 @@ private slots:
     void on_radioButtonF4_toggled(bool checked);
 
     void on_radioButtonF5_toggled(bool checked);
+
+    void on_comboBox_theme_currentIndexChanged(int index);
 
 private:
     Ui::MainWindow *ui;

@@ -441,7 +441,7 @@
                 </size>
                </property>
                <property name="text">
-                <string>Verlauf löschen</string>
+                <string>🗑 Verlauf löschen</string>
                </property>
               </widget>
              </item>
@@ -496,10 +496,10 @@
                <number>25</number>
               </property>
               <property name="topMargin">
-               <number>1</number>
+               <number>9</number>
               </property>
               <property name="bottomMargin">
-               <number>1</number>
+               <number>4</number>
               </property>
               <item row="0" column="1">
                <widget class="QComboBox" name="comboBoxMandelColor">
@@ -1106,10 +1106,10 @@
                <number>25</number>
               </property>
               <property name="topMargin">
-               <number>1</number>
+               <number>9</number>
               </property>
               <property name="bottomMargin">
-               <number>1</number>
+               <number>4</number>
               </property>
               <item row="1" column="0">
                <widget class="QLabel" name="label_20">
@@ -2017,18 +2017,33 @@
              </property>
             </widget>
            </item>
-           <item row="15" column="1">
-            <widget class="QLineEdit" name="lineEdit">
-             <property name="text">
-              <string>/*QPushButton {     border: 2px solid #8f8f91;     border-radius: 6px;     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,                                       stop: 0 #f6f7fa, stop: 1 #dadbde);     min-width: 80px; }  QPushButton:pressed {     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,                                       stop: 0 #dadbde, stop: 1 #f6f7fa); }  QPushButton:flat {     border: none; /* no border for a flat push button */ }  QPushButton:default {     border-color: navy; /* make the default button prominent */ }*/</string>
-             </property>
-            </widget>
-           </item>
            <item row="15" column="0">
             <widget class="QLabel" name="label_45">
              <property name="text">
-              <string>UI-Stylesheet:</string>
+              <string>Thema:</string>
              </property>
+            </widget>
+           </item>
+           <item row="15" column="1">
+            <widget class="QComboBox" name="comboBox_theme">
+             <property name="currentIndex">
+              <number>0</number>
+             </property>
+             <item>
+              <property name="text">
+               <string>Standart</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Light-Theme</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Dark-Theme</string>
+              </property>
+             </item>
             </widget>
            </item>
           </layout>
@@ -2085,13 +2100,13 @@
           <number>20</number>
          </property>
          <property name="topMargin">
-          <number>0</number>
+          <number>4</number>
          </property>
          <property name="rightMargin">
           <number>20</number>
          </property>
          <property name="bottomMargin">
-          <number>0</number>
+          <number>4</number>
          </property>
          <item>
           <widget class="QPushButton" name="pushButtonStart">
@@ -2122,10 +2137,13 @@
           <number>20</number>
          </property>
          <property name="topMargin">
-          <number>0</number>
+          <number>5</number>
          </property>
          <property name="rightMargin">
           <number>20</number>
+         </property>
+         <property name="bottomMargin">
+          <number>5</number>
          </property>
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_2">

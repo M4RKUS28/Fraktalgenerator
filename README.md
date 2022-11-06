@@ -12,3 +12,6 @@ Die Anwendung dient der Erstellung von Abbildungen der Mandelbrot-Menge und zuge
 - Iterationen an Mausposition
 - Multi Threading
 
+
+https://github.com/ColinDuquesnoy/QDarkStyleSheet/blob/master/qdarkstyle/light/lightstyle.qss
+

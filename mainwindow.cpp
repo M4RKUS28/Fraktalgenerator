@@ -22,6 +22,8 @@ MainWindow::MainWindow(QWidget *parent)
       ignoreYPosEdited(false),
       ui(new Ui::MainWindow)
 {
+    keyPressed[Qt::LeftButton] = false;
+    keyPressed[Qt::RightButton] = false;
     //setup ui
     ui->setupUi(this);
     ui->comboBox_palette->setCurrentIndex(0);
@@ -63,6 +65,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     updateImage();
     this->startRefresh(currentImg, true);
+
+    ui->comboBox_theme->setCurrentIndex(1);
 
 }
 
@@ -148,6 +152,7 @@ void MainWindow::zustandWechseln(QString aktion, QString, QPoint m_pos, QMouseEv
 
             }
         } else if(aktion == "mouseReleaseEvent" && m_event) {
+            keyPressed[m_event->button()] = false;
             if(m_event->button() == Qt::LeftButton) {
                 // no update in paintevent!! --> no move!!
                 this->zoomRect.setMousePressState(false);
@@ -157,24 +162,29 @@ void MainWindow::zustandWechseln(QString aktion, QString, QPoint m_pos, QMouseEv
         } else if(aktion == "mouseMoveEvent") {
             auto qpos = m_pos;
             auto pos = Point(qpos.x(), qpos.y());
-            qDebug() << "qpos" << qpos;
 
             if(pos.x() >= 0 && pos.x() < currentImg->img_w && pos.y() >= 0 && pos.y() < currentImg->img_h) {
-                this->zoomRect.updateRectPos( pos );
 
-                if(this->zoomRect.rightMouseIsPressed()) {
-                    this->setOperationMode();
-                    this->updateImage();
+                if(keyPressed[Qt::LeftButton] || keyPressed[Qt::RightButton]) {
+
+                    this->zoomRect.updateRectPos( pos );
+
+                    if(this->zoomRect.rightMouseIsPressed()) {
+                        this->setOperationMode();
+                        this->updateImage();
+                    }
+                    ui->label_iterations->setText(QString::number(currentImg->getIterationCountAt(qpos)));
+
+                    updateMidPos();
+
+
+                    if( zahlenfolge.isShown() ) {
+                        this->zahlenfolge.setZahlenfolge(pos, currentImg);
+                        this->updateImage();
+                    }
                 }
-                ui->label_iterations->setText(QString::number(currentImg->getIterationCountAt(qpos)));
-
-                updateMidPos();
 
 
-                if( zahlenfolge.isShown() ) {
-                    this->zahlenfolge.setZahlenfolge(pos, currentImg);
-                    this->updateImage();
-                }
 
             } else {
                 ui->label_iterations->setText("-");
@@ -183,6 +193,7 @@ void MainWindow::zustandWechseln(QString aktion, QString, QPoint m_pos, QMouseEv
             }
 
         } else if(aktion == "mousePressEvent"  && m_event) {
+            keyPressed[m_event->button()] = true;
 
             auto qpos = this->ui->imageView->mapFrom(this, m_event->pos()) * ui->imageView->getHdpi_multiplicator();
             auto pos = Point(qpos.x(), qpos.y());
@@ -696,7 +707,7 @@ void MainWindow::endRefresh(bool appendToListHistory)
             ui->pushButton_vor->setDisabled(true);
         ui->pushButton_back->setEnabled(false);
     } else {
-        this->ui->pushButtonHome->setText("Home");
+        this->ui->pushButtonHome->setText("⌂ Home");
         // sonderfall reload... auch vor nach refresh möglich!
         if(settingsList.length() > 1)
             ui->pushButton_back->setEnabled(true);
@@ -1546,67 +1557,92 @@ void MainWindow::on_lineEdit_textEdited(const QString &arg1)
 
 void MainWindow::on_pushButton_color1_clicked()
 {
+    int index = this->ui->comboBox_theme->currentIndex();
+    this->ui->comboBox_theme->setCurrentIndex(0);
     auto color = QColorDialog::getColor(buttonColors[0], this, "Farbe 1");
-    if(!color.isValid())
+    if(!color.isValid()) {
+        this->ui->comboBox_theme->setCurrentIndex(index);
         return;
+    }
 
     buttonColors[0] = color;
 
     ui->pushButton_color1->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[0].toRgb().name() + ";" );
     editedSettings = true;
     this->setOperationMode();
+    this->ui->comboBox_theme->setCurrentIndex(index);
 }
 
 
 void MainWindow::on_pushButton_color2_clicked()
 {
+    int index = this->ui->comboBox_theme->currentIndex();
+    this->ui->comboBox_theme->setCurrentIndex(0);
     auto color = QColorDialog::getColor(buttonColors[1], this, "Farbe 2");
-    if(!color.isValid())
+    if(!color.isValid()) {
+        this->ui->comboBox_theme->setCurrentIndex(index);
         return;
+    }
     buttonColors[1] = color;
 
     ui->pushButton_color2->setStyleSheet(STYLE_SHEET_COLOR_BUTTON+ buttonColors[1].name() );
     editedSettings = true;
     this->setOperationMode();
+    this->ui->comboBox_theme->setCurrentIndex(index);
 }
 
 
 void MainWindow::on_pushButton_color3_clicked()
 {
+    int index = this->ui->comboBox_theme->currentIndex();
+    this->ui->comboBox_theme->setCurrentIndex(0);
     auto color = QColorDialog::getColor(buttonColors[2], this, "Farbe 3");
-    if(!color.isValid())
+    if(!color.isValid()) {
+        this->ui->comboBox_theme->setCurrentIndex(index);
         return;
+    }
     buttonColors[2] = color;
 
     ui->pushButton_color3->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[2].name() );
     editedSettings = true;
     this->setOperationMode();
+    this->ui->comboBox_theme->setCurrentIndex(index);
 }
 
 
 void MainWindow::on_pushButton_color4_clicked()
 {
+    int index = this->ui->comboBox_theme->currentIndex();
+    this->ui->comboBox_theme->setCurrentIndex(0);
     auto color = QColorDialog::getColor(buttonColors[3], this, "Farbe 4");
-    if(!color.isValid())
+    if(!color.isValid()) {
+        this->ui->comboBox_theme->setCurrentIndex(index);
         return;
+    }
     buttonColors[3] = color;
 
     ui->pushButton_color4->setStyleSheet(STYLE_SHEET_COLOR_BUTTON+ buttonColors[3].name() );
     editedSettings = true;
     this->setOperationMode();
+    this->ui->comboBox_theme->setCurrentIndex(index);
 }
 
 
 void MainWindow::on_pushButton_color5_clicked()
 {
+    int index = this->ui->comboBox_theme->currentIndex();
+    this->ui->comboBox_theme->setCurrentIndex(0);
     auto color = QColorDialog::getColor(buttonColors[4], this, "Farbe 5");
-    if(!color.isValid())
+    if(!color.isValid()) {
+        this->ui->comboBox_theme->setCurrentIndex(index);
         return;
+    }
     buttonColors[4] = color;
 
     ui->pushButton_color5->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[4].name() );
     editedSettings = true;
     this->setOperationMode();
+    this->ui->comboBox_theme->setCurrentIndex(index);
 }
 
 
@@ -1642,5 +1678,38 @@ void MainWindow::on_radioButtonF5_toggled(bool)
 {
     editedSettings = true;
     this->setOperationMode();
+}
+
+
+void MainWindow::on_comboBox_theme_currentIndexChanged(int index)
+{
+    QString fileName;
+    QString data;
+
+    if(index == 0) {
+        this->setStyleSheet("");
+        return;
+
+    } else if( index == 1) {
+        fileName = ":/qss/qss_icons/lightstyle.qss";
+    } else {
+        fileName = ":/qss/qss_icons/darkstyle.qss";
+    }
+
+    QFile file(fileName);
+    if(!file.open(QIODevice::ReadOnly)) {
+        qDebug()<<"filenot opened";
+        return;
+    }
+    else
+    {
+        qDebug()<<"file opened";
+        data = file.readAll();
+    }
+
+    file.close();
+
+    this->setStyleSheet(data);
+
 }
 
