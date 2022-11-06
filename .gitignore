@@ -54,3 +54,7 @@ compile_commands.json
 *_qmlcache.qrc
 
 *.qtc_cland
+
+Makefile
+Makefile.Release
+Makefile.Debug
