@@ -71,3 +71,9 @@ void ImageView::mouseMoveEvent(QMouseEvent *event)
 //{
 //    qDebug() << "ress";
 //}
+
+void ImageView::keyPressEvent(QKeyEvent *event)
+{
+    if(event->key() == Qt::Key_Escape || event->key() == Qt::Key_Q || event->key() == Qt::Key_L || event->key() == Qt::Key_E)
+        emit escapePressed();
+}

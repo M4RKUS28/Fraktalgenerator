@@ -5,6 +5,7 @@
 #include <QObject>
 #include <QWidget>
 #include <QDebug>
+#include <QKeyEvent>
 
 
 
@@ -45,12 +46,19 @@ protected:
 
 signals:
     void mouseMove(QPoint pos);
+    void escapePressed();
 
     // QWidget interface
 protected:
 //    virtual void mousePressEvent(QMouseEvent *event);
 //    virtual void mouseReleaseEvent(QMouseEvent *event);
+
+    // QWidget interface
+protected:
+    virtual void keyPressEvent(QKeyEvent *event);
 };
+
+
 
 
 

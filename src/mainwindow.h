@@ -123,6 +123,8 @@ public:
 
     QMap<int, bool> keyPressed;
 
+    ImageView * fullScreenView;
+
 private:
     enum STATE {
         STOPED,
@@ -247,6 +249,10 @@ private slots:
     void on_radioButtonF5_toggled(bool checked);
 
     void on_comboBox_theme_currentIndexChanged(int index);
+
+    void on_pushButtonShowFullScreen_clicked();
+
+    void hideFullScreen();
 
 private:
     Ui::MainWindow *ui;

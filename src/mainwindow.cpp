@@ -20,10 +20,15 @@ MainWindow::MainWindow(QWidget *parent)
       isBackOrVor(false),
       ignoreXPosEdited(false),
       ignoreYPosEdited(false),
+      fullScreenView(new ImageView),
       ui(new Ui::MainWindow)
 {
+    this->fullScreenView->hide();
+    this->fullScreenView->setAttribute( Qt::WA_QuitOnClose, false );
+
     keyPressed[Qt::LeftButton] = false;
     keyPressed[Qt::RightButton] = false;
+
     //setup ui
     ui->setupUi(this);
     ui->comboBox_palette->setCurrentIndex(0);
@@ -42,8 +47,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->pushButton_color5->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[4].name() );
 
     //save start size
-    int width = (int)(QApplication::screens().at(0)->availableGeometry().width() *this->devicePixelRatio()* 0.075) * 10,
-        height = (int)(QApplication::screens().at(0)->availableGeometry().height() *this->devicePixelRatio()* 0.085) * 10;
+    int width = (QApplication::screens().at(0)->geometry().width() *this->devicePixelRatio()),
+        height = (QApplication::screens().at(0)->geometry().height() *this->devicePixelRatio());
 
     //setup currentImage
     currentImg->init(width, height, ui->spinBoxMaxIterations->value(), true);
@@ -51,6 +56,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     // connect signals
     connect(ui->imageView, SIGNAL(mouseMove(QPoint)), this, SLOT(mouse_move_in_img(QPoint)));
+    connect(fullScreenView, SIGNAL(escapePressed()), this, SLOT(hideFullScreen()));
 
     // init rect:
     zoomRect.updateRectSize(this->ui->spinBoxW->value(), this->ui->spinBoxH->value(), ui->spinBox_zoom->value());
@@ -81,6 +87,10 @@ MainWindow::~MainWindow()
 
     // Stoppe und lösche Threads...
     stopThreads();
+
+
+    delete fullScreenView;
+    fullScreenView = nullptr;
 
     //Lösche die Bilderliste
     for( auto e : settingsList) {
@@ -777,8 +787,11 @@ void MainWindow::endRefresh(bool appendToListHistory)
 
 void MainWindow::updateImage()
 {
-    if(currentImg->image)
+    if(currentImg->image) {
         ui->imageView->setImage(*currentImg->image);
+        if(this->fullScreenView->isVisible())
+            this->fullScreenView->setImage(*this->currentImg->image);
+    }
     this->update();
 }
 
@@ -1715,5 +1728,25 @@ void MainWindow::on_comboBox_theme_currentIndexChanged(int index)
 
     this->setStyleSheet(data);
 
+}
+
+
+void MainWindow::on_pushButtonShowFullScreen_clicked()
+{
+    if(this->fullScreenView->isVisible()) {
+        this->ui->pushButtonShowFullScreen->setText("Im Vollbild anzeigen");
+        this->fullScreenView->hide();
+
+    } else {
+        this->ui->pushButtonShowFullScreen->setText("Vollbildanzeige schließen");
+        this->fullScreenView->setImage(*this->currentImg->image);
+        this->fullScreenView->showFullScreen();
+    }
+}
+
+void MainWindow::hideFullScreen()
+{
+    this->ui->pushButtonShowFullScreen->setText("Im Vollbild anzeigen");
+    this->fullScreenView->hide();
 }
 
