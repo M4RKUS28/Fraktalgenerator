@@ -80,7 +80,16 @@
         <height>400</height>
        </size>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="maximumSize">
+       <size>
+        <width>300</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_9">
+       <property name="topMargin">
+        <number>9</number>
+       </property>
        <item>
         <widget class="QTabWidget" name="tabWidget">
          <property name="sizePolicy">
@@ -95,6 +104,12 @@
            <height>425</height>
           </size>
          </property>
+         <property name="maximumSize">
+          <size>
+           <width>9999</width>
+           <height>16777215</height>
+          </size>
+         </property>
          <property name="tabPosition">
           <enum>QTabWidget::North</enum>
          </property>
@@ -102,7 +117,7 @@
           <enum>QTabWidget::Rounded</enum>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>2</number>
          </property>
          <property name="iconSize">
           <size>
@@ -291,7 +306,7 @@
            <item row="11" column="1">
             <widget class="QDoubleSpinBox" name="re">
              <property name="decimals">
-              <number>15</number>
+              <number>13</number>
              </property>
              <property name="minimum">
               <double>-99.000000000000000</double>
@@ -320,7 +335,7 @@
               <string> i</string>
              </property>
              <property name="decimals">
-              <number>15</number>
+              <number>13</number>
              </property>
              <property name="minimum">
               <double>-99.000000000000000</double>
@@ -1401,13 +1416,6 @@
              </property>
             </widget>
            </item>
-           <item row="4" column="0" colspan="2">
-            <widget class="Line" name="line_3">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
            <item row="5" column="0" colspan="2">
             <widget class="QGroupBox" name="radioButtonKoords_2">
              <property name="minimumSize">
@@ -1834,10 +1842,16 @@
              </property>
             </widget>
            </item>
-           <item row="9" column="0" colspan="2">
-            <widget class="QRadioButton" name="radioButtonAutoScroll">
+           <item row="8" column="0" colspan="2">
+            <widget class="QRadioButton" name="radioButtonKeepSettingsAtBack">
+             <property name="styleSheet">
+              <string notr="true">QProgressBar {
+    border: 2px solid grey;
+    border-radius: 5px;
+}</string>
+             </property>
              <property name="text">
-              <string>Autoscroll nach Vergrößerung</string>
+              <string>Behalte Einstellungen bei Zurück bei</string>
              </property>
              <property name="checked">
               <bool>true</bool>
@@ -1847,14 +1861,14 @@
              </property>
             </widget>
            </item>
-           <item row="10" column="0" colspan="2">
+           <item row="9" column="0" colspan="2">
             <widget class="Line" name="line_12">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
             </widget>
            </item>
-           <item row="11" column="0">
+           <item row="10" column="0">
             <widget class="QLabel" name="label_5">
              <property name="font">
               <font>
@@ -1867,7 +1881,7 @@
              </property>
             </widget>
            </item>
-           <item row="11" column="1">
+           <item row="10" column="1">
             <widget class="QSpinBox" name="spinBox_threads">
              <property name="minimum">
               <number>1</number>
@@ -1880,14 +1894,14 @@
              </property>
             </widget>
            </item>
-           <item row="12" column="0">
+           <item row="11" column="0">
             <widget class="QLabel" name="label_15">
              <property name="text">
               <string>Fluchradius:</string>
              </property>
             </widget>
            </item>
-           <item row="12" column="1">
+           <item row="11" column="1">
             <widget class="QDoubleSpinBox" name="doubleSpinBoxEscapeR">
              <property name="minimum">
               <double>2.000000000000000</double>
@@ -1900,7 +1914,7 @@
              </property>
             </widget>
            </item>
-           <item row="13" column="0">
+           <item row="12" column="0">
             <widget class="QLabel" name="label_10">
              <property name="font">
               <font>
@@ -1913,7 +1927,7 @@
              </property>
             </widget>
            </item>
-           <item row="13" column="1">
+           <item row="12" column="1">
             <widget class="QComboBox" name="comboBox_precession">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -1944,14 +1958,14 @@
              </item>
             </widget>
            </item>
-           <item row="14" column="0">
+           <item row="13" column="0">
             <widget class="QLabel" name="label_27">
              <property name="text">
               <string>HDPI Scaling:</string>
              </property>
             </widget>
            </item>
-           <item row="14" column="1">
+           <item row="13" column="1">
             <widget class="QComboBox" name="comboBox">
              <item>
               <property name="text">
@@ -1985,46 +1999,14 @@
              </item>
             </widget>
            </item>
-           <item row="16" column="0" colspan="2">
-            <spacer name="verticalSpacer">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="8" column="0" colspan="2">
-            <widget class="QRadioButton" name="radioButtonKeepSettingsAtBack">
-             <property name="styleSheet">
-              <string notr="true">QProgressBar {
-    border: 2px solid grey;
-    border-radius: 5px;
-}</string>
-             </property>
-             <property name="text">
-              <string>Behalte Einstellungen bei Zurück bei</string>
-             </property>
-             <property name="checked">
-              <bool>true</bool>
-             </property>
-             <property name="autoExclusive">
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="15" column="0">
+           <item row="14" column="0">
             <widget class="QLabel" name="label_45">
              <property name="text">
               <string>Thema:</string>
              </property>
             </widget>
            </item>
-           <item row="15" column="1">
+           <item row="14" column="1">
             <widget class="QComboBox" name="comboBox_theme">
              <property name="currentIndex">
               <number>0</number>
@@ -2044,6 +2026,26 @@
                <string>Dark-Theme</string>
               </property>
              </item>
+            </widget>
+           </item>
+           <item row="15" column="0" colspan="2">
+            <spacer name="verticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="4" column="0" colspan="2">
+            <widget class="Line" name="line_3">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
             </widget>
            </item>
           </layout>
@@ -2066,7 +2068,7 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>782</width>
+         <width>785</width>
          <height>870</height>
         </rect>
        </property>

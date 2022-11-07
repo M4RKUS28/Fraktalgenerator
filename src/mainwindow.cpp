@@ -746,7 +746,7 @@ void MainWindow::endRefresh(bool appendToListHistory)
     afterColoring(currentImg);
     updateImage();
 
-    if(ui->radioButtonAutoScroll->isChecked()) {
+    if(/*ui->radioButtonAutoScroll->isChecked()*/ true) {
         ui->scrollArea->verticalScrollBar()->setValue(ui->scrollArea->verticalScrollBar()->maximum() / 2);
         ui->scrollArea->horizontalScrollBar()->setValue(ui->scrollArea->horizontalScrollBar()->maximum() / 2);
     }
