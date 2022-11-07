@@ -117,7 +117,7 @@
           <enum>QTabWidget::Rounded</enum>
          </property>
          <property name="currentIndex">
-          <number>2</number>
+          <number>0</number>
          </property>
          <property name="iconSize">
           <size>
@@ -624,13 +624,13 @@
                 <property name="font">
                  <font>
                   <pointsize>10</pointsize>
-                  <italic>false</italic>
+                  <italic>true</italic>
                   <bold>true</bold>
-                  <underline>false</underline>
+                  <underline>true</underline>
                  </font>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">color: rgb(0, 0, 255);</string>
+                 <string notr="true"/>
                 </property>
                 <property name="text">
                  <string>Farbpalette:</string>
@@ -1360,11 +1360,13 @@
              <property name="font">
               <font>
                <pointsize>10</pointsize>
+               <italic>true</italic>
                <bold>true</bold>
+               <underline>true</underline>
               </font>
              </property>
              <property name="styleSheet">
-              <string notr="true">color: rgb(0, 0, 255);</string>
+              <string notr="true"/>
              </property>
              <property name="text">
               <string>Iterationen:</string>
@@ -1373,6 +1375,12 @@
            </item>
            <item row="2" column="1">
             <widget class="QSpinBox" name="spinBoxMaxIterations">
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+               <bold>true</bold>
+              </font>
+             </property>
              <property name="minimum">
               <number>0</number>
              </property>
@@ -2117,6 +2125,12 @@
              <width>0</width>
              <height>30</height>
             </size>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+             <bold>true</bold>
+            </font>
            </property>
            <property name="text">
             <string>Vergrößern</string>

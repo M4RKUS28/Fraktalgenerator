@@ -68,7 +68,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     //light theme als standart
-    ui->comboBox_theme->setCurrentIndex(1);
+    ui->comboBox_theme->setCurrentIndex(2);
     // anzahl an cpu cors als standart
     this->ui->spinBox_threads->setValue(QThread::idealThreadCount());
 
