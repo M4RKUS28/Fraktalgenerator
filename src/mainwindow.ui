@@ -130,7 +130,7 @@
           <enum>QTabWidget::Rounded</enum>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>2</number>
          </property>
          <property name="iconSize">
           <size>
@@ -2049,7 +2049,7 @@
              </item>
             </widget>
            </item>
-           <item row="15" column="0" colspan="2">
+           <item row="16" column="0" colspan="2">
             <spacer name="verticalSpacer">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -2068,6 +2068,16 @@
               <enum>Qt::Horizontal</enum>
              </property>
             </widget>
+           </item>
+           <item row="15" column="0">
+            <widget class="QLabel" name="label_34">
+             <property name="text">
+              <string>VSBildschrim:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="15" column="1">
+            <widget class="QSpinBox" name="spinBoxHauptScreen"/>
            </item>
           </layout>
          </widget>

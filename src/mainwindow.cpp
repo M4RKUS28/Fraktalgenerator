@@ -154,7 +154,6 @@ void MainWindow::zustandWechseln(QString aktion, QString, QPoint m_pos, QMouseEv
             }
 
         } else if( aktion == "DOPPELKLICK_IN_BILD" && m_event) {
-
             //update rect if no mousemove or mouse press was done --> fix doppelclick no zoom just refresh error
             zustandWechseln("mousePressEvent", "", QPoint(), m_event);
 
@@ -706,6 +705,9 @@ void MainWindow::setOperationMode()
 
 void MainWindow::endRefresh(bool appendToListHistory)
 {
+    keyPressed[Qt::LeftButton] = false;
+    keyPressed[Qt::RightButton] = false;
+
     stopThreads();
     this->state = STATE::STOPED;
 
@@ -1068,6 +1070,8 @@ void MainWindow::paintEvent(QPaintEvent *)
 //            painter2.end();
             //this->ui->labelFraktal->setPixmap(QPixmap::fromImage(img));
             ui->imageView->setImage(img);
+            if(fullScreenView->isVisible())
+                fullScreenView->setImage(img);
 
         }
 
@@ -1748,5 +1752,15 @@ void MainWindow::hideFullScreen()
 {
     this->ui->pushButtonShowFullScreen->setText("Im Vollbild anzeigen");
     this->fullScreenView->hide();
+}
+
+#include <QWindow>
+
+void MainWindow::on_spinBoxHauptScreen_valueChanged(int arg1)
+{
+    if( arg1 >= QApplication::screens().length() )
+        return;
+    qDebug() << QApplication::screens();
+    fullScreenView->setGeometry(QApplication::screens().at(arg1)->geometry());
 }
 

@@ -254,6 +254,8 @@ private slots:
 
     void hideFullScreen();
 
+    void on_spinBoxHauptScreen_valueChanged(int arg1);
+
 private:
     Ui::MainWindow *ui;
 
