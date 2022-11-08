@@ -56,7 +56,16 @@ MainWindow::MainWindow(QWidget *parent)
 
     // connect signals
     connect(ui->imageView, SIGNAL(mouseMove(QPoint)), this, SLOT(mouse_move_in_img(QPoint)));
-    connect(fullScreenView, SIGNAL(escapePressed()), this, SLOT(hideFullScreen()));
+    connect(ui->imageView, SIGNAL(mousePress(QMouseEvent*)), this, SLOT(mouse_press_in_img(QMouseEvent*)));
+    connect(ui->imageView, SIGNAL(mouseRelease(QMouseEvent*)), this, SLOT(mouse_release_in_img(QMouseEvent*)));
+    connect(ui->imageView, SIGNAL(mouseDoubleClick(QMouseEvent*)), this, SLOT(mouse_double_click_in_img(QMouseEvent*)));
+
+
+    connect(fullScreenView, SIGNAL(keyPressed(QKeyEvent *)), this, SLOT(key_press_in_img(QKeyEvent *)));
+    connect(fullScreenView, SIGNAL(mouseMove(QPoint)), this, SLOT(mouse_move_in_img(QPoint)));
+    connect(fullScreenView, SIGNAL(mousePress(QMouseEvent*)), this, SLOT(mouse_press_in_img(QMouseEvent*)));
+    connect(fullScreenView, SIGNAL(mouseRelease(QMouseEvent*)), this, SLOT(mouse_release_in_img(QMouseEvent*)));
+    connect(fullScreenView, SIGNAL(mouseDoubleClick(QMouseEvent*)), this, SLOT(mouse_double_click_in_img(QMouseEvent*)));
 
     // init rect:
     zoomRect.updateRectSize(this->ui->spinBoxW->value(), this->ui->spinBoxH->value(), ui->spinBox_zoom->value());
@@ -129,7 +138,7 @@ void MainWindow::timerEvent(QTimerEvent *)
 }
 
 
-void MainWindow::zustandWechseln(QString aktion, QString, QPoint m_pos, QMouseEvent *m_event)
+void MainWindow::zustandWechseln(QString aktion, QString param, QPoint m_pos, QMouseEvent *m_event)
 {
     if(aktion != "TIMER" && aktion != "mouseMoveEvent")
         qDebug() << "zustandWechseln "<< aktion;
@@ -156,8 +165,9 @@ void MainWindow::zustandWechseln(QString aktion, QString, QPoint m_pos, QMouseEv
         } else if( aktion == "DOPPELKLICK_IN_BILD" && m_event) {
             //update rect if no mousemove or mouse press was done --> fix doppelclick no zoom just refresh error
             zustandWechseln("mousePressEvent", "", QPoint(), m_event);
+            zustandWechseln("mouseReleaseEvent", "", QPoint(), m_event);
 
-            auto pos = this->ui->imageView->mapFrom(this, m_event->pos()) * ui->imageView->getHdpi_multiplicator();
+            auto pos = m_event->pos() * ui->imageView->getHdpi_multiplicator();
 
             if(m_event->button() == Qt::LeftButton && pos.x() >= 0 && pos.x() < currentImg->img_w && pos.y() >= 0 && pos.y() < currentImg->img_h) {
                 ImageSetting *newSetting = getNewScaledSetting(currentImg);
@@ -208,12 +218,14 @@ void MainWindow::zustandWechseln(QString aktion, QString, QPoint m_pos, QMouseEv
         } else if(aktion == "mousePressEvent"  && m_event) {
             keyPressed[m_event->button()] = true;
 
-            auto qpos = this->ui->imageView->mapFrom(this, m_event->pos()) * ui->imageView->getHdpi_multiplicator();
+//            auto qpos = this->ui->imageView->mapFrom(this, m_event->pos()) * ui->imageView->getHdpi_multiplicator();
+            auto qpos = m_event->pos() * ui->imageView->getHdpi_multiplicator();
             auto pos = Point(qpos.x(), qpos.y());
+            qDebug() << qpos;
 
-            if(pos.x() >= 0 && pos.x() < currentImg->img_w && pos.y() >= 0 && pos.y() < currentImg->img_h
-                    && m_event->pos().x() < ui->scrollArea->width() + ui->scrollArea->pos().x() + 10
-                    && m_event->pos().y() < ui->scrollArea->height() + ui->scrollArea->pos().y() + 10) {
+            if(pos.x() >= 0 && pos.x() < currentImg->img_w && pos.y() >= 0 && pos.y() < currentImg->img_h && param != "NOT_IN_IMG"
+                    /*&& m_event->pos().x() < ui->scrollArea->width() + ui->scrollArea->pos().x() + 10
+                    && m_event->pos().y() < ui->scrollArea->height() + ui->scrollArea->pos().y() + 10*/) {
                 if(m_event->button() == Qt::LeftButton) {
                     zoomRect.setMousePressState(true);
                     zoomRect.show();
@@ -900,22 +912,42 @@ void MainWindow::on_pushButtonSaveImg_clicked()
 
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
-    zustandWechseln("mousePressEvent", "", QPoint(), event);
+    zustandWechseln("mousePressEvent", "NOT_IN_IMG", QPoint(), event);
 }
 
-void MainWindow::mouseDoubleClickEvent(QMouseEvent *event)
+void MainWindow::mouseDoubleClickEvent(QMouseEvent *)
 {
-    zustandWechseln("DOPPELKLICK_IN_BILD", "", QPoint(), event);
+
 }
 
 void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 {
-    zustandWechseln("mouseReleaseEvent", "", QPoint(), event);
+    zustandWechseln("mouseReleaseEvent", "NOT_IN_IMG", QPoint(), event);
 }
 
 void MainWindow::mouse_move_in_img(QPoint pos)
 {
     zustandWechseln("mouseMoveEvent", "", pos);
+}
+
+void MainWindow::mouse_press_in_img(QMouseEvent *event)
+{
+    zustandWechseln("mousePressEvent", "", QPoint(), event);
+}
+
+void MainWindow::mouse_release_in_img(QMouseEvent *event)
+{
+    zustandWechseln("mouseReleaseEvent", "", QPoint(), event);
+}
+
+void MainWindow::mouse_double_click_in_img(QMouseEvent *event)
+{
+    zustandWechseln("DOPPELKLICK_IN_BILD", "", QPoint(), event);
+}
+
+void MainWindow::key_press_in_img(QKeyEvent *ev)
+{
+    this->keyPressEvent(ev);
 }
 
 void MainWindow::on_pushButton_vor_clicked()
@@ -1081,17 +1113,39 @@ void MainWindow::paintEvent(QPaintEvent *)
 
     }
 
-
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
     qDebug() << event << " --> ";
+    if(event->key() == Qt::Key_Plus || event->key() == Qt::UpArrow) {
+        this->ui->spinBox_zoom->setValue( this->ui->spinBox_zoom->value() + 1 );
+
+
+    } else if(event->key() == Qt::Key_Minus) {
+        this->ui->spinBox_zoom->setValue( this->ui->spinBox_zoom->value() - 1 );
+
+
+    } else if(event->key() == Qt::Key_B) {
+        this->ui->pushButton_back->click();
+
+    } else if(event->key() == Qt::Key_N) {
+        this->ui->pushButton_vor->click();
+
+    } else if(event->key() == Qt::Key_Escape || event->key() == Qt::Key_Q || event->key() == Qt::Key_L || event->key() == Qt::Key_E) {
+        if(this->fullScreenView->isVisible()) {
+            this->ui->pushButtonShowFullScreen->setText("Im Vollbild anzeigen");
+            this->fullScreenView->hide();
+        }
+    }
+
+//    updateImage();
 
 }
 
 void MainWindow::keyReleaseEvent(QKeyEvent *)
 {
+
 }
 
 
@@ -1569,13 +1623,6 @@ void MainWindow::on_spinBoxHSV_alpha_valueChanged(int)
 }
 
 
-void MainWindow::on_lineEdit_textEdited(const QString &arg1)
-{
-    this->setStyleSheet(arg1);
-}
-
-
-
 void MainWindow::on_pushButton_color1_clicked()
 {
     int index = this->ui->comboBox_theme->currentIndex();
@@ -1748,14 +1795,6 @@ void MainWindow::on_pushButtonShowFullScreen_clicked()
     }
 }
 
-void MainWindow::hideFullScreen()
-{
-    this->ui->pushButtonShowFullScreen->setText("Im Vollbild anzeigen");
-    this->fullScreenView->hide();
-}
-
-#include <QWindow>
-
 void MainWindow::on_spinBoxHauptScreen_valueChanged(int arg1)
 {
     if( arg1 >= QApplication::screens().length() )
@@ -1763,4 +1802,3 @@ void MainWindow::on_spinBoxHauptScreen_valueChanged(int arg1)
     qDebug() << QApplication::screens();
     fullScreenView->setGeometry(QApplication::screens().at(arg1)->geometry());
 }
-

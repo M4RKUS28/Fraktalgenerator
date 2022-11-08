@@ -198,6 +198,11 @@ private slots:
 
     void mouse_move_in_img(QPoint pos);
 
+    void mouse_press_in_img(QMouseEvent * ev);
+    void mouse_release_in_img(QMouseEvent * ev);
+    void mouse_double_click_in_img(QMouseEvent * ev);
+    void key_press_in_img(QKeyEvent *);
+
     void on_comboBox_currentIndexChanged(int index);
 
     void on_pushButton_rm_history_clicked();
@@ -225,9 +230,6 @@ private slots:
     void on_spinBoxHSV_value_valueChanged(int arg1);
 
     void on_spinBoxHSV_alpha_valueChanged(int arg1);
-
-    void on_lineEdit_textEdited(const QString &arg1);
-
     void on_pushButton_color1_clicked();
 
     void on_pushButton_color2_clicked();
@@ -252,8 +254,6 @@ private slots:
 
     void on_pushButtonShowFullScreen_clicked();
 
-    void hideFullScreen();
-
     void on_spinBoxHauptScreen_valueChanged(int arg1);
 
 private:
@@ -270,8 +270,9 @@ protected:
     virtual void keyPressEvent(QKeyEvent* event);
     virtual void keyReleaseEvent(QKeyEvent* event);
 
-
 };
+
+
 
 
 

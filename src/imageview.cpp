@@ -61,19 +61,22 @@ void ImageView::mouseMoveEvent(QMouseEvent *event)
     emit mouseMove(event->pos() * hdpi_multiplicator);
 }
 
-
-//void ImageView::mousePressEvent(QMouseEvent *event)
-//{
-//    qDebug() << "press";
-//}
-
-//void ImageView::mouseReleaseEvent(QMouseEvent *event)
-//{
-//    qDebug() << "ress";
-//}
-
 void ImageView::keyPressEvent(QKeyEvent *event)
 {
-    if(event->key() == Qt::Key_Escape || event->key() == Qt::Key_Q || event->key() == Qt::Key_L || event->key() == Qt::Key_E)
-        emit escapePressed();
+    emit ImageView::keyPressed(event);
+}
+
+void ImageView::mousePressEvent(QMouseEvent *event)
+{
+    emit ImageView::mousePress(event);
+}
+
+void ImageView::mouseReleaseEvent(QMouseEvent *event)
+{
+    emit ImageView::mouseRelease(event);
+}
+
+void ImageView::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    emit mouseDoubleClick(event);
 }

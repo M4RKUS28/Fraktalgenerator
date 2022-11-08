@@ -46,16 +46,21 @@ protected:
 
 signals:
     void mouseMove(QPoint pos);
-    void escapePressed();
+    void keyPressed(QKeyEvent *ev);
 
-    // QWidget interface
-protected:
-//    virtual void mousePressEvent(QMouseEvent *event);
-//    virtual void mouseReleaseEvent(QMouseEvent *event);
+    void mousePress(QMouseEvent *event);
+    void mouseRelease(QMouseEvent *event);
+    void mouseDoubleClick(QMouseEvent *event);
 
-    // QWidget interface
+
+
+
 protected:
     virtual void keyPressEvent(QKeyEvent *event);
+
+    virtual void mousePressEvent(QMouseEvent *event);
+    virtual void mouseReleaseEvent(QMouseEvent *event);
+    virtual void mouseDoubleClickEvent(QMouseEvent *event);
 };
 
 
