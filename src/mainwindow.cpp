@@ -962,7 +962,8 @@ void MainWindow::paintEvent(QPaintEvent *)
 
         if(zoomRect.isShown() || zahlenfolge.isShown() || this->ui->radioButtonKoords_2->isChecked()) {
             QImage img = *currentImg->image;
-            QPainter painter(&img);
+            QPainter painter;
+            painter.begin(&img);
 
             if(zoomRect.isShown()) {
                 if(!( currentImg->isMandelbrotSet && ui->comboBox_Fraktal->currentIndex() == 1)) {
@@ -986,7 +987,7 @@ void MainWindow::paintEvent(QPaintEvent *)
             if(zahlenfolge.isShown()) {
                 painter.setPen(QPen( QColor(ui->comboBox_color_zahlenfolge->currentText()), ui->spinBoxZahlenfolgeLinienbreite->value()) );
                 if( ui->comboBox_drawStyle_zahlenfolge->currentIndex() == 0) {
-                    painter.drawPoints(zahlenfolge.getZahlenfolge().data(), zahlenfolge.getZahlenfolge().length());
+                    painter.drawPoints(zahlenfolge.getZahlenfolge().toVector().data(), zahlenfolge.getZahlenfolge().length());
                 } else {
                     auto list = zahlenfolge.getZahlenfolge();
                     QPoint last = QPoint();
@@ -1101,6 +1102,7 @@ void MainWindow::paintEvent(QPaintEvent *)
 //            painter2.drawImage(0, 0, img);
 //            painter2.end();
             //this->ui->labelFraktal->setPixmap(QPixmap::fromImage(img));
+            painter.end();
             ui->imageView->setImage(img);
             if(fullScreenView->isVisible())
                 fullScreenView->setImage(img);

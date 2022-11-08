@@ -48,12 +48,14 @@ const QImage &ImageView::getImg() const
 
 void ImageView::paintEvent(QPaintEvent *)
 {
-    auto p = QPainter(this);
+    QPainter p;
+    p.begin(this);
     // wegen hdpi bildschirmen -> hoch auflösendere Bilder!
     p.scale(hdpi_scale, hdpi_scale);
 
     // zeichne Bild
     p.drawImage(0,0,img);
+    p.end();
 }
 
 void ImageView::mouseMoveEvent(QMouseEvent *event)
