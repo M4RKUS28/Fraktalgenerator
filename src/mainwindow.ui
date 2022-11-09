@@ -130,7 +130,7 @@
           <enum>QTabWidget::Rounded</enum>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>2</number>
          </property>
          <property name="iconSize">
           <size>
@@ -2058,7 +2058,7 @@
            <item row="15" column="0">
             <widget class="QLabel" name="label_34">
              <property name="text">
-              <string>VSBildschrim:</string>
+              <string>VB-Bildschrim:</string>
              </property>
             </widget>
            </item>
