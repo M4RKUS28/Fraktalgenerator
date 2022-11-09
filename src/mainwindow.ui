@@ -1912,7 +1912,7 @@
            <item row="11" column="0">
             <widget class="QLabel" name="label_15">
              <property name="text">
-              <string>Fluchradius:</string>
+              <string>Fluchtradius:</string>
              </property>
             </widget>
            </item>

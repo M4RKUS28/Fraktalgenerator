@@ -1801,6 +1801,8 @@ void MainWindow::on_spinBoxHauptScreen_valueChanged(int arg1)
 {
     if( arg1 >= QApplication::screens().length() )
         return;
-    qDebug() << QApplication::screens();
-    fullScreenView->setGeometry(QApplication::screens().at(arg1)->geometry());
+    QRect s = QApplication::screens().at(arg1)->geometry();
+    fullScreenView->setGeometry(s);
+    ui->spinBoxW->setValue( s.width() );
+    ui->spinBoxH->setValue( s.height() );
 }
