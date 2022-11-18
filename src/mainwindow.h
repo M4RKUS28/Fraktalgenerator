@@ -2,8 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "workerthread.h"
-#include<complex>
+#include <complex>
 
 
 #include <QLinearGradient>
@@ -11,10 +10,14 @@
 #include <QScrollBar>
 #include <QColorDialog>
 #include <QMap>
+#include <QImageWriter>
 
+#include <math.h>
 
+#include "workerthread.h"
 #include "imageview.h"
-#include "math.h"
+#include "dialogimageserie.h"
+#include "QAviWriter.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -29,7 +32,7 @@ QT_END_NAMESPACE
 #define START_POS_X_JUL 0.0
 #define START_POS_Y_JUL 0.0
 
-const QString STYLE_SHEET_COLOR_BUTTON = "border: 1px solid black; border-radius: 3px; background-color: ";
+static const QString STYLE_SHEET_COLOR_BUTTON = "border: 1px solid black; border-radius: 3px; background-color: ";
 
 
 
@@ -117,6 +120,7 @@ public:
     bool isBackOrVor;
     // damit setText niucht als eigene Eingabe für Startwert gewertet wird
     bool ignoreXPosEdited, ignoreYPosEdited;
+
     void updateMidPos(bool clear = false);
     //buttonColors
     QColor buttonColors[5];
@@ -124,6 +128,11 @@ public:
     QMap<int, bool> keyPressed;
 
     ImageView * fullScreenView;
+
+
+    // Video MODE:
+    DialogImageSerie::ImgSerie imgSerie;
+    bool useOldPosForImgSerie;
 
 private:
     enum STATE {

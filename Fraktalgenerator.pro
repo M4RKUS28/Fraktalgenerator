@@ -4,7 +4,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
 
-INCLUDEPATH += src/
+INCLUDEPATH += src/ \
+               src/video/
 
 win32:RC_ICONS += src/qss_icons/icon.ico
 
@@ -14,18 +15,30 @@ win32:RC_ICONS += src/qss_icons/icon.ico
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    src/video/avi-utils.cpp \
+    src/video/fileio.cpp \
+    src/video/gwavi.cpp \
+    src/video/QAviWriter.cpp \
+    src/dialogimageserie.cpp \
     src/imageview.cpp \
     src/main.cpp \
     src/mainwindow.cpp \
     src/workerthread.cpp
 
 HEADERS += \
+    src/video/gwavi.h \
+    src/video/avi-utils.h \
+    src/video/fileio.h \
+    src/video/gwavi_private.h \
+    src/video/QAviWriter.h \
+    src/dialogimageserie.h \
     src/imageview.h \
     src/mainwindow.h \
     src/ui_mainwindow.h \
     src/workerthread.h
 
 FORMS += \
+    src/dialogimageserie.ui \
     src/mainwindow.ui
 
 # Default rules for deployment.

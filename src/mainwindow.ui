@@ -130,7 +130,7 @@
           <enum>QTabWidget::Rounded</enum>
          </property>
          <property name="currentIndex">
-          <number>2</number>
+          <number>0</number>
          </property>
          <property name="iconSize">
           <size>
@@ -1424,7 +1424,7 @@
               <string> x </string>
              </property>
              <property name="decimals">
-              <number>1</number>
+              <number>3</number>
              </property>
              <property name="minimum">
               <double>-99999.000000000000000</double>

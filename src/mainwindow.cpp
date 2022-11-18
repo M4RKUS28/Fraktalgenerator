@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
       ignoreXPosEdited(false),
       ignoreYPosEdited(false),
       fullScreenView(new ImageView),
+      useOldPosForImgSerie(false),
       ui(new Ui::MainWindow)
 {
     this->fullScreenView->hide();
@@ -33,6 +34,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     ui->comboBox_palette->setCurrentIndex(0);
     ui->stackedWidgetExtraSettings->setHidden(true);
+    ui->comboBox_precession->setHidden(true);
 
     // setup default color settings:
     buttonColors[0] = QColor::fromRgb(37, 27, 255);
@@ -374,6 +376,8 @@ void MainWindow::zustandWechseln(QString aktion, QString param, QPoint m_pos, QM
                 endRefresh(op_mode != OP_MODE::REFRESH);
 
         } else if(aktion == "BUTTON_REFRESH_AND_STOP") {
+            // stop img serie
+            imgSerie.imgCount = 0;
             this->stopThreads();
             this->endRefresh(op_mode != OP_MODE::REFRESH);
         }
@@ -421,15 +425,33 @@ ImageSetting *MainWindow::getNewScaledSetting(ImageSetting *last_img)
 
         //3)
        if(this->zoomRect.isShown() /*&& (last_img.scale * relativeZoom) < (std::pow(10, 16))*/) {
-            if(relativeZoom > 0) {
-                nscale = last_img->scale() * relativeZoom;
-                midx   = last_img->mapImgPosReToGaus( this->zoomRect.getMousePos().x() );
-                midy   = last_img->mapImgPosImToGaus(this->zoomRect.getMousePos().y() );
-            } else {
-                nscale  = -last_img->scale() / relativeZoom;
-                midx    = last_img->mapImgPosReToGaus(this->zoomRect.getMousePos().x());
-                midy    = last_img->mapImgPosImToGaus(this->zoomRect.getMousePos().y() );
-            }
+
+           // bei bilder serie verwende alte koordinaten verwenden, aber erst ab 2ten mal!
+           if(imgSerie.imgCount > 0 && useOldPosForImgSerie) {
+               if(relativeZoom > 0) {
+                   nscale = last_img->scale() * relativeZoom;
+                   midx    = last_img->gaus_mid_re;
+                   midy    = last_img->gaus_mid_im;
+               } else {
+                   nscale  = -last_img->scale() / relativeZoom;
+                   midx    = last_img->gaus_mid_re;
+                   midy    = last_img->gaus_mid_im;
+               }
+
+           }
+           // verwende neue Maus Posaition
+           else {
+               if(relativeZoom > 0) {
+                   nscale = last_img->scale() * relativeZoom;
+                   midx   = last_img->mapImgPosReToGaus( this->zoomRect.getMousePos().x() );
+                   midy   = last_img->mapImgPosImToGaus(this->zoomRect.getMousePos().y() );
+               } else {
+                   nscale  = -last_img->scale() / relativeZoom;
+                   midx    = last_img->mapImgPosReToGaus(this->zoomRect.getMousePos().x());
+                   midy    = last_img->mapImgPosImToGaus(this->zoomRect.getMousePos().y() );
+               }
+
+           }
 
             //4)
         } else {
@@ -536,7 +558,11 @@ void MainWindow::startRefresh(ImageSetting *set, bool appendToList)
 
     //reset ui
     this->state = STATE::RUNNING;
-    ui->widget->setDisabled(true);
+//    ui->widget->setDisabled(true);
+    ui->tab->setDisabled(true);
+    ui->tab_2->setDisabled(true);
+    ui->tab_3->setDisabled(true);
+
     ui->pushButtonStart->setText("Abbrechen");
     ui->progressBar->setEnabled(true);
     ui->frameButtons->setEnabled(false);
@@ -711,6 +737,10 @@ void MainWindow::setOperationMode()
         this->op_mode = MainWindow::OP_MODE::CALC_JULIA;
     }
 
+    if (imgSerie.imgCount > 0) {
+        ui->pushButtonStart->setText("Bilder Serie an Mausposition starten");
+    }
+
 
 }
 
@@ -775,7 +805,7 @@ void MainWindow::endRefresh(bool appendToListHistory)
         ui->scrollArea->horizontalScrollBar()->setValue(ui->scrollArea->horizontalScrollBar()->maximum() / 2);
     }
 
-    if(appendToListHistory && !this->isBackOrVor) {
+    if(appendToListHistory && !this->isBackOrVor ) {
         auto i = new QListWidgetItem( QString(currentImg->isMandelbrotSet ? "M" : "J" ) + ": Re(" + QString::number(this->currentImg->gaus_mid_re) +
                                      ") Im(" +  QString::number( - this->currentImg->gaus_mid_im ) + " i)");
         i->setIcon(QIcon(QPixmap::fromImage(*this->currentImg->image).scaled(QSize(256, 256), Qt::AspectRatioMode::KeepAspectRatio, Qt::TransformationMode::FastTransformation)));
@@ -795,7 +825,63 @@ void MainWindow::endRefresh(bool appendToListHistory)
     }
     this->setOperationMode();
 
-    ui->widget->setDisabled(false);
+//    ui->widget->setDisabled(false);
+    ui->tab->setDisabled(false);
+    ui->tab_2->setDisabled(false);
+    ui->tab_3->setDisabled(false);
+
+    //Img Serie
+    useOldPosForImgSerie = false;
+    if(imgSerie.imgCount > 0) {
+        // save img: ok
+
+        QImageWriter imgWriter;
+        imgWriter.setFileName(imgSerie.dirPath + "/" + imgSerie.prefix + QString::number( imgSerie.nameItStart++ ) + ".png");
+        if( ! imgWriter.write( /*ui->radioButtonsaveedits->isChecked() ? *this->currentImg->image : */ ui->imageView->getImg() ))
+            imgSerie.imgCount = 0;
+
+        // LAST IMG
+        if(imgSerie.imgCount == 1) {
+            QAviWriter writer(imgSerie.dirPath + "/video.avi", QSize(currentImg->img_w, currentImg->img_h), imgSerie.fps, "MJPG");// set framerate to 24 fps and 'MJPG' codec
+//            writer.setAudioFileName("audio.wav"); // set audio track
+            writer.open();
+            for(unsigned i = imgSerie.nameStartConst; i < imgSerie.nameItStart; i++) {
+                QImage img = QImage( imgSerie.dirPath + "/" + imgSerie.prefix + QString::number(i) + ".png");
+                if(!img.isNull()) {
+                    writer.addFrame(img);
+                }
+            }
+            //...add all other video frames here
+            writer.close();
+
+
+        }
+
+        // no save to history: ok
+        // set zoom: ok
+        imgSerie.imgCount--;
+        if(imgSerie.imgCount > 0) {
+            this->ui->statusbar->showMessage("Noch " + QString::number(imgSerie.imgCount) + " Bilder...", 1000);
+
+            // clear History [-2]!
+
+            for(int i = 1; i < settingsList.length() - 2; i++) {
+                auto s = settingsList.takeAt(i--);
+                s->cleanUP();
+                delete s;
+            }
+
+            for(int i = 1; i < ui->listWidgetHistory->count() - 2; i++)
+                delete ui->listWidgetHistory->takeItem(i--);
+
+            useOldPosForImgSerie = true;
+            this->zoomRect.show();
+            this->setOperationMode();
+            // Imitate "click"
+            this->ui->pushButtonStart->click();
+
+        }
+    }
 }
 
 
@@ -1139,6 +1225,14 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             this->ui->pushButtonShowFullScreen->setText("Im Vollbild anzeigen");
             this->fullScreenView->hide();
         }
+    } else if(event->key() == Qt::Key_I) {
+        DialogImageSerie dIm(this, this->imgSerie);
+        if( dIm.exec() == QDialog::Accepted ) {
+            this->imgSerie = dIm.getImgSerieSettings();
+            this->ui->spinBox_zoom->setValue( imgSerie.zoomStep );
+            this->setOperationMode();
+        }
+
     }
 
 //    updateImage();
@@ -1568,6 +1662,8 @@ void MainWindow::on_im_valueChanged(double arg1)
 }
 
 #include <QClipboard>
+#include <QImageWriter>
+#include <QImageWriter>
 #include <QImageWriter>
 
 void MainWindow::on_pushButton_copy_clicked()
