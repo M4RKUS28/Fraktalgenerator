@@ -7,6 +7,9 @@
 #include <QDebug>
 #include <QKeyEvent>
 
+#include <QFile>
+#include <QImageWriter>
+
 
 
 

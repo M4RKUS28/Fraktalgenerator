@@ -17,7 +17,7 @@
 #include "workerthread.h"
 #include "imageview.h"
 #include "dialogimageserie.h"
-#include "QAviWriter.h"
+#include "dialogcreatevideo.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -166,6 +166,10 @@ public:
     void zustandWechseln(QString aktion, QString wert_s = "", QPoint p = QPoint(), QMouseEvent * keyInput = nullptr);
 
     void updateImage();
+
+    void startImgFolge();
+
+    void createVideo();
 
 
 

@@ -14,15 +14,14 @@ public:
 
     struct ImgSerie{
         ImgSerie();
-        ImgSerie(double zoom, unsigned imgCount, QString path, unsigned nameItStart, QString prefix, unsigned fps);
+        ImgSerie(double zoom, unsigned imgCount, QString path, unsigned nameItStart, QString prefix, QString suffix);
         double zoomStep;
         unsigned imgCount,
             imgCountConst;
         QString dirPath;
         unsigned nameItStart,
             nameStartConst;
-        unsigned fps;
-        QString prefix;
+        QString prefix, suffix;
     };
 
     explicit DialogImageSerie(QWidget *parent = nullptr, ImgSerie s = ImgSerie());

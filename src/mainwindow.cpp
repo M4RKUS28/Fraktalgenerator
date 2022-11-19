@@ -836,32 +836,22 @@ void MainWindow::endRefresh(bool appendToListHistory)
         // save img: ok
 
         QImageWriter imgWriter;
-        imgWriter.setFileName(imgSerie.dirPath + "/" + imgSerie.prefix + QString::number( imgSerie.nameItStart++ ) + ".png");
+        imgWriter.setFileName(imgSerie.dirPath + "/" + imgSerie.prefix + QString::number( imgSerie.nameItStart++ ) + imgSerie.suffix + ".png");
         if( ! imgWriter.write( /*ui->radioButtonsaveedits->isChecked() ? *this->currentImg->image : */ ui->imageView->getImg() ))
             imgSerie.imgCount = 0;
 
         // LAST IMG
         if(imgSerie.imgCount == 1) {
-            QAviWriter writer(imgSerie.dirPath + "/video.avi", QSize(currentImg->img_w, currentImg->img_h), imgSerie.fps, "MJPG");// set framerate to 24 fps and 'MJPG' codec
-//            writer.setAudioFileName("audio.wav"); // set audio track
-            writer.open();
-            for(unsigned i = imgSerie.nameStartConst; i < imgSerie.nameItStart; i++) {
-                QImage img = QImage( imgSerie.dirPath + "/" + imgSerie.prefix + QString::number(i) + ".png");
-                if(!img.isNull()) {
-                    writer.addFrame(img);
-                }
-            }
-            //...add all other video frames here
-            writer.close();
 
+            //Create Video?
 
         }
 
         // no save to history: ok
         // set zoom: ok
         imgSerie.imgCount--;
+        this->ui->statusbar->showMessage("Erstelle Bilderfolge ( " + QString::number(imgSerie.imgCountConst - imgSerie.imgCount) + " / " + QString::number(imgSerie.imgCountConst) +" )...", 1000);
         if(imgSerie.imgCount > 0) {
-            this->ui->statusbar->showMessage("Noch " + QString::number(imgSerie.imgCount) + " Bilder...", 1000);
 
             // clear History [-2]!
 
@@ -893,6 +883,51 @@ void MainWindow::updateImage()
             this->fullScreenView->setImage(*this->currentImg->image);
     }
     this->update();
+}
+
+void MainWindow::startImgFolge()
+{
+    DialogImageSerie dIm(this, this->imgSerie);
+    if( dIm.exec() == QDialog::Accepted ) {
+        this->imgSerie = dIm.getImgSerieSettings();
+        this->ui->spinBox_zoom->setValue( imgSerie.zoomStep );
+        this->setOperationMode();
+    } else {
+        this->imgSerie.imgCount = 0;
+        this->useOldPosForImgSerie = false;
+        this->setOperationMode();
+        this->ui->spinBox_zoom->setValue( 2.00 );
+    }
+}
+
+void MainWindow::createVideo()
+{
+    DialogCreateVideo dvi(this, imgSerie);
+    if(dvi.exec() == QDialog::Accepted) {
+
+        QAviWriter writer(dvi.getFilePath() + ( dvi.getFilePath().endsWith(".avi") ? "" : ".avi"), QSize(currentImg->img_w, currentImg->img_h), dvi.getFPS(), "MJPG");
+        if( QFile(dvi.getWaveAudio()).exists() )
+            writer.setAudioFileName(dvi.getWaveAudio()); // set audio track
+
+        writer.open();
+        for(int i = dvi.getNameItStart(); i <= dvi.getNameItEnd(); i++) {
+            qDebug() << dvi.getImgsPath() + ( dvi.getImgsPath().endsWith("/") ? "" : "/" ) + dvi.getPrefix() + QString::number(i) + dvi.getSuffix() + ".png";
+            this->ui->statusbar->showMessage("[" + QString::number(i) + " / " + QString::number( dvi.getNameItEnd()) + " ]: '"
+                                             + dvi.getImgsPath() + ( dvi.getImgsPath().endsWith("/") ? "" : "/" ) + dvi.getPrefix() + QString::number(i) + dvi.getSuffix() + ".png'...", 2000);
+            QApplication::processEvents();
+
+            QImage img = QImage(  dvi.getImgsPath() + ( dvi.getImgsPath().endsWith("/") ? "" : "/" ) + dvi.getPrefix() + QString::number(i) + dvi.getSuffix() + ".png");
+            if(!img.isNull()) {
+                writer.addFrame(img);
+            } else {
+                QMessageBox::warning(this, "Bild konnte nicht geladen werden!", "Die Datei '" + dvi.getImgsPath()
+                                     + ( dvi.getImgsPath().endsWith("/") ? "" : "/" ) + dvi.getPrefix() + QString::number(i) + dvi.getSuffix() + ".png" + "' existiert nicht oder konnte nicht geladen werden!");
+            }
+        }
+        writer.close();
+
+
+    }
 }
 
 bool MainWindow::checkForFinished()
@@ -933,7 +968,6 @@ void MainWindow::on_pushButtonStart_clicked()
     zustandWechseln("BUTTON_REFRESH_AND_STOP");
 }
 
-#include<complex>
 
 void MainWindow::finishedLine(QList<Pixel> *list)
 {
@@ -958,9 +992,6 @@ void MainWindow::finishedLine(QList<Pixel> *list)
 }
 
 
-
-#include <QFile>
-#include <QImageWriter>
 
 void MainWindow::threadFinished()
 {
@@ -1051,7 +1082,20 @@ void MainWindow::paintEvent(QPaintEvent *)
             QPainter painter;
             painter.begin(&img);
 
-            if(zoomRect.isShown()) {
+
+            // Wenn Bilderfolge, dann zoomRect is Shown, aber soll kein Quadrat sein, sondern ein Punkt!
+            if(imgSerie.imgCount > 0) {
+                painter.setPen(Qt::white);
+                painter.drawPoint(zoomRect.getMousePos().rountToQPoint());
+                painter.drawEllipse(zoomRect.getMousePos().rountToQPoint(), 5, 5);
+
+                painter.setPen(Qt::black);
+                painter.drawEllipse(zoomRect.getMousePos().rountToQPoint(), 2, 2);
+                painter.drawEllipse(zoomRect.getMousePos().rountToQPoint(), 6, 6);
+
+
+
+            } else if(zoomRect.isShown()) {
                 if(!( currentImg->isMandelbrotSet && ui->comboBox_Fraktal->currentIndex() == 1)) {
                     painter.setPen(Qt::black);
                     painter.drawRect(zoomRect.getRect());
@@ -1226,13 +1270,10 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             this->fullScreenView->hide();
         }
     } else if(event->key() == Qt::Key_I) {
-        DialogImageSerie dIm(this, this->imgSerie);
-        if( dIm.exec() == QDialog::Accepted ) {
-            this->imgSerie = dIm.getImgSerieSettings();
-            this->ui->spinBox_zoom->setValue( imgSerie.zoomStep );
-            this->setOperationMode();
-        }
+        this->startImgFolge();
 
+    } else if(event->key() == Qt::Key_O) {
+        this->createVideo();
     }
 
 //    updateImage();
@@ -1598,6 +1639,9 @@ void MainWindow::on_pushButton_rm_history_clicked()
 
 void MainWindow::on_listWidgetHistory_itemDoubleClicked(QListWidgetItem *item)
 {
+    if(imgSerie.imgCount > 0)
+        return;
+
     int id = item->data(187).toInt();
     for(int i = 0; i <  settingsList.length(); i++) {
         if(settingsList.at(i)->id == id) {

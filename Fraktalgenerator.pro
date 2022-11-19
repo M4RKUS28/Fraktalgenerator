@@ -15,6 +15,7 @@ win32:RC_ICONS += src/qss_icons/icon.ico
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    src/dialogcreatevideo.cpp \
     src/video/avi-utils.cpp \
     src/video/fileio.cpp \
     src/video/gwavi.cpp \
@@ -26,6 +27,7 @@ SOURCES += \
     src/workerthread.cpp
 
 HEADERS += \
+    src/dialogcreatevideo.h \
     src/video/gwavi.h \
     src/video/avi-utils.h \
     src/video/fileio.h \
@@ -38,6 +40,7 @@ HEADERS += \
     src/workerthread.h
 
 FORMS += \
+    src/dialogcreatevideo.ui \
     src/dialogimageserie.ui \
     src/mainwindow.ui
 

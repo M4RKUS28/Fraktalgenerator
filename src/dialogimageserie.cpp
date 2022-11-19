@@ -17,11 +17,10 @@ DialogImageSerie::DialogImageSerie(QWidget *parent, ImgSerie s) :
     this->ui->lineEditPath->setText(dir);
 
     this->ui->lineEditNamePrefix->setText( s.prefix );
+    this->ui->lineEditSuffix->setText( s.suffix );
     this->ui->spinBox_NameItStart->setValue( s.nameStartConst );
     this->ui->spinBoxBilderZahl->setValue( s.imgCountConst );
     this->ui->doubleSpinBoxZoomStep->setValue( s.zoomStep );
-    this->ui->spinBoxFPS->setValue( s.fps );
-
 }
 
 
@@ -32,7 +31,7 @@ DialogImageSerie::~DialogImageSerie()
 
 DialogImageSerie::ImgSerie DialogImageSerie::getImgSerieSettings()
 {
-    return ImgSerie(this->ui->doubleSpinBoxZoomStep->value(), ui->spinBoxBilderZahl->value(), dir, ui->spinBox_NameItStart->value(), ui->lineEditNamePrefix->text(), ui->spinBoxFPS->value());
+    return ImgSerie(this->ui->doubleSpinBoxZoomStep->value(), ui->spinBoxBilderZahl->value(), dir, ui->spinBox_NameItStart->value(), ui->lineEditNamePrefix->text(), ui->lineEditSuffix->text());
 }
 
 void DialogImageSerie::on_pushButtonOpenSaveDir_clicked()
@@ -61,10 +60,11 @@ DialogImageSerie::ImgSerie::ImgSerie()
     this->nameStartConst = nameItStart;
 
     this->prefix = "";
-    this->fps = 30;
+    this->suffix = "";
+
 }
 
-DialogImageSerie::ImgSerie::ImgSerie(double zoom, unsigned imgCount, QString path, unsigned nameItStart, QString prefix, unsigned fps)
+DialogImageSerie::ImgSerie::ImgSerie(double zoom, unsigned imgCount, QString path, unsigned nameItStart, QString prefix, QString suffix )
 {
     this->zoomStep = zoom;
     this->imgCount = imgCount;
@@ -75,14 +75,9 @@ DialogImageSerie::ImgSerie::ImgSerie(double zoom, unsigned imgCount, QString pat
     this->nameStartConst = nameItStart;
 
     this->prefix = prefix;
-
-    this->fps = fps;
+    this->suffix = suffix;
 
 }
-
-
-
-
 
 void DialogImageSerie::on_lineEditPath_textChanged(const QString &arg1)
 {
