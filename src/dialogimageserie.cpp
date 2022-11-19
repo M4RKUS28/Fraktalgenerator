@@ -60,7 +60,7 @@ DialogImageSerie::ImgSerie::ImgSerie()
     this->nameStartConst = nameItStart;
 
     this->prefix = "";
-    this->suffix = "";
+    this->suffix = ".jpg";
 
 }
 

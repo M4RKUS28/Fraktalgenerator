@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>692</width>
-    <height>403</height>
+    <width>756</width>
+    <height>431</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -125,7 +125,11 @@
        </widget>
       </item>
       <item row="5" column="1">
-       <widget class="QLineEdit" name="lineEdit_Suffix"/>
+       <widget class="QLineEdit" name="lineEdit_Suffix">
+        <property name="text">
+         <string>.jpg</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -247,6 +251,23 @@
         </property>
         <property name="placeholderText">
          <string>Kein Pfad für audioloses Video</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_10">
+        <property name="text">
+         <string>Codec:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QLineEdit" name="lineEditCodec">
+        <property name="inputMethodHints">
+         <set>Qt::ImhNone</set>
+        </property>
+        <property name="text">
+         <string>MJPG</string>
         </property>
        </widget>
       </item>

@@ -269,6 +269,10 @@ private slots:
 
     void on_spinBoxHauptScreen_valueChanged(int arg1);
 
+    void on_pushButtonOpenImgSerieDialog_clicked();
+
+    void on_pushButtonOpenVideoDialog_clicked();
+
 private:
     Ui::MainWindow *ui;
 

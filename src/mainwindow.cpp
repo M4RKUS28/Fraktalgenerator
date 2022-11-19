@@ -34,7 +34,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     ui->comboBox_palette->setCurrentIndex(0);
     ui->stackedWidgetExtraSettings->setHidden(true);
+    //die einstellungen sind unnütz:
     ui->comboBox_precession->setHidden(true);
+    ui->radioButtonMitBeschriftungen->setHidden(true);
 
     // setup default color settings:
     buttonColors[0] = QColor::fromRgb(37, 27, 255);
@@ -801,6 +803,7 @@ void MainWindow::endRefresh(bool appendToListHistory)
     updateImage();
 
     if(/*ui->radioButtonAutoScroll->isChecked()*/ true) {
+        qDebug() << "Center..." << ui->scrollArea->verticalScrollBar()->maximum() / 2;
         ui->scrollArea->verticalScrollBar()->setValue(ui->scrollArea->verticalScrollBar()->maximum() / 2);
         ui->scrollArea->horizontalScrollBar()->setValue(ui->scrollArea->horizontalScrollBar()->maximum() / 2);
     }
@@ -836,7 +839,7 @@ void MainWindow::endRefresh(bool appendToListHistory)
         // save img: ok
 
         QImageWriter imgWriter;
-        imgWriter.setFileName(imgSerie.dirPath + "/" + imgSerie.prefix + QString::number( imgSerie.nameItStart++ ) + imgSerie.suffix + ".png");
+        imgWriter.setFileName(imgSerie.dirPath + "/" + imgSerie.prefix + QString::number( imgSerie.nameItStart++ ) + imgSerie.suffix);
         if( ! imgWriter.write( /*ui->radioButtonsaveedits->isChecked() ? *this->currentImg->image : */ ui->imageView->getImg() ))
             imgSerie.imgCount = 0;
 
@@ -905,23 +908,25 @@ void MainWindow::createVideo()
     DialogCreateVideo dvi(this, imgSerie);
     if(dvi.exec() == QDialog::Accepted) {
 
-        QAviWriter writer(dvi.getFilePath() + ( dvi.getFilePath().endsWith(".avi") ? "" : ".avi"), QSize(currentImg->img_w, currentImg->img_h), dvi.getFPS(), "MJPG");
+        QAviWriter writer(dvi.getFilePath() , QSize(currentImg->img_w, currentImg->img_h), dvi.getFPS(), dvi.getCodec());
         if( QFile(dvi.getWaveAudio()).exists() )
             writer.setAudioFileName(dvi.getWaveAudio()); // set audio track
 
         writer.open();
         for(int i = dvi.getNameItStart(); i <= dvi.getNameItEnd(); i++) {
-            qDebug() << dvi.getImgsPath() + ( dvi.getImgsPath().endsWith("/") ? "" : "/" ) + dvi.getPrefix() + QString::number(i) + dvi.getSuffix() + ".png";
+            qDebug() << dvi.getImgsPath() + ( dvi.getImgsPath().endsWith("/") ? "" : "/" ) + dvi.getPrefix() + QString::number(i) + dvi.getSuffix();
             this->ui->statusbar->showMessage("[" + QString::number(i) + " / " + QString::number( dvi.getNameItEnd()) + " ]: '"
-                                             + dvi.getImgsPath() + ( dvi.getImgsPath().endsWith("/") ? "" : "/" ) + dvi.getPrefix() + QString::number(i) + dvi.getSuffix() + ".png'...", 2000);
+                                             + dvi.getImgsPath() + ( dvi.getImgsPath().endsWith("/") ? "" : "/" ) + dvi.getPrefix() + QString::number(i) + dvi.getSuffix() + "'...", 2000);
             QApplication::processEvents();
 
-            QImage img = QImage(  dvi.getImgsPath() + ( dvi.getImgsPath().endsWith("/") ? "" : "/" ) + dvi.getPrefix() + QString::number(i) + dvi.getSuffix() + ".png");
+            QImage img = QImage(  dvi.getImgsPath() + ( dvi.getImgsPath().endsWith("/") ? "" : "/" ) + dvi.getPrefix() + QString::number(i) + dvi.getSuffix());
             if(!img.isNull()) {
                 writer.addFrame(img);
             } else {
-                QMessageBox::warning(this, "Bild konnte nicht geladen werden!", "Die Datei '" + dvi.getImgsPath()
-                                     + ( dvi.getImgsPath().endsWith("/") ? "" : "/" ) + dvi.getPrefix() + QString::number(i) + dvi.getSuffix() + ".png" + "' existiert nicht oder konnte nicht geladen werden!");
+                if( QMessageBox::warning(this, "Bild konnte nicht geladen werden!", "Die Datei '" + dvi.getImgsPath()
+                                     + ( dvi.getImgsPath().endsWith("/") ? "" : "/" ) + dvi.getPrefix() + QString::number(i) + dvi.getSuffix() + "' existiert nicht oder konnte nicht geladen werden!",
+                                     QMessageBox::StandardButton::Abort | QMessageBox::StandardButton::Ignore  ) == QMessageBox::StandardButton::Abort)
+                    return;
             }
         }
         writer.close();
@@ -1946,3 +1951,15 @@ void MainWindow::on_spinBoxHauptScreen_valueChanged(int arg1)
     ui->spinBoxW->setValue( s.width() );
     ui->spinBoxH->setValue( s.height() );
 }
+
+void MainWindow::on_pushButtonOpenImgSerieDialog_clicked()
+{
+    this->startImgFolge();
+}
+
+
+void MainWindow::on_pushButtonOpenVideoDialog_clicked()
+{
+    this->createVideo();
+}
+

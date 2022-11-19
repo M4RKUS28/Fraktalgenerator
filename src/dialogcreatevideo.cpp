@@ -66,7 +66,12 @@ QString DialogCreateVideo::getWaveAudio()
 
 QString DialogCreateVideo::getFilePath()
 {
-    return ui->lineEditFilePath->text();
+    return ui->lineEditFilePath->text() + ( ui->lineEditFilePath->text().endsWith(".avi") ? "" : ".avi");
+}
+
+QString DialogCreateVideo::getCodec()
+{
+    return ui->lineEditCodec->text().toUpper();
 }
 
 void DialogCreateVideo::on_pushButtonOpenSaveDir_clicked()
@@ -102,7 +107,7 @@ void DialogCreateVideo::on_pushButton_2_clicked()
 {
     QString file = QFileDialog::getSaveFileName( this, tr("Video speichern in"), getImgsPath(), ".avi" );
     if(!file.isEmpty()) {
-        ui->lineEditFilePath->setText(file);
+        ui->lineEditFilePath->setText(file + ( file.endsWith(".avi") ? "" : ".avi"));
     }
 }
 

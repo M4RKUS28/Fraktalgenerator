@@ -34,6 +34,8 @@ public:
 
     QString getFilePath();
 
+    QString getCodec();
+
 
 private slots:
     void on_pushButtonOpenSaveDir_clicked();
