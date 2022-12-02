@@ -51,9 +51,9 @@ signals:
     void mouseMove(QPoint pos);
     void keyPressed(QKeyEvent *ev);
 
-    void mousePress(QMouseEvent *event);
-    void mouseRelease(QMouseEvent *event);
-    void mouseDoubleClick(QMouseEvent *event);
+    void mousePress(QMouseEvent *event, QPoint pos);
+    void mouseRelease(QMouseEvent *event, QPoint pos);
+    void mouseDoubleClick(QMouseEvent *event, QPoint pos);
 
 
 

@@ -70,15 +70,15 @@ void ImageView::keyPressEvent(QKeyEvent *event)
 
 void ImageView::mousePressEvent(QMouseEvent *event)
 {
-    emit ImageView::mousePress(event);
+    emit ImageView::mousePress(event, event->pos() * hdpi_multiplicator);
 }
 
 void ImageView::mouseReleaseEvent(QMouseEvent *event)
 {
-    emit ImageView::mouseRelease(event);
+    emit ImageView::mouseRelease(event, event->pos() * hdpi_multiplicator);
 }
 
 void ImageView::mouseDoubleClickEvent(QMouseEvent *event)
 {
-    emit mouseDoubleClick(event);
+    emit mouseDoubleClick(event, event->pos() * hdpi_multiplicator);
 }

@@ -51,8 +51,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->pushButton_color5->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[4].name() );
 
     //save start size
-    int width = (QApplication::screens().at(0)->geometry().width() *this->devicePixelRatio()),
-        height = (QApplication::screens().at(0)->geometry().height() *this->devicePixelRatio());
+    int width = (QApplication::screens().at(0)->geometry().width() * QApplication::screens().at(0)->devicePixelRatio()),
+        height = (QApplication::screens().at(0)->geometry().height() * QApplication::screens().at(0)->devicePixelRatio());
 
     //setup currentImage
     currentImg->init(width, height, ui->spinBoxMaxIterations->value(), true);
@@ -60,16 +60,16 @@ MainWindow::MainWindow(QWidget *parent)
 
     // connect signals
     connect(ui->imageView, SIGNAL(mouseMove(QPoint)), this, SLOT(mouse_move_in_img(QPoint)));
-    connect(ui->imageView, SIGNAL(mousePress(QMouseEvent*)), this, SLOT(mouse_press_in_img(QMouseEvent*)));
-    connect(ui->imageView, SIGNAL(mouseRelease(QMouseEvent*)), this, SLOT(mouse_release_in_img(QMouseEvent*)));
-    connect(ui->imageView, SIGNAL(mouseDoubleClick(QMouseEvent*)), this, SLOT(mouse_double_click_in_img(QMouseEvent*)));
+    connect(ui->imageView, SIGNAL(mousePress(QMouseEvent*, QPoint )), this, SLOT(mouse_press_in_img(QMouseEvent*, QPoint)));
+    connect(ui->imageView, SIGNAL(mouseRelease(QMouseEvent*, QPoint)), this, SLOT(mouse_release_in_img(QMouseEvent*, QPoint)));
+    connect(ui->imageView, SIGNAL(mouseDoubleClick(QMouseEvent*, QPoint)), this, SLOT(mouse_double_click_in_img(QMouseEvent*, QPoint)));
 
 
     connect(fullScreenView, SIGNAL(keyPressed(QKeyEvent *)), this, SLOT(key_press_in_img(QKeyEvent *)));
     connect(fullScreenView, SIGNAL(mouseMove(QPoint)), this, SLOT(mouse_move_in_img(QPoint)));
-    connect(fullScreenView, SIGNAL(mousePress(QMouseEvent*)), this, SLOT(mouse_press_in_img(QMouseEvent*)));
-    connect(fullScreenView, SIGNAL(mouseRelease(QMouseEvent*)), this, SLOT(mouse_release_in_img(QMouseEvent*)));
-    connect(fullScreenView, SIGNAL(mouseDoubleClick(QMouseEvent*)), this, SLOT(mouse_double_click_in_img(QMouseEvent*)));
+    connect(fullScreenView, SIGNAL(mousePress(QMouseEvent*, QPoint)), this, SLOT(mouse_press_in_img(QMouseEvent*, QPoint)));
+    connect(fullScreenView, SIGNAL(mouseRelease(QMouseEvent*, QPoint)), this, SLOT(mouse_release_in_img(QMouseEvent*, QPoint)));
+    connect(fullScreenView, SIGNAL(mouseDoubleClick(QMouseEvent*, QPoint)), this, SLOT(mouse_double_click_in_img(QMouseEvent*, QPoint)));
 
     // init rect:
     zoomRect.updateRectSize(this->ui->spinBoxW->value(), this->ui->spinBoxH->value(), ui->spinBox_zoom->value());
@@ -169,10 +169,10 @@ void MainWindow::zustandWechseln(QString aktion, QString param, QPoint m_pos, QM
 
         } else if( aktion == "DOPPELKLICK_IN_BILD" && m_event) {
             //update rect if no mousemove or mouse press was done --> fix doppelclick no zoom just refresh error
-            zustandWechseln("mousePressEvent", "", QPoint(), m_event);
-            zustandWechseln("mouseReleaseEvent", "", QPoint(), m_event);
+            zustandWechseln("mousePressEvent", "", m_pos, m_event);
+            zustandWechseln("mouseReleaseEvent", "", m_pos, m_event);
 
-            auto pos = m_event->pos() * ui->imageView->getHdpi_multiplicator();
+            auto pos = m_pos; //m_event->pos() * ui->imageView->getHdpi_multiplicator();
 
             if(m_event->button() == Qt::LeftButton && pos.x() >= 0 && pos.x() < currentImg->img_w && pos.y() >= 0 && pos.y() < currentImg->img_h) {
                 ImageSetting *newSetting = getNewScaledSetting(currentImg);
@@ -224,7 +224,7 @@ void MainWindow::zustandWechseln(QString aktion, QString param, QPoint m_pos, QM
             keyPressed[m_event->button()] = true;
 
 //            auto qpos = this->ui->imageView->mapFrom(this, m_event->pos()) * ui->imageView->getHdpi_multiplicator();
-            auto qpos = m_event->pos() * ui->imageView->getHdpi_multiplicator();
+            auto qpos = m_pos;// m_event->pos() * ui->imageView->getHdpi_multiplicator();
             auto pos = Point(qpos.x(), qpos.y());
             qDebug() << qpos;
 
@@ -784,7 +784,9 @@ void MainWindow::endRefresh(bool appendToListHistory)
     ui->pushButtonSaveImg->setEnabled(true);
     ui->frameButtons->setEnabled(true);
 
-
+    //update dpi if aut...e.g. moved to display with diffrent dpi
+    if(ui->comboBox->currentText() == "auto")
+        this->on_comboBox_currentIndexChanged(ui->comboBox->currentIndex());
 
     ui->lineEditScaleAbs->setText("1: " + QString::number((double)currentImg->scale()));
     if(currentImg->isMandelbrotSet) {
@@ -1055,19 +1057,19 @@ void MainWindow::mouse_move_in_img(QPoint pos)
     zustandWechseln("mouseMoveEvent", "", pos);
 }
 
-void MainWindow::mouse_press_in_img(QMouseEvent *event)
+void MainWindow::mouse_press_in_img(QMouseEvent *event, QPoint pos)
 {
-    zustandWechseln("mousePressEvent", "", QPoint(), event);
+    zustandWechseln("mousePressEvent", "", pos, event);
 }
 
-void MainWindow::mouse_release_in_img(QMouseEvent *event)
+void MainWindow::mouse_release_in_img(QMouseEvent *event, QPoint pos)
 {
-    zustandWechseln("mouseReleaseEvent", "", QPoint(), event);
+    zustandWechseln("mouseReleaseEvent", "", pos, event);
 }
 
-void MainWindow::mouse_double_click_in_img(QMouseEvent *event)
+void MainWindow::mouse_double_click_in_img(QMouseEvent *event, QPoint pos)
 {
-    zustandWechseln("DOPPELKLICK_IN_BILD", "", QPoint(), event);
+    zustandWechseln("DOPPELKLICK_IN_BILD", "", pos, event);
 }
 
 void MainWindow::key_press_in_img(QKeyEvent *ev)

@@ -216,9 +216,9 @@ private slots:
 
     void mouse_move_in_img(QPoint pos);
 
-    void mouse_press_in_img(QMouseEvent * ev);
-    void mouse_release_in_img(QMouseEvent * ev);
-    void mouse_double_click_in_img(QMouseEvent * ev);
+    void mouse_press_in_img(QMouseEvent * ev, QPoint pos);
+    void mouse_release_in_img(QMouseEvent * ev, QPoint pos);
+    void mouse_double_click_in_img(QMouseEvent * ev, QPoint pos);
     void key_press_in_img(QKeyEvent *);
 
     void on_comboBox_currentIndexChanged(int index);
