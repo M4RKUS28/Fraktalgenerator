@@ -73,7 +73,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     // init rect:
     zoomRect.updateRectSize(this->ui->spinBoxW->value(), this->ui->spinBoxH->value(), ui->spinBox_zoom->value());
-    zoomRect.updateRectPos(Point(currentImg->mapGausReToImgPos(currentImg->gaus_mid_re), currentImg->mapGausImToImgPos(currentImg->gaus_mid_im)));
+    zoomRect.updateRectPos(QPoint(currentImg->mapGausReToImgPos(currentImg->gaus_mid_re), currentImg->mapGausImToImgPos(currentImg->gaus_mid_im)),
+                           QPointF(currentImg->gaus_mid_re, currentImg->gaus_mid_im) );
 
     //setup ui values
     this->ui->spinBoxW->setValue( width );
@@ -127,10 +128,10 @@ void MainWindow::updateMidPos(bool clear)
         ui->re->setValue(0);
         ui->im->setValue(0);
     } else {
-        ui->re->setValue(currentImg->mapImgPosReToGaus(this->zoomRect.getMousePos().x()));
-        ui->im->setValue(- currentImg->mapImgPosImToGaus(this->zoomRect.getMousePos().y()));
-        ui->statusbar->showMessage("Re(" + QString::number(currentImg->mapImgPosReToGaus(this->zoomRect.getMousePos().x()))
-                                   + ") Im(" + QString::number( - currentImg->mapImgPosImToGaus(this->zoomRect.getMousePos().y())) + ")", 2000);
+        ui->re->setValue(this->zoomRect.getMausPosInGauss().x());
+        ui->im->setValue(- this->zoomRect.getMausPosInGauss().y());
+        ui->statusbar->showMessage("Re(" + QString::number(this->zoomRect.getMausPosInGauss().x())
+                                   + ") Im(" + QString::number( - this->zoomRect.getMausPosInGauss().y()) + ")", 2000);
 
     }
 
@@ -194,7 +195,7 @@ void MainWindow::zustandWechseln(QString aktion, QString param, QPoint m_pos, QM
 
                 if(keyPressed[Qt::LeftButton] || keyPressed[Qt::RightButton]) {
 
-                    this->zoomRect.updateRectPos( pos );
+                    this->zoomRect.updateRectPos( pos.rountToQPoint(), QPointF( currentImg->mapImgPosReToGaus(pos.x()), currentImg->mapImgPosImToGaus(pos.y()) ) );
 
                     if(this->zoomRect.rightMouseIsPressed()) {
                         this->setOperationMode();
@@ -234,7 +235,7 @@ void MainWindow::zustandWechseln(QString aktion, QString param, QPoint m_pos, QM
                     zoomRect.setMousePressState(true);
                     zoomRect.show();
 
-                    this->zoomRect.updateRectPos(pos);
+                    this->zoomRect.updateRectPos(pos.rountToQPoint(), QPointF( currentImg->mapImgPosReToGaus(pos.x()), currentImg->mapImgPosImToGaus(pos.y()) ));
                     this->updateImage();
                     this->setOperationMode();
 
@@ -445,12 +446,12 @@ ImageSetting *MainWindow::getNewScaledSetting(ImageSetting *last_img)
            else {
                if(relativeZoom > 0) {
                    nscale = last_img->scale() * relativeZoom;
-                   midx   = last_img->mapImgPosReToGaus( this->zoomRect.getMousePos().x() );
-                   midy   = last_img->mapImgPosImToGaus(this->zoomRect.getMousePos().y() );
+                   midx   =  this->zoomRect.getMausPosInGauss().x();
+                   midy   =  this->zoomRect.getMausPosInGauss().y();
                } else {
                    nscale  = -last_img->scale() / relativeZoom;
-                   midx    = last_img->mapImgPosReToGaus(this->zoomRect.getMousePos().x());
-                   midy    = last_img->mapImgPosImToGaus(this->zoomRect.getMousePos().y() );
+                   midx    = this->zoomRect.getMausPosInGauss().x();
+                   midy    = this->zoomRect.getMausPosInGauss().y();
                }
 
            }
@@ -853,8 +854,10 @@ void MainWindow::endRefresh(bool appendToListHistory)
         // no save to history: ok
         // set zoom: ok
         imgSerie.imgCount--;
-        this->ui->statusbar->showMessage("Erstelle Bilderfolge ( " + QString::number(imgSerie.imgCountConst - imgSerie.imgCount) + " / " + QString::number(imgSerie.imgCountConst) +" )...", 1000);
+        this->ui->statusbar->showMessage("Erstelle Bilderfolge ( " + QString::number(imgSerie.imgCountConst - imgSerie.imgCount) + " / " + QString::number(imgSerie.imgCountConst) +" )...", 4000);
         if(imgSerie.imgCount > 0) {
+            //Add ITC
+            ui->spinBoxMaxIterations->setValue( ui->spinBoxMaxIterations->value() + imgSerie.addIT );
 
             // clear History [-2]!
 
@@ -890,7 +893,7 @@ void MainWindow::updateImage()
 
 void MainWindow::startImgFolge()
 {
-    DialogImageSerie dIm(this, this->imgSerie);
+    DialogImageSerie dIm(this, this->imgSerie, this->currentImg->scale(), ui->spinBoxMaxIterations->value());
     if( dIm.exec() == QDialog::Accepted ) {
         this->imgSerie = dIm.getImgSerieSettings();
         this->ui->spinBox_zoom->setValue( imgSerie.zoomStep );
@@ -915,8 +918,8 @@ void MainWindow::createVideo()
         writer.open();
         for(int i = dvi.getNameItStart(); i <= dvi.getNameItEnd(); i++) {
             qDebug() << dvi.getImgsPath() + ( dvi.getImgsPath().endsWith("/") ? "" : "/" ) + dvi.getPrefix() + QString::number(i) + dvi.getSuffix();
-            this->ui->statusbar->showMessage("[" + QString::number(i) + " / " + QString::number( dvi.getNameItEnd()) + " ]: '"
-                                             + dvi.getImgsPath() + ( dvi.getImgsPath().endsWith("/") ? "" : "/" ) + dvi.getPrefix() + QString::number(i) + dvi.getSuffix() + "'...", 2000);
+            this->ui->statusbar->showMessage("[ " + QString::number(i) + " / " + QString::number( dvi.getNameItEnd()) + " ]: '"
+                                             + dvi.getImgsPath() + ( dvi.getImgsPath().endsWith("/") ? "" : "/" ) + dvi.getPrefix() + QString::number(i) + dvi.getSuffix() + "'...", 4000);
             QApplication::processEvents();
 
             QImage img = QImage(  dvi.getImgsPath() + ( dvi.getImgsPath().endsWith("/") ? "" : "/" ) + dvi.getPrefix() + QString::number(i) + dvi.getSuffix());
@@ -926,7 +929,7 @@ void MainWindow::createVideo()
                 if( QMessageBox::warning(this, "Bild konnte nicht geladen werden!", "Die Datei '" + dvi.getImgsPath()
                                      + ( dvi.getImgsPath().endsWith("/") ? "" : "/" ) + dvi.getPrefix() + QString::number(i) + dvi.getSuffix() + "' existiert nicht oder konnte nicht geladen werden!",
                                      QMessageBox::StandardButton::Abort | QMessageBox::StandardButton::Ignore  ) == QMessageBox::StandardButton::Abort)
-                    return;
+                    break;
             }
         }
         writer.close();
@@ -1091,12 +1094,12 @@ void MainWindow::paintEvent(QPaintEvent *)
             // Wenn Bilderfolge, dann zoomRect is Shown, aber soll kein Quadrat sein, sondern ein Punkt!
             if(imgSerie.imgCount > 0) {
                 painter.setPen(Qt::white);
-                painter.drawPoint(zoomRect.getMousePos().rountToQPoint());
-                painter.drawEllipse(zoomRect.getMousePos().rountToQPoint(), 5, 5);
+                painter.drawPoint(zoomRect.getMousePos());
+                painter.drawEllipse(zoomRect.getMousePos(), 5, 5);
 
                 painter.setPen(Qt::black);
-                painter.drawEllipse(zoomRect.getMousePos().rountToQPoint(), 2, 2);
-                painter.drawEllipse(zoomRect.getMousePos().rountToQPoint(), 6, 6);
+                painter.drawEllipse(zoomRect.getMousePos(), 2, 2);
+                painter.drawEllipse(zoomRect.getMousePos(), 6, 6);
 
 
 
@@ -1110,10 +1113,10 @@ void MainWindow::paintEvent(QPaintEvent *)
                 } else {
 
                     painter.setPen(QPen(Qt::black, 2));
-                    painter.drawEllipse(zoomRect.getMousePos().rountToQPoint(), 4, 4);
+                    painter.drawEllipse(zoomRect.getMousePos(), 4, 4);
                     painter.setPen(QPen(Qt::white, 2));
-                    painter.drawEllipse(zoomRect.getMousePos().rountToQPoint(), 5, 5);
-                    painter.drawPoint(zoomRect.getMousePos().rountToQPoint());
+                    painter.drawEllipse(zoomRect.getMousePos(), 5, 5);
+                    painter.drawPoint(zoomRect.getMousePos());
 
                 }
 
@@ -1480,16 +1483,6 @@ bool MainWindow::ZahlenFolge::isShown()
     return this->show;
 }
 
-void MainWindow::ZoomRect::updateRectPos(Point p)
-{
-    this->mousePos = p;
-    auto left_top = p.rountToQPoint() - QPoint(rect.width() / 2, rect.height() / 2);
-    this->rect.moveTopLeft(left_top);
-    //    this->rect.setRect(left_top.x(), left_top.y(), rect.width(), rect.height());
-
-}
-
-
 
 MainWindow::ZoomRect::ZoomRect()
 {
@@ -1516,8 +1509,17 @@ void MainWindow::ZoomRect::updateRectSize(size_t winW, size_t winH, double scale
 {
     if(scale >= 1) {
         this->rect.setSize(QSize(winW / scale, (double)winH / scale));
-        this->updateRectPos(this->mousePos);
+        this->updateRectPos(this->mousePos, this->mousePosInGauss);
     }
+}
+
+void MainWindow::ZoomRect::updateRectPos(QPoint pos, QPointF gauss)
+{
+    this->mousePos = pos;
+    this->mousePosInGauss = gauss;
+    auto left_top = pos - QPoint(rect.width() / 2, rect.height() / 2);
+    this->rect.moveTopLeft(left_top);
+    //    this->rect.setRect(left_top.x(), left_top.y(), rect.width(), rect.height());
 }
 
 QRect MainWindow::ZoomRect::getRect()
@@ -1525,9 +1527,14 @@ QRect MainWindow::ZoomRect::getRect()
     return rect;
 }
 
-Point MainWindow::ZoomRect::getMousePos()
+QPoint MainWindow::ZoomRect::getMousePos()
 {
     return mousePos;
+}
+
+QPointF MainWindow::ZoomRect::getMausPosInGauss()
+{
+    return mousePosInGauss;
 }
 
 bool MainWindow::ZoomRect::isShown()
@@ -1686,7 +1693,8 @@ void MainWindow::on_re_valueChanged(double arg1)
         ignoreXPosEdited = false;
         return;
     }
-    this->zoomRect.updateRectPos(Point(currentImg->mapGausReToImgPos(arg1), zoomRect.getMousePos().y()));
+    this->zoomRect.updateRectPos(QPoint(currentImg->mapGausReToImgPos(arg1), zoomRect.getMousePos().y()),
+                                 QPointF(arg1, zoomRect.getMausPosInGauss().y()));
     this->zoomRect.show();
     editedSettings = true;
     this->setOperationMode();
@@ -1702,7 +1710,8 @@ void MainWindow::on_im_valueChanged(double arg1)
         return;
     }
 
-    this->zoomRect.updateRectPos(Point(zoomRect.getMousePos().x(), currentImg->mapGausImToImgPos(-1* arg1)));
+    this->zoomRect.updateRectPos(QPoint(zoomRect.getMousePos().x(), currentImg->mapGausImToImgPos(-1.0* arg1)),
+                                 QPointF(zoomRect.getMausPosInGauss().x(), -1.0* arg1));
     this->zoomRect.show();
     editedSettings = true;
     this->setOperationMode();
@@ -1948,8 +1957,10 @@ void MainWindow::on_spinBoxHauptScreen_valueChanged(int arg1)
         return;
     QRect s = QApplication::screens().at(arg1)->geometry();
     fullScreenView->setGeometry(s);
-    ui->spinBoxW->setValue( s.width() );
-    ui->spinBoxH->setValue( s.height() );
+    double scalefactor = QApplication::screens().at(arg1)->devicePixelRatio();
+    ui->spinBoxW->setValue( s.width() * scalefactor);
+    ui->spinBoxH->setValue( s.height() * scalefactor  );
+    this->fullScreenView->setHdpiScale( scalefactor );
 }
 
 void MainWindow::on_pushButtonOpenImgSerieDialog_clicked()

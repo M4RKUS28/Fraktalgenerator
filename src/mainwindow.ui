@@ -93,7 +93,7 @@
         <property name="font">
          <font>
           <pointsize>9</pointsize>
-          <bold>true</bold>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -1399,7 +1399,7 @@
                 </sizepolicy>
                </property>
                <property name="maximum">
-                <number>9999</number>
+                <number>29999</number>
                </property>
                <property name="value">
                 <number>900</number>
@@ -1431,7 +1431,7 @@
              <item>
               <widget class="QSpinBox" name="spinBoxH">
                <property name="maximum">
-                <number>9999</number>
+                <number>29999</number>
                </property>
                <property name="value">
                 <number>720</number>

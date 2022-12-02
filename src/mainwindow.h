@@ -45,17 +45,22 @@ class MainWindow : public QMainWindow
         void show();
         void hide();
         void updateRectSize(size_t winW, size_t winH, double scale);
-        void updateRectPos(Point p);
+
+        void updateRectPos(QPoint pos, QPointF gauss);
+
         void setMousePressState(bool isPressed);
 
         QRect getRect();
-        Point getMousePos();
+        QPoint getMousePos();
+        QPointF getMausPosInGauss();
+
         bool isShown();
         bool rightMouseIsPressed();
 
 
     private:
-        Point mousePos;
+        QPoint mousePos;
+        QPointF mousePosInGauss;
         QRect rect;
         bool is_shown = false;
         bool right_mouse_press = false;

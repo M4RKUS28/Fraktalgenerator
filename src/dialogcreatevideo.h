@@ -37,6 +37,9 @@ public:
     QString getCodec();
 
 
+private:
+    void updateVideoDuration();
+
 private slots:
     void on_pushButtonOpenSaveDir_clicked();
 
@@ -45,6 +48,14 @@ private slots:
     void on_lineEditFilePath_textChanged(const QString &arg1);
 
     void on_pushButton_2_clicked();
+
+    void on_pushButton_clicked();
+
+    void on_spinBoxNameItStart_valueChanged(int arg1);
+
+    void on_spinBox_NameItStop_valueChanged(int arg1);
+
+    void on_spinBoxFPS_valueChanged(int arg1);
 
 private:
     Ui::DialogCreateVideo *ui;

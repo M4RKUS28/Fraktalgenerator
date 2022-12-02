@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>537</width>
-    <height>310</height>
+    <width>608</width>
+    <height>426</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -39,16 +39,15 @@
       <property name="topMargin">
        <number>0</number>
       </property>
-      <item row="1" column="1">
-       <widget class="QDoubleSpinBox" name="doubleSpinBoxZoomStep">
-        <property name="decimals">
-         <number>3</number>
+      <item row="0" column="0" colspan="2">
+       <widget class="QLabel" name="label_7">
+        <property name="font">
+         <font>
+          <bold>true</bold>
+         </font>
         </property>
-        <property name="singleStep">
-         <double>0.100000000000000</double>
-        </property>
-        <property name="value">
-         <double>1.100000000000000</double>
+        <property name="text">
+         <string>Bilderfolge:</string>
         </property>
        </widget>
       </item>
@@ -62,6 +61,19 @@
         </property>
         <property name="text">
          <string>Vergrößerungsschritt:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QDoubleSpinBox" name="doubleSpinBoxZoomStep">
+        <property name="decimals">
+         <number>3</number>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+        <property name="value">
+         <double>1.100000000000000</double>
         </property>
        </widget>
       </item>
@@ -85,15 +97,76 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="0" colspan="2">
-       <widget class="QLabel" name="label_7">
-        <property name="font">
-         <font>
-          <bold>true</bold>
-         </font>
-        </property>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_9">
         <property name="text">
-         <string>Bilderfolge:</string>
+         <string>Startzoom:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QLabel" name="label_startZoom">
+        <property name="text">
+         <string>-</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_10">
+        <property name="text">
+         <string>Endzoom:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QLabel" name="label_endZoom">
+        <property name="text">
+         <string>-</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="label_11">
+        <property name="text">
+         <string>Iteratioinszahl +=</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QSpinBox" name="spinBoxAddIt">
+        <property name="minimum">
+         <number>-9999</number>
+        </property>
+        <property name="maximum">
+         <number>99999</number>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="QLabel" name="label_StartIt">
+        <property name="text">
+         <string>-</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1">
+       <widget class="QLabel" name="label_EndIt">
+        <property name="text">
+         <string>-</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QLabel" name="label_14">
+        <property name="text">
+         <string>Derzeitige Iterationen:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="0">
+       <widget class="QLabel" name="label_15">
+        <property name="text">
+         <string>Endanzahl an It.:</string>
         </property>
        </widget>
       </item>
@@ -138,7 +211,11 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QSpinBox" name="spinBox_NameItStart"/>
+       <widget class="QSpinBox" name="spinBox_NameItStart">
+        <property name="maximum">
+         <number>99999</number>
+        </property>
+       </widget>
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="label_5">

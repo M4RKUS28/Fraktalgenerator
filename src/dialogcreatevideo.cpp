@@ -74,9 +74,15 @@ QString DialogCreateVideo::getCodec()
     return ui->lineEditCodec->text().toUpper();
 }
 
+void DialogCreateVideo::updateVideoDuration()
+{
+    int duration = (( ui->spinBox_NameItStop->value() - ui->spinBoxNameItStart->value() + 1 ) * 10)  / (ui->spinBoxFPS->value()) ;
+    ui->label_videolnge->setText( QString::number(duration / 600) + "min " + QString::number( (double(duration % 600)) / 10) + "sec" );
+}
+
 void DialogCreateVideo::on_pushButtonOpenSaveDir_clicked()
 {
-    QString dir_ = QFileDialog::getExistingDirectory( this, tr("Ordner auswählen"), this->ui->lineEditPath->text(), QFileDialog::ShowDirsOnly| QFileDialog::DontResolveSymlinks );
+    QString dir_ = QFileDialog::getExistingDirectory( this, tr("Ordner auswählen"), this->ui->lineEditPath->text(), QFileDialog::DontResolveSymlinks );
     if(!dir_.isEmpty()) {
         this->ui->lineEditPath->setText( dir_ );
     }
@@ -85,7 +91,7 @@ void DialogCreateVideo::on_pushButtonOpenSaveDir_clicked()
 
 void DialogCreateVideo::on_lineEditPath_textChanged(const QString &arg1)
 {
-    if(arg1 != "" && QDir(arg1).exists() && !QFile(ui->lineEditFilePath->text()).exists() && ui->lineEditFilePath->text() != "" ) {
+    if(arg1 != "" && QDir(arg1).exists() && ui->lineEditFilePath->text() != "" ) {
         this->ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->setDisabled(false);
     } else {
         this->ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->setDisabled(true);
@@ -95,7 +101,7 @@ void DialogCreateVideo::on_lineEditPath_textChanged(const QString &arg1)
 
 void DialogCreateVideo::on_lineEditFilePath_textChanged(const QString &arg1)
 {
-    if(!QFile(arg1).exists() && arg1 != "" && ui->lineEditPath->text() != "" && QDir(ui->lineEditPath->text()).exists()) {
+    if(arg1 != "" && ui->lineEditPath->text() != "" && QDir(ui->lineEditPath->text()).exists()) {
         this->ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->setDisabled(false);
     } else {
         this->ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->setDisabled(true);
@@ -105,9 +111,36 @@ void DialogCreateVideo::on_lineEditFilePath_textChanged(const QString &arg1)
 
 void DialogCreateVideo::on_pushButton_2_clicked()
 {
-    QString file = QFileDialog::getSaveFileName( this, tr("Video speichern in"), getImgsPath(), ".avi" );
+    QString file = QFileDialog::getSaveFileName( this, tr("Video speichern in"), getImgsPath(), "*.avi" );
     if(!file.isEmpty()) {
         ui->lineEditFilePath->setText(file + ( file.endsWith(".avi") ? "" : ".avi"));
     }
+}
+
+
+void DialogCreateVideo::on_pushButton_clicked()
+{
+    QString file = QFileDialog::getOpenFileName( this, tr("Audio Datei auswählen"), getImgsPath(), "*.wav" );
+    if(!file.isEmpty()) {
+        ui->lineEditAudioPath->setText(file);
+    }
+}
+
+
+void DialogCreateVideo::on_spinBoxNameItStart_valueChanged(int)
+{
+    updateVideoDuration();
+}
+
+
+void DialogCreateVideo::on_spinBox_NameItStop_valueChanged(int)
+{
+    updateVideoDuration();
+}
+
+
+void DialogCreateVideo::on_spinBoxFPS_valueChanged(int)
+{
+    updateVideoDuration();
 }
 
