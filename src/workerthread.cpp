@@ -40,122 +40,48 @@ void WorkerThread::run()
 
     size_t maxIt = this->settings->maxIterations;
 
-    switch ( calc_mode ) {
-    case 1:
-        for(ssize_t x = x_left_corner; x < x_right_corner; x++) {
-            QList<Pixel> *line = new QList<Pixel>;
-            std::complex<long double> z, c;
+    for(ssize_t x = x_left_corner; x < x_right_corner; x++) {
+        QList<Pixel> *line = new QList<Pixel>;
+        double z_real, z_imag, c_real, c_imag;
 
-            for(ssize_t y = y_left_corner; y < y_right_corner; y++) {
+        for(ssize_t y = y_left_corner; y < y_right_corner; y++) {
 
-                if(this->settings->isMandelbrotSet) {
-                    z = 0;
-                    c = std::complex<long double>(settings->mapImgPosReToGausLong(x),
-                                             - settings->mapImgPosImToGausLong(y));
+            if(this->settings->isMandelbrotSet) {
+                z_real = 0.0;
+                z_imag = 0.0;
 
-                } else { // julia Menge
-                    z = std::complex<long double>(settings->mapImgPosReToGausLong(x),
-                                             - settings->mapImgPosImToGausLong(y));
-                    c =  std::complex<long double>(this->settings->juliaStart_real,
-                                              - this->settings->juliaStart_img);
-                }
+                c_real =    settings->mapImgPosReToGaus(x);
+                c_imag =  - settings->mapImgPosImToGaus(y);
 
-                size_t i = 1;
-                for(; i < maxIt && std::abs( (z = z*z + c) ) < this->settings->escape_radius; i++) {}
-                const double normItCount = getNormalizedIterationCount(i, z.real(), z.imag(), this->settings);
-                line->append(Pixel(x, y, i, z.real(), z.imag(), normItCount, this->getPreColor(i, normItCount, this->settings)));
+            } else { // julia Menge
+                z_real =   settings->mapImgPosReToGaus(x);
+                z_imag = - settings->mapImgPosImToGaus(y);
 
+                c_real =   this->settings->juliaStart_real;
+                c_imag =  - this->settings->juliaStart_img;
             }
-            emit finishedLine(line);
-        }
-        break;
 
-    case 0:
-        for(ssize_t x = x_left_corner; x < x_right_corner; x++) {
-            QList<Pixel> *line = new QList<Pixel>;
-            double z_real, z_imag, c_real, c_imag;
-
-            for(ssize_t y = y_left_corner; y < y_right_corner; y++) {
-
-                if(this->settings->isMandelbrotSet) {
-                    z_real = 0.0;
-                    z_imag = 0.0;
-
-                    c_real =    settings->mapImgPosReToGaus(x);
-                    c_imag =  - settings->mapImgPosImToGaus(y);
-
-                } else { // julia Menge
-                    z_real =   settings->mapImgPosReToGaus(x);
-                    z_imag = - settings->mapImgPosImToGaus(y);
-
-                    c_real =   this->settings->juliaStart_real;
-                    c_imag =  - this->settings->juliaStart_img;
-                }
-
-                size_t i = 0;
-                if( (z_real*z_real) + (z_imag*z_imag) <= escapeQuadrat) {
-                    for(i = 0; i < maxIt &&  (z_real*z_real) + (z_imag*z_imag) < escapeQuadrat; i++) {
-                        const double z_real2 = (z_real * z_real) - (z_imag * z_imag) + c_real;
-                        const double z_imag2 = (2.0 * z_real * z_imag) + c_imag;
-                        i++;
-                        if( (z_real2*z_real2) + (z_imag2*z_imag2) > escapeQuadrat || i > maxIt-1 ) {
-                            z_real = z_real2;
-                            z_imag = z_imag2;
-                            break;
-                        }
-                        z_real = (z_real2 * z_real2) - (z_imag2 * z_imag2) + c_real;
-                        z_imag = (2.0 * z_real2 * z_imag2) + c_imag;
+            size_t i = 0;
+            if( (z_real*z_real) + (z_imag*z_imag) <= escapeQuadrat) {
+                for(i = 0; i < maxIt &&  (z_real*z_real) + (z_imag*z_imag) < escapeQuadrat; i++) {
+                    const double z_real2 = (z_real * z_real) - (z_imag * z_imag) + c_real;
+                    const double z_imag2 = (2.0 * z_real * z_imag) + c_imag;
+                    i++;
+                    if( (z_real2*z_real2) + (z_imag2*z_imag2) > escapeQuadrat || i > maxIt-1 ) {
+                        z_real = z_real2;
+                        z_imag = z_imag2;
+                        break;
                     }
+                    z_real = (z_real2 * z_real2) - (z_imag2 * z_imag2) + c_real;
+                    z_imag = (2.0 * z_real2 * z_imag2) + c_imag;
                 }
-
-                const double normItCount = getNormalizedIterationCount(i, z_real, z_imag, this->settings);
-                line->append(Pixel(x, y, i, z_real, z_imag, normItCount, getPreColor(i, normItCount, this->settings)));
             }
-            emit finishedLine(line);
+
+            const double normItCount = getNormalizedIterationCount(i, z_real, z_imag, this->settings);
+            line->append(Pixel(x, y, i, z_real, z_imag, normItCount, getPreColor(i, normItCount, this->settings)));
         }
-        break;
-//    case 2:
-//        for(ssize_t x = x_left_corner; x < x_right_corner; x++) {
-//            QList<Pixel> *line = new QList<Pixel>;
-//            double z_real, z_imag, c_real, c_imag;
-
-//            for(ssize_t y = y_left_corner; y < y_right_corner; y++) {
-
-//                if(this->settings.isMandelbrotSet) {
-//                    z_real = 0.0;
-//                    z_imag = 0.0;
-
-//                    c_real =    settings.mapImgPosReToGaus(x);
-//                    c_imag =  - settings.mapImgPosImToGaus(y);;
-
-//                } else { // julia Menge
-//                    z_real =   settings.mapImgPosReToGaus(x);
-//                    z_imag = - settings.mapImgPosImToGaus(y);
-
-//                    c_real =   this->settings.juliaStart_real;
-//                    c_imag =  - this->settings.juliaStart_img;
-//                }
-
-//                size_t i = 1;
-//                for(; i < maxIt; i++) {
-//                    const double z_real2 = (z_real * z_real) - (z_imag * z_imag) + c_real;
-//                    const double z_imag2 = (2.0 * z_real * z_imag) + c_imag;
-//                    if(((z_real*z_real) + (c_imag*c_imag)) > escapeQuadrat)
-//                        break;
-//                    z_real = (z_real2 * z_real2) - (z_imag2 * z_imag2) + c_real;
-//                    z_imag = (2.0 * z_real2 * z_imag2) + c_imag;
-//                    if( ((z_real*z_real) + (c_imag*c_imag)) > escapeQuadrat)
-//                        break;
-//                }
-
-//                const double normItCount = getNormalizedIterationCount(i, z_real, z_imag, &this->settings);
-//                line->append(Pixel(x, y, i, z_real, z_imag, normItCount, getPreColor(i, normItCount, &this->settings)));
-//            }
-//            emit finishedLine(line);
-//        }
-//        break;
+        emit finishedLine(line);
     }
-
 
 }
 
@@ -478,11 +404,6 @@ double ImageSetting::mapImgPosReToGaus(ssize_t img_pos_re)
     return (((double)img_pos_re - re_verscheibung ) / scale()) + gaus_mid_re;
 }
 
-long double ImageSetting::mapImgPosReToGausLong(ssize_t img_pos_re)
-{
-    return (((long double)img_pos_re - (long double)re_verscheibung ) / (long double)scale()) + (long double)gaus_mid_re;
-}
-
 ssize_t ImageSetting::mapGausReToImgPos(double gaus_re)
 {
     return (gaus_re - gaus_mid_re) * scale() + re_verscheibung;
@@ -491,11 +412,6 @@ ssize_t ImageSetting::mapGausReToImgPos(double gaus_re)
 double ImageSetting::mapImgPosImToGaus(ssize_t img_pos_im)
 {
     return (((double)img_pos_im - im_verscheibung ) / scale()) + gaus_mid_im;
-}
-
-long double ImageSetting::mapImgPosImToGausLong(ssize_t img_pos_im)
-{
-    return (((long double)img_pos_im - (long double)im_verscheibung ) / (long double)scale()) + (long double)gaus_mid_im;
 }
 
 ssize_t ImageSetting::mapGausImToImgPos(double gaus_im)

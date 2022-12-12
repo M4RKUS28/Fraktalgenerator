@@ -37,6 +37,7 @@ MainWindow::MainWindow(QWidget *parent)
     //die einstellungen sind unnütz:
     ui->comboBox_precession->setHidden(true);
     ui->radioButtonMitBeschriftungen->setHidden(true);
+    ui->radioButton_reload_at_back->setHidden(true);
 
     // setup default color settings:
     buttonColors[0] = QColor::fromRgb(37, 27, 255);
@@ -468,9 +469,9 @@ ImageSetting *MainWindow::getNewScaledSetting(ImageSetting *last_img)
        if(nscale > pow(10, 16)) {
 
            QMessageBox::warning(this, "Maximale Zoomtiefe erreicht!", "Aufgrund der limitierten Speichergröße der Standart Datentypen kann leider nicht tiefer gezoomt werden!");
-           nscale = last_img->scale();
-           midx = last_img->gaus_mid_re;
-           midy = last_img->gaus_mid_im;
+//           nscale = last_img->scale();
+//           midx = last_img->gaus_mid_re;
+//           midy = last_img->gaus_mid_im;
        }
 
         ImageSetting *s = new ImageSetting((this->lastImgStructID = this->lastImgStructID + 1), nscale, midx, midy);
@@ -670,6 +671,8 @@ void MainWindow::afterColoring(ImageSetting *set)
             }
 
             for(ssize_t x = 0; x < set->img_w; x++) {
+                QApplication::processEvents();
+
                 for(ssize_t y = 0; y < set->img_h; y++) {
                     size_t iteration = set->getIterationCountAt(x, y);
                     for (size_t i = 0; i <= iteration; i++)
@@ -681,6 +684,8 @@ void MainWindow::afterColoring(ImageSetting *set)
             ui->progressBar->setValue(ui->progressBar->maximum());
         }
         for(ssize_t x = 0; x < set->img_w; x++) {
+            QApplication::processEvents();
+
             for(ssize_t y = 0; y < set->img_h; y++) {
                 if(set->getIterationCountAt(x, y) == set->maxIterations) {
                     if(!set->fixedColor)
@@ -1511,6 +1516,9 @@ void MainWindow::ZoomRect::updateRectSize(size_t winW, size_t winH, double scale
 {
     if(scale >= 1) {
         this->rect.setSize(QSize(winW / scale, (double)winH / scale));
+        this->updateRectPos(this->mousePos, this->mousePosInGauss);
+    } else {
+        this->rect.setSize(QSize(winW, (double)winH));
         this->updateRectPos(this->mousePos, this->mousePosInGauss);
     }
 }

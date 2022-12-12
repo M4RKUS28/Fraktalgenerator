@@ -40,13 +40,11 @@ struct ImageSetting {
     size_t getIterationCountAt(ssize_t x, ssize_t y);
 
     double mapImgPosReToGaus(ssize_t img_pos_re);
-    long double mapImgPosReToGausLong(ssize_t img_pos_re);
     ssize_t mapGausReToImgPos(double gaus_re);
     double gaus_mid_re;
     double re_verscheibung;
 
     double mapImgPosImToGaus(ssize_t img_pos_im);
-    long double mapImgPosImToGausLong(ssize_t img_pos_im);
     ssize_t mapGausImToImgPos(double gaus_im);
     double gaus_mid_im;
     double im_verscheibung;
