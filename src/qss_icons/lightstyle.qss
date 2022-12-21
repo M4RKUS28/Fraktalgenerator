@@ -1279,8 +1279,8 @@ QComboBox::indicator {
   selection-background-color: transparent;
   color: transparent;
   selection-color: transparent;
-  /* Needed to remove indicator - fix #132 */
 }
+/* Needed to remove indicator - fix #132 */
 
 QComboBox::indicator:alternate {
   background: #FAFAFA;

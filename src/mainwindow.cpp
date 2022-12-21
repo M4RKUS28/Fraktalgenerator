@@ -11,6 +11,7 @@
 #include <iostream>
 #include <QScreen>
 #include <QApplication>
+#include <QSysInfo>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -36,8 +37,16 @@ MainWindow::MainWindow(QWidget *parent)
     ui->stackedWidgetExtraSettings->setHidden(true);
     //die einstellungen sind unnütz:
     ui->comboBox_precession->setHidden(true);
-    ui->radioButtonMitBeschriftungen->setHidden(true);
-    ui->radioButton_reload_at_back->setHidden(true);
+
+    if( QSysInfo::productType() == "macos" /*Qt 6*/ || QSysInfo::productType() == "macos"  /*Qt 5*/ ) {
+        // REMOVE FULL SCREEN MODE IN MAC, because not working at the moment
+
+        ui->actionVollbildfenster_anzeigen->setDisabled(true);
+
+        ui->spinBoxHauptScreen->setVisible(false);
+        ui->label_34->setVisible(false);
+    }
+
 
     // setup default color settings:
     buttonColors[0] = QColor::fromRgb(37, 27, 255);
@@ -281,12 +290,12 @@ void MainWindow::zustandWechseln(QString aktion, QString param, QPoint m_pos, QM
 
                 this->currentImg = settingsList.at(pos);
 
-                if(ui->radioButtonKeepSettingsAtBack->isChecked()) {
+                if(ui->actionEinstellungen_bei_Verlaufwechsel_behalten->isChecked()) {
                     this->noUpdateGui = true;
                     this->isBackOrVor = true;
                 }
 
-                if(ui->radioButton_reload_at_back->isChecked())
+                if(ui->actionBilder_bei_Verlaufwechsel_neu_laden_2->isChecked())
                     this->startRefresh(currentImg);
                 else {
                     this->endRefresh(false);
@@ -311,12 +320,12 @@ void MainWindow::zustandWechseln(QString aktion, QString param, QPoint m_pos, QM
             if(pos >= 0 && pos < settingsList.length()) {
                 this->currentImg = settingsList.at(pos);
 
-                if(ui->radioButtonKeepSettingsAtBack->isChecked()) {
+                if(ui->actionEinstellungen_bei_Verlaufwechsel_behalten->isChecked()) {
                     this->noUpdateGui = true;
                     this->isBackOrVor = true;
                 }
 
-                if(ui->radioButton_reload_at_back->isChecked())
+                if(ui->actionBilder_bei_Verlaufwechsel_neu_laden_2->isChecked())
                     this->startRefresh(currentImg);
                 else {
                     this->endRefresh(false);
@@ -341,21 +350,21 @@ void MainWindow::zustandWechseln(QString aktion, QString param, QPoint m_pos, QM
                 this->noUpdateGui = false;
                 //reset
 
-                if(ui->radioButtonKeepSettingsAtBack->isChecked() && ui->radioButton_reload_at_back->isChecked()) {
+                if(ui->actionEinstellungen_bei_Verlaufwechsel_behalten->isChecked() && ui->actionBilder_bei_Verlaufwechsel_neu_laden_2->isChecked()) {
                     this->isBackOrVor = true;
                 }
 
             } else {
                 this->noUpdateGui = true;
 
-                if(ui->radioButtonKeepSettingsAtBack->isChecked()) {
+                if(ui->actionEinstellungen_bei_Verlaufwechsel_behalten->isChecked()) {
                     this->isBackOrVor = true;
                 }
             }
 
 
             this->currentImg = settingsList.at(0);
-            if(ui->radioButton_reload_at_back->isChecked())
+            if(ui->actionBilder_bei_Verlaufwechsel_neu_laden_2->isChecked())
                 this->startRefresh(currentImg);
             else {
                 this->endRefresh(false);
@@ -632,11 +641,13 @@ void MainWindow::startRefresh(ImageSetting *set, bool appendToList)
         const ssize_t y_top_corner = 0;
         const ssize_t y_bottom_corner = set->img_h;
 
+        //SETUP
         wt->setRange(x_left_corner_part, x_right_corner_part, y_top_corner, y_bottom_corner);
-        wt->startCalc(set, this->ui->comboBox_precession->currentIndex());
-
+        //CONNECT
         connect(wt, SIGNAL(finishedLine(QList<Pixel>*)), this, SLOT(finishedLine(QList<Pixel>*)));
         connect(wt, SIGNAL(finished()), this, SLOT(threadFinished()));
+        //START
+        wt->startCalc(set, this->ui->comboBox_precession->currentIndex());
 
         // warte 20ms für den nächsten Thread
         QTime dieTime= QTime::currentTime().addMSecs(20);
@@ -786,7 +797,6 @@ void MainWindow::endRefresh(bool appendToListHistory)
     }
 
     ui->progressBar->setEnabled(false);
-    ui->pushButtonSaveImg->setEnabled(true);
     ui->frameButtons->setEnabled(true);
 
     //update dpi if aut...e.g. moved to display with diffrent dpi
@@ -945,6 +955,8 @@ void MainWindow::createVideo()
     }
 }
 
+
+
 bool MainWindow::checkForFinished()
 {
     if(this->ui->progressBar->value() == this->ui->progressBar->maximum() ) {
@@ -961,6 +973,9 @@ bool MainWindow::checkForFinished()
 
 void MainWindow::stopThreads()
 {
+    /*
+     * MOVE TO DESTRUCTOR!!
+     *
     for ( ssize_t i = 0; i <  this->tworkers.length(); i++ ) {
         if (this->tworkers.at(i)->isRunning()) {
             this->tworkers.at(i)->quit();
@@ -969,6 +984,8 @@ void MainWindow::stopThreads()
             }
         }
     }
+
+    */
 
     for ( ssize_t i = 0; i <  this->tworkers.length(); i++ ) {
         auto tmp = this->tworkers.takeAt(i);
@@ -1188,7 +1205,7 @@ void MainWindow::paintEvent(QPaintEvent *)
 
 
 
-                if(this->ui->radioButtonMitBeschriftungen->isChecked() && ui->spinBoxBeschriftungen->value() && ui->spinBoxBeschriftungenY->value()) {
+                if(this->ui->actionAchsenbeschriftungen_Anzeigen_2->isChecked() && ui->spinBoxBeschriftungen->value() && ui->spinBoxBeschriftungenY->value()) {
                     //Beschriftung
 
 
@@ -1262,6 +1279,21 @@ void MainWindow::paintEvent(QPaintEvent *)
 
 }
 
+
+void MainWindow::setFullScreenWindowVisible(bool state)
+{
+    if(state) {
+        this->fullScreenView->setImage(*this->currentImg->image);
+        this->fullScreenView->showFullScreen();
+        this->ui->actionVollbildfenster_anzeigen->setChecked(true);
+
+    } else {
+        this->fullScreenView->hide();
+        this->ui->actionVollbildfenster_anzeigen->setChecked(false);
+    }
+}
+
+
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
     qDebug() << event << " --> ";
@@ -1281,8 +1313,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 
     } else if(event->key() == Qt::Key_Escape || event->key() == Qt::Key_Q || event->key() == Qt::Key_L || event->key() == Qt::Key_E) {
         if(this->fullScreenView->isVisible()) {
-            this->ui->pushButtonShowFullScreen->setText("Im Vollbild anzeigen");
-            this->fullScreenView->hide();
+            this->setFullScreenWindowVisible(false);
         }
     } else if(event->key() == Qt::Key_I) {
         this->startImgFolge();
@@ -1648,7 +1679,7 @@ void MainWindow::on_pushButton_rm_history_clicked()
     }
 
     this->currentImg = settingsList.last();
-    if(ui->radioButton_reload_at_back->isChecked())
+    if(ui->actionBilder_bei_Verlaufwechsel_neu_laden_2->isChecked())
         this->startRefresh(settingsList.last());
     else {
         this->endRefresh(false);
@@ -1669,7 +1700,7 @@ void MainWindow::on_listWidgetHistory_itemDoubleClicked(QListWidgetItem *item)
         if(settingsList.at(i)->id == id) {
 
             this->currentImg = settingsList.at(i);
-            if(ui->radioButton_reload_at_back->isChecked())
+            if(ui->actionBilder_bei_Verlaufwechsel_neu_laden_2->isChecked())
                 this->startRefresh(settingsList.at(i));
             else {
                 this->endRefresh(false);
@@ -1943,6 +1974,20 @@ void MainWindow::on_comboBox_theme_currentIndexChanged(int index)
 
     file.close();
 
+    if( QSysInfo::productType() == "macos" /*Qt 6*/ || QSysInfo::productType() == "macos"  /*Qt 5*/ ) {
+        int index = data.indexOf("QComboBox::indicator {");
+        if( index != -1 ) {
+            int index2 = data.indexOf("}", index);
+            if( index2 != -1 ) {
+                data.insert(index, "/*");
+                index2+= 2 + 1;
+                data.insert(index2, "*/");
+            }
+        }
+        qDebug() << data;
+    }
+
+
     this->setStyleSheet(data);
 
 }
@@ -1951,13 +1996,10 @@ void MainWindow::on_comboBox_theme_currentIndexChanged(int index)
 void MainWindow::on_pushButtonShowFullScreen_clicked()
 {
     if(this->fullScreenView->isVisible()) {
-        this->ui->pushButtonShowFullScreen->setText("Im Vollbild anzeigen");
-        this->fullScreenView->hide();
+        this->setFullScreenWindowVisible(false);
 
     } else {
-        this->ui->pushButtonShowFullScreen->setText("Vollbildanzeige schließen");
-        this->fullScreenView->setImage(*this->currentImg->image);
-        this->fullScreenView->showFullScreen();
+        this->setFullScreenWindowVisible(true);
     }
 }
 
@@ -1982,5 +2024,54 @@ void MainWindow::on_pushButtonOpenImgSerieDialog_clicked()
 void MainWindow::on_pushButtonOpenVideoDialog_clicked()
 {
     this->createVideo();
+}
+
+
+void MainWindow::on_actionBild_speichern_unter_triggered()
+{
+    this->on_pushButtonSaveImg_clicked();
+}
+
+
+void MainWindow::on_actionBild_in_Zwischenablage_kopieren_triggered()
+{
+    this->on_pushButton_copy_clicked();
+}
+
+
+void MainWindow::on_actionSeitenmen_anzeigen_toggled(bool arg1)
+{
+    ui->widget->setVisible(arg1);
+}
+
+
+void MainWindow::on_actionVollbildfenster_anzeigen_triggered(bool checked)
+{
+    this->setFullScreenWindowVisible(checked);
+}
+
+
+void MainWindow::on_actionBilderfolge_erstellen_triggered()
+{
+    this->startImgFolge();
+}
+
+
+void MainWindow::on_actionVideo_aus_Bilderfolge_generieren_triggered()
+{
+    this->createVideo();
+}
+
+#include <QDesktopServices>
+
+void MainWindow::on_action_ber_triggered()
+{
+    QDesktopServices::openUrl(QUrl("https://github.com/M4RKUS28/Mandelbrot-Menge-Generator"));
+}
+
+
+void MainWindow::on_radioButtonKoords_2_clicked(bool)
+{
+    this->updateImage();
 }
 

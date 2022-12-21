@@ -11,7 +11,16 @@ WorkerThread::WorkerThread(QObject *parent)
 
 WorkerThread::~WorkerThread()
 {
-
+    if(this->isRunning()) {
+        this->requestInterruption();
+        this->quit();
+        if(this->wait(500) == false) {
+            this->terminate();
+            if(this->wait(500) == false) {
+                qDebug() << "FAILED TO STOP WORKER THREAD!";
+            }
+        }
+    }
 }
 
 void WorkerThread::setRange(ssize_t x_left_corner, ssize_t x_right_corner, ssize_t y_left_corner, ssize_t y_right_corner)
@@ -81,6 +90,8 @@ void WorkerThread::run()
             line->append(Pixel(x, y, i, z_real, z_imag, normItCount, getPreColor(i, normItCount, this->settings)));
         }
         emit finishedLine(line);
+        if(isInterruptionRequested())
+            break;
     }
 
 }

@@ -177,6 +177,7 @@ public:
     void createVideo();
 
 
+    void setFullScreenWindowVisible(bool state);
 
 
 
@@ -277,6 +278,23 @@ private slots:
     void on_pushButtonOpenImgSerieDialog_clicked();
 
     void on_pushButtonOpenVideoDialog_clicked();
+
+    void on_actionBild_speichern_unter_triggered();
+
+    void on_actionBild_in_Zwischenablage_kopieren_triggered();
+
+    void on_actionSeitenmen_anzeigen_toggled(bool arg1);
+
+    void on_actionBilderfolge_erstellen_triggered();
+
+    void on_actionVideo_aus_Bilderfolge_generieren_triggered();
+
+    void on_action_ber_triggered();
+
+    void on_actionVollbildfenster_anzeigen_triggered(bool checked);
+
+
+    void on_radioButtonKoords_2_clicked(bool checked);
 
 private:
     Ui::MainWindow *ui;
