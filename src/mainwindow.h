@@ -91,6 +91,8 @@ class MainWindow : public QMainWindow
         CALC_JULIA_SETTINGS,
 
         BACK_TO_MANDELBROT,
+
+        LOAD_IMG_FROM_FILE
     };
 
 
@@ -295,6 +297,10 @@ private slots:
 
 
     void on_radioButtonKoords_2_clicked(bool checked);
+
+    void on_actionEinstellungen_exportieren_triggered();
+
+    void on_actionEinstellungen_importien_triggered();
 
 private:
     Ui::MainWindow *ui;

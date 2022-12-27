@@ -497,6 +497,7 @@ ImageSetting *MainWindow::getNewScaledSetting(ImageSetting *last_img)
 
 void MainWindow::updateUiWithImageSetting(ImageSetting *imgs)
 {
+    qDebug() << "UPDATE " << noUpdateGui;
     if(noUpdateGui) {
         noUpdateGui = false;
         return;
@@ -513,7 +514,7 @@ void MainWindow::updateUiWithImageSetting(ImageSetting *imgs)
     ui->groupBoxMandelFarbe->setChecked( imgs->fixedColor );
     ui->comboBoxMandelColor->setCurrentText( imgs->fixFraktalColor );
     ui->comboBox_background_color->setCurrentText( imgs->backgroundColor );
-
+    ui->spinBoxFarbWechselIntervall->setValue( imgs->farbwechselIntervall );
 
 
     ui->radioButtonF1->setChecked(false);
@@ -1970,6 +1971,28 @@ void MainWindow::on_comboBox_theme_currentIndexChanged(int index)
     {
         qDebug()<<"file opened";
         data = file.readAll();
+
+        /*data += ""
+                "QGroupBox {"
+                "    background-color: rgb(69, 83, 100);"
+                "    margin-top:1em;"
+                ""
+                "}"
+                "QLabel{"
+                "    background-color: rgb(69, 83, 100);"
+                ""
+                "}"
+                "QLabel:disabled{"
+                "    background-color: rgb(69, 83, 100);"
+                ""
+                "}"
+                ""
+                "QGroupBox::title {"
+                "    subcontrol-origin: padding;"
+                "    subcontrol-position: left top;"
+                "    background: transparent;"
+                "    margin-top: -2.5em;"
+                "}";*/
     }
 
     file.close();
@@ -2073,5 +2096,37 @@ void MainWindow::on_action_ber_triggered()
 void MainWindow::on_radioButtonKoords_2_clicked(bool)
 {
     this->updateImage();
+}
+
+
+void MainWindow::on_actionEinstellungen_exportieren_triggered()
+{
+    QString path = QFileDialog::getSaveFileName(this, "...");
+    if(path == "")
+        return;
+    if(currentImg->store_setting(path) == 0)
+        ui->statusbar->showMessage("Speichere Einstellungen unter '" + path + "'...", 3000);
+    else
+        ui->statusbar->showMessage("Speicherung der Einstellungen unter '" + path + "' fehlgeschlagen!", 3000);
+
+}
+
+
+void MainWindow::on_actionEinstellungen_importien_triggered()
+{
+    QString path = QFileDialog::getOpenFileName(this, "...");
+    if(path == "")
+        return;
+    qDebug() << path;
+    ImageSetting * imgS = new ImageSetting((this->lastImgStructID = this->lastImgStructID + 1), path);
+    if(imgS->loadFromFileWasOK) {
+        this->updateUiWithImageSetting( imgS );
+
+        this->op_mode = OP_MODE::LOAD_IMG_FROM_FILE;
+        this->startRefresh(imgS, true);
+        ui->statusbar->showMessage("Lade Einstellungen aus '" + path + "'...", 3000);
+    } else {
+        ui->statusbar->showMessage("Laden der Einstellungen aus '" + path + "' fehlgeschlagen!", 3000);
+    }
 }
 

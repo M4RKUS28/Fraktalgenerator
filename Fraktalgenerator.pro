@@ -16,6 +16,7 @@ win32:RC_ICONS += src/qss_icons/icon.ico
 
 SOURCES += \
     src/dialogcreatevideo.cpp \
+    src/imagesetting.cpp \
     src/video/avi-utils.cpp \
     src/video/fileio.cpp \
     src/video/gwavi.cpp \
@@ -28,6 +29,7 @@ SOURCES += \
 
 HEADERS += \
     src/dialogcreatevideo.h \
+    src/imagesetting.h \
     src/video/gwavi.h \
     src/video/avi-utils.h \
     src/video/fileio.h \
