@@ -633,15 +633,15 @@ void MainWindow::startRefresh(ImageSetting *set, bool appendToList)
 
         set->colors.clear();
         if(ui->radioButtonF1->isChecked())
-            set->colors.push_back(std::pair<int, QColor>(1, buttonColors[0]));
+            set->colors.push_back(QPair<int, QColor>(1, buttonColors[0]));
         if(ui->radioButtonF2->isChecked())
-            set->colors.push_back(std::pair<int, QColor>(2, buttonColors[1]));
+            set->colors.push_back(QPair<int, QColor>(2, buttonColors[1]));
         if(ui->radioButtonF3->isChecked())
-            set->colors.push_back(std::pair<int, QColor>(3, buttonColors[2]));
+            set->colors.push_back(QPair<int, QColor>(3, buttonColors[2]));
         if(ui->radioButtonF4->isChecked())
-            set->colors.push_back(std::pair<int, QColor>(4, buttonColors[3]));
+            set->colors.push_back(QPair<int, QColor>(4, buttonColors[3]));
         if(ui->radioButtonF5->isChecked())
-            set->colors.push_back(std::pair<int, QColor>(5, buttonColors[4]));
+            set->colors.push_back(QPair<int, QColor>(5, buttonColors[4]));
 
         set->hsv_saturation = ui->spinBoxHSV_satursion->value();
         set->spinBoxHSV_value = ui->spinBoxHSV_value->value();
@@ -1182,7 +1182,7 @@ void MainWindow::paintEvent(QPaintEvent *)
                         painter.drawPoint(list.first());
                         last = list.first();
                     }
-                    for( unsigned i = 1; i < list.length(); i++ ) {
+                    for( int i = 1; i < list.length(); i++ ) {
                         painter.drawLine(last, list.at(i));
                         if(last != list.at(i))
                             last = list.at(i);

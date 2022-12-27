@@ -24,7 +24,7 @@ ImageSetting::ImageSetting(int id, QString file_path)
     if(myFile.open(QIODevice::ReadOnly)) {
         QDataStream load(&myFile);
         load.setFloatingPointPrecision(QDataStream::DoublePrecision);
-        load.setVersion(QDataStream::Qt_6_2);
+        load.setVersion(QDataStream::Qt_5_12);
         load >> *this;
 
         if(load.status() == QDataStream::Ok)
@@ -110,7 +110,7 @@ int ImageSetting::store_setting(QString file_path)
     if(myFile.open(QIODevice::WriteOnly))
     {
         QDataStream save(&myFile);
-        save.setVersion(QDataStream::Qt_6_2);
+        save.setVersion(QDataStream::Qt_5_12);
         save.setFloatingPointPrecision(QDataStream::DoublePrecision);
         save << *this;
 

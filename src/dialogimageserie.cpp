@@ -40,7 +40,7 @@ DialogImageSerie::ImgSerie DialogImageSerie::getImgSerieSettings()
                     ui->lineEditNamePrefix->text(), ui->lineEditSuffix->text(), ui->spinBoxAddIt->value());
 }
 
-#include <math.h>
+#include <cmath>
 
 void DialogImageSerie::updateEndZoom()
 {

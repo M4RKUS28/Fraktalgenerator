@@ -69,7 +69,7 @@ struct ImageSetting {
     int palette;
     QString fixFraktalColor, backgroundColor;
 
-    QList<std::pair<int,QColor>> colors;
+    QList<QPair<int, QColor>> colors;
     unsigned hsv_saturation, spinBoxHSV_value, spinBoxHSV_alpha, farbwechselIntervall;
 
     double **iterations_normal;
@@ -90,7 +90,7 @@ struct ImageSetting {
     {
         in >> rhs.id >> rhs.scaleValue >> rhs.gaus_mid_re >> rhs.gaus_mid_im >> rhs.img_w >> rhs.img_h >> rhs.maxIterations >> rhs.isMandelbrotSet
             >> rhs.logEscape >> rhs.escape_radius >> rhs.juliaStart_img >> rhs.juliaStart_real >> rhs.fixedColor >> rhs.inverted >> rhs.normalized
-            >> rhs.palette >> rhs.fixFraktalColor >> rhs.backgroundColor >> rhs.colors >> rhs.hsv_saturation >> rhs.spinBoxHSV_value
+            >> rhs.palette >> rhs.fixFraktalColor >> rhs.backgroundColor >>rhs.colors >> rhs.hsv_saturation >> rhs.spinBoxHSV_value
             >> rhs.spinBoxHSV_alpha >> rhs.farbwechselIntervall;
         return in;
     }
