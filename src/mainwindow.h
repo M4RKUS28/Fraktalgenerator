@@ -191,7 +191,7 @@ private slots:
 
     void threadFinished();
 
-    void on_pushButtonSaveImg_clicked();
+    void pushButtonSaveImg_clicked();
 
     void on_spinBoxMaxIterations_valueChanged(int arg1);
 
@@ -236,7 +236,7 @@ private slots:
 
     void on_im_valueChanged(double arg1);
 
-    void on_pushButton_copy_clicked();
+    void pushButton_copy_clicked();
 
     void on_pushButton_back_clicked();
 
@@ -273,13 +273,13 @@ private slots:
 
     void on_comboBox_theme_currentIndexChanged(int index);
 
-    void on_pushButtonShowFullScreen_clicked();
+    void pushButtonShowFullScreen_clicked();
 
     void on_spinBoxHauptScreen_valueChanged(int arg1);
 
-    void on_pushButtonOpenImgSerieDialog_clicked();
+    void pushButtonOpenImgSerieDialog_clicked();
 
-    void on_pushButtonOpenVideoDialog_clicked();
+    void pushButtonOpenVideoDialog_clicked();
 
     void on_actionBild_speichern_unter_triggered();
 
@@ -301,6 +301,8 @@ private slots:
     void on_actionEinstellungen_exportieren_triggered();
 
     void on_actionEinstellungen_importien_triggered();
+
+    void on_actionBeenden_triggered();
 
 private:
     Ui::MainWindow *ui;

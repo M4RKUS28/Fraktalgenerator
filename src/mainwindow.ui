@@ -117,22 +117,6 @@
           </attribute>
           <layout class="QFormLayout" name="formLayout_5">
            <item row="0" column="0" colspan="2">
-            <spacer name="verticalSpacer_2">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeType">
-              <enum>QSizePolicy::Fixed</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>10</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="1" column="0" colspan="2">
             <widget class="QGroupBox" name="groupBox_3">
              <property name="font">
               <font>
@@ -150,6 +134,9 @@
               <bool>false</bool>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_6">
+              <property name="leftMargin">
+               <number>20</number>
+              </property>
               <property name="topMargin">
                <number>13</number>
               </property>
@@ -176,7 +163,7 @@
              </layout>
             </widget>
            </item>
-           <item row="2" column="0" colspan="2">
+           <item row="1" column="0" colspan="2">
             <widget class="QGroupBox" name="groupBox_4">
              <property name="font">
               <font>
@@ -194,95 +181,33 @@
               <bool>false</bool>
              </property>
              <layout class="QGridLayout" name="gridLayout_6">
+              <property name="leftMargin">
+               <number>20</number>
+              </property>
               <property name="topMargin">
                <number>13</number>
               </property>
-              <item row="5" column="2">
-               <widget class="QLabel" name="label_julia_c">
+              <item row="4" column="0" colspan="4">
+               <widget class="QLabel" name="label_30">
                 <property name="font">
                  <font>
                   <pointsize>10</pointsize>
-                  <bold>false</bold>
+                  <bold>true</bold>
                  </font>
                 </property>
                 <property name="text">
-                 <string>-</string>
+                 <string>Julia-Menge:</string>
                 </property>
                </widget>
               </item>
-              <item row="2" column="1">
-               <widget class="QLabel" name="label_16">
-                <property name="font">
-                 <font>
-                  <pointsize>10</pointsize>
-                  <bold>false</bold>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Re.:</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="1">
-               <widget class="QLabel" name="label_17">
-                <property name="font">
-                 <font>
-                  <pointsize>10</pointsize>
-                  <bold>false</bold>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Im.:</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                </property>
-               </widget>
-              </item>
-              <item row="6" column="2">
-               <widget class="QLabel" name="label_julia_c_im">
-                <property name="font">
-                 <font>
-                  <pointsize>10</pointsize>
-                  <bold>false</bold>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>-</string>
-                </property>
-               </widget>
-              </item>
-              <item row="6" column="1">
-               <widget class="QLabel" name="label_32">
-                <property name="font">
-                 <font>
-                  <pointsize>10</pointsize>
-                  <bold>false</bold>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Im(c):</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="2">
-               <widget class="QLabel" name="bmRe">
-                <property name="font">
-                 <font>
-                  <pointsize>10</pointsize>
-                  <bold>false</bold>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>-</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="2">
+              <item row="0" column="3">
                <widget class="QLabel" name="lineEditScaleAbs">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
                 <property name="font">
                  <font>
                   <pointsize>10</pointsize>
@@ -294,8 +219,14 @@
                 </property>
                </widget>
               </item>
-              <item row="3" column="2">
-               <widget class="QLabel" name="bmIm">
+              <item row="2" column="3">
+               <widget class="QLabel" name="bmRe">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
                 <property name="font">
                  <font>
                   <pointsize>10</pointsize>
@@ -304,45 +235,6 @@
                 </property>
                 <property name="text">
                  <string>-</string>
-                </property>
-               </widget>
-              </item>
-              <item row="5" column="1">
-               <widget class="QLabel" name="label_31">
-                <property name="font">
-                 <font>
-                  <pointsize>10</pointsize>
-                  <bold>false</bold>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Re(c):</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="0" colspan="2">
-               <widget class="QLabel" name="label_12">
-                <property name="font">
-                 <font>
-                  <pointsize>10</pointsize>
-                  <bold>true</bold>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Vergrößerung:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0" colspan="3">
-               <widget class="QLabel" name="label_8">
-                <property name="font">
-                 <font>
-                  <pointsize>10</pointsize>
-                  <bold>true</bold>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Bildmittelpunkt:</string>
                 </property>
                </widget>
               </item>
@@ -362,16 +254,41 @@
                 </property>
                </spacer>
               </item>
-              <item row="4" column="0" colspan="2">
-               <widget class="QLabel" name="label_30">
+              <item row="6" column="3">
+               <widget class="QLabel" name="label_julia_c_im">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
                 <property name="font">
                  <font>
                   <pointsize>10</pointsize>
-                  <bold>true</bold>
+                  <bold>false</bold>
                  </font>
                 </property>
                 <property name="text">
-                 <string>Julia-Menge:</string>
+                 <string>-</string>
+                </property>
+               </widget>
+              </item>
+              <item row="5" column="1">
+               <widget class="QLabel" name="label_31">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>10</pointsize>
+                  <bold>false</bold>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Re(c):</string>
                 </property>
                </widget>
               </item>
@@ -391,10 +308,169 @@
                 </property>
                </spacer>
               </item>
+              <item row="2" column="1">
+               <widget class="QLabel" name="label_16">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>10</pointsize>
+                  <bold>false</bold>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Re.:</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0" colspan="4">
+               <widget class="QLabel" name="label_8">
+                <property name="font">
+                 <font>
+                  <pointsize>10</pointsize>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Bildmittelpunkt:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="6" column="1">
+               <widget class="QLabel" name="label_32">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>10</pointsize>
+                  <bold>false</bold>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Im(c):</string>
+                </property>
+               </widget>
+              </item>
+              <item row="5" column="3">
+               <widget class="QLabel" name="label_julia_c">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>10</pointsize>
+                  <bold>false</bold>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>-</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="3">
+               <widget class="QLabel" name="bmIm">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>10</pointsize>
+                  <bold>false</bold>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>-</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="1">
+               <widget class="QLabel" name="label_17">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>10</pointsize>
+                  <bold>false</bold>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Im.:</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0" colspan="3">
+               <widget class="QLabel" name="label_12">
+                <property name="font">
+                 <font>
+                  <pointsize>10</pointsize>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Vergrößerung:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="2" rowspan="2">
+               <spacer name="horizontalSpacer_12">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeType">
+                 <enum>QSizePolicy::Expanding</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>0</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item row="5" column="2" rowspan="2">
+               <spacer name="horizontalSpacer_2">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeType">
+                 <enum>QSizePolicy::Expanding</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>0</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
              </layout>
             </widget>
            </item>
-           <item row="3" column="0" colspan="2">
+           <item row="2" column="0" colspan="2">
             <widget class="QGroupBox" name="groupBox_5">
              <property name="font">
               <font>
@@ -409,45 +485,13 @@
               <bool>false</bool>
              </property>
              <layout class="QGridLayout" name="gridLayout_5">
+              <property name="leftMargin">
+               <number>20</number>
+              </property>
               <property name="topMargin">
                <number>13</number>
               </property>
-              <item row="0" column="2">
-               <widget class="QDoubleSpinBox" name="re">
-                <property name="font">
-                 <font>
-                  <pointsize>10</pointsize>
-                  <bold>false</bold>
-                 </font>
-                </property>
-                <property name="decimals">
-                 <number>15</number>
-                </property>
-                <property name="minimum">
-                 <double>-99.000000000000000</double>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="2">
-               <widget class="QDoubleSpinBox" name="im">
-                <property name="font">
-                 <font>
-                  <pointsize>10</pointsize>
-                  <bold>false</bold>
-                 </font>
-                </property>
-                <property name="suffix">
-                 <string> i</string>
-                </property>
-                <property name="decimals">
-                 <number>15</number>
-                </property>
-                <property name="minimum">
-                 <double>-99.000000000000000</double>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1">
+              <item row="0" column="0">
                <widget class="QLabel" name="label_2">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -469,20 +513,7 @@
                 </property>
                </widget>
               </item>
-              <item row="2" column="2">
-               <widget class="QLabel" name="label_iterations">
-                <property name="font">
-                 <font>
-                  <pointsize>10</pointsize>
-                  <bold>false</bold>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>-</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="1">
+              <item row="2" column="0">
                <widget class="QLabel" name="label_14">
                 <property name="font">
                  <font>
@@ -496,6 +527,54 @@
                </widget>
               </item>
               <item row="1" column="1">
+               <widget class="QDoubleSpinBox" name="im">
+                <property name="font">
+                 <font>
+                  <pointsize>10</pointsize>
+                  <bold>false</bold>
+                 </font>
+                </property>
+                <property name="suffix">
+                 <string> i</string>
+                </property>
+                <property name="decimals">
+                 <number>15</number>
+                </property>
+                <property name="minimum">
+                 <double>-99.000000000000000</double>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QDoubleSpinBox" name="re">
+                <property name="font">
+                 <font>
+                  <pointsize>10</pointsize>
+                  <bold>false</bold>
+                 </font>
+                </property>
+                <property name="decimals">
+                 <number>15</number>
+                </property>
+                <property name="minimum">
+                 <double>-99.000000000000000</double>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1">
+               <widget class="QLabel" name="label_iterations">
+                <property name="font">
+                 <font>
+                  <pointsize>10</pointsize>
+                  <bold>false</bold>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>-</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
                <widget class="QLabel" name="label_13">
                 <property name="font">
                  <font>
@@ -511,26 +590,10 @@
                 </property>
                </widget>
               </item>
-              <item row="0" column="0" rowspan="3">
-               <spacer name="horizontalSpacer_2">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeType">
-                 <enum>QSizePolicy::Fixed</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>20</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
              </layout>
             </widget>
            </item>
-           <item row="4" column="0" colspan="2">
+           <item row="3" column="0" colspan="2">
             <widget class="QGroupBox" name="groupBox_6">
              <property name="font">
               <font>
@@ -603,22 +666,6 @@
           </attribute>
           <layout class="QVBoxLayout" name="verticalLayout_5">
            <item>
-            <spacer name="verticalSpacer_4">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeType">
-              <enum>QSizePolicy::Fixed</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>15</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
             <widget class="QGroupBox" name="groupBoxMandelFarbe">
              <property name="font">
               <font>
@@ -637,7 +684,7 @@
              </property>
              <layout class="QFormLayout" name="formLayout">
               <property name="leftMargin">
-               <number>25</number>
+               <number>20</number>
               </property>
               <property name="topMargin">
                <number>13</number>
@@ -734,7 +781,7 @@
              </property>
              <layout class="QGridLayout" name="gridLayout_3">
               <property name="leftMargin">
-               <number>25</number>
+               <number>20</number>
               </property>
               <property name="topMargin">
                <number>13</number>
@@ -1400,22 +1447,6 @@
           </attribute>
           <layout class="QFormLayout" name="formLayout_2">
            <item row="0" column="0" colspan="2">
-            <spacer name="verticalSpacer_5">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeType">
-              <enum>QSizePolicy::Fixed</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>10</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="1" column="0" colspan="2">
             <widget class="QGroupBox" name="groupBox_7">
              <property name="font">
               <font>
@@ -1427,6 +1458,9 @@
               <string>Bild</string>
              </property>
              <layout class="QFormLayout" name="formLayout_12">
+              <property name="leftMargin">
+               <number>20</number>
+              </property>
               <item row="0" column="0">
                <widget class="QLabel" name="label_3">
                 <property name="font">
@@ -1582,7 +1616,7 @@
              </layout>
             </widget>
            </item>
-           <item row="2" column="0" colspan="2">
+           <item row="1" column="0" colspan="2">
             <widget class="QGroupBox" name="groupBox_8">
              <property name="font">
               <font>
@@ -1594,6 +1628,9 @@
               <string>Berechnung</string>
              </property>
              <layout class="QFormLayout" name="formLayout_13">
+              <property name="leftMargin">
+               <number>20</number>
+              </property>
               <item row="0" column="0">
                <widget class="QLabel" name="label_5">
                 <property name="font">
@@ -1661,7 +1698,7 @@
              </layout>
             </widget>
            </item>
-           <item row="3" column="0" colspan="2">
+           <item row="2" column="0" colspan="2">
             <widget class="QGroupBox" name="groupBox_9">
              <property name="font">
               <font>
@@ -1673,6 +1710,9 @@
               <string>Anzeige</string>
              </property>
              <layout class="QFormLayout" name="formLayout_14">
+              <property name="leftMargin">
+               <number>20</number>
+              </property>
               <item row="0" column="0">
                <widget class="QLabel" name="label_27">
                 <property name="font">
@@ -1793,7 +1833,7 @@
              </layout>
             </widget>
            </item>
-           <item row="4" column="0">
+           <item row="3" column="0">
             <widget class="QLabel" name="label_10">
              <property name="maximumSize">
               <size>
@@ -1812,7 +1852,7 @@
              </property>
             </widget>
            </item>
-           <item row="4" column="1">
+           <item row="3" column="1">
             <widget class="QComboBox" name="comboBox_precession">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -1849,7 +1889,7 @@
              </item>
             </widget>
            </item>
-           <item row="5" column="0" colspan="2">
+           <item row="4" column="0" colspan="2">
             <spacer name="verticalSpacer">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -1896,6 +1936,9 @@
               <bool>false</bool>
              </property>
              <layout class="QGridLayout" name="gridLayout_4">
+              <property name="leftMargin">
+               <number>20</number>
+              </property>
               <item row="1" column="0" rowspan="2">
                <spacer name="horizontalSpacer_8">
                 <property name="orientation">
@@ -2278,7 +2321,7 @@
                  <number>1</number>
                 </property>
                 <property name="maximum">
-                 <number>5</number>
+                 <number>20</number>
                 </property>
                 <property name="value">
                  <number>2</number>
@@ -2349,7 +2392,7 @@
                <number>6</number>
               </property>
               <property name="leftMargin">
-               <number>25</number>
+               <number>20</number>
               </property>
               <property name="topMargin">
                <number>9</number>
@@ -2493,7 +2536,7 @@
                  <number>1</number>
                 </property>
                 <property name="maximum">
-                 <number>5</number>
+                 <number>20</number>
                 </property>
                </widget>
               </item>
@@ -2688,6 +2731,8 @@
     <addaction name="separator"/>
     <addaction name="actionEinstellungen_importien"/>
     <addaction name="actionEinstellungen_exportieren"/>
+    <addaction name="separator"/>
+    <addaction name="actionBeenden"/>
    </widget>
    <widget class="QMenu" name="menuAnsicht">
     <property name="title">
@@ -2826,6 +2871,11 @@
   <action name="actionEinstellungen_exportieren">
    <property name="text">
     <string>Einstellungen exportieren</string>
+   </property>
+  </action>
+  <action name="actionBeenden">
+   <property name="text">
+    <string>Beenden</string>
    </property>
   </action>
  </widget>

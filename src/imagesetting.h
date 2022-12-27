@@ -55,9 +55,9 @@ struct ImageSetting {
            logEscape,
            escape_radius;
 
-    ssize_t img_w;
-    ssize_t img_h;
-    size_t maxIterations;
+    long long img_w;
+    long long img_h;
+    unsigned long long maxIterations;
 
     double juliaStart_img,
            juliaStart_real;

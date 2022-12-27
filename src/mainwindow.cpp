@@ -45,6 +45,30 @@ MainWindow::MainWindow(QWidget *parent)
 
         ui->spinBoxHauptScreen->setVisible(false);
         ui->label_34->setVisible(false);
+
+
+        //HIER DIE SCHRIFTGRÖßEN ALLER WIDGETS SETZTEN && LAYOUT AUSRICHTUNG && AUTO INCREASEMENT
+        //-> Wechselt in Mac zu standart Mac schrift, die kleiner ist!!!!
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         * */
+
     }
 
 
@@ -1034,7 +1058,7 @@ void MainWindow::threadFinished()
 //        delete sender_obj;
 }
 
-void MainWindow::on_pushButtonSaveImg_clicked()
+void MainWindow::pushButtonSaveImg_clicked()
 {
 
     QImageWriter imgWriter;
@@ -1766,7 +1790,7 @@ void MainWindow::on_im_valueChanged(double arg1)
 #include <QImageWriter>
 #include <QImageWriter>
 
-void MainWindow::on_pushButton_copy_clicked()
+void MainWindow::pushButton_copy_clicked()
 {
     QApplication::clipboard()->setImage(*this->currentImg->image);
     this->ui->statusbar->showMessage("Bild {Re(" + QString::number(this->currentImg->gaus_mid_re) + ") Im(" + QString::number(this->currentImg->gaus_mid_im) + ") 1:"
@@ -2007,7 +2031,6 @@ void MainWindow::on_comboBox_theme_currentIndexChanged(int index)
                 data.insert(index2, "*/");
             }
         }
-        qDebug() << data;
     }
 
 
@@ -2016,7 +2039,7 @@ void MainWindow::on_comboBox_theme_currentIndexChanged(int index)
 }
 
 
-void MainWindow::on_pushButtonShowFullScreen_clicked()
+void MainWindow::pushButtonShowFullScreen_clicked()
 {
     if(this->fullScreenView->isVisible()) {
         this->setFullScreenWindowVisible(false);
@@ -2038,13 +2061,13 @@ void MainWindow::on_spinBoxHauptScreen_valueChanged(int arg1)
     this->fullScreenView->setHdpiScale( scalefactor );
 }
 
-void MainWindow::on_pushButtonOpenImgSerieDialog_clicked()
+void MainWindow::pushButtonOpenImgSerieDialog_clicked()
 {
     this->startImgFolge();
 }
 
 
-void MainWindow::on_pushButtonOpenVideoDialog_clicked()
+void MainWindow::pushButtonOpenVideoDialog_clicked()
 {
     this->createVideo();
 }
@@ -2052,13 +2075,13 @@ void MainWindow::on_pushButtonOpenVideoDialog_clicked()
 
 void MainWindow::on_actionBild_speichern_unter_triggered()
 {
-    this->on_pushButtonSaveImg_clicked();
+    this->pushButtonSaveImg_clicked();
 }
 
 
 void MainWindow::on_actionBild_in_Zwischenablage_kopieren_triggered()
 {
-    this->on_pushButton_copy_clicked();
+    this->pushButton_copy_clicked();
 }
 
 
@@ -2101,7 +2124,7 @@ void MainWindow::on_radioButtonKoords_2_clicked(bool)
 
 void MainWindow::on_actionEinstellungen_exportieren_triggered()
 {
-    QString path = QFileDialog::getSaveFileName(this, "...");
+    QString path = QFileDialog::getSaveFileName(this, "Einstellungen speichern in");
     if(path == "")
         return;
     if(currentImg->store_setting(path) == 0)
@@ -2114,7 +2137,7 @@ void MainWindow::on_actionEinstellungen_exportieren_triggered()
 
 void MainWindow::on_actionEinstellungen_importien_triggered()
 {
-    QString path = QFileDialog::getOpenFileName(this, "...");
+    QString path = QFileDialog::getOpenFileName(this, "Einstellungsen importieren aus");
     if(path == "")
         return;
     qDebug() << path;
@@ -2127,6 +2150,13 @@ void MainWindow::on_actionEinstellungen_importien_triggered()
         ui->statusbar->showMessage("Lade Einstellungen aus '" + path + "'...", 3000);
     } else {
         ui->statusbar->showMessage("Laden der Einstellungen aus '" + path + "' fehlgeschlagen!", 3000);
+        delete imgS;
     }
+}
+
+
+void MainWindow::on_actionBeenden_triggered()
+{
+    QApplication::exit();
 }
 

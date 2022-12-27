@@ -14,9 +14,11 @@ ImageSetting::ImageSetting(int id, double scale, double re, double im)
 ImageSetting::ImageSetting(int id, QString file_path)
 {
     this->id = id;
+    this->maxIterations = 0;
     loadFromFileWasOK = true;
     /* open file */
     QFile myFile(file_path);
+
 
     /* load */
     if(myFile.open(QIODevice::ReadOnly)) {
@@ -47,7 +49,13 @@ ImageSetting::ImageSetting(int id, QString file_path)
         return;
     }
 
+    qDebug() << scale();
 
+    if(this->maxIterations == 0) {
+        qDebug() << "Got invaild data";
+        loadFromFileWasOK = false;
+        return;
+    }
 
     /// init...
     //: gaus_mid_re(re), gaus_mid_im(im), scaleValue(scale), has_hue(false), hue(nullptr)
