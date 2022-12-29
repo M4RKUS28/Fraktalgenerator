@@ -130,7 +130,12 @@ public:
 
     void updateMidPos(bool clear = false);
     //buttonColors
-    QColor buttonColors[5];
+    QColor buttonColors[8];
+    QColor buttonColors_save[8];
+    QColor currentBackgroundColor;
+    QColor fraktalColor;
+
+    void updateButtonColors();
 
     QMap<int, bool> keyPressed;
 
@@ -181,6 +186,9 @@ public:
 
     void setFullScreenWindowVisible(bool state);
 
+    QColor getFraktalColor();
+    void setFratalColor(int index, QColor eigen);
+
 
 
 
@@ -204,8 +212,6 @@ private slots:
     void on_spinBoxW_valueChanged(int arg1);
 
     void on_spinBoxH_valueChanged(int arg1);
-
-    void on_comboBox_background_color_currentIndexChanged(int index);
 
     void on_groupBoxMandelFarbe_toggled(bool arg1);
 
@@ -303,6 +309,22 @@ private slots:
     void on_actionEinstellungen_importien_triggered();
 
     void on_actionBeenden_triggered();
+
+    void on_pushButton_color6_clicked();
+
+    void on_pushButton_color7_clicked();
+
+    void on_pushButton_color8_clicked();
+
+    void on_radioButtonF6_toggled(bool checked);
+
+    void on_radioButtonF7_toggled(bool checked);
+
+    void on_radioButtonF8_toggled(bool checked);
+
+    void on_pushButtonFraktalColor_clicked();
+
+    void on_comboBox_2_currentIndexChanged(int index);
 
 private:
     Ui::MainWindow *ui;

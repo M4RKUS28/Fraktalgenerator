@@ -137,18 +137,16 @@ void ::ImageSetting::setIterationCountAt(ssize_t x, ssize_t y, size_t iterations
     this->iterations[x][y] = iterations;
 }
 
-void ImageSetting::setColorSettings(int palette, bool normalized, double logEscape, bool fixedColor, QString fixFraktalColor,
-                                    bool inverted, double escape_radius, QString backgroundColor)
+void ImageSetting::setColorSettings(int palette, bool normalized, double logEscape, int fractalColorIndex, QColor fixFraktalColor,
+                                    bool inverted, double escape_radius)
 {
     this->normalized = normalized;
     this->logEscape = logEscape;
-    this->fixedColor = fixedColor;
+    this->fraktalColor_index = fractalColorIndex;
     this->fixFraktalColor = fixFraktalColor;
     this->inverted = inverted;
     this->escape_radius = escape_radius;
     this->palette = palette;
-    this->backgroundColor = backgroundColor;
-
 
 }
 

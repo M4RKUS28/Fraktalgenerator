@@ -24,8 +24,8 @@ struct ImageSetting {
 
     void cleanUP();
     void setIterationCountAt(ssize_t x, ssize_t y, size_t iterations);
-    void setColorSettings(int palette, bool normalized, double logEscape, bool fixedColor, QString fixFraktalColor,
-                          bool inverted, double escape_radius, QString backgroundColor);
+    void setColorSettings(int palette, bool normalized, double logEscape, int fractalColorIndex, QColor fixFraktalColor,
+                          bool inverted, double escape_radius);
 
     size_t getIterationCountAt(QPoint pos);
     size_t getIterationCountAt(ssize_t x, ssize_t y);
@@ -65,9 +65,11 @@ struct ImageSetting {
     bool isMandelbrotSet;
 
     //Color settings
-    bool fixedColor, inverted, normalized, has_hue;
-    int palette;
-    QString fixFraktalColor, backgroundColor;
+    bool inverted, normalized, has_hue;
+
+    int palette, fraktalColor_index;
+
+    QColor fixFraktalColor;
 
     QList<QPair<int, QColor>> colors;
     unsigned hsv_saturation, spinBoxHSV_value, spinBoxHSV_alpha, farbwechselIntervall;
@@ -80,8 +82,8 @@ struct ImageSetting {
     friend QDataStream &operator<< (QDataStream &out, const ImageSetting &rhs)
     {
         out << rhs.id << rhs.scaleValue << rhs.gaus_mid_re << rhs.gaus_mid_im << rhs.img_w << rhs.img_h << rhs.maxIterations << rhs.isMandelbrotSet
-            << rhs.logEscape << rhs.escape_radius << rhs.juliaStart_img << rhs.juliaStart_real << rhs.fixedColor << rhs.inverted << rhs.normalized
-            << rhs.palette << rhs.fixFraktalColor << rhs.backgroundColor << rhs.colors << rhs.hsv_saturation << rhs.spinBoxHSV_value
+            << rhs.logEscape << rhs.escape_radius << rhs.juliaStart_img << rhs.juliaStart_real << rhs.fraktalColor_index << rhs.inverted << rhs.normalized
+            << rhs.palette << rhs.fixFraktalColor << rhs.colors << rhs.hsv_saturation << rhs.spinBoxHSV_value
             << rhs.spinBoxHSV_alpha << rhs.farbwechselIntervall;
         return out;
     }
@@ -89,8 +91,8 @@ struct ImageSetting {
     friend QDataStream &operator>> (QDataStream &in, ImageSetting &rhs)
     {
         in >> rhs.id >> rhs.scaleValue >> rhs.gaus_mid_re >> rhs.gaus_mid_im >> rhs.img_w >> rhs.img_h >> rhs.maxIterations >> rhs.isMandelbrotSet
-            >> rhs.logEscape >> rhs.escape_radius >> rhs.juliaStart_img >> rhs.juliaStart_real >> rhs.fixedColor >> rhs.inverted >> rhs.normalized
-            >> rhs.palette >> rhs.fixFraktalColor >> rhs.backgroundColor >>rhs.colors >> rhs.hsv_saturation >> rhs.spinBoxHSV_value
+            >> rhs.logEscape >> rhs.escape_radius >> rhs.juliaStart_img >> rhs.juliaStart_real >> rhs.fraktalColor_index >> rhs.inverted >> rhs.normalized
+            >> rhs.palette >> rhs.fixFraktalColor >>rhs.colors >> rhs.hsv_saturation >> rhs.spinBoxHSV_value
             >> rhs.spinBoxHSV_alpha >> rhs.farbwechselIntervall;
         return in;
     }

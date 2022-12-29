@@ -114,7 +114,7 @@ QColor WorkerThread::getPreColor(size_t iters, double normalizedItC, const Image
         return Qt::black;
     }
 
-    if(iters == maxIt && imgS->fixedColor) {
+    if(iters == maxIt) {
         return QColor(imgS->fixFraktalColor);
     }
 
@@ -141,6 +141,7 @@ QColor WorkerThread::getPreColor(size_t iters, double normalizedItC, const Image
         break;
 
 
+        //Intervallverlauf
     case 2: {
         if(iters == maxIt || maxIt == 0  || farbStufenAnzahl == 0)
             return Qt::black;
@@ -162,9 +163,12 @@ QColor WorkerThread::getPreColor(size_t iters, double normalizedItC, const Image
 
         break;
 
+        //Absoluter Verlauf
     } case 1: {
         if(iters == maxIt || maxIt == 0 || farbStufenAnzahl == 0)
             return Qt::black;
+        else if(farbStufenAnzahl == 1)
+            return imgS->colors[0].second;
 
 
         // maximale Iterationszahl aufteilen in Stücke, ein Stück = Farbübergang zu der nächsten Farbe

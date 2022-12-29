@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
       isBackOrVor(false),
       ignoreXPosEdited(false),
       ignoreYPosEdited(false),
+      currentBackgroundColor(QColor("white")),
       fullScreenView(new ImageView),
       useOldPosForImgSerie(false),
       ui(new Ui::MainWindow)
@@ -33,10 +34,16 @@ MainWindow::MainWindow(QWidget *parent)
 
     //setup ui
     ui->setupUi(this);
-    ui->comboBox_palette->setCurrentIndex(0);
-    ui->stackedWidgetExtraSettings->setHidden(true);
+    ui->comboBox_palette->setCurrentIndex(2);
+    on_comboBox_palette_currentIndexChanged(2);
+
+    ui->tabWidget->setCurrentIndex(0);
     //die einstellungen sind unnütz:
     ui->comboBox_precession->setHidden(true);
+
+    //Hide extra pushButtonFraktalColor option button
+    ui->pushButtonFraktalColor->setHidden(true);
+
 
     if( QSysInfo::productType() == "macos" /*Qt 6*/ || QSysInfo::productType() == "macos"  /*Qt 5*/ ) {
         // REMOVE FULL SCREEN MODE IN MAC, because not working at the moment
@@ -73,16 +80,21 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     // setup default color settings:
-    buttonColors[0] = QColor::fromRgb(37, 27, 255);
-    ui->pushButton_color1->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[0].name() );
-    buttonColors[1] = QColor::fromRgb(235, 156, 18);
-    ui->pushButton_color2->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[1].name() );
-    buttonColors[2] = QColor::fromRgb(238, 31, 235);
-    ui->pushButton_color3->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[2].name() );
-    buttonColors[3] = QColor::fromRgb(255, 255, 255);
-    ui->pushButton_color4->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[3].name() );
-    buttonColors[4] = QColor::fromRgb(255, 255, 255);
-    ui->pushButton_color5->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[4].name() );
+    buttonColors[0] = QColor::fromRgb(0,0,0); //(37, 27, 255);
+    buttonColors[1] = QColor::fromRgb(0, 255, 255); //(235, 156, 18);
+    buttonColors[2] = QColor::fromRgb(235, 180, 15); //(238, 31, 235);
+    for(int i = 3; i < 8; i++)
+        buttonColors[i] = QColor::fromRgb(255, 255, 255);
+    updateButtonColors();
+
+    //clear save button array
+    for(int i = 0; i < 8; i++)
+        buttonColors_save[i] = QColor::fromRgb(255, 255, 255);
+
+    fraktalColor = QColor::fromRgb(255, 255, 255);
+    ui->pushButtonFraktalColor->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + fraktalColor.name() );
+
+
 
     //save start size
     int width = (QApplication::screens().at(0)->geometry().width() * QApplication::screens().at(0)->devicePixelRatio()),
@@ -90,7 +102,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     //setup currentImage
     currentImg->init(width, height, ui->spinBoxMaxIterations->value(), true);
-    currentImg->painter->fillRect(currentImg->image->rect(), QColor(ui->comboBox_background_color->currentText()));
+    currentImg->painter->fillRect(currentImg->image->rect(), currentBackgroundColor);
 
     // connect signals
     connect(ui->imageView, SIGNAL(mouseMove(QPoint)), this, SLOT(mouse_move_in_img(QPoint)));
@@ -169,6 +181,18 @@ void MainWindow::updateMidPos(bool clear)
 
     }
 
+}
+
+void MainWindow::updateButtonColors()
+{
+    ui->pushButton_color1->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[0].name() );
+    ui->pushButton_color2->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[1].name() );
+    ui->pushButton_color3->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[2].name() );
+    ui->pushButton_color4->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[3].name() );
+    ui->pushButton_color5->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[4].name() );
+    ui->pushButton_color6->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[5].name() );
+    ui->pushButton_color7->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[6].name() );
+    ui->pushButton_color8->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[7].name() );
 }
 
 void MainWindow::timerEvent(QTimerEvent *)
@@ -535,9 +559,11 @@ void MainWindow::updateUiWithImageSetting(ImageSetting *imgs)
     ui->comboBox_palette->setCurrentIndex(imgs->palette);
     ui->radioButton_normalized->setChecked( imgs->normalized );
     ui->radioButton_invert->setChecked( imgs->inverted );
-    ui->groupBoxMandelFarbe->setChecked( imgs->fixedColor );
-    ui->comboBoxMandelColor->setCurrentText( imgs->fixFraktalColor );
-    ui->comboBox_background_color->setCurrentText( imgs->backgroundColor );
+
+    //Setzt Fraktal Farbe... Entweder Index
+
+    this->setFratalColor(imgs->fraktalColor_index, imgs->fixFraktalColor);
+
     ui->spinBoxFarbWechselIntervall->setValue( imgs->farbwechselIntervall );
 
 
@@ -546,41 +572,58 @@ void MainWindow::updateUiWithImageSetting(ImageSetting *imgs)
     ui->radioButtonF3->setChecked(false);
     ui->radioButtonF4->setChecked(false);
     ui->radioButtonF5->setChecked(false);
+    ui->radioButtonF6->setChecked(false);
+    ui->radioButtonF7->setChecked(false);
+    ui->radioButtonF8->setChecked(false);
+
+
+    //set all used colors to spezific color
     for(auto & e : imgs->colors) {
         switch (e.first) {
         case 1:
             buttonColors[0] = e.second;
             ui->radioButtonF1->setChecked(true);
-            ui->pushButton_color1->setStyleSheet(STYLE_SHEET_COLOR_BUTTON+ buttonColors[0].name() );
 
             break;
         case 2:
             buttonColors[1] = e.second;
             ui->radioButtonF2->setChecked(true);
-            ui->pushButton_color2->setStyleSheet(STYLE_SHEET_COLOR_BUTTON+ buttonColors[1].name() );
 
             break;
         case 3:
             buttonColors[2] = e.second;
             ui->radioButtonF3->setChecked(true);
-            ui->pushButton_color3->setStyleSheet(STYLE_SHEET_COLOR_BUTTON+ buttonColors[2].name() );
 
             break;
         case 4:
             buttonColors[3] = e.second;
             ui->radioButtonF4->setChecked(true);
-            ui->pushButton_color4->setStyleSheet(STYLE_SHEET_COLOR_BUTTON+ buttonColors[3].name() );
 
             break;
         case 5:
             buttonColors[4] = e.second;
             ui->radioButtonF5->setChecked(true);
-            ui->pushButton_color5->setStyleSheet(STYLE_SHEET_COLOR_BUTTON+ buttonColors[4].name() );
+            break;
 
+        case 6:
+            buttonColors[5] = e.second;
+            ui->radioButtonF6->setChecked(true);
+            break;
+
+        case 7:
+            buttonColors[6] = e.second;
+            ui->radioButtonF7->setChecked(true);
+            break;
+
+        case 8:
+            buttonColors[7] = e.second;
+            ui->radioButtonF8->setChecked(true);
             break;
         }
 
     }
+    //update gui
+    updateButtonColors();
 
     ui->spinBoxHSV_satursion->setValue(imgs->hsv_saturation);
     ui->spinBoxHSV_value->setValue(imgs->spinBoxHSV_value);
@@ -613,7 +656,7 @@ void MainWindow::startRefresh(ImageSetting *set, bool appendToList)
     ssize_t parts = set->img_w / tc;
 
     //fill image with background color:
-    set->painter->fillRect(set->image->rect(), QColor(ui->comboBox_background_color->currentText()));
+    set->painter->fillRect(set->image->rect(), currentBackgroundColor);
     this->updateImage();
 
     //reset progress bar
@@ -625,11 +668,10 @@ void MainWindow::startRefresh(ImageSetting *set, bool appendToList)
         set->setColorSettings(this->ui->comboBox_palette->currentIndex(),
                              ui->radioButton_normalized->isChecked(),
                              log(log(ui->doubleSpinBoxEscapeR->value())),
-                             ui->groupBoxMandelFarbe->isChecked(),
-                             ui->comboBoxMandelColor->currentText(),
+                             ui->comboBoxMandelColor->currentIndex(),
+                             this->getFraktalColor(),
                              ui->radioButton_invert->isChecked(),
-                             ui->doubleSpinBoxEscapeR->value(),
-                             ui->comboBox_background_color->currentText());
+                             ui->doubleSpinBoxEscapeR->value() );
 
         set->colors.clear();
         if(ui->radioButtonF1->isChecked())
@@ -642,6 +684,12 @@ void MainWindow::startRefresh(ImageSetting *set, bool appendToList)
             set->colors.push_back(QPair<int, QColor>(4, buttonColors[3]));
         if(ui->radioButtonF5->isChecked())
             set->colors.push_back(QPair<int, QColor>(5, buttonColors[4]));
+        if(ui->radioButtonF6->isChecked())
+            set->colors.push_back(QPair<int, QColor>(6, buttonColors[5]));
+        if(ui->radioButtonF7->isChecked())
+            set->colors.push_back(QPair<int, QColor>(7, buttonColors[6]));
+        if(ui->radioButtonF8->isChecked())
+            set->colors.push_back(QPair<int, QColor>(8, buttonColors[7]));
 
         set->hsv_saturation = ui->spinBoxHSV_satursion->value();
         set->spinBoxHSV_value = ui->spinBoxHSV_value->value();
@@ -724,10 +772,7 @@ void MainWindow::afterColoring(ImageSetting *set)
 
             for(ssize_t y = 0; y < set->img_h; y++) {
                 if(set->getIterationCountAt(x, y) == set->maxIterations) {
-                    if(!set->fixedColor)
-                        set->painter->setPen(Qt::black);
-                    else
-                        set->painter->setPen(QColor(ui->comboBoxMandelColor->currentText()));
+                    set->painter->setPen( this->getFraktalColor() );
                 } else {
                     set->painter->setPen(QColor::fromHsv(set->hue[x][y] * 359, set->hsv_saturation,
                                                                set->spinBoxHSV_value , set->spinBoxHSV_alpha));
@@ -1319,6 +1364,7 @@ void MainWindow::setFullScreenWindowVisible(bool state)
 }
 
 
+
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
     qDebug() << event << " --> ";
@@ -1390,6 +1436,14 @@ void MainWindow::on_comboBox_palette_currentIndexChanged(int index)
         ui->stackedWidgetExtraSettings->setVisible(true);
         break;
 
+        // wenn EIGEN ausgewählt,
+        // lade undspeichere in save und
+    case 187:
+
+    for(int i = 0; i < 8; i++)
+        this->buttonColors_save[i] = buttonColors[i];
+
+
     case 3:
         ui->radioButton_normalized->setEnabled(false);
         ui->radioButton_invert->setEnabled(true);
@@ -1447,13 +1501,6 @@ void MainWindow::on_spinBoxH_valueChanged(int)
 }
 
 
-void MainWindow::on_comboBox_background_color_currentIndexChanged(int)
-{
-    this->editedSettings = true;
-    this->setOperationMode();
-}
-
-
 void MainWindow::on_groupBoxMandelFarbe_toggled(bool)
 {
     this->editedSettings = true;
@@ -1465,6 +1512,40 @@ void MainWindow::on_comboBoxMandelColor_currentIndexChanged(int)
 {
     this->editedSettings = true;
     this->setOperationMode();
+    if(ui->comboBoxMandelColor->currentText() == "<andere>") {
+        ui->pushButtonFraktalColor->setVisible(true);
+    } else {
+        ui->pushButtonFraktalColor->setVisible(false);
+    }
+}
+
+
+QColor MainWindow::getFraktalColor()
+{
+    if(ui->comboBoxMandelColor->currentText() == "<andere>") {
+        return fraktalColor;
+    } else {
+        return QColor(ui->comboBoxMandelColor->currentText());
+    }
+}
+
+void MainWindow::setFratalColor(int index, QColor eigen)
+{
+    if(index >= 0 && index < ui->comboBoxMandelColor->count()) {
+
+        ui->comboBoxMandelColor->setCurrentIndex(index);
+
+        if(ui->comboBoxMandelColor->currentText() == "<andere>") {
+            ui->pushButtonFraktalColor->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + eigen.name() );
+            fraktalColor = eigen;
+            ui->pushButtonFraktalColor->setVisible(true);
+        } else {
+            ui->pushButtonFraktalColor->setVisible(false);
+        }
+
+
+
+    }
 }
 
 
@@ -1935,6 +2016,80 @@ void MainWindow::on_pushButton_color5_clicked()
     this->ui->comboBox_theme->setCurrentIndex(index);
 }
 
+void MainWindow::on_pushButton_color6_clicked()
+{
+    int index = this->ui->comboBox_theme->currentIndex();
+    this->ui->comboBox_theme->setCurrentIndex(0);
+    auto color = QColorDialog::getColor(buttonColors[5], this, "Farbe 6");
+    if(!color.isValid()) {
+        this->ui->comboBox_theme->setCurrentIndex(index);
+        return;
+    }
+    buttonColors[5] = color;
+
+    ui->pushButton_color6->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[5].name() );
+    editedSettings = true;
+    this->setOperationMode();
+    this->ui->comboBox_theme->setCurrentIndex(index);
+}
+
+
+
+void MainWindow::on_pushButton_color7_clicked()
+{
+    int index = this->ui->comboBox_theme->currentIndex();
+    this->ui->comboBox_theme->setCurrentIndex(0);
+    auto color = QColorDialog::getColor(buttonColors[6], this, "Farbe 7");
+    if(!color.isValid()) {
+        this->ui->comboBox_theme->setCurrentIndex(index);
+        return;
+    }
+    buttonColors[6] = color;
+
+    ui->pushButton_color7->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[6].name() );
+    editedSettings = true;
+    this->setOperationMode();
+    this->ui->comboBox_theme->setCurrentIndex(index);
+}
+
+
+void MainWindow::on_pushButton_color8_clicked()
+{
+    int index = this->ui->comboBox_theme->currentIndex();
+    this->ui->comboBox_theme->setCurrentIndex(0);
+    auto color = QColorDialog::getColor(buttonColors[7], this, "Farbe 8");
+    if(!color.isValid()) {
+        this->ui->comboBox_theme->setCurrentIndex(index);
+        return;
+    }
+    buttonColors[7] = color;
+
+    ui->pushButton_color8->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[7].name() );
+    editedSettings = true;
+    this->setOperationMode();
+    this->ui->comboBox_theme->setCurrentIndex(index);
+}
+
+
+
+void MainWindow::on_pushButtonFraktalColor_clicked()
+{
+    int index = this->ui->comboBox_theme->currentIndex();
+    this->ui->comboBox_theme->setCurrentIndex(0);
+    auto color = QColorDialog::getColor(fraktalColor, this, "Farbe 8");
+    if(!color.isValid()) {
+        this->ui->comboBox_theme->setCurrentIndex(index);
+        return;
+    }
+    fraktalColor = color;
+
+    ui->pushButtonFraktalColor->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + fraktalColor.name() );
+    editedSettings = true;
+    this->setOperationMode();
+    this->ui->comboBox_theme->setCurrentIndex(index);
+}
+
+
 
 void MainWindow::on_radioButtonF1_toggled(bool)
 {
@@ -1970,6 +2125,26 @@ void MainWindow::on_radioButtonF5_toggled(bool)
     this->setOperationMode();
 }
 
+void MainWindow::on_radioButtonF6_toggled(bool)
+{
+    editedSettings = true;
+    this->setOperationMode();
+}
+
+
+void MainWindow::on_radioButtonF7_toggled(bool)
+{
+    editedSettings = true;
+    this->setOperationMode();
+}
+
+
+void MainWindow::on_radioButtonF8_toggled(bool)
+{
+    editedSettings = true;
+    this->setOperationMode();
+}
+
 
 void MainWindow::on_comboBox_theme_currentIndexChanged(int index)
 {
@@ -1978,12 +2153,17 @@ void MainWindow::on_comboBox_theme_currentIndexChanged(int index)
 
     if(index == 0) {
         this->setStyleSheet("");
+        currentBackgroundColor = "white";
         return;
 
     } else if( index == 1) {
         fileName = ":/qss/qss_icons/lightstyle.qss";
+        currentBackgroundColor = "white";
+
     } else {
         fileName = ":/qss/qss_icons/darkstyle.qss";
+        currentBackgroundColor = QColor("#19232D");
+
     }
 
     QFile file(fileName);
@@ -2158,5 +2338,25 @@ void MainWindow::on_actionEinstellungen_importien_triggered()
 void MainWindow::on_actionBeenden_triggered()
 {
     QApplication::exit();
+}
+
+
+
+
+
+
+
+
+void MainWindow::on_comboBox_2_currentIndexChanged(int index)
+{
+    if(index == 0) {
+        ui->spinBoxFarbWechselIntervall->show();
+        ui->label_farbwechselintervall->show();
+
+
+    } else {
+        ui->label_farbwechselintervall->hide();
+        ui->spinBoxFarbWechselIntervall->hide();
+    }
 }
 
