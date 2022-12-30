@@ -805,48 +805,106 @@
               </property>
               <item row="1" column="1" colspan="2">
                <widget class="QComboBox" name="comboBox_palette">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>215</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
                 <property name="font">
                  <font>
                   <pointsize>10</pointsize>
-                  <bold>false</bold>
+                  <bold>true</bold>
                  </font>
                 </property>
                 <property name="currentIndex">
                  <number>0</number>
                 </property>
+                <property name="iconSize">
+                 <size>
+                  <width>80</width>
+                  <height>16</height>
+                 </size>
+                </property>
                 <item>
                  <property name="text">
-                  <string extracomment="Verlauf des Alpha Kanals einer Rgba-Farbe. Kombenierbar mit Hintergurndfarbe und fester Fraktal Farbe.">Farbverlauf:</string>
+                  <string>RGB Farbverlauf:</string>
                  </property>
                 </item>
                 <item>
                  <property name="text">
-                  <string>Absoluter Farbverlauf</string>
+                  <string>&lt;eigen&gt;</string>
                  </property>
                 </item>
                 <item>
                  <property name="text">
-                  <string>Relativer Farbverlauf</string>
+                  <string>A</string>
                  </property>
                 </item>
                 <item>
                  <property name="text">
-                  <string>Durchsichtiger Hintergrund</string>
+                  <string>B</string>
                  </property>
                 </item>
                 <item>
                  <property name="text">
-                  <string>HSV-Farbschema ^ 1.5</string>
+                  <string>C</string>
                  </property>
                 </item>
                 <item>
                  <property name="text">
-                  <string>HSV-Farbschema</string>
+                  <string>D</string>
                  </property>
                 </item>
                 <item>
                  <property name="text">
-                  <string>Histogramm</string>
+                  <string>E</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>F</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>G</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>H</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>HSV Farbverlauf:</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>1</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>2</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Histogram coloring:</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>I</string>
                  </property>
                 </item>
                </widget>
@@ -1255,7 +1313,7 @@
                      <widget class="QRadioButton" name="radioButtonF6">
                       <property name="font">
                        <font>
-                        <pointsize>12</pointsize>
+                        <pointsize>10</pointsize>
                         <bold>false</bold>
                        </font>
                       </property>
@@ -1284,7 +1342,7 @@
                      <widget class="QRadioButton" name="radioButtonF7">
                       <property name="font">
                        <font>
-                        <pointsize>12</pointsize>
+                        <pointsize>10</pointsize>
                         <bold>false</bold>
                        </font>
                       </property>
@@ -1313,7 +1371,7 @@
                      <widget class="QRadioButton" name="radioButtonF8">
                       <property name="font">
                        <font>
-                        <pointsize>12</pointsize>
+                        <pointsize>10</pointsize>
                         <bold>false</bold>
                        </font>
                       </property>
@@ -1370,7 +1428,7 @@
                    </widget>
                   </item>
                   <item row="1" column="1">
-                   <widget class="QComboBox" name="comboBox_2">
+                   <widget class="QComboBox" name="comboBox_intervall_absolut">
                     <property name="font">
                      <font>
                       <pointsize>10</pointsize>
@@ -1406,7 +1464,7 @@
                    </spacer>
                   </item>
                   <item row="4" column="1">
-                   <widget class="QSpinBox" name="spinBoxFarbWechselIntervall">
+                   <widget class="QSpinBox" name="spinBoxFarbWechselIntervalln">
                     <property name="font">
                      <font>
                       <pointsize>10</pointsize>
@@ -1422,7 +1480,7 @@
                    </widget>
                   </item>
                   <item row="3" column="0" colspan="2">
-                   <widget class="QLabel" name="label_farbwechselintervall">
+                   <widget class="QLabel" name="label_farbwechselintervalln">
                     <property name="font">
                      <font>
                       <pointsize>10</pointsize>
@@ -2806,8 +2864,15 @@
      </property>
      <addaction name="actionAchsenbeschriftungen_Anzeigen_2"/>
     </widget>
+    <widget class="QMenu" name="menuAusrichtung">
+     <property name="title">
+      <string>Ausrichtung</string>
+     </property>
+     <addaction name="actionAutoscroll_in_Mitte"/>
+    </widget>
     <addaction name="menuKoordinatensystem"/>
     <addaction name="menuVerlauf"/>
+    <addaction name="menuAusrichtung"/>
    </widget>
    <addaction name="menuDatei"/>
    <addaction name="menuAnsicht"/>
@@ -2910,6 +2975,17 @@
   <action name="actionBeenden">
    <property name="text">
     <string>Beenden</string>
+   </property>
+  </action>
+  <action name="actionAutoscroll_in_Mitte">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Autoscroll in Mitte</string>
    </property>
   </action>
  </widget>

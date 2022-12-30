@@ -98,192 +98,91 @@ void WorkerThread::run()
 
 QColor WorkerThread::getPreColor(size_t iters, double normalizedItC, const ImageSetting * imgS)
 {
-    double n = normalizedItC;
-    double alpha;
-    int val = 0;
-
     size_t maxIt = imgS->maxIterations;
-
-    double anteil;
     size_t farbStufenIntervall = imgS->farbwechselIntervall;
     QColor returnColor = Qt::black;
-    unsigned farbstufe = 0,
-            farbStufenAnzahl = imgS->colors.count();
+    unsigned farbstufe = 0, farbStufenAnzahl = imgS->colors.count();
+    double anteil = 0.0;
 
     if(iters > maxIt || maxIt == 0) {
         return Qt::black;
-    }
-
-    if(iters == maxIt) {
-        return QColor(imgS->fixFraktalColor);
+    } if(iters == maxIt) {
+        return imgS->inverted ? getInverse( imgS->fixFraktalColor) : imgS->fixFraktalColor;
     }
 
     //coloring
-    switch ( imgS->palette ) {
-    case 0:
-        val = (iters >= maxIt) ? 255 : (int)(n*10.0) % 255;
-        returnColor = QColor::fromRgb(0, 0, 0, imgS->inverted ? 255 - val : val );
-        break;
+    switch ( imgS->farbalgorithmus ) {
 
-    case 6:
-    case 3: // farblos
-        returnColor = (iters == maxIt) ? (imgS->inverted ? QColor::fromRgb(0, 0, 0, 0) : QColor::fromRgb(0, 0, 0, 255)) :
-                                         (imgS->inverted ? QColor::fromRgb(0, 0, 0, 255) : QColor::fromRgb(0, 0, 0, 0));
-        break;
+    case 0 ... 9:
+        if(imgS->isIntervallVerlauf) {
+            //Intervallverlauf
 
-    case 4:
-      returnColor =  (iters == maxIt) ? Qt::black : QColor::fromHsv( size_t(pow( (n / maxIt) * 359 , 1.5)) % 359,
-                                                                     imgS->hsv_saturation,  imgS->spinBoxHSV_value, imgS->spinBoxHSV_alpha);
-        break;
+            if(iters == maxIt || maxIt == 0  || farbStufenAnzahl == 0)
+                return Qt::black;
 
-    case 5:
-        returnColor = (iters == maxIt) ? Qt::black : QColor::fromHsv(int( (358.0 * n) / maxIt ), imgS->hsv_saturation,  imgS->spinBoxHSV_value, imgS->spinBoxHSV_alpha);
-        break;
+            double iters = normalizedItC;
+            // Hier iters % farbStufenIntervall * farbStufenAnzahl für double, um nachdem alle farben dran kamen wieder bei vorne anzufangen
+            while( iters > 0 && iters >= farbStufenIntervall * (farbStufenAnzahl))
+                iters -= (farbStufenIntervall * (farbStufenAnzahl));
 
+            farbstufe = iters / (farbStufenIntervall);
+            //if(iters == )
 
-        //Intervallverlauf
-    case 2: {
-        if(iters == maxIt || maxIt == 0  || farbStufenAnzahl == 0)
-            return Qt::black;
-
-        double iters = normalizedItC;
-        // Hier iters % farbStufenIntervall * farbStufenAnzahl für double, um nachdem alle farben dran kamen wieder bei vorne anzufangen
-        while( iters > 0 && iters >= farbStufenIntervall * (farbStufenAnzahl))
-            iters -= (farbStufenIntervall * (farbStufenAnzahl));
-
-        farbstufe = iters / (farbStufenIntervall);
-        //if(iters == )
-
-        iters -= farbStufenIntervall * farbstufe;
-        anteil = ((double)iters / (double)farbStufenIntervall);
-                                                                                                            // Bei Verlauf zu letzter Farbe farbe  --> starte wieder bei 0
-        returnColor = QColor::fromRgb(imgS->colors[farbstufe].second.red() + (double)(imgS->colors[ farbstufe == (farbStufenAnzahl-1) ? 0 : farbstufe + 1].second.red() - imgS->colors[farbstufe].second.red()) * anteil,
-                                                   imgS->colors[farbstufe].second.green()  + (double)(imgS->colors[farbstufe == (farbStufenAnzahl-1) ? 0 : farbstufe + 1].second.green() - imgS->colors[farbstufe].second.green()) * anteil,
-                                                   imgS->colors[farbstufe].second.blue()  + (double)(imgS->colors[farbstufe == (farbStufenAnzahl-1) ? 0 : farbstufe + 1].second.blue() - imgS->colors[farbstufe].second.blue()) * anteil);
-
-        break;
-
-        //Absoluter Verlauf
-    } case 1: {
-        if(iters == maxIt || maxIt == 0 || farbStufenAnzahl == 0)
-            return Qt::black;
-        else if(farbStufenAnzahl == 1)
-            return imgS->colors[0].second;
+            iters -= farbStufenIntervall * farbstufe;
+            anteil = ((double)iters / (double)farbStufenIntervall);
+                                                                                                                // Bei Verlauf zu letzter Farbe farbe  --> starte wieder bei 0
+            returnColor = QColor::fromRgb(imgS->colors[farbstufe].second.red() + (double)(imgS->colors[ farbstufe == (farbStufenAnzahl-1) ? 0 : farbstufe + 1].second.red() - imgS->colors[farbstufe].second.red()) * anteil,
+                                                       imgS->colors[farbstufe].second.green()  + (double)(imgS->colors[farbstufe == (farbStufenAnzahl-1) ? 0 : farbstufe + 1].second.green() - imgS->colors[farbstufe].second.green()) * anteil,
+                                                       imgS->colors[farbstufe].second.blue()  + (double)(imgS->colors[farbstufe == (farbStufenAnzahl-1) ? 0 : farbstufe + 1].second.blue() - imgS->colors[farbstufe].second.blue()) * anteil);
+        } else {
+            //Absoluter Verlauf
+            if(iters == maxIt || maxIt == 0 || farbStufenAnzahl == 0)
+                return Qt::black;
+            else if(farbStufenAnzahl == 1)
+                return imgS->colors[0].second;
 
 
-        // maximale Iterationszahl aufteilen in Stücke, ein Stück = Farbübergang zu der nächsten Farbe
-        // Hier bei absoluten Verlauf: Berechnung der relativen Iterationszahl -> normalizedItC / maxIt.
-        //                              Diese zahl mit Gesammtintervallgröße multiplizieren. Da RGB 255 Farben unterstützt, hier 255 gewählt und Gesammtintervall ergibt sich aus Intervallgröße und Anzahl
+            // maximale Iterationszahl aufteilen in Stücke, ein Stück = Farbübergang zu der nächsten Farbe
+            // Hier bei absoluten Verlauf: Berechnung der relativen Iterationszahl -> normalizedItC / maxIt.
+            //                              Diese zahl mit Gesammtintervallgröße multiplizieren. Da RGB 255 Farben unterstützt, hier 255 gewählt und Gesammtintervall ergibt sich aus Intervallgröße und Anzahl
 
-        // Da es Übergänge sind, gibt es 1 Weniger Farbe --> Wenn z.B. rot und gelb, dann hat man 1 Übergang, von Rot zu Gelb
-        double iters = (normalizedItC * 255.0 * (double)( farbStufenAnzahl - 1)) / (double) maxIt ;
+            // Da es Übergänge sind, gibt es 1 Weniger Farbe --> Wenn z.B. rot und gelb, dann hat man 1 Übergang, von Rot zu Gelb
+            double iters = (normalizedItC * 255.0 * (double)( farbStufenAnzahl - 1)) / (double) maxIt ;
 
-        //Nun muss die richtige Farbstufe herausgefunden werden --> durch Teilen der Intervallgröße findet man heraus in welcher Stufe man ist und durch abzug von Stufe*Größe erhält man wieweit iters in dem derzeitigen Intervall sit
-        farbstufe = iters / 255; // iters < farbSchritt --> 0, iters < 2*farbSchritt --> 1, ..., wenn farbstufe == farbschrittCount --> iters == max --> black
-        iters -= 255 * farbstufe;
+            //Nun muss die richtige Farbstufe herausgefunden werden --> durch Teilen der Intervallgröße findet man heraus in welcher Stufe man ist und durch abzug von Stufe*Größe erhält man wieweit iters in dem derzeitigen Intervall sit
+            farbstufe = iters / 255; // iters < farbSchritt --> 0, iters < 2*farbSchritt --> 1, ..., wenn farbstufe == farbschrittCount --> iters == max --> black
+            iters -= 255 * farbstufe;
 
-        if(farbstufe + 1 >= farbStufenAnzahl)
-            return Qt::black;
+            if(farbstufe + 1 >= farbStufenAnzahl)
+                return Qt::black;
 
-        // um einen Verlauf zu erzeugen muss gleichermaßen eine farbe zunehmen und eine abnehmen. durch den Anteil der Iteration am Intervallmaximum wird dies erreicht:
-        anteil = /*std::min(*/(double)iters / (double)255/*, 1.0)*/;
-        // FARBE = START + ( ZIEL - START ) * STEP
-        returnColor = QColor::fromRgb(imgS->colors[farbstufe].second.red() + (double)(imgS->colors[farbstufe + 1].second.red() - imgS->colors[farbstufe].second.red()) * anteil,
-                                                   imgS->colors[farbstufe].second.green()  + (double)(imgS->colors[farbstufe + 1].second.green() - imgS->colors[farbstufe].second.green()) * anteil,
-                                                   imgS->colors[farbstufe].second.blue()  + (double)(imgS->colors[farbstufe + 1].second.blue() - imgS->colors[farbstufe].second.blue()) * anteil);
+            // um einen Verlauf zu erzeugen muss gleichermaßen eine farbe zunehmen und eine abnehmen. durch den Anteil der Iteration am Intervallmaximum wird dies erreicht:
+            anteil = /*std::min(*/(double)iters / (double)255/*, 1.0)*/;
+            // FARBE = START + ( ZIEL - START ) * STEP
+            returnColor = QColor::fromRgb(imgS->colors[farbstufe].second.red() + (double)(imgS->colors[farbstufe + 1].second.red() - imgS->colors[farbstufe].second.red()) * anteil,
+                                                       imgS->colors[farbstufe].second.green()  + (double)(imgS->colors[farbstufe + 1].second.green() - imgS->colors[farbstufe].second.green()) * anteil,
+                                                       imgS->colors[farbstufe].second.blue()  + (double)(imgS->colors[farbstufe + 1].second.blue() - imgS->colors[farbstufe].second.blue()) * anteil);
+        }
 
         break;
+    case 10 ... 11:
+        returnColor = QColor::fromHsv(int( (358.0 * normalizedItC) / maxIt ), imgS->hsv_saturation,  imgS->spinBoxHSV_value, imgS->spinBoxHSV_alpha);
+        break;
+
+    case 12:
+        returnColor =  QColor::fromHsv( size_t(pow( (normalizedItC / maxIt) * 359 , 1.5)) % 359, imgS->hsv_saturation,  imgS->spinBoxHSV_value, imgS->spinBoxHSV_alpha);
+        break;
+
+    case 13 ... 14:
+        returnColor = Qt::white;
+        break;
+
     }
 
-//        if( iters < farbSchritt) { // farbstufe 1
-//            anteil = ((double)iters / (double)farbSchritt);
-
-//            return QColor::fromRgb(imgS->rgb1[0].red() + (double)(imgS->rgb1[1].red() - imgS->rgb1[0].red()) * anteil,
-//                                   imgS->rgb1[0].green()  + (double)(imgS->rgb1[1].green() - imgS->rgb1[0].green()) * anteil,
-//                                   imgS->rgb1[0].blue()  + (double)(imgS->rgb1[1].blue() - imgS->rgb1[0].blue()) * anteil);
-
-//        } else if( iters < farbSchritt*2) { // farbstufe 2
-//            iters -= farbSchritt;
-//            anteil = ((double)iters / (double)farbSchritt);
-
-//            return QColor::fromRgb(imgS->rgb1[1].red()  + (imgS->rgb1[2].red() - imgS->rgb1[1].red()) * anteil,
-//                                   imgS->rgb1[1].green()  + (imgS->rgb1[2].green() - imgS->rgb1[1].green()) * anteil,
-//                                   imgS->rgb1[1].blue()  + (imgS->rgb1[2].blue() - imgS->rgb1[1].blue()) * anteil);
-//        } else if( iters < farbSchritt*3) { //  farbstufe 3
-//            iters -= farbSchritt*2;
-//            anteil = ((double)iters / (double)farbSchritt);
-
-//            return QColor::fromRgb(imgS->rgb1[2].red()  + (imgS->rgb1[0].red() - imgS->rgb1[2].red()) * anteil,
-//                                   imgS->rgb1[2].green()  + (imgS->rgb1[0].green() - imgS->rgb1[2].green()) * anteil,
-//                                   imgS->rgb1[2].blue()  + (imgS->rgb1[0].blue() - imgS->rgb1[2].blue()) * anteil);
-//        } else return QColor(Qt::black);
-
-    default:
-        alpha = (iters >= maxIt) ? 1.0 /*Mandelbrot-Set-Alpha*/ : 0.0; /*Outside*/
-        return QColor::fromRgbF(0, 0, 0, imgS->inverted ? 1.0 - alpha : alpha );
-    }
-
-
-//        case 7:
-//            iters = (iters * farbSchritt * 3) / maxIt ;
-//            iters %= (farbSchritt * 3);
-
-//            if( iters < farbSchritt) { // farbstufe 1
-//                anteil = (iters / farbSchritt);
-//                // FARBE = START + ( ZIEL - START ) * STEP
-
-//                return QColor::fromRgb(iters , 0, 255 - iters);
-
-//            } else if( iters < farbSchritt*2) { // farbstufe 2
-//                iters -= farbSchritt;
-//                anteil = (iters / farbSchritt) * 255;
-
-//                return QColor::fromRgb(255 - iters, iters, 0);
-
-//            } else if( iters < farbSchritt*3) { //  farbstufe 3
-//                iters -= farbSchritt*2;
-//                anteil = (iters / farbSchritt) * 255;
-
-//                return QColor::fromRgb(0, 255 - iters, iters);
-
-//            } else return QColor(Qt::black);
-//        case 7:
-//            if(iters == maxIt)
-//                return Qt::black;
-
-//            iters = (iters * farbSchritt * 3) / maxIt ;
-//            iters %= (farbSchritt * 3);
-
-//            if( iters < farbSchritt) { // farbstufe 1
-//                anteil = ((double)iters / (double)farbSchritt);
-//                // FARBE = START + ( ZIEL - START ) * STEP
-
-//                return QColor::fromRgb((double)imgS->rgb1[0].red() * anteil+ (double)(imgS->rgb1[2].red() - imgS->rgb1[0].red()) * anteil,
-//                                       (double)imgS->rgb1[0].green() * anteil + (double)(imgS->rgb1[2].green() - imgS->rgb1[0].green()) * anteil,
-//                                       (double)imgS->rgb1[0].blue() * anteil + (double)(imgS->rgb1[2].blue() - imgS->rgb1[0].blue()) * anteil);
-
-//            } else if( iters < farbSchritt*2) { // farbstufe 2
-//                iters -= farbSchritt;
-//                anteil = ((double)iters / (double)farbSchritt);
-
-//                return QColor::fromRgb((double)imgS->rgb1[1].red() * anteil + (imgS->rgb1[0].red() - imgS->rgb1[1].red()) * anteil,
-//                                       (double)imgS->rgb1[1].green() * anteil + (imgS->rgb1[0].green() - imgS->rgb1[1].green()) * anteil,
-//                                       (double)imgS->rgb1[1].blue() * anteil + (imgS->rgb1[0].blue() - imgS->rgb1[1].blue()) * anteil);
-//            } else if( iters < farbSchritt*3) { //  farbstufe 3
-//                iters -= farbSchritt*2;
-//                anteil = ((double)iters / (double)farbSchritt);
-
-//                return QColor::fromRgb((double)imgS->rgb1[2].red() * anteil + (imgS->rgb1[1].red() - imgS->rgb1[2].red()) * anteil,
-//                                       (double)imgS->rgb1[2].green() * anteil + (imgS->rgb1[1].green() - imgS->rgb1[2].green()) * anteil,
-//                                       (double)imgS->rgb1[2].blue() * anteil + (imgS->rgb1[1].blue() - imgS->rgb1[2].blue()) * anteil);
-//            } else return QColor(Qt::black);
-
-
-
-//        }
-//    }
-
-    return returnColor.isValid() ? returnColor : Qt::black;
+    if(!returnColor.isValid()) {
+        return Qt::black;
+    } else
+        return imgS->inverted ? getInverse( returnColor) : returnColor;
 }
 
 double WorkerThread::getNormalizedIterationCount(size_t iters, double z_real, double z_imag, ImageSetting * imS)
@@ -293,6 +192,11 @@ double WorkerThread::getNormalizedIterationCount(size_t iters, double z_real, do
         return (double)iters + ((imS->logEscape - log(log(sqrt( (z_real * z_real) + (z_imag * z_imag) ))) ) / log2);
     else
         return iters;
+}
+
+QColor WorkerThread::getInverse(const QColor &c)
+{
+    return QColor::fromRgb( 255 - c.red(), 255 - c.green(), 255 - c.blue() );
 }
 
 

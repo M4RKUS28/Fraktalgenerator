@@ -21,7 +21,7 @@ ImageSetting::ImageSetting(int id, QString file_path)
 
 
     /* load */
-    if(myFile.open(QIODevice::ReadOnly)) {
+    if(myFile.open(QIODevice::ReadWrite)) {
         QDataStream load(&myFile);
         load.setFloatingPointPrecision(QDataStream::DoublePrecision);
         load.setVersion(QDataStream::Qt_5_12);
@@ -36,7 +36,7 @@ ImageSetting::ImageSetting(int id, QString file_path)
         else
         {
             // wait for more data or show unknown error
-            qDebug() << "LOAD DATA FAILED!";
+            qDebug() << "LOAD DATA FAILED!" << load.status();
             loadFromFileWasOK = false;
             return;
 
@@ -137,8 +137,8 @@ void ::ImageSetting::setIterationCountAt(ssize_t x, ssize_t y, size_t iterations
     this->iterations[x][y] = iterations;
 }
 
-void ImageSetting::setColorSettings(int palette, bool normalized, double logEscape, int fractalColorIndex, QColor fixFraktalColor,
-                                    bool inverted, double escape_radius)
+
+void ImageSetting::setColorSettings(int farbalgorithmus, bool normalized, double logEscape, int fractalColorIndex, QColor fixFraktalColor, bool inverted, double escape_radius, bool isIntervallVerlauf)
 {
     this->normalized = normalized;
     this->logEscape = logEscape;
@@ -146,8 +146,8 @@ void ImageSetting::setColorSettings(int palette, bool normalized, double logEsca
     this->fixFraktalColor = fixFraktalColor;
     this->inverted = inverted;
     this->escape_radius = escape_radius;
-    this->palette = palette;
-
+    this->farbalgorithmus = farbalgorithmus;
+    this->isIntervallVerlauf = isIntervallVerlauf;
 }
 
 size_t ImageSetting::getIterationCountAt(QPoint pos)

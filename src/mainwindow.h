@@ -130,12 +130,18 @@ public:
 
     void updateMidPos(bool clear = false);
     //buttonColors
+    QList<QList<QColor>> default_colors;
     QColor buttonColors[8];
+    bool dont_update_save_check_buttons;
     QColor buttonColors_save[8];
+    bool isChecked_save[8];
+
     QColor currentBackgroundColor;
     QColor fraktalColor;
 
     void updateButtonColors();
+    void setupIconsInCombobox(int width);
+    void updateIconInOwnColor(int width);
 
     QMap<int, bool> keyPressed;
 
@@ -250,7 +256,7 @@ private slots:
 
     void on_comboBox_Fraktal_currentIndexChanged(int index);
 
-    void on_spinBoxFarbWechselIntervall_valueChanged(int arg1);
+    void on_spinBoxFarbWechselIntervalln_valueChanged(int arg1);
 
     void on_spinBoxHSV_satursion_valueChanged(int arg1);
 
@@ -324,7 +330,7 @@ private slots:
 
     void on_pushButtonFraktalColor_clicked();
 
-    void on_comboBox_2_currentIndexChanged(int index);
+    void on_comboBox_intervall_absolut_currentIndexChanged(int index);
 
 private:
     Ui::MainWindow *ui;
@@ -340,7 +346,13 @@ protected:
     virtual void keyPressEvent(QKeyEvent* event);
     virtual void keyReleaseEvent(QKeyEvent* event);
 
+
+    // QWidget interface
+protected:
+    virtual void resizeEvent(QResizeEvent *event);
 };
+
+
 
 
 

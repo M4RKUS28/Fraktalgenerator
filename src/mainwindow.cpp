@@ -21,21 +21,114 @@ MainWindow::MainWindow(QWidget *parent)
       isBackOrVor(false),
       ignoreXPosEdited(false),
       ignoreYPosEdited(false),
+      dont_update_save_check_buttons(false),
       currentBackgroundColor(QColor("white")),
       fullScreenView(new ImageView),
       useOldPosForImgSerie(false),
       ui(new Ui::MainWindow)
 {
+    //SETUP DEFAULT COLORS/PALETTE:
+    //0
+    default_colors.push_back(QList<QColor>());
+    //1
+    default_colors.push_back(QList<QColor>());
+    default_colors.back().push_back(QColor::fromRgb(255,255,255));
+
+    //2
+    default_colors.push_back(QList<QColor>());
+    default_colors.back().push_back(QColor::fromRgb(255,255,255));
+
+    //3
+    default_colors.push_back(QList<QColor>());
+    default_colors.back().push_back(QColor::fromRgb(0,0,0));
+    default_colors.back().push_back(QColor::fromRgb(255,255,255));
+
+    //4
+    default_colors.push_back(QList<QColor>());
+    default_colors.back().push_back(QColor::fromRgb(0,0,0));
+    default_colors.back().push_back(QColor::fromRgb(255, 0, 0));
+    default_colors.back().push_back(QColor::fromRgb(255, 255, 0));
+    default_colors.back().push_back(QColor::fromRgb(0,255,0));
+    default_colors.back().push_back(QColor::fromRgb(0, 255, 255));
+    default_colors.back().push_back(QColor::fromRgb(0, 0, 255));
+    default_colors.back().push_back(QColor::fromRgb(255,0,255));
+
+    //5
+    default_colors.push_back(QList<QColor>());
+    default_colors.back().push_back(QColor::fromRgb(0,0,0));
+    default_colors.back().push_back(QColor::fromRgb(37,27,255));
+    default_colors.back().push_back(QColor::fromRgb(235, 156, 18));
+    default_colors.back().push_back(QColor::fromRgb(238, 31, 235));
+
+    //6
+    default_colors.push_back(QList<QColor>());
+    default_colors.back().push_back(QColor::fromRgb(0,0,0));
+    default_colors.back().push_back(QColor::fromRgb(0, 255, 255));
+    default_colors.back().push_back(QColor::fromRgb(235, 180, 15));
+
+    //7
+    default_colors.push_back(QList<QColor>());
+    default_colors.back().push_back(QColor::fromRgb(0,0,0));
+    default_colors.back().push_back(QColor::fromRgb(20, 200, 0));
+    default_colors.back().push_back(QColor::fromRgb(0, 0, 0));
+    default_colors.back().push_back(QColor::fromRgb(25,165,255));
+    default_colors.back().push_back(QColor::fromRgb(0, 0, 0));
+    default_colors.back().push_back(QColor::fromRgb(255, 205, 0));
+    default_colors.back().push_back(QColor::fromRgb(0,0,0));
+    default_colors.back().push_back(QColor::fromRgb(255,0,0));
+
+    //8
+    default_colors.push_back(QList<QColor>());
+    default_colors.back().push_back(QColor::fromRgb(0,0,0));
+    default_colors.back().push_back(QColor::fromRgb(0, 10, 255));
+    default_colors.back().push_back(QColor::fromRgb(255, 120, 0));
+    default_colors.back().push_back(QColor::fromRgb(255,225,5));
+    default_colors.back().push_back(QColor::fromRgb(255, 255, 0));
+    default_colors.back().push_back(QColor::fromRgb(15, 205, 0));
+    default_colors.back().push_back(QColor::fromRgb(10,65,255));
+    default_colors.back().push_back(QColor::fromRgb(255,15,215));
+
+    //9
+    default_colors.push_back(QList<QColor>());
+    default_colors.back().push_back(QColor::fromRgb(0,0,0));
+    default_colors.back().push_back(QColor::fromRgb(255, 180, 0));
+
+    //10
+    default_colors.push_back(QList<QColor>());
+
+    //11 HSV
+    default_colors.push_back(QList<QColor>());
+    default_colors.back().push_back(QColor::fromRgb(255, 0, 0));
+    default_colors.back().push_back(QColor::fromRgb(255, 255, 0));
+    default_colors.back().push_back(QColor::fromRgb(0,255,0));
+    default_colors.back().push_back(QColor::fromRgb(0, 255, 255));
+    default_colors.back().push_back(QColor::fromRgb(0, 0, 255));
+    default_colors.back().push_back(QColor::fromRgb(255,0,255));
+
+    //12 HSV
+    default_colors.push_back(default_colors.back());
+
+    //Histogramm
+    default_colors.push_back(QList<QColor>());
+    //|
+    default_colors.push_back(default_colors.at(default_colors.length() -2));
+
+
+
     this->fullScreenView->hide();
     this->fullScreenView->setAttribute( Qt::WA_QuitOnClose, false );
 
     keyPressed[Qt::LeftButton] = false;
     keyPressed[Qt::RightButton] = false;
 
-    //setup ui
+    ///setup ui
     ui->setupUi(this);
+    ///-------------------------
+
     ui->comboBox_palette->setCurrentIndex(2);
     on_comboBox_palette_currentIndexChanged(2);
+    //Setup comobox
+    setupIconsInCombobox(80);
 
     ui->tabWidget->setCurrentIndex(0);
     //die einstellungen sind unnütz:
@@ -78,22 +171,19 @@ MainWindow::MainWindow(QWidget *parent)
 
     }
 
+    ui->comboBox_palette->setCurrentIndex(6);
 
-    // setup default color settings:
-    buttonColors[0] = QColor::fromRgb(0,0,0); //(37, 27, 255);
-    buttonColors[1] = QColor::fromRgb(0, 255, 255); //(235, 156, 18);
-    buttonColors[2] = QColor::fromRgb(235, 180, 15); //(238, 31, 235);
-    for(int i = 3; i < 8; i++)
-        buttonColors[i] = QColor::fromRgb(255, 255, 255);
-    updateButtonColors();
 
     //clear save button array
-    for(int i = 0; i < 8; i++)
+    for(int i = 0; i < 8; i++) {
         buttonColors_save[i] = QColor::fromRgb(255, 255, 255);
+        isChecked_save[i] = false;
 
+    }
+
+    //clear fraktal eigen-color
     fraktalColor = QColor::fromRgb(255, 255, 255);
     ui->pushButtonFraktalColor->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + fraktalColor.name() );
-
 
 
     //save start size
@@ -140,6 +230,79 @@ MainWindow::MainWindow(QWidget *parent)
 
 }
 
+
+void MainWindow::setupIconsInCombobox(int width)
+{
+    for(int i = 0; i < default_colors.length(); i++) {
+        int color_count = default_colors.at(i).length();
+        if(color_count <= 0)
+            continue;
+
+        QImage img = QImage(width, 16, QImage::Format_ARGB32_Premultiplied);
+        QPainter p = QPainter(&img);
+
+        for(int x = 0; x < color_count; x++ )
+            p.fillRect(QRect((width / color_count) * x, 0, (x == (color_count-1)) ? (width - (width / color_count) * x) : (width / color_count) , 16), default_colors.at(i).at(x));
+
+        p.setPen(QPen(Qt::black, 1));
+        p.drawRect(0, 0, width-1, 16-1);
+
+        ui->comboBox_palette->setItemIcon(i, QIcon(QPixmap::fromImage(img)));
+    }
+
+}
+
+void MainWindow::updateIconInOwnColor(int width)
+{
+    QImage img = QImage(width, 16, QImage::Format_ARGB32_Premultiplied);
+    QPainter p = QPainter(&img);
+    QList<QColor> colors;
+
+    int color_count = 0;
+    if(ui->radioButtonF1->isChecked()) {
+        color_count ++;
+        colors.append(buttonColors_save[0]);
+    }
+    if(ui->radioButtonF2->isChecked()) {
+        color_count ++;
+        colors.append(buttonColors_save[1]);
+    }
+    if(ui->radioButtonF3->isChecked()) {
+        color_count ++;
+        colors.append(buttonColors_save[2]);
+    }
+    if(ui->radioButtonF4->isChecked()) {
+        color_count ++;
+        colors.append(buttonColors_save[3]);
+    }
+    if(ui->radioButtonF5->isChecked()) {
+        color_count ++;
+        colors.append(buttonColors_save[4]);
+    }
+    if(ui->radioButtonF6->isChecked()) {
+        color_count ++;
+        colors.append(buttonColors_save[5]);
+    }
+    if(ui->radioButtonF7->isChecked()) {
+        color_count ++;
+        colors.append(buttonColors_save[6]);
+    }
+    if(ui->radioButtonF8->isChecked()) {
+        color_count ++;
+        colors.append(buttonColors_save[7]);
+    }
+
+    p.fillRect(0, 0, width, 16, Qt::white);
+
+    for(int x = 0; x < color_count; x++ )
+        p.fillRect(QRect((width / color_count) * x, 0, (x == (color_count-1)) ? (width - (width / color_count) * x) : (width / color_count) , 16), colors[x]);
+
+    p.setPen(QPen(Qt::black, 1));
+    p.drawRect(0, 0, width-1, 16-1);
+
+    ui->comboBox_palette->setItemIcon(1, QIcon(QPixmap::fromImage(img)));
+}
+
 MainWindow::~MainWindow()
 {
     //Stoppe timer
@@ -176,8 +339,8 @@ void MainWindow::updateMidPos(bool clear)
     } else {
         ui->re->setValue(this->zoomRect.getMausPosInGauss().x());
         ui->im->setValue(- this->zoomRect.getMausPosInGauss().y());
-        ui->statusbar->showMessage("Re(" + QString::number(this->zoomRect.getMausPosInGauss().x())
-                                   + ") Im(" + QString::number( - this->zoomRect.getMausPosInGauss().y()) + ")", 2000);
+        ui->statusbar->showMessage("Re(" + QString::number(this->zoomRect.getMausPosInGauss().x(), 'g', 15)
+                                   + ") Im(" + QString::number( - this->zoomRect.getMausPosInGauss().y(), 'g', 15) + ")", 2000);
 
     }
 
@@ -194,6 +357,7 @@ void MainWindow::updateButtonColors()
     ui->pushButton_color7->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[6].name() );
     ui->pushButton_color8->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[7].name() );
 }
+
 
 void MainWindow::timerEvent(QTimerEvent *)
 {
@@ -556,7 +720,7 @@ void MainWindow::updateUiWithImageSetting(ImageSetting *imgs)
     this->ui->spinBoxH->setValue(imgs->img_h);
     this->ui->spinBoxMaxIterations->setValue(imgs->maxIterations);
     ui->comboBox_Fraktal->setCurrentIndex(imgs->isMandelbrotSet ? 0 : 1);
-    ui->comboBox_palette->setCurrentIndex(imgs->palette);
+    ui->comboBox_palette->setCurrentIndex(imgs->farbalgorithmus);
     ui->radioButton_normalized->setChecked( imgs->normalized );
     ui->radioButton_invert->setChecked( imgs->inverted );
 
@@ -564,7 +728,7 @@ void MainWindow::updateUiWithImageSetting(ImageSetting *imgs)
 
     this->setFratalColor(imgs->fraktalColor_index, imgs->fixFraktalColor);
 
-    ui->spinBoxFarbWechselIntervall->setValue( imgs->farbwechselIntervall );
+    ui->spinBoxFarbWechselIntervalln->setValue( imgs->farbwechselIntervall );
 
 
     ui->radioButtonF1->setChecked(false);
@@ -625,6 +789,13 @@ void MainWindow::updateUiWithImageSetting(ImageSetting *imgs)
     //update gui
     updateButtonColors();
 
+    if(ui->comboBox_palette->currentText() == "<eigen>") {
+        for(int i = 0; i < 8; i++)
+            this->buttonColors_save[i] = buttonColors[i];
+
+        this->updateIconInOwnColor(80);
+    }
+
     ui->spinBoxHSV_satursion->setValue(imgs->hsv_saturation);
     ui->spinBoxHSV_value->setValue(imgs->spinBoxHSV_value);
     ui->spinBoxHSV_alpha->setValue(imgs->spinBoxHSV_alpha);
@@ -671,7 +842,8 @@ void MainWindow::startRefresh(ImageSetting *set, bool appendToList)
                              ui->comboBoxMandelColor->currentIndex(),
                              this->getFraktalColor(),
                              ui->radioButton_invert->isChecked(),
-                             ui->doubleSpinBoxEscapeR->value() );
+                             ui->doubleSpinBoxEscapeR->value(),
+                              ui->comboBox_intervall_absolut->currentIndex() == 0);
 
         set->colors.clear();
         if(ui->radioButtonF1->isChecked())
@@ -695,7 +867,7 @@ void MainWindow::startRefresh(ImageSetting *set, bool appendToList)
         set->spinBoxHSV_value = ui->spinBoxHSV_value->value();
         set->spinBoxHSV_alpha = ui->spinBoxHSV_alpha->value();
 
-        set->farbwechselIntervall = ui->spinBoxFarbWechselIntervall->value();
+        set->farbwechselIntervall = ui->spinBoxFarbWechselIntervalln->value();
 
 
         settingsList.push_back(set);
@@ -739,8 +911,8 @@ void MainWindow::afterColoring(ImageSetting *set)
     size_t total = 0;
     QImage img;
 
-    switch(set->palette) {
-        case 6:
+    switch(set->farbalgorithmus) {
+        case 13 ... 14:
         if( ! set->hueIsSetted() ) {
             ui->progressBar->setMaximum( set->img_w);
             ui->progressBar->setValue(0);
@@ -878,19 +1050,19 @@ void MainWindow::endRefresh(bool appendToListHistory)
         ui->label_julia_c->setText("-");
         ui->label_julia_c_im->setText("-");
     } else {
-        ui->label_julia_c->setText(QString::number( (double)(currentImg->juliaStart_real) )) ;
-        ui->label_julia_c_im->setText(QString::number( (double)(-currentImg->juliaStart_img) ) + " i");
+        ui->label_julia_c->setText(QString::number( (double)(currentImg->juliaStart_real), 'g', 10 )) ;
+        ui->label_julia_c_im->setText(QString::number( (double)(-currentImg->juliaStart_img), 'g', 10 ) + " i");
     }
 
     ui->progressBar->setValue(ui->progressBar->maximum());
-    ui->bmRe->setText(QString::number(this->currentImg->gaus_mid_re));
-    ui->bmIm->setText(QString::number( - this->currentImg->gaus_mid_im) + " i");
+    ui->bmRe->setText(QString::number(this->currentImg->gaus_mid_re, 'g', 12));
+    ui->bmIm->setText(QString::number( - this->currentImg->gaus_mid_im, 'g', 12) + " i");
 
 
     afterColoring(currentImg);
     updateImage();
 
-    if(/*ui->radioButtonAutoScroll->isChecked()*/ true) {
+    if( ui->actionAutoscroll_in_Mitte->isChecked() ) {
         qDebug() << "Center..." << ui->scrollArea->verticalScrollBar()->maximum() / 2;
         ui->scrollArea->verticalScrollBar()->setValue(ui->scrollArea->verticalScrollBar()->maximum() / 2);
         ui->scrollArea->horizontalScrollBar()->setValue(ui->scrollArea->horizontalScrollBar()->maximum() / 2);
@@ -1417,54 +1589,150 @@ void MainWindow::on_comboBox_palette_currentIndexChanged(int index)
     this->editedSettings = true;
     this->setOperationMode();
 
-    ui->stackedWidgetExtraSettings->setVisible(false);
-    ui->spinBoxFarbWechselIntervall->setVisible(false);
-    ui->label_farbwechselintervall->setVisible(false);
+    //Setzte Standart Einstellungen
     ui->radioButton_normalized->setEnabled(true);
-    ui->radioButton_invert->setEnabled(false);
-
-
-    switch(index) {
-    case 2:
-        ui->spinBoxFarbWechselIntervall->setVisible(true);
-        ui->label_farbwechselintervall->setVisible(true);
-        ui->stackedWidgetExtraSettings->setCurrentIndex(4);
-        ui->stackedWidgetExtraSettings->setVisible(true);
-        break;
-    case 1:
-        ui->stackedWidgetExtraSettings->setCurrentIndex(4);
-        ui->stackedWidgetExtraSettings->setVisible(true);
-        break;
-
-        // wenn EIGEN ausgewählt,
-        // lade undspeichere in save und
-    case 187:
-
+    ui->stackedWidgetExtraSettings->setCurrentIndex(4);
     for(int i = 0; i < 8; i++)
-        this->buttonColors_save[i] = buttonColors[i];
+        buttonColors[i] = QColor::fromRgb(255,255,255);
+    //Hier dont_update_save_check_buttons setzten, weil wenn eigens ausgewäöhlt und setChecked gesetzt wird, wird save_überschrieben!
+    dont_update_save_check_buttons = true;
+    ui->radioButtonF1->setChecked(false);
+    ui->radioButtonF2->setChecked(false);
+    ui->radioButtonF3->setChecked(false);
+    ui->radioButtonF4->setChecked(false);
+    ui->radioButtonF5->setChecked(false);
+    ui->radioButtonF6->setChecked(false);
+    ui->radioButtonF7->setChecked(false);
+    ui->radioButtonF8->setChecked(false);
+    dont_update_save_check_buttons = false;
 
+    //Ändere für spezifische Einstellung
+    switch(index) {
 
-    case 3:
-        ui->radioButton_normalized->setEnabled(false);
-        ui->radioButton_invert->setEnabled(true);
-        break;
+    //RGB Farbverlauf:
     case 0:
-        ui->radioButton_invert->setEnabled(true);
+        this->ui->comboBox_palette->setCurrentIndex(1);
+        break;
+    case 1: //EIGEN
+        // lade gespeicherte farben
+        for(int i = 0; i < 8; i++)
+            this->buttonColors[i] = buttonColors_save[i];
+        ui->radioButtonF1->setChecked(isChecked_save[0]);
+        ui->radioButtonF2->setChecked(isChecked_save[1]);
+        ui->radioButtonF3->setChecked(isChecked_save[2]);
+        ui->radioButtonF4->setChecked(isChecked_save[3]);
+        ui->radioButtonF5->setChecked(isChecked_save[4]);
+        ui->radioButtonF6->setChecked(isChecked_save[5]);
+        ui->radioButtonF7->setChecked(isChecked_save[6]);
+        ui->radioButtonF8->setChecked(isChecked_save[7]);
+        break;
+    case 2:
+        if(default_colors.length() > 2)
+            for(int i = 0; i < default_colors.at(2).length(); i++)
+                buttonColors[i] = default_colors.at(2).at(i);
+        ui->radioButtonF1->setChecked(true);
+        break;
+    case 3:
+        if(default_colors.length() > 3)
+            for(int i = 0; i < default_colors.at(3).length(); i++)
+                buttonColors[i] = default_colors.at(3).at(i);
+        ui->radioButtonF1->setChecked(true);
+        ui->radioButtonF2->setChecked(true);
+        break;
+    case 4:
+        if(default_colors.length() > 4)
+            for(int i = 0; i < default_colors.at(4).length(); i++)
+                buttonColors[i] = default_colors.at(4).at(i);
+
+        ui->radioButtonF1->setChecked(true);
+        ui->radioButtonF2->setChecked(true);
+        ui->radioButtonF3->setChecked(true);
+        ui->radioButtonF4->setChecked(true);
+        ui->radioButtonF5->setChecked(true);
+        ui->radioButtonF6->setChecked(true);
+        ui->radioButtonF7->setChecked(true);
+        break;
+    case 5:
+        if(default_colors.length() > 5)
+            for(int i = 0; i < default_colors.at(5).length(); i++)
+                buttonColors[i] = default_colors.at(5).at(i);
+        ui->radioButtonF1->setChecked(true);
+        ui->radioButtonF2->setChecked(true);
+        ui->radioButtonF3->setChecked(true);
+        ui->radioButtonF4->setChecked(true);
+
+        break;
+    case 6:
+        if(default_colors.length() > 6)
+            for(int i = 0; i < default_colors.at(6).length(); i++)
+                buttonColors[i] = default_colors.at(6).at(i);
+        ui->radioButtonF1->setChecked(true);
+        ui->radioButtonF2->setChecked(true);
+        ui->radioButtonF3->setChecked(true);
+        break;
+    case 7:
+        if(default_colors.length() > 7)
+            for(int i = 0; i < default_colors.at(7).length(); i++)
+                buttonColors[i] = default_colors.at(7).at(i);
+        ui->radioButtonF1->setChecked(true);
+        ui->radioButtonF2->setChecked(true);
+        ui->radioButtonF3->setChecked(true);
+        ui->radioButtonF4->setChecked(true);
+        ui->radioButtonF5->setChecked(true);
+        ui->radioButtonF6->setChecked(true);
+        ui->radioButtonF7->setChecked(true);
+        ui->radioButtonF8->setChecked(true);
+        break;
+    case 8:
+        if(default_colors.length() > 8)
+            for(int i = 0; i < default_colors.at(8).length(); i++)
+                buttonColors[i] = default_colors.at(8).at(i);
+        ui->radioButtonF1->setChecked(true);
+        ui->radioButtonF2->setChecked(true);
+        ui->radioButtonF3->setChecked(true);
+        ui->radioButtonF4->setChecked(true);
+        ui->radioButtonF5->setChecked(true);
+        ui->radioButtonF6->setChecked(true);
+        ui->radioButtonF7->setChecked(true);
+        ui->radioButtonF8->setChecked(true);
+        break;
+    case 9:
+        if(default_colors.length() > 9)
+            for(int i = 0; i < default_colors.at(9).length(); i++)
+                buttonColors[i] = default_colors.at(9).at(i);
+        ui->radioButtonF1->setChecked(true);
+        ui->radioButtonF2->setChecked(true);
         break;
 
-    case 4:
-    case 5:
+    //HSV
+    case 10:
+        this->ui->comboBox_palette->setCurrentIndex(11);
+        break;
+    case 11:
+//        ui->stackedWidgetExtraSettings->setCurrentIndex(3);
+//        ui->stackedWidgetExtraSettings->setVisible(true);
+//        break;
+    case 12:
         ui->stackedWidgetExtraSettings->setCurrentIndex(3);
         ui->stackedWidgetExtraSettings->setVisible(true);
         break;
 
-    case 6:
+    //Histogramm
+    case 13:
+        this->ui->comboBox_palette->setCurrentIndex(14);
+        break;
+    case 14:
         ui->radioButton_normalized->setEnabled(false);
         ui->stackedWidgetExtraSettings->setCurrentIndex(3);
-        ui->stackedWidgetExtraSettings->setVisible(true);
         break;
+
     }
 
+    //Farben der Buttons  akutualisieren
+    this->updateButtonColors();
+    if(ui->comboBox_palette->currentText() == "<eigen>") {
+        this->updateIconInOwnColor(80);
+    }
 
 }
 
@@ -1867,6 +2135,7 @@ void MainWindow::on_im_valueChanged(double arg1)
 }
 
 #include <QClipboard>
+#include <QIcon>
 #include <QImageWriter>
 #include <QImageWriter>
 #include <QImageWriter>
@@ -1896,13 +2165,13 @@ void MainWindow::on_comboBox_Fraktal_currentIndexChanged(int)
     this->setOperationMode();
 }
 
-
-
-void MainWindow::on_spinBoxFarbWechselIntervall_valueChanged(int)
+void MainWindow::on_spinBoxFarbWechselIntervalln_valueChanged(int)
 {
     editedSettings = true;
     this->setOperationMode();
 }
+
+
 
 
 void MainWindow::on_spinBoxHSV_satursion_valueChanged(int)
@@ -1937,6 +2206,10 @@ void MainWindow::on_pushButton_color1_clicked()
     }
 
     buttonColors[0] = color;
+    if(ui->comboBox_palette->currentText() == "<eigen>") {
+        buttonColors_save[0] = color;
+        this->updateIconInOwnColor(80);
+    }
 
     ui->pushButton_color1->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[0].toRgb().name() + ";" );
     editedSettings = true;
@@ -1955,6 +2228,10 @@ void MainWindow::on_pushButton_color2_clicked()
         return;
     }
     buttonColors[1] = color;
+    if(ui->comboBox_palette->currentText() == "<eigen>") {
+        buttonColors_save[1] = color;
+        this->updateIconInOwnColor(80);
+    }
 
     ui->pushButton_color2->setStyleSheet(STYLE_SHEET_COLOR_BUTTON+ buttonColors[1].name() );
     editedSettings = true;
@@ -1973,6 +2250,10 @@ void MainWindow::on_pushButton_color3_clicked()
         return;
     }
     buttonColors[2] = color;
+    if(ui->comboBox_palette->currentText() == "<eigen>") {
+        buttonColors_save[2] = color;
+        this->updateIconInOwnColor(80);
+    }
 
     ui->pushButton_color3->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[2].name() );
     editedSettings = true;
@@ -1991,6 +2272,10 @@ void MainWindow::on_pushButton_color4_clicked()
         return;
     }
     buttonColors[3] = color;
+    if(ui->comboBox_palette->currentText() == "<eigen>") {
+        buttonColors_save[3] = color;
+        this->updateIconInOwnColor(80);
+    }
 
     ui->pushButton_color4->setStyleSheet(STYLE_SHEET_COLOR_BUTTON+ buttonColors[3].name() );
     editedSettings = true;
@@ -2009,6 +2294,10 @@ void MainWindow::on_pushButton_color5_clicked()
         return;
     }
     buttonColors[4] = color;
+    if(ui->comboBox_palette->currentText() == "<eigen>") {
+        buttonColors_save[4] = color;
+        this->updateIconInOwnColor(80);
+    }
 
     ui->pushButton_color5->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[4].name() );
     editedSettings = true;
@@ -2026,6 +2315,10 @@ void MainWindow::on_pushButton_color6_clicked()
         return;
     }
     buttonColors[5] = color;
+    if(ui->comboBox_palette->currentText() == "<eigen>") {
+        buttonColors_save[5] = color;
+        this->updateIconInOwnColor(80);
+    }
 
     ui->pushButton_color6->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[5].name() );
     editedSettings = true;
@@ -2045,7 +2338,10 @@ void MainWindow::on_pushButton_color7_clicked()
         return;
     }
     buttonColors[6] = color;
-
+    if(ui->comboBox_palette->currentText() == "<eigen>") {
+        buttonColors_save[6] = color;
+        this->updateIconInOwnColor(80);
+    }
     ui->pushButton_color7->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[6].name() );
     editedSettings = true;
     this->setOperationMode();
@@ -2063,6 +2359,10 @@ void MainWindow::on_pushButton_color8_clicked()
         return;
     }
     buttonColors[7] = color;
+    if(ui->comboBox_palette->currentText() == "<eigen>") {
+        buttonColors_save[7] = color;
+        this->updateIconInOwnColor(80);
+    }
 
     ui->pushButton_color8->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[7].name() );
     editedSettings = true;
@@ -2091,58 +2391,99 @@ void MainWindow::on_pushButtonFraktalColor_clicked()
 
 
 
-void MainWindow::on_radioButtonF1_toggled(bool)
+void MainWindow::on_radioButtonF1_toggled(bool status)
 {
     editedSettings = true;
     this->setOperationMode();
+    if(ui->comboBox_palette->currentText() == "<eigen>") {
+        this->updateIconInOwnColor(80);
+        if(!dont_update_save_check_buttons)
+            isChecked_save[0] = status;
+    }
 }
 
 
-void MainWindow::on_radioButtonF2_toggled(bool)
+void MainWindow::on_radioButtonF2_toggled(bool status)
 {
     editedSettings = true;
     this->setOperationMode();
+    if(ui->comboBox_palette->currentText() == "<eigen>") {
+        this->updateIconInOwnColor(80);
+        if(!dont_update_save_check_buttons)
+            isChecked_save[1] = status;
+        qDebug() << status;
+    }
 }
 
 
-void MainWindow::on_radioButtonF3_toggled(bool)
+void MainWindow::on_radioButtonF3_toggled(bool status)
 {
     editedSettings = true;
     this->setOperationMode();
+    if(ui->comboBox_palette->currentText() == "<eigen>") {
+        this->updateIconInOwnColor(80);
+        if(!dont_update_save_check_buttons)
+            isChecked_save[2] = status;
+    }
 }
 
 
-void MainWindow::on_radioButtonF4_toggled(bool)
+void MainWindow::on_radioButtonF4_toggled(bool status)
 {
     editedSettings = true;
     this->setOperationMode();
+    if(ui->comboBox_palette->currentText() == "<eigen>") {
+        this->updateIconInOwnColor(80);
+        if(!dont_update_save_check_buttons)
+            isChecked_save[3] = status;
+    }
 }
 
 
-void MainWindow::on_radioButtonF5_toggled(bool)
+void MainWindow::on_radioButtonF5_toggled(bool status)
 {
     editedSettings = true;
     this->setOperationMode();
+    if(ui->comboBox_palette->currentText() == "<eigen>") {
+        this->updateIconInOwnColor(80);
+        if(!dont_update_save_check_buttons)
+            isChecked_save[4] = status;
+    }
 }
 
-void MainWindow::on_radioButtonF6_toggled(bool)
+void MainWindow::on_radioButtonF6_toggled(bool status)
 {
     editedSettings = true;
     this->setOperationMode();
+    if(ui->comboBox_palette->currentText() == "<eigen>") {
+        this->updateIconInOwnColor(80);
+        if(!dont_update_save_check_buttons)
+            isChecked_save[5] = status;
+    }
 }
 
 
-void MainWindow::on_radioButtonF7_toggled(bool)
+void MainWindow::on_radioButtonF7_toggled(bool status)
 {
     editedSettings = true;
     this->setOperationMode();
+    if(ui->comboBox_palette->currentText() == "<eigen>") {
+        this->updateIconInOwnColor(80);
+        if(!dont_update_save_check_buttons)
+            isChecked_save[6] = status;
+    }
 }
 
 
-void MainWindow::on_radioButtonF8_toggled(bool)
+void MainWindow::on_radioButtonF8_toggled(bool status)
 {
     editedSettings = true;
     this->setOperationMode();
+    if(ui->comboBox_palette->currentText() == "<eigen>") {
+        this->updateIconInOwnColor(80);
+        if(!dont_update_save_check_buttons)
+            isChecked_save[7] = status;
+    }
 }
 
 
@@ -2162,7 +2503,7 @@ void MainWindow::on_comboBox_theme_currentIndexChanged(int index)
 
     } else {
         fileName = ":/qss/qss_icons/darkstyle.qss";
-        currentBackgroundColor = QColor("#19232D");
+        currentBackgroundColor = QColor::fromRgb(25, 35 , 45 );
 
     }
 
@@ -2341,22 +2682,29 @@ void MainWindow::on_actionBeenden_triggered()
 }
 
 
-
-
-
-
-
-
-void MainWindow::on_comboBox_2_currentIndexChanged(int index)
+void MainWindow::on_comboBox_intervall_absolut_currentIndexChanged(int index)
 {
+
+    editedSettings = true;
+    this->setOperationMode();
+
     if(index == 0) {
-        ui->spinBoxFarbWechselIntervall->show();
-        ui->label_farbwechselintervall->show();
+        ui->spinBoxFarbWechselIntervalln->show();
+        ui->label_farbwechselintervalln->show();
 
 
     } else {
-        ui->label_farbwechselintervall->hide();
-        ui->spinBoxFarbWechselIntervall->hide();
+        ui->label_farbwechselintervalln->hide();
+        ui->spinBoxFarbWechselIntervalln->hide();
     }
 }
 
+
+void MainWindow::resizeEvent(QResizeEvent *)
+{
+    if( ui->actionAutoscroll_in_Mitte->isChecked() ) {
+        qDebug() << "Center..." << ui->scrollArea->verticalScrollBar()->maximum() / 2;
+        ui->scrollArea->verticalScrollBar()->setValue(ui->scrollArea->verticalScrollBar()->maximum() / 2);
+        ui->scrollArea->horizontalScrollBar()->setValue(ui->scrollArea->horizontalScrollBar()->maximum() / 2);
+    }
+}

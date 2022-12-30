@@ -66,6 +66,7 @@ public:
     void run();
     static QColor getPreColor(size_t iters, double normalizedItC, const ImageSetting *imgS);
     static double getNormalizedIterationCount(size_t iters, double z_real, double z_imag, ImageSetting *imS);
+    static QColor getInverse(const QColor &c);
 
 
 signals:

@@ -24,8 +24,10 @@ struct ImageSetting {
 
     void cleanUP();
     void setIterationCountAt(ssize_t x, ssize_t y, size_t iterations);
-    void setColorSettings(int palette, bool normalized, double logEscape, int fractalColorIndex, QColor fixFraktalColor,
-                          bool inverted, double escape_radius);
+
+
+    void setColorSettings(int farbalgorithmus, bool normalized, double logEscape, int fractalColorIndex, QColor fixFraktalColor,
+                          bool inverted, double escape_radius, bool isIntervallVerlauf);
 
     size_t getIterationCountAt(QPoint pos);
     size_t getIterationCountAt(ssize_t x, ssize_t y);
@@ -64,18 +66,20 @@ struct ImageSetting {
 
     bool isMandelbrotSet;
 
+    int farbalgorithmus;
+
     //Color settings
-    bool inverted, normalized, has_hue;
-
-    int palette, fraktalColor_index;
-
+    bool inverted, normalized, has_hue, isIntervallVerlauf;
+    int fraktalColor_index;
     QColor fixFraktalColor;
-
     QList<QPair<int, QColor>> colors;
-    unsigned hsv_saturation, spinBoxHSV_value, spinBoxHSV_alpha, farbwechselIntervall;
+    unsigned hsv_saturation, spinBoxHSV_value, spinBoxHSV_alpha,
+                    farbwechselIntervall;
 
     double **iterations_normal;
     double **hue;
+
+
 
 
     /* overload the operators */
@@ -83,7 +87,7 @@ struct ImageSetting {
     {
         out << rhs.id << rhs.scaleValue << rhs.gaus_mid_re << rhs.gaus_mid_im << rhs.img_w << rhs.img_h << rhs.maxIterations << rhs.isMandelbrotSet
             << rhs.logEscape << rhs.escape_radius << rhs.juliaStart_img << rhs.juliaStart_real << rhs.fraktalColor_index << rhs.inverted << rhs.normalized
-            << rhs.palette << rhs.fixFraktalColor << rhs.colors << rhs.hsv_saturation << rhs.spinBoxHSV_value
+            << rhs.farbalgorithmus << rhs.fixFraktalColor << rhs.colors << rhs.hsv_saturation << rhs.spinBoxHSV_value << rhs.isIntervallVerlauf
             << rhs.spinBoxHSV_alpha << rhs.farbwechselIntervall;
         return out;
     }
@@ -92,7 +96,7 @@ struct ImageSetting {
     {
         in >> rhs.id >> rhs.scaleValue >> rhs.gaus_mid_re >> rhs.gaus_mid_im >> rhs.img_w >> rhs.img_h >> rhs.maxIterations >> rhs.isMandelbrotSet
             >> rhs.logEscape >> rhs.escape_radius >> rhs.juliaStart_img >> rhs.juliaStart_real >> rhs.fraktalColor_index >> rhs.inverted >> rhs.normalized
-            >> rhs.palette >> rhs.fixFraktalColor >>rhs.colors >> rhs.hsv_saturation >> rhs.spinBoxHSV_value
+            >> rhs.farbalgorithmus >> rhs.fixFraktalColor >>rhs.colors >> rhs.hsv_saturation >> rhs.spinBoxHSV_value << rhs.isIntervallVerlauf
             >> rhs.spinBoxHSV_alpha >> rhs.farbwechselIntervall;
         return in;
     }
