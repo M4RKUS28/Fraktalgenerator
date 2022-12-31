@@ -178,8 +178,7 @@ MainWindow::MainWindow(QWidget *parent)
     for(int i = 0; i < 8; i++) {
         buttonColors_save[i] = QColor::fromRgb(255, 255, 255);
         isChecked_save[i] = false;
-
-    }
+    }  isChecked_save[0] = true;
 
     //clear fraktal eigen-color
     fraktalColor = QColor::fromRgb(255, 255, 255);
@@ -894,7 +893,7 @@ void MainWindow::startRefresh(ImageSetting *set, bool appendToList)
         //START
         wt->startCalc(set, this->ui->comboBox_precession->currentIndex());
 
-        // warte 20ms für den nächsten Thread
+        // warte 10ms für den nächsten Thread
         QTime dieTime= QTime::currentTime().addMSecs(20);
             while (QTime::currentTime() < dieTime)
                 QCoreApplication::processEvents(QEventLoop::AllEvents, 100);

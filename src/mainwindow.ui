@@ -752,11 +752,11 @@
                 <property name="font">
                  <font>
                   <pointsize>10</pointsize>
-                  <bold>false</bold>
+                  <bold>true</bold>
                  </font>
                 </property>
                 <property name="text">
-                 <string>Fixfarbe:</string>
+                 <string>Farbe</string>
                 </property>
                </widget>
               </item>
