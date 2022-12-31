@@ -12,6 +12,9 @@
 #include <QScreen>
 #include <QApplication>
 #include <QSysInfo>
+#include<QStyledItemDelegate>
+
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -128,6 +131,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->comboBox_palette->setCurrentIndex(2);
     on_comboBox_palette_currentIndexChanged(2);
     //Setup comobox
+    ui->comboBox_palette->setItemDelegate(new QStyledItemDelegate(ui->comboBox_palette));
     setupIconsInCombobox(80);
 
     ui->tabWidget->setCurrentIndex(0);
