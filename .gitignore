@@ -60,3 +60,5 @@ Makefile.Release
 Makefile.Debug
 Fraktalgenerator_resource.rc
 debug/
+release/
+release*/
