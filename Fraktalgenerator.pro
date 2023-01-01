@@ -16,6 +16,7 @@ win32:RC_ICONS += src/qss_icons/icon.ico
 
 SOURCES += \
     src/dialogcreatevideo.cpp \
+    src/dialogueber.cpp \
     src/imagesetting.cpp \
     src/video/avi-utils.cpp \
     src/video/fileio.cpp \
@@ -29,6 +30,7 @@ SOURCES += \
 
 HEADERS += \
     src/dialogcreatevideo.h \
+    src/dialogueber.h \
     src/imagesetting.h \
     src/video/gwavi.h \
     src/video/avi-utils.h \
@@ -44,6 +46,7 @@ HEADERS += \
 FORMS += \
     src/dialogcreatevideo.ui \
     src/dialogimageserie.ui \
+    src/dialogueber.ui \
     src/mainwindow.ui
 
 # Default rules for deployment.

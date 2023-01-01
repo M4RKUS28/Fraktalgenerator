@@ -107,7 +107,7 @@ QColor WorkerThread::getPreColor(size_t iters, double normalizedItC, const Image
     if(iters > maxIt || maxIt == 0) {
         return Qt::black;
     } if(iters == maxIt) {
-        return imgS->inverted ? getInverse( imgS->fixFraktalColor) : imgS->fixFraktalColor;
+        return /*imgS->inverted ? getInverse( imgS->fixFraktalColor) :*/ imgS->fixFraktalColor;
     }
 
     //coloring

@@ -126,11 +126,12 @@ MainWindow::MainWindow(QWidget *parent)
 
     ///setup ui
     ui->setupUi(this);
+
     ///-------------------------
 
     ui->comboBox_palette->setCurrentIndex(2);
     on_comboBox_palette_currentIndexChanged(2);
-    //Setup comobox
+    //Setup comobox -> fix error on mac
     ui->comboBox_palette->setItemDelegate(new QStyledItemDelegate(ui->comboBox_palette));
     setupIconsInCombobox(80);
 
@@ -172,6 +173,11 @@ MainWindow::MainWindow(QWidget *parent)
          *
          *
          * */
+
+//        QFont f = this->font();
+//        f.setPixelSize(13);
+//        this->setFont(f);
+
 
     }
 
@@ -1594,7 +1600,8 @@ void MainWindow::on_comboBox_palette_currentIndexChanged(int index)
 
     //Setzte Standart Einstellungen
     ui->radioButton_normalized->setEnabled(true);
-    ui->stackedWidgetExtraSettings->setCurrentIndex(4);
+    ui->radioButton_invert->setEnabled(true);
+    ui->stackedWidgetExtraSettings->setCurrentIndex(0);
     for(int i = 0; i < 8; i++)
         buttonColors[i] = QColor::fromRgb(255,255,255);
     //Hier dont_update_save_check_buttons setzten, weil wenn eigens ausgewäöhlt und setChecked gesetzt wird, wird save_überschrieben!
@@ -1712,11 +1719,11 @@ void MainWindow::on_comboBox_palette_currentIndexChanged(int index)
         this->ui->comboBox_palette->setCurrentIndex(11);
         break;
     case 11:
-//        ui->stackedWidgetExtraSettings->setCurrentIndex(3);
+//        ui->stackedWidgetExtraSettings->setCurrentIndex(1);
 //        ui->stackedWidgetExtraSettings->setVisible(true);
 //        break;
     case 12:
-        ui->stackedWidgetExtraSettings->setCurrentIndex(3);
+        ui->stackedWidgetExtraSettings->setCurrentIndex(1);
         ui->stackedWidgetExtraSettings->setVisible(true);
         break;
 
@@ -1726,7 +1733,9 @@ void MainWindow::on_comboBox_palette_currentIndexChanged(int index)
         break;
     case 14:
         ui->radioButton_normalized->setEnabled(false);
-        ui->stackedWidgetExtraSettings->setCurrentIndex(3);
+        ui->stackedWidgetExtraSettings->setCurrentIndex(1);
+        ui->radioButton_invert->setEnabled(false);
+
         break;
 
     }
@@ -2633,10 +2642,14 @@ void MainWindow::on_actionVideo_aus_Bilderfolge_generieren_triggered()
 }
 
 #include <QDesktopServices>
+#include "dialogueber.h"
+
 
 void MainWindow::on_action_ber_triggered()
 {
-    QDesktopServices::openUrl(QUrl("https://github.com/M4RKUS28/Mandelbrot-Menge-Generator"));
+    DialogUeber duebr(P_VERSION, this);
+    duebr.exec();
+//    QDesktopServices::openUrl(QUrl("https://github.com/M4RKUS28/Mandelbrot-Menge-Generator"));
 }
 
 

@@ -423,4 +423,8 @@
         <file>qss_icons/darkstyle.qss</file>
         <file>qss_icons/lightstyle.qss</file>
     </qresource>
+    <qresource prefix="/programm_icon">
+        <file>qss_icons/icon.ico</file>
+        <file>qss_icons/image.png</file>
+    </qresource>
 </RCC>
