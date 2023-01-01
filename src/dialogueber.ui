@@ -206,7 +206,10 @@
       </font>
      </property>
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;You are free to use this software for private or educational purposes. (But you are of cours using&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;it at your own risk.) However, redistribution of any kind is NOT allowed without written permission.&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;The original program code can be found on &lt;a href=&quot;https://github.com/M4RKUS28/Mandelbrot-Menge-Generator/releases&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;GitHub&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;You are free to use this software for private or educational purposes. (But you are of cours using&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;it at your own risk.) However, redistribution of any kind is NOT allowed without written permission.&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;The program code can be found on &lt;a href=&quot;https://github.com/M4RKUS28/Mandelbrot-Menge-Generator/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;GitHub&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="openExternalLinks">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
