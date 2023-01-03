@@ -12,7 +12,8 @@
 #include <QScreen>
 #include <QApplication>
 #include <QSysInfo>
-#include<QStyledItemDelegate>
+#include <QStyledItemDelegate>
+#include <QSettings>
 
 
 
@@ -35,7 +36,6 @@ MainWindow::MainWindow(QWidget *parent)
     default_colors.push_back(QList<QColor>());
     //1
     default_colors.push_back(QList<QColor>());
-    default_colors.back().push_back(QColor::fromRgb(255,255,255));
 
     //2
     default_colors.push_back(QList<QColor>());
@@ -132,7 +132,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->comboBox_palette->setCurrentIndex(2);
     on_comboBox_palette_currentIndexChanged(2);
     //Setup comobox -> fix error on mac
-    ui->comboBox_palette->setItemDelegate(new QStyledItemDelegate(ui->comboBox_palette));
+    ui->comboBox_palette->setItemDelegate(new QStyledItemDelegate(ui->comboBox_palette));    
     setupIconsInCombobox(80);
 
     ui->tabWidget->setCurrentIndex(0);
@@ -174,15 +174,18 @@ MainWindow::MainWindow(QWidget *parent)
          *
          * */
 
-//        QFont f = this->font();
-//        f.setPixelSize(13);
-//        this->setFont(f);
+        QFont f = this->font();
+        f.setPixelSize(13);
+        this->setFont(f);
+
+
 
 
     }
 
     ui->comboBox_palette->setCurrentIndex(6);
 
+    //-------------SETUP COLOR BUTTONS.....:------------------------
 
     //clear save button array
     for(int i = 0; i < 8; i++) {
@@ -194,7 +197,28 @@ MainWindow::MainWindow(QWidget *parent)
     fraktalColor = QColor::fromRgb(255, 255, 255);
     ui->pushButtonFraktalColor->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + fraktalColor.name() );
 
+    //load color from qsetting:
+    QSettings settingOwnColor("Markus@W-Sem_2022", "Fraktalgenerator");
+    if(settingOwnColor.contains("OWN_FRAKTAL_COLOR"))
+        fraktalColor = settingOwnColor.value("OWN_FRAKTAL_COLOR").toString();
+    else
+        fraktalColor = QColor::fromRgb(255, 255, 255);
+    ui->pushButtonFraktalColor->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + fraktalColor.name() );
 
+    for(int i = 0; i < 8; i++) {
+        if(settingOwnColor.contains("OWN_RGB_VERLAUF_OWN_COLOR_" + QString::number(i+1)))
+            buttonColors_save[i] = settingOwnColor.value("OWN_RGB_VERLAUF_OWN_COLOR_" + QString::number(i+1)).toString();
+        if(settingOwnColor.contains("OWN_RGB_VERLAUF_OWN_CHECKED_" + QString::number(i+1)))
+            isChecked_save[i] = settingOwnColor.value("OWN_RGB_VERLAUF_OWN_COLOR_" + QString::number(i+1)).toBool();
+
+
+    }
+
+    //update combox icons
+    updateIconInOwnColor(80);
+
+
+    ///------------------------------------
     //save start size
     int width = (QApplication::screens().at(0)->geometry().width() * QApplication::screens().at(0)->devicePixelRatio()),
         height = (QApplication::screens().at(0)->geometry().height() * QApplication::screens().at(0)->devicePixelRatio());
@@ -268,38 +292,44 @@ void MainWindow::updateIconInOwnColor(int width)
     QList<QColor> colors;
 
     int color_count = 0;
-    if(ui->radioButtonF1->isChecked()) {
-        color_count ++;
-        colors.append(buttonColors_save[0]);
+    for(int i = 0; i < 8; i++) {
+        if(isChecked_save[i]) {
+            color_count ++;
+            colors.append(buttonColors_save[i]);
+        }
     }
-    if(ui->radioButtonF2->isChecked()) {
-        color_count ++;
-        colors.append(buttonColors_save[1]);
-    }
-    if(ui->radioButtonF3->isChecked()) {
-        color_count ++;
-        colors.append(buttonColors_save[2]);
-    }
-    if(ui->radioButtonF4->isChecked()) {
-        color_count ++;
-        colors.append(buttonColors_save[3]);
-    }
-    if(ui->radioButtonF5->isChecked()) {
-        color_count ++;
-        colors.append(buttonColors_save[4]);
-    }
-    if(ui->radioButtonF6->isChecked()) {
-        color_count ++;
-        colors.append(buttonColors_save[5]);
-    }
-    if(ui->radioButtonF7->isChecked()) {
-        color_count ++;
-        colors.append(buttonColors_save[6]);
-    }
-    if(ui->radioButtonF8->isChecked()) {
-        color_count ++;
-        colors.append(buttonColors_save[7]);
-    }
+//    if(ui->radioButtonF1->isChecked()) {
+//        color_count ++;
+//        colors.append(buttonColors_save[0]);
+//    }
+//    if(ui->radioButtonF2->isChecked()) {
+//        color_count ++;
+//        colors.append(buttonColors_save[1]);
+//    }
+//    if(ui->radioButtonF3->isChecked()) {
+//        color_count ++;
+//        colors.append(buttonColors_save[2]);
+//    }
+//    if(ui->radioButtonF4->isChecked()) {
+//        color_count ++;
+//        colors.append(buttonColors_save[3]);
+//    }
+//    if(ui->radioButtonF5->isChecked()) {
+//        color_count ++;
+//        colors.append(buttonColors_save[4]);
+//    }
+//    if(ui->radioButtonF6->isChecked()) {
+//        color_count ++;
+//        colors.append(buttonColors_save[5]);
+//    }
+//    if(ui->radioButtonF7->isChecked()) {
+//        color_count ++;
+//        colors.append(buttonColors_save[6]);
+//    }
+//    if(ui->radioButtonF8->isChecked()) {
+//        color_count ++;
+//        colors.append(buttonColors_save[7]);
+//    }
 
     p.fillRect(0, 0, width, 16, Qt::white);
 
@@ -919,6 +949,8 @@ void MainWindow::afterColoring(ImageSetting *set)
 {
     size_t total = 0;
     QImage img;
+    this->ui->pushButtonStart->setDisabled(true);
+    this->state = this->STATE::RUNNING;
 
     switch(set->farbalgorithmus) {
         case 13 ... 14:
@@ -970,6 +1002,10 @@ void MainWindow::afterColoring(ImageSetting *set)
         set->image->swap(img);
         updateImage();
     }
+    this->state = this->STATE::STOPED;
+    this->ui->pushButtonStart->setDisabled(false);
+
+
 }
 
 void MainWindow::setOperationMode()
@@ -1021,6 +1057,14 @@ void MainWindow::endRefresh(bool appendToListHistory)
     keyPressed[Qt::RightButton] = false;
 
     stopThreads();
+
+
+    //Coloring ---> histogramm
+    if(!this->isBackOrVor || (this->isBackOrVor && ui->actionBilder_bei_Verlaufwechsel_neu_laden_2->isChecked()))
+        afterColoring(currentImg);
+    updateImage();
+
+
     this->state = STATE::STOPED;
 
     this->zoomRect.hide();
@@ -1068,8 +1112,6 @@ void MainWindow::endRefresh(bool appendToListHistory)
     ui->bmIm->setText(QString::number( - this->currentImg->gaus_mid_im, 'g', 12) + " i");
 
 
-    afterColoring(currentImg);
-    updateImage();
 
     if( ui->actionAutoscroll_in_Mitte->isChecked() ) {
         qDebug() << "Center..." << ui->scrollArea->verticalScrollBar()->maximum() / 2;
@@ -2151,6 +2193,7 @@ void MainWindow::on_im_valueChanged(double arg1)
 #include <QImageWriter>
 #include <QImageWriter>
 #include <QImageWriter>
+#include <QSettings>
 
 void MainWindow::pushButton_copy_clicked()
 {
@@ -2221,6 +2264,8 @@ void MainWindow::on_pushButton_color1_clicked()
     if(ui->comboBox_palette->currentText() == "<eigen>") {
         buttonColors_save[0] = color;
         this->updateIconInOwnColor(80);
+        QSettings settingOwnColor("Markus@W-Sem_2022", "Fraktalgenerator");
+        settingOwnColor.setValue("OWN_RGB_VERLAUF_OWN_COLOR_1", color.name() );
     }
 
     ui->pushButton_color1->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[0].toRgb().name() + ";" );
@@ -2243,6 +2288,8 @@ void MainWindow::on_pushButton_color2_clicked()
     if(ui->comboBox_palette->currentText() == "<eigen>") {
         buttonColors_save[1] = color;
         this->updateIconInOwnColor(80);
+        QSettings settingOwnColor("Markus@W-Sem_2022", "Fraktalgenerator");
+        settingOwnColor.setValue("OWN_RGB_VERLAUF_OWN_COLOR_2", color.name() );
     }
 
     ui->pushButton_color2->setStyleSheet(STYLE_SHEET_COLOR_BUTTON+ buttonColors[1].name() );
@@ -2265,6 +2312,8 @@ void MainWindow::on_pushButton_color3_clicked()
     if(ui->comboBox_palette->currentText() == "<eigen>") {
         buttonColors_save[2] = color;
         this->updateIconInOwnColor(80);
+        QSettings settingOwnColor("Markus@W-Sem_2022", "Fraktalgenerator");
+        settingOwnColor.setValue("OWN_RGB_VERLAUF_OWN_COLOR_3", color.name() );
     }
 
     ui->pushButton_color3->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[2].name() );
@@ -2287,6 +2336,8 @@ void MainWindow::on_pushButton_color4_clicked()
     if(ui->comboBox_palette->currentText() == "<eigen>") {
         buttonColors_save[3] = color;
         this->updateIconInOwnColor(80);
+        QSettings settingOwnColor("Markus@W-Sem_2022", "Fraktalgenerator");
+        settingOwnColor.setValue("OWN_RGB_VERLAUF_OWN_COLOR_4", color.name() );
     }
 
     ui->pushButton_color4->setStyleSheet(STYLE_SHEET_COLOR_BUTTON+ buttonColors[3].name() );
@@ -2309,6 +2360,8 @@ void MainWindow::on_pushButton_color5_clicked()
     if(ui->comboBox_palette->currentText() == "<eigen>") {
         buttonColors_save[4] = color;
         this->updateIconInOwnColor(80);
+        QSettings settingOwnColor("Markus@W-Sem_2022", "Fraktalgenerator");
+        settingOwnColor.setValue("OWN_RGB_VERLAUF_OWN_COLOR_5", color.name() );
     }
 
     ui->pushButton_color5->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[4].name() );
@@ -2330,6 +2383,8 @@ void MainWindow::on_pushButton_color6_clicked()
     if(ui->comboBox_palette->currentText() == "<eigen>") {
         buttonColors_save[5] = color;
         this->updateIconInOwnColor(80);
+        QSettings settingOwnColor("Markus@W-Sem_2022", "Fraktalgenerator");
+        settingOwnColor.setValue("OWN_RGB_VERLAUF_OWN_COLOR_6", color.name() );
     }
 
     ui->pushButton_color6->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[5].name() );
@@ -2353,6 +2408,8 @@ void MainWindow::on_pushButton_color7_clicked()
     if(ui->comboBox_palette->currentText() == "<eigen>") {
         buttonColors_save[6] = color;
         this->updateIconInOwnColor(80);
+        QSettings settingOwnColor("Markus@W-Sem_2022", "Fraktalgenerator");
+        settingOwnColor.setValue("OWN_RGB_VERLAUF_OWN_COLOR_7", color.name() );
     }
     ui->pushButton_color7->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[6].name() );
     editedSettings = true;
@@ -2374,6 +2431,8 @@ void MainWindow::on_pushButton_color8_clicked()
     if(ui->comboBox_palette->currentText() == "<eigen>") {
         buttonColors_save[7] = color;
         this->updateIconInOwnColor(80);
+        QSettings settingOwnColor("Markus@W-Sem_2022", "Fraktalgenerator");
+        settingOwnColor.setValue("OWN_RGB_VERLAUF_OWN_COLOR_8", color.name() );
     }
 
     ui->pushButton_color8->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[7].name() );
@@ -2395,6 +2454,9 @@ void MainWindow::on_pushButtonFraktalColor_clicked()
     }
     fraktalColor = color;
 
+    QSettings settingOwnColor("Markus@W-Sem_2022", "Fraktalgenerator");
+    settingOwnColor.setValue("OWN_FRAKTAL_COLOR", color.name() );
+
     ui->pushButtonFraktalColor->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + fraktalColor.name() );
     editedSettings = true;
     this->setOperationMode();
@@ -2409,8 +2471,11 @@ void MainWindow::on_radioButtonF1_toggled(bool status)
     this->setOperationMode();
     if(ui->comboBox_palette->currentText() == "<eigen>") {
         this->updateIconInOwnColor(80);
-        if(!dont_update_save_check_buttons)
+        if(!dont_update_save_check_buttons) {
             isChecked_save[0] = status;
+            QSettings settingOwnColor("Markus@W-Sem_2022", "Fraktalgenerator");
+            settingOwnColor.setValue("OWN_RGB_VERLAUF_OWN_CHECKED_1", status );
+        }
     }
 }
 
@@ -2421,9 +2486,11 @@ void MainWindow::on_radioButtonF2_toggled(bool status)
     this->setOperationMode();
     if(ui->comboBox_palette->currentText() == "<eigen>") {
         this->updateIconInOwnColor(80);
-        if(!dont_update_save_check_buttons)
+        if(!dont_update_save_check_buttons) {
             isChecked_save[1] = status;
-        qDebug() << status;
+            QSettings settingOwnColor("Markus@W-Sem_2022", "Fraktalgenerator");
+            settingOwnColor.setValue("OWN_RGB_VERLAUF_OWN_CHECKED_2", status );
+        }
     }
 }
 
@@ -2434,8 +2501,11 @@ void MainWindow::on_radioButtonF3_toggled(bool status)
     this->setOperationMode();
     if(ui->comboBox_palette->currentText() == "<eigen>") {
         this->updateIconInOwnColor(80);
-        if(!dont_update_save_check_buttons)
+        if(!dont_update_save_check_buttons) {
             isChecked_save[2] = status;
+            QSettings settingOwnColor("Markus@W-Sem_2022", "Fraktalgenerator");
+            settingOwnColor.setValue("OWN_RGB_VERLAUF_OWN_CHECKED_3", status );
+        }
     }
 }
 
@@ -2446,8 +2516,11 @@ void MainWindow::on_radioButtonF4_toggled(bool status)
     this->setOperationMode();
     if(ui->comboBox_palette->currentText() == "<eigen>") {
         this->updateIconInOwnColor(80);
-        if(!dont_update_save_check_buttons)
+        if(!dont_update_save_check_buttons) {
             isChecked_save[3] = status;
+            QSettings settingOwnColor("Markus@W-Sem_2022", "Fraktalgenerator");
+            settingOwnColor.setValue("OWN_RGB_VERLAUF_OWN_CHECKED_4", status );
+        }
     }
 }
 
@@ -2458,8 +2531,11 @@ void MainWindow::on_radioButtonF5_toggled(bool status)
     this->setOperationMode();
     if(ui->comboBox_palette->currentText() == "<eigen>") {
         this->updateIconInOwnColor(80);
-        if(!dont_update_save_check_buttons)
+        if(!dont_update_save_check_buttons) {
             isChecked_save[4] = status;
+            QSettings settingOwnColor("Markus@W-Sem_2022", "Fraktalgenerator");
+            settingOwnColor.setValue("OWN_RGB_VERLAUF_OWN_CHECKED_5", status );
+        }
     }
 }
 
@@ -2469,8 +2545,11 @@ void MainWindow::on_radioButtonF6_toggled(bool status)
     this->setOperationMode();
     if(ui->comboBox_palette->currentText() == "<eigen>") {
         this->updateIconInOwnColor(80);
-        if(!dont_update_save_check_buttons)
+        if(!dont_update_save_check_buttons) {
             isChecked_save[5] = status;
+            QSettings settingOwnColor("Markus@W-Sem_2022", "Fraktalgenerator");
+            settingOwnColor.setValue("OWN_RGB_VERLAUF_OWN_CHECKED_6", status );
+        }
     }
 }
 
@@ -2481,8 +2560,11 @@ void MainWindow::on_radioButtonF7_toggled(bool status)
     this->setOperationMode();
     if(ui->comboBox_palette->currentText() == "<eigen>") {
         this->updateIconInOwnColor(80);
-        if(!dont_update_save_check_buttons)
+        if(!dont_update_save_check_buttons) {
             isChecked_save[6] = status;
+            QSettings settingOwnColor("Markus@W-Sem_2022", "Fraktalgenerator");
+            settingOwnColor.setValue("OWN_RGB_VERLAUF_OWN_CHECKED_7", status );
+        }
     }
 }
 
@@ -2493,8 +2575,11 @@ void MainWindow::on_radioButtonF8_toggled(bool status)
     this->setOperationMode();
     if(ui->comboBox_palette->currentText() == "<eigen>") {
         this->updateIconInOwnColor(80);
-        if(!dont_update_save_check_buttons)
+        if(!dont_update_save_check_buttons) {
             isChecked_save[7] = status;
+            QSettings settingOwnColor("Markus@W-Sem_2022", "Fraktalgenerator");
+            settingOwnColor.setValue("OWN_RGB_VERLAUF_OWN_CHECKED_8", status );
+        }
     }
 }
 
