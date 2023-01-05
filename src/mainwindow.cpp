@@ -174,9 +174,9 @@ MainWindow::MainWindow(QWidget *parent)
          *
          * */
 
-        QFont f = this->font();
-        f.setPixelSize(13);
-        this->setFont(f);
+//        QFont f = this->font();
+//        f.setPixelSize(13);
+//        this->setFont(f);
 
 
 

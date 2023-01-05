@@ -20,6 +20,14 @@ DialogCreateVideo::DialogCreateVideo(QWidget *parent, DialogImageSerie::ImgSerie
     ui->spinBox_NameItStop->setValue( imgS.imgCountConst - 1 );
 
 
+    if( QSysInfo::productType() == "macos" /*Qt 6*/ || QSysInfo::productType() == "macos"  /*Qt 5*/ ) {
+
+
+
+
+    }
+
+
 
 }
 

@@ -7,7 +7,30 @@ CONFIG += c++17
 INCLUDEPATH += src/ \
                src/video/
 
+# ICON
+# CMAKE - Win:
+#     set(APP_ICON_RESOURCE_WINDOWS "${CMAKE_CURRENT_SOURCE_DIR}/qt5app.rc")
+#     add_executable(qt5app main.cpp ${APP_ICON_RESOURCE_WINDOWS})
+# QMake - Win:
+
+# MAC
+
 win32:RC_ICONS += src/qss_icons/icon.ico
+ICON = Project.icns
+
+
+# NOTE: Don't include the path in MACOSX_BUNDLE_ICON_FILE -- this is
+# the property added to Info.plist
+# oda hier "icon"?
+## set(MACOSX_BUNDLE_ICON_FILE qt5app.icns)
+
+# And this part tells CMake where to find and install the file itself
+#oder hier ohne src/ ?
+## set(APP_ICON_MACOSX ${CMAKE_CURRENT_SOURCE_DIR}/src/qss_icons/icon.icns)
+
+## set_source_files_properties(${APP_ICON_MACOSX} PROPERTIES
+##         MACOSX_PACKAGE_LOCATION "Resources")
+## add_executable(qt5app MACOSX_BUNDLE main.cpp ${APP_ICON_MACOSX})
 
 
 # You can make your code fail to compile if it uses deprecated APIs.

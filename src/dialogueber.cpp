@@ -11,6 +11,15 @@ DialogUeber::DialogUeber(QString PROGRAMM_VERSION, QWidget *parent) :
     ui->label_qt_version->setText("Qt " + QString(QT_VERSION_STR));
     ui->label_compile_date->setText(QString(__DATE__) + QString(" at ") + QString(__TIME__));
     ui->label_arch->setText(QSysInfo::currentCpuArchitecture());
+
+    if( QSysInfo::productType() == "macos" /*Qt 6*/ || QSysInfo::productType() == "macos"  /*Qt 5*/ ) {
+
+
+
+
+
+    }
+
 }
 
 DialogUeber::~DialogUeber()

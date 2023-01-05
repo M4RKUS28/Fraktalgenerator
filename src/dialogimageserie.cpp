@@ -26,6 +26,16 @@ DialogImageSerie::DialogImageSerie(QWidget *parent, ImgSerie s, double startZoom
     this->ui->label_startZoom->setText(QString::number(startZoom));
     updateEndZoom();
     updateEndItCount();
+
+    if( QSysInfo::productType() == "macos" /*Qt 6*/ || QSysInfo::productType() == "macos"  /*Qt 5*/ ) {
+
+
+
+
+    }
+
+
+
 }
 
 
