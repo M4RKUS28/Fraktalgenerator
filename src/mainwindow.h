@@ -32,7 +32,7 @@ QT_END_NAMESPACE
 #define START_POS_X_JUL 0.0
 #define START_POS_Y_JUL 0.0
 
-#define P_VERSION "3.2.0"
+#define P_VERSION "3.2.1"
 
 static const QString STYLE_SHEET_COLOR_BUTTON = "border: 1px solid black; border-radius: 3px; background-color: ";
 
@@ -197,7 +197,9 @@ public:
     QColor getFraktalColor();
     void setFratalColor(int index, QColor eigen);
 
-
+    //color rg folge buttons:
+    void radioColorButtonToggeled(int button_num_array, bool status);
+    void pushColorButtonClicked(int button_num_array);
 
 
 private slots:

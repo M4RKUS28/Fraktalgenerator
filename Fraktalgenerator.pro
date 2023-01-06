@@ -13,10 +13,14 @@ INCLUDEPATH += src/ \
 #     add_executable(qt5app main.cpp ${APP_ICON_RESOURCE_WINDOWS})
 # QMake - Win:
 
-# MAC
 
 win32:RC_ICONS += src/qss_icons/icon.ico
+
+# MAC qmake
+
 ICON = Project.icns
+
+# MAC C make
 
 
 # NOTE: Don't include the path in MACOSX_BUNDLE_ICON_FILE -- this is
