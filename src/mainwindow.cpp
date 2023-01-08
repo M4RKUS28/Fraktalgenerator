@@ -209,7 +209,7 @@ MainWindow::MainWindow(QWidget *parent)
         if(settingOwnColor.contains("OWN_RGB_VERLAUF_OWN_COLOR_" + QString::number(i+1)))
             buttonColors_save[i] = settingOwnColor.value("OWN_RGB_VERLAUF_OWN_COLOR_" + QString::number(i+1)).toString();
         if(settingOwnColor.contains("OWN_RGB_VERLAUF_OWN_CHECKED_" + QString::number(i+1)))
-            isChecked_save[i] = settingOwnColor.value("OWN_RGB_VERLAUF_OWN_COLOR_" + QString::number(i+1)).toBool();
+            isChecked_save[i] = settingOwnColor.value("OWN_RGB_VERLAUF_OWN_CHECKED_" + QString::number(i+1)).toBool();
 
 
     }
@@ -256,8 +256,12 @@ MainWindow::MainWindow(QWidget *parent)
     this->startRefresh(currentImg, true);
 
 
-    //light theme als standart
-    ui->comboBox_theme->setCurrentIndex(2);
+    // standart theme
+    if(settingOwnColor.contains("THEME"))
+        ui->comboBox_theme->setCurrentIndex(settingOwnColor.value("THEME").toInt());
+    else
+        ui->comboBox_theme->setCurrentIndex(2);
+
     // anzahl an cpu cors als standart
     this->ui->spinBox_threads->setValue(QThread::idealThreadCount());
 
@@ -2443,6 +2447,9 @@ void MainWindow::on_radioButtonF8_toggled(bool status)
 
 void MainWindow::on_comboBox_theme_currentIndexChanged(int index)
 {
+    QSettings settingOwnColor("Markus@W-Sem_2022", "Fraktalgenerator");
+    settingOwnColor.setValue("THEME", index );
+
     QString fileName;
     QString data;
 

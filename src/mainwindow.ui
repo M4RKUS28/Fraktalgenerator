@@ -75,7 +75,7 @@
           <enum>QTabWidget::Rounded</enum>
          </property>
          <property name="currentIndex">
-          <number>3</number>
+          <number>1</number>
          </property>
          <property name="iconSize">
           <size>
@@ -988,10 +988,10 @@
                  </sizepolicy>
                 </property>
                 <property name="frameShape">
-                 <enum>QFrame::StyledPanel</enum>
+                 <enum>QFrame::NoFrame</enum>
                 </property>
                 <property name="lineWidth">
-                 <number>1</number>
+                 <number>0</number>
                 </property>
                 <property name="currentIndex">
                  <number>0</number>
