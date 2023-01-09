@@ -363,6 +363,8 @@ private slots:
 
     void on_comboBox_color_zahlenfolge_currentIndexChanged(int index);
 
+    void on_actionTastenk_rzel_triggered();
+
 private:
     Ui::MainWindow *ui;
 

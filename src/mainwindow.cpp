@@ -271,7 +271,7 @@ MainWindow::MainWindow(QWidget *parent)
     if(settingOwnColor.contains("THREAD_COUNT"))
         this->ui->spinBox_threads->setValue(settingOwnColor.value("THREAD_COUNT").toInt());
     else
-        this->ui->spinBox_threads->setValue(QThread::idealThreadCount() * 4 /*SPEED BOOST ????*/);
+        this->ui->spinBox_threads->setValue(QThread::idealThreadCount() * 2 /*SPEED BOOST ????*/);
 
     if(settingOwnColor.contains("THREAD_CREATE_TIME_DELAY"))
         this->ui->spinBoxStartVerzoegerung->setValue(settingOwnColor.value("THREAD_CREATE_TIME_DELAY").toInt());
@@ -1238,6 +1238,8 @@ void MainWindow::updateImage()
 //            this->fullScreenView->setImage(*this->currentImg->image);
 //    }
     this->update();
+    if(ui->comboBox_theme->currentIndex() == 0) /*Bei default theme comischer bug -> bild wird nur bei enterEvent akutualisiert, voer bug bei anderen modi...so mit extra update gehts lol*/
+        ui->imageView->update();
 }
 
 void MainWindow::startImgFolge()
@@ -1438,7 +1440,6 @@ void MainWindow::on_pushButton_vor_clicked()
 
 void MainWindow::paintEvent(QPaintEvent *)
 {
-
     QImage img = *currentImg->image;
     QPainter painter;
     painter.begin(&img);
@@ -1635,32 +1636,96 @@ void MainWindow::setFullScreenWindowVisible(bool state)
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
     qDebug() << event << " --> ";
-    if(event->key() == Qt::Key_Plus || event->key() == Qt::UpArrow) {
+    switch (event->key()) {
+    case Qt::Key_Plus:
         this->ui->spinBox_zoom->setValue( this->ui->spinBox_zoom->value() + 1 );
-
-
-    } else if(event->key() == Qt::Key_Minus) {
+        break;
+    case Qt::Key_Minus:
         this->ui->spinBox_zoom->setValue( this->ui->spinBox_zoom->value() - 1 );
+        break;
 
 
-    } else if(event->key() == Qt::Key_B) {
+    case Qt::Key_1:
+        this->ui->comboBox_palette->setCurrentIndex(1);
+        break;
+    case Qt::Key_2:
+        this->ui->comboBox_palette->setCurrentIndex(2);
+        break;
+    case Qt::Key_3:
+        this->ui->comboBox_palette->setCurrentIndex(3);
+        break;
+    case Qt::Key_4:
+        this->ui->comboBox_palette->setCurrentIndex(4);
+        break;
+    case Qt::Key_5:
+        this->ui->comboBox_palette->setCurrentIndex(5);
+        break;
+    case Qt::Key_6:
+        this->ui->comboBox_palette->setCurrentIndex(6);
+        break;
+    case Qt::Key_7:
+        this->ui->comboBox_palette->setCurrentIndex(7);
+        break;
+    case Qt::Key_8:
+        this->ui->comboBox_palette->setCurrentIndex(8);
+        break;
+    case Qt::Key_9:
+        this->ui->comboBox_palette->setCurrentIndex(9);
+        break;
+
+    case Qt::Key_X:
+        this->ui->comboBox_palette->setCurrentIndex(11);
+        break;
+    case Qt::Key_Y:
+        this->ui->comboBox_palette->setCurrentIndex(12);
+        break;
+
+    case Qt::Key_Z:
+        this->ui->comboBox_palette->setCurrentIndex(14);
+        break;
+
+
+    case Qt::Key_B:
         this->ui->pushButton_back->click();
-
-    } else if(event->key() == Qt::Key_N) {
+        break;
+    case Qt::Key_N:
         this->ui->pushButton_vor->click();
+        break;
 
-    } else if(event->key() == Qt::Key_Escape || event->key() == Qt::Key_Q || event->key() == Qt::Key_L || event->key() == Qt::Key_E) {
-        if(this->fullScreenView->isVisible()) {
+    case Qt::Key_Escape:
+    case Qt::Key_Q:
+    case Qt::Key_L:
+    case Qt::Key_E:
+        if(this->fullScreenView->isVisible())
             this->setFullScreenWindowVisible(false);
-        }
-    } else if(event->key() == Qt::Key_I) {
+        break;
+
+
+    case Qt::Key_I:
         this->startImgFolge();
-
-    } else if(event->key() == Qt::Key_O) {
+        break;
+    case Qt::Key_O:
         this->createVideo();
-    }
+        break;
 
-//    updateImage();
+    case Qt::Key_H: {
+        ssize_t n_v = ui->spinBoxMaxIterations->value() + ui->spinBoxMaxIterations->singleStep();
+        if(n_v <= ui->spinBoxMaxIterations->maximum())
+            ui->spinBoxMaxIterations->setValue(n_v);
+        break;
+        }
+    case Qt::Key_T: {
+        ssize_t n_v = ui->spinBoxMaxIterations->value() - ui->spinBoxMaxIterations->singleStep();
+        if(n_v >= ui->spinBoxMaxIterations->minimum())
+            ui->spinBoxMaxIterations->setValue(n_v);
+        break;
+        }
+
+
+
+    default:
+        break;
+    }
 
 }
 
@@ -2775,5 +2840,14 @@ void MainWindow::on_comboBox_color_zahlenfolge_currentIndexChanged(int )
 {
     this->updateImage();
 
+}
+
+#include <QMessageBox>
+
+void MainWindow::on_actionTastenk_rzel_triggered()
+{
+    QMessageBox::information(this, "Tastenkürzel",
+                             "<html><head/><body><p><span style=\" font-weight:700; color:#0e71b3;\">Mausklicks</span><span style=\" font-style:italic; color:#0e71b3;\">------------------------------------------------------------------</span></p><p><span style=\" font-weight:700;\">-&gt; [Linksklick in Bild]:</span> Vorschau des neuen Bildes an Mausposition</p><p><span style=\" font-weight:700;\">-&gt; [Doppelklick in Bild]: </span>Berechnung an Mausposition starten</p><p><span style=\" font-weight:700;\">-&gt; [Rechtsclick in Bild]:</span> Zahlenfolge des Startwertes an der Mausposition</p><p><span style=\" font-weight:700; color:#16a358;\">Tastenkürze</span><span style=\" color:#16a358;\">l----------------------------------------------------------------</span></p><p><span style=\" color:#5b5b5b;\">---</span><span style=\" font-style:italic; color:#5b5b5b;\">Auswahl der Farbalgorithmen</span><span style=\" color:#5b5b5b;\">--------------------------------------------</span></p><p><span style=\" font-weight:700;\">-&gt; [1]...[9]</span>: RGB-Farbverläufe</p><p><span style=\" font-weight:700;\">-&gt; [9]...[10]: </span>HSV-Farbverläufe</p><p><span style=\" font-weight:700;\">-&gt; [X]...[Y]: </span>HSV-Farbverläufe</p><p><span style=\" font-weight:700;\">-&gt; [Z]: </span>Histogram-Farbverlauf</p><p><span style=\" font-style:italic; color:#5b5b5b;\">---Vollbildmodus------------------------------------------------------------</span></p><p><span style=\" font-weight:700;\">-&gt; [ESC], [Q], [E] oder [L]: </span>Vollbildfenster schließen</p><p><span style=\" font-style:italic; color:#5b5b5b;\">---Video erstellen</span><span style=\" font-style:italic; color:#5b5b5b;\">------------------------------------------------------------</span></p><p><span style=\" font-weight:700;\">-&gt; [O]: </span>Video aus Bilderfolge erstellen</p><p><span style=\" font-weight:700;\">-&gt; [I]: </span>Bilderfolge erstellen</p><p><span style=\" font-style:italic; color:#5b5b5b;\">---Berechnungseinstellungen</span><span style=\" font-style:italic; color:#5b5b5b;\">-----------------------------------------------</span></p><p><span style=\" font-weight:700;\">-&gt; [-]:</span> Zoomfaktor - 1</p><p><span style=\" font-weight:700;\">-&gt; [+]: </span>Zoomfaktor + 1</p><p><span style=\" font-weight:700;\">-&gt; [H]: </span>Iterationen - 1</p><p><span style=\" font-weight:700;\">-&gt; [T]: </span>Iterationen + 1</p><p><span style=\" font-style:italic; color:#5b5b5b;\">---Verlauf-------------------------------------------------------------------</span></p><p><span style=\" font-weight:700;\">-&gt; [N]: </span>Nächstes Bild im Verlauf</p><p><span style=\" font-weight:700;\">-&gt; [B]: </span>Vorheriges Bild im Verlauf</p></body></html>"
+                             );
 }
 

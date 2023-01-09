@@ -30,6 +30,21 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
+    <property name="leftMargin">
+     <number>9</number>
+    </property>
+    <property name="topMargin">
+     <number>9</number>
+    </property>
+    <property name="rightMargin">
+     <number>9</number>
+    </property>
+    <property name="bottomMargin">
+     <number>9</number>
+    </property>
+    <property name="spacing">
+     <number>6</number>
+    </property>
     <item row="0" column="1" rowspan="2">
      <widget class="QWidget" name="widget" native="true">
       <property name="minimumSize">
@@ -122,6 +137,9 @@
                   <pointsize>10</pointsize>
                   <bold>false</bold>
                  </font>
+                </property>
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fraktal auswählen - Zu jedem Punkt der Mandelbrot-Menge lässt sich eine Julia-Menge berechnen.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <item>
                  <property name="text">
@@ -509,6 +527,9 @@
                   <bold>false</bold>
                  </font>
                 </property>
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Imaginärer Teil des Startwertes c, über dem sich die Maus auf der Gauß'schen Zahlenebene befindet.&lt;/p&gt;&lt;p&gt;Dieses Feld lässt sich auch als Eingabefeld verwenden!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
                 <property name="suffix">
                  <string> i</string>
                 </property>
@@ -527,6 +548,9 @@
                   <pointsize>10</pointsize>
                   <bold>false</bold>
                  </font>
+                </property>
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Reeller Teil des Startwertes c, über dem sich die Maus auf der Gauß'schen Zahlenebene befindet.&lt;/p&gt;&lt;p&gt;Dieses Feld lässt sich auch als Eingabefeld verwenden!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="decimals">
                  <number>15</number>
@@ -625,6 +649,9 @@
                   <bold>false</bold>
                  </font>
                 </property>
+                <property name="toolTip">
+                 <string>Verlauf löschen, um Arbeitsspeicher freizugeben. Das erste und letzte Bild bleiben erhalten.</string>
+                </property>
                 <property name="text">
                  <string>🗑 Verlauf löschen</string>
                 </property>
@@ -699,6 +726,9 @@
                   <pointsize>10</pointsize>
                   <bold>false</bold>
                  </font>
+                </property>
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Farbe der Mandelbrot- bzw. Julia-Menge. Über &amp;lt;andere&amp;gt; kann eine beliebige Farbe ausgewählt werden.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <item>
                  <property name="text">
@@ -810,6 +840,9 @@
                   <bold>true</bold>
                  </font>
                 </property>
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Auswahl des Farbalgorithmus der Fluchtmenge&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
                 <property name="currentIndex">
                  <number>0</number>
                 </property>
@@ -920,6 +953,9 @@
                   <bold>false</bold>
                  </font>
                 </property>
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Farben der Fluchtmenge umkehren&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
                 <property name="text">
                  <string>Farben Invertieren</string>
                 </property>
@@ -967,6 +1003,9 @@
                   <pointsize>10</pointsize>
                   <bold>false</bold>
                  </font>
+                </property>
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Durch das Aktivieren der normalisierten Iterationszahl kann ein kontinuierlicher Farbverlauf im Außenbereich des Fraktals erzeugt werden.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="text">
                  <string>Normalized</string>
@@ -1056,6 +1095,9 @@
                       <bold>false</bold>
                      </font>
                     </property>
+                    <property name="toolTip">
+                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Auswahl zwischen einem absoluten Farblauf, in dem jede Farbe genau ein mal vorkommt und einem Intervall Verlauf, indem sich die Farben nach einer bestimmten Anzahl an Iterationen wiederhohlen&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                    </property>
                     <item>
                      <property name="text">
                       <string>Intervall Verlauf</string>
@@ -1083,6 +1125,9 @@
                         <pointsize>10</pointsize>
                         <bold>true</bold>
                        </font>
+                      </property>
+                      <property name="toolTip">
+                       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Farbe de-/aktivieren&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                       </property>
                       <property name="text">
                        <string>Farbe 1:</string>
@@ -1112,6 +1157,9 @@
                         <bold>true</bold>
                        </font>
                       </property>
+                      <property name="toolTip">
+                       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Klicken, um Farbe zu wählen&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                      </property>
                       <property name="text">
                        <string/>
                       </property>
@@ -1130,6 +1178,9 @@
                         <pointsize>10</pointsize>
                         <bold>true</bold>
                        </font>
+                      </property>
+                      <property name="toolTip">
+                       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Farbe de-/aktivieren&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                       </property>
                       <property name="text">
                        <string>Farbe 2:</string>
@@ -1156,6 +1207,9 @@
                         <bold>true</bold>
                        </font>
                       </property>
+                      <property name="toolTip">
+                       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Klicken, um Farbe zu wählen&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                      </property>
                       <property name="text">
                        <string/>
                       </property>
@@ -1174,6 +1228,9 @@
                         <pointsize>10</pointsize>
                         <bold>true</bold>
                        </font>
+                      </property>
+                      <property name="toolTip">
+                       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Farbe de-/aktivieren&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                       </property>
                       <property name="text">
                        <string>Farbe 3:</string>
@@ -1200,6 +1257,9 @@
                         <bold>true</bold>
                        </font>
                       </property>
+                      <property name="toolTip">
+                       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Klicken, um Farbe zu wählen&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                      </property>
                       <property name="text">
                        <string/>
                       </property>
@@ -1218,6 +1278,9 @@
                         <pointsize>10</pointsize>
                         <bold>false</bold>
                        </font>
+                      </property>
+                      <property name="toolTip">
+                       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Farbe de-/aktivieren&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                       </property>
                       <property name="text">
                        <string>Farbe 4:</string>
@@ -1247,6 +1310,9 @@
                         <bold>true</bold>
                        </font>
                       </property>
+                      <property name="toolTip">
+                       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Klicken, um Farbe zu wählen&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                      </property>
                       <property name="text">
                        <string/>
                       </property>
@@ -1265,6 +1331,9 @@
                         <pointsize>10</pointsize>
                         <bold>false</bold>
                        </font>
+                      </property>
+                      <property name="toolTip">
+                       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Farbe de-/aktivieren&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                       </property>
                       <property name="text">
                        <string>Farbe 5:</string>
@@ -1300,6 +1369,9 @@
                         <bold>true</bold>
                        </font>
                       </property>
+                      <property name="toolTip">
+                       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Klicken, um Farbe zu wählen&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                      </property>
                       <property name="text">
                        <string/>
                       </property>
@@ -1318,6 +1390,9 @@
                         <pointsize>10</pointsize>
                         <bold>false</bold>
                        </font>
+                      </property>
+                      <property name="toolTip">
+                       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Farbe de-/aktivieren&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                       </property>
                       <property name="text">
                        <string>Farbe 6:</string>
@@ -1341,6 +1416,9 @@
                         <bold>false</bold>
                        </font>
                       </property>
+                      <property name="toolTip">
+                       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Klicken, um Farbe zu wählen&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                      </property>
                       <property name="text">
                        <string/>
                       </property>
@@ -1359,6 +1437,9 @@
                         <pointsize>10</pointsize>
                         <bold>false</bold>
                        </font>
+                      </property>
+                      <property name="toolTip">
+                       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Farbe de-/aktivieren&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                       </property>
                       <property name="text">
                        <string>Farbe 7:</string>
@@ -1382,6 +1463,9 @@
                         <bold>false</bold>
                        </font>
                       </property>
+                      <property name="toolTip">
+                       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Klicken, um Farbe zu wählen&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                      </property>
                       <property name="text">
                        <string/>
                       </property>
@@ -1400,6 +1484,9 @@
                         <pointsize>10</pointsize>
                         <bold>false</bold>
                        </font>
+                      </property>
+                      <property name="toolTip">
+                       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Farbe de-/aktivieren&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                       </property>
                       <property name="text">
                        <string>Farbe 8:</string>
@@ -1422,6 +1509,9 @@
                         <pointsize>10</pointsize>
                         <bold>false</bold>
                        </font>
+                      </property>
+                      <property name="toolTip">
+                       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Klicken, um Farbe zu wählen&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                       </property>
                       <property name="text">
                        <string/>
@@ -1479,6 +1569,9 @@
                       <pointsize>10</pointsize>
                       <bold>false</bold>
                      </font>
+                    </property>
+                    <property name="toolTip">
+                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Anzahl der Iterationen, nach der sich die Farben wiederhohlen. Je höher die maximale Iterationszahl gewählt wir und je tiefer man in ein Fraktal zoomt, desto größer sollte dieser Wert gewählt werden.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                     </property>
                     <property name="maximum">
                      <number>999999</number>
@@ -2392,6 +2485,9 @@
                     <bold>false</bold>
                    </font>
                   </property>
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bildbreite in Pixel&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
                   <property name="maximum">
                    <number>29999</number>
                   </property>
@@ -2436,6 +2532,9 @@
                     <bold>false</bold>
                    </font>
                   </property>
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bildhöhe in Pixel&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
                   <property name="maximum">
                    <number>29999</number>
                   </property>
@@ -2478,6 +2577,9 @@
                   <bold>false</bold>
                  </font>
                 </property>
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Anzahl der maximalen Iterationsdurchläufe pro Pixel&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
                 <property name="minimum">
                  <number>0</number>
                 </property>
@@ -2515,6 +2617,9 @@
                   <pointsize>10</pointsize>
                   <bold>false</bold>
                  </font>
+                </property>
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zoomfaktor im Verhältnis zum Bild&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="prefix">
                  <string> x </string>
@@ -2578,6 +2683,9 @@
                   <bold>false</bold>
                  </font>
                 </property>
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fluchtradius wählen, ab dem weitere Berechnungen abgebrochen werden&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
                 <property name="minimum">
                  <double>2.000000000000000</double>
                 </property>
@@ -2616,6 +2724,9 @@
                   <bold>false</bold>
                  </font>
                 </property>
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Anzahl der Prozesse zur parallelen Berechnung der Zahlenfolgen. Eine höhere Anzahl ist bei einer hohen maximalen Iterationszahl und bei großen Bildern zu empfehlen.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
                 <property name="minimum">
                  <number>1</number>
                 </property>
@@ -2647,6 +2758,9 @@
                   <pointsize>10</pointsize>
                   <bold>false</bold>
                  </font>
+                </property>
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zeitverzögerung zwischen der Erzeugung zweier paralleler Prozesse. Mit 0s kann diese Verzögerung deaktiviert werden. Dies kann jedoch zu Verzögerungen in der Grafik führen.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="suffix">
                  <string> ms</string>
@@ -2707,6 +2821,9 @@
                   <bold>false</bold>
                  </font>
                 </property>
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Scalierung des gesammten Bildes wählen. Nötig bei Bildschirmen mit einer höheren Dichte der Bildpunkte pro Zoll. Diese Funktion kann auch als Zoom verwendet werden.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
                 <item>
                  <property name="text">
                   <string>auto</string>
@@ -2766,6 +2883,9 @@
                   <bold>false</bold>
                  </font>
                 </property>
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default Qt Theme, Light Theme und Dark Theme&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
                 <property name="currentIndex">
                  <number>0</number>
                 </property>
@@ -2812,6 +2932,9 @@
                   <pointsize>10</pointsize>
                   <bold>false</bold>
                  </font>
+                </property>
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bildschrim auswählen, auf dem das Vollbildfenster angezeigt werden soll. Bei einem Wechsel wird die Bildauflösung automatisch der Auflösung des Vollbildbildschrims angepasst.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                </widget>
               </item>
@@ -3072,6 +3195,21 @@
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_5">
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <property name="leftMargin">
+         <number>9</number>
+        </property>
+        <property name="topMargin">
+         <number>9</number>
+        </property>
+        <property name="rightMargin">
+         <number>9</number>
+        </property>
+        <property name="bottomMargin">
+         <number>9</number>
+        </property>
         <item>
          <widget class="ImageView" name="imageView" native="true">
           <property name="focusPolicy">
@@ -3118,8 +3256,9 @@
     <property name="title">
      <string>Hilfe</string>
     </property>
-    <addaction name="actionStandart_Einstellungen_wiederherstellen"/>
+    <addaction name="actionTastenk_rzel"/>
     <addaction name="action_ber"/>
+    <addaction name="actionStandart_Einstellungen_wiederherstellen"/>
    </widget>
    <widget class="QMenu" name="menuVideo">
     <property name="title">
@@ -3194,6 +3333,9 @@
    <property name="text">
     <string>Bilderfolge erstellen</string>
    </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bilderfolge erstellen - Ein Video kann daraufhin aus dieser Folge erstellt werden&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
   </action>
   <action name="actionVideo_aus_Bilderfolge_generieren">
    <property name="text">
@@ -3267,6 +3409,14 @@
   <action name="actionStandart_Einstellungen_wiederherstellen">
    <property name="text">
     <string>Standart Einstellungen wiederherstellen</string>
+   </property>
+  </action>
+  <action name="actionTastenk_rzel">
+   <property name="text">
+    <string>Maus- und Tastenkürzel</string>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700; color:#0e71b3;&quot;&gt;Mausklicks&lt;/span&gt;&lt;span style=&quot; font-style:italic; color:#0e71b3;&quot;&gt;------------------------------------------------------------------&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;-&amp;gt; [Linksklick in Bild]:&lt;/span&gt; Vorschau des neuen Bildes an Mausposition&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;-&amp;gt; [Doppelklick in Bild]: &lt;/span&gt;Berechnung an Mausposition starten&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;-&amp;gt; [Rechtsclick in Bild]:&lt;/span&gt; Zahlenfolge des Startwertes an der Mausposition&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700; color:#16a358;&quot;&gt;Tastenkürze&lt;/span&gt;&lt;span style=&quot; color:#16a358;&quot;&gt;l----------------------------------------------------------------&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; color:#5b5b5b;&quot;&gt;---&lt;/span&gt;&lt;span style=&quot; font-style:italic; color:#5b5b5b;&quot;&gt;Auswahl der Farbalgorithmen&lt;/span&gt;&lt;span style=&quot; color:#5b5b5b;&quot;&gt;--------------------------------------------&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;-&amp;gt; [1]...[9]&lt;/span&gt;: RGB-Farbverläufe&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;-&amp;gt; [9]...[10]: &lt;/span&gt;HSV-Farbverläufe&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;-&amp;gt; [A]...[B]: &lt;/span&gt;HSV-Farbverläufe&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;-&amp;gt; [C]: &lt;/span&gt;Histogram-Farbverlauf&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic; color:#5b5b5b;&quot;&gt;---Vollbildmodus------------------------------------------------------------&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;-&amp;gt; [Esc], [Q], [E] oder [L]: &lt;/span&gt;Vollbildfenster schließen&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic; color:#5b5b5b;&quot;&gt;---Video erstellen&lt;/span&gt;&lt;span style=&quot; font-style:italic; color:#5b5b5b;&quot;&gt;------------------------------------------------------------&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;-&amp;gt; [O]: &lt;/span&gt;Video aus Bilderfolge erstellen&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;-&amp;gt; [I]: &lt;/span&gt;Bilderfolge erstellen&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic; color:#5b5b5b;&quot;&gt;---Berechnungseinstellungen&lt;/span&gt;&lt;span style=&quot; font-style:italic; color:#5b5b5b;&quot;&gt;-----------------------------------------------&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;-&amp;gt; [-]:&lt;/span&gt; Zoomfaktor - 1&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;-&amp;gt; [+]: &lt;/span&gt;Zoomfaktor + 1&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;-&amp;gt; [H]: &lt;/span&gt;Iterationen - 1&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;-&amp;gt; [T]: &lt;/span&gt;Iterationen + 1&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic; color:#5b5b5b;&quot;&gt;---Verlauf-------------------------------------------------------------------&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;-&amp;gt; [N]: &lt;/span&gt;Nächstes Bild im Verlauf&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;-&amp;gt; [B]: &lt;/span&gt;Vorheriges Bild im Verlauf&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </action>
  </widget>
