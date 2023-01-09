@@ -1,6 +1,7 @@
 #ifndef WORKERTHREAD_H
 #define WORKERTHREAD_H
 
+
 #include <QThread>
 #include <limits>
 #include <complex>

@@ -15,17 +15,15 @@ ImageView::ImageView(QWidget *parent)
 
 ImageView::~ImageView()
 {
-
+    qDebug() << "~ImageView()";
 }
 
 void ImageView::setImage(const QImage &img)
 {
     this->img = img;
     this->setFixedSize(img.size() * hdpi_scale);
-    if(parent() == nullptr) {
+    if(parent() == nullptr /* FullscreenView gets no update() when MainWindow is updated!! */) {
         this->update();
-        qDebug() << "UPDATE IS STARTED";
-
     }
 }
 
@@ -61,7 +59,6 @@ void ImageView::paintEvent(QPaintEvent * )
     // zeichne Bild
     p.drawImage(0,0,img);
     p.end();
-    qDebug() << "UPDATE IS STARTED";
 }
 
 void ImageView::mouseMoveEvent(QMouseEvent *event)

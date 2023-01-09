@@ -41,6 +41,8 @@ DialogImageSerie::DialogImageSerie(QWidget *parent, ImgSerie s, double startZoom
 
 DialogImageSerie::~DialogImageSerie()
 {
+    qDebug() << "~DialogImageSerie()";
+
     delete ui;
 }
 

@@ -24,5 +24,7 @@ DialogUeber::DialogUeber(QString PROGRAMM_VERSION, QWidget *parent) :
 
 DialogUeber::~DialogUeber()
 {
+    qDebug() << "~DialogUeber()";
+
     delete ui;
 }

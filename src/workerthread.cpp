@@ -2,7 +2,6 @@
 #include "qdebug.h"
 #include <iostream>
 
-
 WorkerThread::WorkerThread(QObject *parent)
     : QThread(parent)
 {
@@ -21,6 +20,7 @@ WorkerThread::~WorkerThread()
             }
         }
     }
+//    qDebug() << "~WorkerThread";
 }
 
 void WorkerThread::setRange(ssize_t x_left_corner, ssize_t x_right_corner, ssize_t y_left_corner, ssize_t y_right_corner)

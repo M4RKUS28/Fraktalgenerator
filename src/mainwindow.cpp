@@ -31,6 +31,10 @@ MainWindow::MainWindow(QWidget *parent)
       useOldPosForImgSerie(false),
       ui(new Ui::MainWindow)
 {
+    qInfo() << "Init programm...";
+
+
+
     //SETUP DEFAULT COLORS/PALETTE:
     //0
     default_colors.push_back(QList<QColor>());
@@ -368,6 +372,8 @@ MainWindow::~MainWindow()
     delete ui;
     ui = nullptr;
 
+    qDebug() << "~MainWindow";
+    qInfo() << "Exit programm(0)";
 }
 
 void MainWindow::updateMidPos(bool clear)
@@ -639,10 +645,15 @@ void MainWindow::zustandWechseln(QString aktion, QString param, QPoint m_pos, QM
         if(aktion == "TIMER") {
             if(imgUpdateNeeded)
                 updateImage();
-            if(checkForFinished())
+            if(checkForFinished()) {
+                qInfo() << "    -> Finished!";
                 endRefresh(op_mode != OP_MODE::REFRESH);
+            }
 
         } else if(aktion == "BUTTON_REFRESH_AND_STOP") {
+
+            qInfo() << "    -> Abort!";
+
             // stop img serie
             imgSerie.imgCount = 0;
             this->stopThreads();
@@ -751,7 +762,6 @@ ImageSetting *MainWindow::getNewScaledSetting(ImageSetting *last_img)
 
 void MainWindow::updateUiWithImageSetting(ImageSetting *imgs)
 {
-    qDebug() << "UPDATE " << noUpdateGui;
     if(noUpdateGui) {
         noUpdateGui = false;
         return;
@@ -919,6 +929,7 @@ void MainWindow::startRefresh(ImageSetting *set, bool appendToList)
 
     }
 
+    qInfo() << "Start calculating new image...";
 
     //start workers
     for( size_t tn = 0; tn < tc; tn++) {
@@ -1411,7 +1422,6 @@ void MainWindow::on_pushButton_vor_clicked()
 
 void MainWindow::paintEvent(QPaintEvent *)
 {
-    qDebug() << "paintEvent";
 
     QImage img = *currentImg->image;
     QPainter painter;
@@ -1586,7 +1596,6 @@ void MainWindow::paintEvent(QPaintEvent *)
     ui->imageView->setImage(img);
     if(fullScreenView->isVisible()) {
         fullScreenView->setImage(img);
-        qDebug() << "UPDATE";
     }
 
 }
@@ -2038,40 +2047,7 @@ bool MainWindow::ZoomRect::rightMouseIsPressed()
 
 
 
-void ImageSetting::cleanUP()
-{
-    qDebug() << "cleanUP";
-    if(painter) {
-        delete painter;
-        painter = nullptr;
-    }
-    if(image) {
-        delete image;
-        image = nullptr;
-    }
 
-    for(int i = 0; i < img_w; i++ )
-        delete[] iterations[i];
-    delete [] iterations;
-    iterations = nullptr;
-
-    for(int i = 0; i < img_w; i++ )
-        delete[] iterations_normal[i];
-    delete [] iterations_normal;
-    iterations_normal = nullptr;
-
-    delete[] NumIterationsPerPixel;
-    NumIterationsPerPixel = nullptr;
-
-    if(hueIsSetted()) {
-        for(int i = 0; i < img_w; i++ )
-            delete[] hue[i];
-        delete [] hue;
-        qDebug() << "cleanUP hue";
-        hue = nullptr;
-        this->has_hue = false;
-    }
-}
 
 
 void MainWindow::on_spinBox_zoom_valueChanged(double)

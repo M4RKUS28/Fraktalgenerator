@@ -14,6 +14,7 @@
 
 struct ImageSetting {
     ImageSetting(int id, double scale, double re, double im);
+    ~ImageSetting();
 
     bool loadFromFileWasOK = true;
     ImageSetting(int id, QString file_path);
@@ -80,7 +81,7 @@ struct ImageSetting {
     double **hue;
 
 
-
+    bool cleandUp;
 
     /* overload the operators */
     friend QDataStream &operator<< (QDataStream &out, const ImageSetting &rhs)

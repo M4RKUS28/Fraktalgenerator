@@ -33,6 +33,8 @@ DialogCreateVideo::DialogCreateVideo(QWidget *parent, DialogImageSerie::ImgSerie
 
 DialogCreateVideo::~DialogCreateVideo()
 {
+    qDebug() << "~DialogCreateVideo()";
+
     delete ui;
 }
 

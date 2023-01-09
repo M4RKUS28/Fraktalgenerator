@@ -5,9 +5,51 @@
 
 
 ImageSetting::ImageSetting(int id, double scale, double re, double im)
-    : gaus_mid_im(im), gaus_mid_re(re), scaleValue(scale), has_hue(false), hue(nullptr)
+    : gaus_mid_im(im), gaus_mid_re(re), scaleValue(scale), has_hue(false), hue(nullptr), cleandUp(true)
 {
     this->id = id;
+}
+
+ImageSetting::~ImageSetting()
+{
+    qDebug() << "~ImageSetting( CLEANED =" << cleandUp << ")";
+}
+
+void ImageSetting::cleanUP()
+{
+//    qDebug() << "~ImageSetting::cleanUP()";
+    if(painter) {
+        delete painter;
+        painter = nullptr;
+    }
+    if(image) {
+        delete image;
+        image = nullptr;
+    }
+
+    for(int i = 0; i < img_w; i++ )
+        delete[] iterations[i];
+    delete [] iterations;
+    iterations = nullptr;
+
+    for(int i = 0; i < img_w; i++ )
+        delete[] iterations_normal[i];
+    delete [] iterations_normal;
+    iterations_normal = nullptr;
+
+    delete[] NumIterationsPerPixel;
+    NumIterationsPerPixel = nullptr;
+
+    if(hueIsSetted()) {
+        for(int i = 0; i < img_w; i++ )
+            delete[] hue[i];
+        delete [] hue;
+        qDebug() << "cleanUP hue";
+        hue = nullptr;
+        this->has_hue = false;
+    }
+
+    cleandUp = true;
 }
 
 
@@ -99,6 +141,7 @@ void ImageSetting::init(size_t img_w, size_t img_h, size_t maxIterations, bool i
     NumIterationsPerPixel = new size_t[maxIterations + 2];
     memset(NumIterationsPerPixel, 0, sizeof(size_t) * (maxIterations + 2) );
 
+    cleandUp = false;
 }
 
 int ImageSetting::store_setting(QString file_path)
