@@ -18,7 +18,7 @@ win32:RC_ICONS += src/qss_icons/icon.ico
 
 # MAC qmake
 
-ICON = Project.icns
+ICON = src/qss_icons/icon.icns
 
 # MAC C make
 

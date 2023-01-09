@@ -23,7 +23,7 @@ public:
     ImageView(QWidget * parent = nullptr);
     ~ImageView();
 
-    void setImage(QImage img);
+    void setImage(const QImage &img);
     void setHdpiScale(double multiplikator);
 
     double getHdpi_scale() const;

@@ -263,7 +263,7 @@ MainWindow::MainWindow(QWidget *parent)
         ui->comboBox_theme->setCurrentIndex(2);
 
     // anzahl an cpu cors als standart
-    this->ui->spinBox_threads->setValue(QThread::idealThreadCount());
+    this->ui->spinBox_threads->setValue(QThread::idealThreadCount() * 4 /*SPEED BOOST ????*/);
 
 }
 
@@ -501,7 +501,6 @@ void MainWindow::zustandWechseln(QString aktion, QString param, QPoint m_pos, QM
                     zoomRect.show();
 
                     this->zoomRect.updateRectPos(pos.rountToQPoint(), QPointF( currentImg->mapImgPosReToGaus(pos.x()), currentImg->mapImgPosImToGaus(pos.y()) ));
-                    this->updateImage();
                     this->setOperationMode();
 
                     ui->label_iterations->setText(QString::number(currentImg->getIterationCountAt(qpos)));
@@ -939,10 +938,13 @@ void MainWindow::startRefresh(ImageSetting *set, bool appendToList)
         //START
         wt->startCalc(set, this->ui->comboBox_precession->currentIndex());
 
-        // warte 10ms für den nächsten Thread
-        QTime dieTime= QTime::currentTime().addMSecs(20);
-            while (QTime::currentTime() < dieTime)
-                QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+        // warte für den nächsten Thread
+        if(ui->spinBoxStartVerzoegerung->value()) {
+            QTime dieTime= QTime::currentTime().addMSecs(ui->spinBoxStartVerzoegerung->value());
+                while (QTime::currentTime() < dieTime)
+                    QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+        }
+
     }
 
 }
@@ -1202,11 +1204,12 @@ void MainWindow::endRefresh(bool appendToListHistory)
 
 void MainWindow::updateImage()
 {
-    if(currentImg->image) {
-        ui->imageView->setImage(*currentImg->image);
-        if(this->fullScreenView->isVisible())
-            this->fullScreenView->setImage(*this->currentImg->image);
-    }
+
+//    if(currentImg->image) {
+//        ui->imageView->setImage(*currentImg->image);
+//        if(this->fullScreenView->isVisible())
+//            this->fullScreenView->setImage(*this->currentImg->image);
+//    }
     this->update();
 }
 
@@ -1408,14 +1411,16 @@ void MainWindow::on_pushButton_vor_clicked()
 
 void MainWindow::paintEvent(QPaintEvent *)
 {
+    qDebug() << "paintEvent";
+
+    QImage img = *currentImg->image;
+    QPainter painter;
+    painter.begin(&img);
+
     switch (state) {
     case MainWindow::STOPED:
 
         if(zoomRect.isShown() || zahlenfolge.isShown() || this->ui->radioButtonKoords_2->isChecked()) {
-            QImage img = *currentImg->image;
-            QPainter painter;
-            painter.begin(&img);
-
 
             // Wenn Bilderfolge, dann zoomRect is Shown, aber soll kein Quadrat sein, sondern ein Punkt!
             if(imgSerie.imgCount > 0) {
@@ -1566,10 +1571,7 @@ void MainWindow::paintEvent(QPaintEvent *)
 //            painter2.drawImage(0, 0, img);
 //            painter2.end();
             //this->ui->labelFraktal->setPixmap(QPixmap::fromImage(img));
-            painter.end();
-            ui->imageView->setImage(img);
-            if(fullScreenView->isVisible())
-                fullScreenView->setImage(img);
+
 
         }
 
@@ -1577,6 +1579,14 @@ void MainWindow::paintEvent(QPaintEvent *)
     case MainWindow::RUNNING:
         break;
 
+    }
+
+
+    painter.end();
+    ui->imageView->setImage(img);
+    if(fullScreenView->isVisible()) {
+        fullScreenView->setImage(img);
+        qDebug() << "UPDATE";
     }
 
 }

@@ -1,6 +1,7 @@
 #include "imageview.h"
 
 #include <QMouseEvent>
+#include <QPaintEvent>
 #include <QPainter>
 
 ImageView::ImageView(QWidget *parent)
@@ -17,11 +18,15 @@ ImageView::~ImageView()
 
 }
 
-void ImageView::setImage(QImage img)
+void ImageView::setImage(const QImage &img)
 {
     this->img = img;
     this->setFixedSize(img.size() * hdpi_scale);
-    this->update();
+    if(parent() == nullptr) {
+        this->update();
+        qDebug() << "UPDATE IS STARTED";
+
+    }
 }
 
 void ImageView::setHdpiScale(double multiplikator)
@@ -46,7 +51,7 @@ const QImage &ImageView::getImg() const
 }
 
 
-void ImageView::paintEvent(QPaintEvent *)
+void ImageView::paintEvent(QPaintEvent * )
 {
     QPainter p;
     p.begin(this);
@@ -56,6 +61,7 @@ void ImageView::paintEvent(QPaintEvent *)
     // zeichne Bild
     p.drawImage(0,0,img);
     p.end();
+    qDebug() << "UPDATE IS STARTED";
 }
 
 void ImageView::mouseMoveEvent(QMouseEvent *event)
