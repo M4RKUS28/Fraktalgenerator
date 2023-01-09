@@ -75,7 +75,7 @@
           <enum>QTabWidget::Rounded</enum>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>3</number>
          </property>
          <property name="iconSize">
           <size>
@@ -3118,6 +3118,7 @@
     <property name="title">
      <string>Hilfe</string>
     </property>
+    <addaction name="actionStandart_Einstellungen_wiederherstellen"/>
     <addaction name="action_ber"/>
    </widget>
    <widget class="QMenu" name="menuVideo">
@@ -3261,6 +3262,11 @@
    </property>
    <property name="text">
     <string>Autoscroll in Mitte</string>
+   </property>
+  </action>
+  <action name="actionStandart_Einstellungen_wiederherstellen">
+   <property name="text">
+    <string>Standart Einstellungen wiederherstellen</string>
    </property>
   </action>
  </widget>

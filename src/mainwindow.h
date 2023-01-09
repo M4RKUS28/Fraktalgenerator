@@ -229,7 +229,7 @@ private slots:
 
     void on_comboBox_precession_currentIndexChanged(int index);
 
-    void on_doubleSpinBoxEscapeR_valueChanged(double arg1);
+    void on_doubleSpinBoxEscapeR_valueChanged(double value);
 
     void on_spinBox_zoom_valueChanged(double arg1);
 
@@ -335,6 +335,12 @@ private slots:
     void on_pushButtonFraktalColor_clicked();
 
     void on_comboBox_intervall_absolut_currentIndexChanged(int index);
+
+    void on_spinBox_threads_valueChanged(int arg1);
+
+    void on_spinBoxStartVerzoegerung_valueChanged(int arg1);
+
+    void on_actionStandart_Einstellungen_wiederherstellen_triggered();
 
 private:
     Ui::MainWindow *ui;

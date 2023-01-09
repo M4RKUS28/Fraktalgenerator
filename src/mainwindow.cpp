@@ -260,6 +260,7 @@ MainWindow::MainWindow(QWidget *parent)
     this->startRefresh(currentImg, true);
 
 
+    ///LOAD DEFAULTS...........................................................................
     // standart theme
     if(settingOwnColor.contains("THEME"))
         ui->comboBox_theme->setCurrentIndex(settingOwnColor.value("THEME").toInt());
@@ -267,7 +268,20 @@ MainWindow::MainWindow(QWidget *parent)
         ui->comboBox_theme->setCurrentIndex(2);
 
     // anzahl an cpu cors als standart
-    this->ui->spinBox_threads->setValue(QThread::idealThreadCount() * 4 /*SPEED BOOST ????*/);
+    if(settingOwnColor.contains("THREAD_COUNT"))
+        this->ui->spinBox_threads->setValue(settingOwnColor.value("THREAD_COUNT").toInt());
+    else
+        this->ui->spinBox_threads->setValue(QThread::idealThreadCount() * 4 /*SPEED BOOST ????*/);
+
+    if(settingOwnColor.contains("THREAD_CREATE_TIME_DELAY"))
+        this->ui->spinBoxStartVerzoegerung->setValue(settingOwnColor.value("THREAD_CREATE_TIME_DELAY").toInt());
+    else
+        this->ui->spinBoxStartVerzoegerung->setValue(10);
+
+    if(settingOwnColor.contains("ESCAPE_RADIUS"))
+        this->ui->doubleSpinBoxEscapeR->setValue(settingOwnColor.value("ESCAPE_RADIUS").toDouble());
+    else
+        this->ui->doubleSpinBoxEscapeR->setValue(8.0);
 
 }
 
@@ -1907,10 +1921,12 @@ void MainWindow::on_comboBox_precession_currentIndexChanged(int)
 }
 
 
-void MainWindow::on_doubleSpinBoxEscapeR_valueChanged(double)
+void MainWindow::on_doubleSpinBoxEscapeR_valueChanged(double value)
 {
     this->editedSettings = true;
     this->setOperationMode();
+    QSettings settingOwnColor("Markus@W-Sem_2022", "Fraktalgenerator");
+    settingOwnColor.setValue("ESCAPE_RADIUS", value );
 }
 
 
@@ -2659,3 +2675,28 @@ void MainWindow::resizeEvent(QResizeEvent *)
         ui->scrollArea->horizontalScrollBar()->setValue(ui->scrollArea->horizontalScrollBar()->maximum() / 2);
     }
 }
+
+void MainWindow::on_spinBox_threads_valueChanged(int arg1)
+{
+    QSettings settingOwnColor("Markus@W-Sem_2022", "Fraktalgenerator");
+    settingOwnColor.setValue("THREAD_COUNT", arg1 );
+}
+
+
+void MainWindow::on_spinBoxStartVerzoegerung_valueChanged(int arg1)
+{
+    QSettings settingOwnColor("Markus@W-Sem_2022", "Fraktalgenerator");
+    settingOwnColor.setValue("THREAD_CREATE_TIME_DELAY", arg1 );
+}
+
+#include <QProcess>
+
+void MainWindow::on_actionStandart_Einstellungen_wiederherstellen_triggered()
+{
+    QSettings settingOwnColor("Markus@W-Sem_2022", "Fraktalgenerator");
+    settingOwnColor.clear();
+    //restart
+    QApplication::quit();
+    QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
+}
+
