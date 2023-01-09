@@ -1080,6 +1080,8 @@ void MainWindow::setOperationMode()
         ui->pushButtonStart->setText("Bilder Serie an Mausposition starten");
     }
 
+    this->updateImage();
+
 
 }
 
@@ -2698,5 +2700,80 @@ void MainWindow::on_actionStandart_Einstellungen_wiederherstellen_triggered()
     //restart
     QApplication::quit();
     QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
+}
+
+
+void MainWindow::on_spinBoxZahlenfolgeLinienbreite_valueChanged(int)
+{
+    this->updateImage();
+}
+
+
+void MainWindow::on_spinBoxKoordPenThickness_valueChanged(int)
+{
+    this->updateImage();
+}
+
+
+void MainWindow::on_comboBoxColorKoordSystem_currentIndexChanged(int)
+{
+    this->updateImage();
+}
+
+
+
+void MainWindow::on_spinBoxBeschriftungen_valueChanged(double )
+{
+    this->updateImage();
+
+}
+
+
+void MainWindow::on_doubleSpinBox_Koord_x_start_valueChanged(double )
+{
+    this->updateImage();
+
+}
+
+
+void MainWindow::on_doubleSpinBox_Koord_x_end_valueChanged(double )
+{
+    this->updateImage();
+
+}
+
+
+void MainWindow::on_spinBoxBeschriftungenY_valueChanged(double )
+{
+    this->updateImage();
+
+}
+
+
+void MainWindow::on_doubleSpinBox_Koord_y_start_valueChanged(double )
+{
+    this->updateImage();
+
+}
+
+
+void MainWindow::on_doubleSpinBox_Koord_y_end_valueChanged(double )
+{
+    this->updateImage();
+
+}
+
+
+void MainWindow::on_comboBox_drawStyle_zahlenfolge_currentIndexChanged(int )
+{
+    this->updateImage();
+
+}
+
+
+void MainWindow::on_comboBox_color_zahlenfolge_currentIndexChanged(int )
+{
+    this->updateImage();
+
 }
 

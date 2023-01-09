@@ -32,10 +32,7 @@ QT_END_NAMESPACE
 #define START_POS_X_JUL 0.0
 #define START_POS_Y_JUL 0.0
 
-#define P_VERSION "3.3.0"
-
-static const QString STYLE_SHEET_COLOR_BUTTON = "border: 1px solid black; border-radius: 3px; background-color: ";
-
+#define P_VERSION "3.3.1"
 
 
 class MainWindow : public QMainWindow
@@ -96,6 +93,8 @@ class MainWindow : public QMainWindow
 
         LOAD_IMG_FROM_FILE
     };
+
+    const QString STYLE_SHEET_COLOR_BUTTON = "border: 1px solid black; border-radius: 3px; background-color: ";
 
 
 public:
@@ -341,6 +340,28 @@ private slots:
     void on_spinBoxStartVerzoegerung_valueChanged(int arg1);
 
     void on_actionStandart_Einstellungen_wiederherstellen_triggered();
+
+    void on_spinBoxZahlenfolgeLinienbreite_valueChanged(int arg1);
+
+    void on_spinBoxKoordPenThickness_valueChanged(int arg1);
+
+    void on_comboBoxColorKoordSystem_currentIndexChanged(int index);
+
+    void on_spinBoxBeschriftungen_valueChanged(double arg1);
+
+    void on_doubleSpinBox_Koord_x_start_valueChanged(double arg1);
+
+    void on_doubleSpinBox_Koord_x_end_valueChanged(double arg1);
+
+    void on_spinBoxBeschriftungenY_valueChanged(double arg1);
+
+    void on_doubleSpinBox_Koord_y_start_valueChanged(double arg1);
+
+    void on_doubleSpinBox_Koord_y_end_valueChanged(double arg1);
+
+    void on_comboBox_drawStyle_zahlenfolge_currentIndexChanged(int index);
+
+    void on_comboBox_color_zahlenfolge_currentIndexChanged(int index);
 
 private:
     Ui::MainWindow *ui;
