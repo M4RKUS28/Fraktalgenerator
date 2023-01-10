@@ -282,7 +282,6 @@ MainWindow::MainWindow(QWidget *parent)
         this->ui->doubleSpinBoxEscapeR->setValue(settingOwnColor.value("ESCAPE_RADIUS").toDouble());
     else
         this->ui->doubleSpinBoxEscapeR->setValue(8.0);
-
 }
 
 
@@ -2273,6 +2272,7 @@ void MainWindow::on_im_valueChanged(double arg1)
 #include <QImageWriter>
 #include <QImageWriter>
 #include <QSettings>
+#include <QTemporaryFile>
 
 void MainWindow::pushButton_copy_clicked()
 {
@@ -2696,6 +2696,36 @@ void MainWindow::on_actionEinstellungen_importien_triggered()
     if(path == "")
         return;
     qDebug() << path;
+    this->loadImageFromSettings(path);
+
+}
+
+void MainWindow::loadImageFromSettings(QString path, bool isReadOnly)
+{
+    QTemporaryFile file;
+    int bytes = 0;
+
+    if(isReadOnly) {
+        auto example = QFile(path);
+        if(file.open() && example.open(QIODevice::ReadOnly)) {
+            if(file.write(example.readAll()) == -1) {
+                qDebug() << "COPY FAILED!";
+                return;
+            } else {
+                bytes = file.size();
+                if(bytes)
+                    path = file.fileName();
+                else
+                    qDebug() << "COPY FAILED! Empyt file";
+            }
+        } else {
+            qDebug() << "file.open() && example.open(QIODevice::ReadOnly) failed";
+            return;
+        }
+    }
+
+
+
     ImageSetting * imgS = new ImageSetting((this->lastImgStructID = this->lastImgStructID + 1), path);
     if(imgS->loadFromFileWasOK) {
         this->updateUiWithImageSetting( imgS );
@@ -2707,6 +2737,7 @@ void MainWindow::on_actionEinstellungen_importien_triggered()
         ui->statusbar->showMessage("Laden der Einstellungen aus '" + path + "' fehlgeschlagen!", 3000);
         delete imgS;
     }
+
 }
 
 
@@ -2849,5 +2880,23 @@ void MainWindow::on_actionTastenk_rzel_triggered()
     QMessageBox::information(this, "Tastenkürzel",
                              "<html><head/><body><p><span style=\" font-weight:700; color:#0e71b3;\">Mausklicks</span><span style=\" font-style:italic; color:#0e71b3;\">------------------------------------------------------------------</span></p><p><span style=\" font-weight:700;\">-&gt; [Linksklick in Bild]:</span> Vorschau des neuen Bildes an Mausposition</p><p><span style=\" font-weight:700;\">-&gt; [Doppelklick in Bild]: </span>Berechnung an Mausposition starten</p><p><span style=\" font-weight:700;\">-&gt; [Rechtsclick in Bild]:</span> Zahlenfolge des Startwertes an der Mausposition</p><p><span style=\" font-weight:700; color:#16a358;\">Tastenkürze</span><span style=\" color:#16a358;\">l----------------------------------------------------------------</span></p><p><span style=\" color:#5b5b5b;\">---</span><span style=\" font-style:italic; color:#5b5b5b;\">Auswahl der Farbalgorithmen</span><span style=\" color:#5b5b5b;\">--------------------------------------------</span></p><p><span style=\" font-weight:700;\">-&gt; [1]...[9]</span>: RGB-Farbverläufe</p><p><span style=\" font-weight:700;\">-&gt; [9]...[10]: </span>HSV-Farbverläufe</p><p><span style=\" font-weight:700;\">-&gt; [X]...[Y]: </span>HSV-Farbverläufe</p><p><span style=\" font-weight:700;\">-&gt; [Z]: </span>Histogram-Farbverlauf</p><p><span style=\" font-style:italic; color:#5b5b5b;\">---Vollbildmodus------------------------------------------------------------</span></p><p><span style=\" font-weight:700;\">-&gt; [ESC], [Q], [E] oder [L]: </span>Vollbildfenster schließen</p><p><span style=\" font-style:italic; color:#5b5b5b;\">---Video erstellen</span><span style=\" font-style:italic; color:#5b5b5b;\">------------------------------------------------------------</span></p><p><span style=\" font-weight:700;\">-&gt; [O]: </span>Video aus Bilderfolge erstellen</p><p><span style=\" font-weight:700;\">-&gt; [I]: </span>Bilderfolge erstellen</p><p><span style=\" font-style:italic; color:#5b5b5b;\">---Berechnungseinstellungen</span><span style=\" font-style:italic; color:#5b5b5b;\">-----------------------------------------------</span></p><p><span style=\" font-weight:700;\">-&gt; [-]:</span> Zoomfaktor - 1</p><p><span style=\" font-weight:700;\">-&gt; [+]: </span>Zoomfaktor + 1</p><p><span style=\" font-weight:700;\">-&gt; [H]: </span>Iterationen - 1</p><p><span style=\" font-weight:700;\">-&gt; [T]: </span>Iterationen + 1</p><p><span style=\" font-style:italic; color:#5b5b5b;\">---Verlauf-------------------------------------------------------------------</span></p><p><span style=\" font-weight:700;\">-&gt; [N]: </span>Nächstes Bild im Verlauf</p><p><span style=\" font-weight:700;\">-&gt; [B]: </span>Vorheriges Bild im Verlauf</p></body></html>"
                              );
+}
+
+
+void MainWindow::on_actionBeispiel_1_triggered()
+{
+    this->loadImageFromSettings(":/examples/examples/example1", true);
+}
+
+
+void MainWindow::on_actionBespiel_2_triggered()
+{
+    this->loadImageFromSettings(":/examples/examples/example2", true);
+}
+
+
+void MainWindow::on_actionBeispiel_3_triggered()
+{
+    this->loadImageFromSettings(":/examples/examples/example3", true);
 }
 

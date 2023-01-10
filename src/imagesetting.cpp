@@ -1,6 +1,7 @@
 #include "imagesetting.h"
 #include "qdebug.h"
 
+#include <QDataStream>
 #include <QFile>
 
 
@@ -60,31 +61,30 @@ ImageSetting::ImageSetting(int id, QString file_path)
     loadFromFileWasOK = true;
     /* open file */
     QFile myFile(file_path);
+    qDebug() << "myFile.size()" << myFile.size();
 
 
     /* load */
     if(myFile.open(QIODevice::ReadWrite)) {
+
         QDataStream load(&myFile);
+        load.setVersion(QT_DS_VERSION);
         load.setFloatingPointPrecision(QDataStream::DoublePrecision);
-        load.setVersion(QDataStream::Qt_5_12);
+
+        quint32 magic;
+        load >> magic;
+
+        if(magic != MAGIC_NUMBER_FILE_VERSION){
+                qDebug() << "LOAD DATA FAILED: wrong magic number -> version! " << magic << " != " << MAGIC_NUMBER_FILE_VERSION ;
+                loadFromFileWasOK = false;
+                return;
+        } else {
+            qDebug() << "VERSION IS OK: " << MAGIC_NUMBER_FILE_VERSION;
+        }
+
         load >> *this;
-
-        if(load.status() == QDataStream::Ok)
-        {
-            // read is ok, check the data you had read
-
-
-        }
-        else
-        {
-            // wait for more data or show unknown error
-            qDebug() << "LOAD DATA FAILED!" << load.status();
-            loadFromFileWasOK = false;
-            return;
-
-        }
-
         myFile.close();
+
     } else {
         qDebug() << "OPEN FILE FAILED";
         loadFromFileWasOK = false;
@@ -93,8 +93,8 @@ ImageSetting::ImageSetting(int id, QString file_path)
 
     qDebug() << scale();
 
-    if(this->maxIterations == 0) {
-        qDebug() << "Got invaild data";
+    if(this->maxIterations == 0 || 1.0 / scale() > pow(10.0, 20.0) || this->farbwechselIntervall > 9999999 || this->farbwechselIntervall <= 0) {
+        qDebug() << "Got invaild data: " <<  this->maxIterations <<"==" <<0<< "||" <<1.0 / scale()<< ">"<< pow(10.0, 20.0)<< "||"<< this->farbwechselIntervall<< ">"<< 9999999<< "||" <<this->farbwechselIntervall<< "<="<< 0;
         loadFromFileWasOK = false;
         return;
     }
@@ -153,7 +153,7 @@ int ImageSetting::store_setting(QString file_path)
     if(myFile.open(QIODevice::WriteOnly))
     {
         QDataStream save(&myFile);
-        save.setVersion(QDataStream::Qt_5_12);
+        save.setVersion(QT_DS_VERSION);
         save.setFloatingPointPrecision(QDataStream::DoublePrecision);
         save << *this;
 
@@ -164,6 +164,8 @@ int ImageSetting::store_setting(QString file_path)
             return 2;
         }  else {
             myFile.close();
+
+            qDebug() << "save [debug]: farbwechselIntervall: " << this->farbwechselIntervall;
             return 0;
         }
 

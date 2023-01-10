@@ -104,7 +104,10 @@ QColor WorkerThread::getPreColor(size_t iters, double normalizedItC, const Image
     unsigned farbstufe = 0, farbStufenAnzahl = imgS->colors.count();
     double anteil = 0.0;
 
-    if(iters > maxIt || maxIt == 0) {
+    if(farbStufenIntervall == 0) {
+        qDebug() << "Error: farbStufenIntervall == 0";
+        return Qt::black;
+    }else if(iters > maxIt || maxIt == 0) {
         return Qt::black;
     } if(iters == maxIt) {
         return /*imgS->inverted ? getInverse( imgS->fixFraktalColor) :*/ imgS->fixFraktalColor;

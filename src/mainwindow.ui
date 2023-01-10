@@ -3294,10 +3294,19 @@
     <addaction name="menuVerlauf"/>
     <addaction name="menuAusrichtung"/>
    </widget>
+   <widget class="QMenu" name="menuBeispiele">
+    <property name="title">
+     <string>Beispiele</string>
+    </property>
+    <addaction name="actionBeispiel_1"/>
+    <addaction name="actionBespiel_2"/>
+    <addaction name="actionBeispiel_3"/>
+   </widget>
    <addaction name="menuDatei"/>
    <addaction name="menuAnsicht"/>
    <addaction name="menuVideo"/>
    <addaction name="menuExtras"/>
+   <addaction name="menuBeispiele"/>
    <addaction name="menu_ber"/>
   </widget>
   <action name="actionBild_speichern_unter">
@@ -3417,6 +3426,24 @@
    </property>
    <property name="toolTip">
     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700; color:#0e71b3;&quot;&gt;Mausklicks&lt;/span&gt;&lt;span style=&quot; font-style:italic; color:#0e71b3;&quot;&gt;------------------------------------------------------------------&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;-&amp;gt; [Linksklick in Bild]:&lt;/span&gt; Vorschau des neuen Bildes an Mausposition&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;-&amp;gt; [Doppelklick in Bild]: &lt;/span&gt;Berechnung an Mausposition starten&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;-&amp;gt; [Rechtsclick in Bild]:&lt;/span&gt; Zahlenfolge des Startwertes an der Mausposition&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700; color:#16a358;&quot;&gt;Tastenkürze&lt;/span&gt;&lt;span style=&quot; color:#16a358;&quot;&gt;l----------------------------------------------------------------&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; color:#5b5b5b;&quot;&gt;---&lt;/span&gt;&lt;span style=&quot; font-style:italic; color:#5b5b5b;&quot;&gt;Auswahl der Farbalgorithmen&lt;/span&gt;&lt;span style=&quot; color:#5b5b5b;&quot;&gt;--------------------------------------------&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;-&amp;gt; [1]...[9]&lt;/span&gt;: RGB-Farbverläufe&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;-&amp;gt; [9]...[10]: &lt;/span&gt;HSV-Farbverläufe&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;-&amp;gt; [A]...[B]: &lt;/span&gt;HSV-Farbverläufe&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;-&amp;gt; [C]: &lt;/span&gt;Histogram-Farbverlauf&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic; color:#5b5b5b;&quot;&gt;---Vollbildmodus------------------------------------------------------------&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;-&amp;gt; [Esc], [Q], [E] oder [L]: &lt;/span&gt;Vollbildfenster schließen&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic; color:#5b5b5b;&quot;&gt;---Video erstellen&lt;/span&gt;&lt;span style=&quot; font-style:italic; color:#5b5b5b;&quot;&gt;------------------------------------------------------------&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;-&amp;gt; [O]: &lt;/span&gt;Video aus Bilderfolge erstellen&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;-&amp;gt; [I]: &lt;/span&gt;Bilderfolge erstellen&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic; color:#5b5b5b;&quot;&gt;---Berechnungseinstellungen&lt;/span&gt;&lt;span style=&quot; font-style:italic; color:#5b5b5b;&quot;&gt;-----------------------------------------------&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;-&amp;gt; [-]:&lt;/span&gt; Zoomfaktor - 1&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;-&amp;gt; [+]: &lt;/span&gt;Zoomfaktor + 1&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;-&amp;gt; [H]: &lt;/span&gt;Iterationen - 1&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;-&amp;gt; [T]: &lt;/span&gt;Iterationen + 1&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic; color:#5b5b5b;&quot;&gt;---Verlauf-------------------------------------------------------------------&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;-&amp;gt; [N]: &lt;/span&gt;Nächstes Bild im Verlauf&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;-&amp;gt; [B]: &lt;/span&gt;Vorheriges Bild im Verlauf&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </action>
+  <action name="actionBeispiel_1">
+   <property name="text">
+    <string>Beispiel 1</string>
+   </property>
+  </action>
+  <action name="actionBespiel_2">
+   <property name="text">
+    <string>Beispiel 2</string>
+   </property>
+   <property name="toolTip">
+    <string>Beispiel 2</string>
+   </property>
+  </action>
+  <action name="actionBeispiel_3">
+   <property name="text">
+    <string>Beispiel 3</string>
    </property>
   </action>
  </widget>

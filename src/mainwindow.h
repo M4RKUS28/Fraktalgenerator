@@ -32,7 +32,7 @@ QT_END_NAMESPACE
 #define START_POS_X_JUL 0.0
 #define START_POS_Y_JUL 0.0
 
-#define P_VERSION "3.3.1"
+#define P_VERSION "3.4.0"
 
 
 class MainWindow : public QMainWindow
@@ -189,6 +189,8 @@ public:
     void startImgFolge();
 
     void createVideo();
+
+    void loadImageFromSettings(QString path, bool isReadOnly = false);
 
 
     void setFullScreenWindowVisible(bool state);
@@ -364,6 +366,12 @@ private slots:
     void on_comboBox_color_zahlenfolge_currentIndexChanged(int index);
 
     void on_actionTastenk_rzel_triggered();
+
+    void on_actionBeispiel_1_triggered();
+
+    void on_actionBespiel_2_triggered();
+
+    void on_actionBeispiel_3_triggered();
 
 private:
     Ui::MainWindow *ui;

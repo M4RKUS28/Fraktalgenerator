@@ -10,6 +10,8 @@
 #include <QLine>
 #include <QDataStream>
 
+#define MAGIC_NUMBER_FILE_VERSION 0xABB1C9DE
+#define QT_DS_VERSION QDataStream::Qt_5_12
 
 
 struct ImageSetting {
@@ -86,7 +88,7 @@ struct ImageSetting {
     /* overload the operators */
     friend QDataStream &operator<< (QDataStream &out, const ImageSetting &rhs)
     {
-        out << rhs.id << rhs.scaleValue << rhs.gaus_mid_re << rhs.gaus_mid_im << rhs.img_w << rhs.img_h << rhs.maxIterations << rhs.isMandelbrotSet
+        out << MAGIC_NUMBER_FILE_VERSION << rhs.id << rhs.scaleValue << rhs.gaus_mid_re << rhs.gaus_mid_im << rhs.img_w << rhs.img_h << rhs.maxIterations << rhs.isMandelbrotSet
             << rhs.logEscape << rhs.escape_radius << rhs.juliaStart_img << rhs.juliaStart_real << rhs.fraktalColor_index << rhs.inverted << rhs.normalized
             << rhs.farbalgorithmus << rhs.fixFraktalColor << rhs.colors << rhs.hsv_saturation << rhs.spinBoxHSV_value << rhs.isIntervallVerlauf
             << rhs.spinBoxHSV_alpha << rhs.farbwechselIntervall;
