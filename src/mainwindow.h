@@ -32,7 +32,7 @@ QT_END_NAMESPACE
 #define START_POS_X_JUL 0.0
 #define START_POS_Y_JUL 0.0
 
-#define P_VERSION "3.4.0"
+#define P_VERSION "3.5.0"
 
 
 class MainWindow : public QMainWindow

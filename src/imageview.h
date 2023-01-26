@@ -37,7 +37,6 @@ private:
     double hdpi_scale;
     double hdpi_multiplicator;
 
-
     // QWidget interface
 protected:
     virtual void paintEvent(QPaintEvent *event);

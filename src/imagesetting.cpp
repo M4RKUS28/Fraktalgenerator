@@ -57,6 +57,7 @@ void ImageSetting::cleanUP()
 ImageSetting::ImageSetting(int id, QString file_path)
 {
     this->id = id;
+
     this->maxIterations = 0;
     loadFromFileWasOK = true;
     /* open file */
@@ -106,6 +107,11 @@ ImageSetting::ImageSetting(int id, QString file_path)
 
     // no mem saved
     has_hue = false;
+
+
+    // FIX ERROR: EXAMPLES have inhalid history: load id from old image -> make it backwardcompatible by overwriting, but removing would be also ok
+    this->id = id;
+
 
     ///create dynmaic mem:
     this->init(img_w, img_h, this->maxIterations, this->isMandelbrotSet);

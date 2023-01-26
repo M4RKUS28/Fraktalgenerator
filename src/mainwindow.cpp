@@ -1442,6 +1442,7 @@ void MainWindow::paintEvent(QPaintEvent *)
     QImage img = *currentImg->image;
     QPainter painter;
     painter.begin(&img);
+    painter.setRenderHint(QPainter::Antialiasing, this->ui->actionAntialising->isChecked());
 
     switch (state) {
     case MainWindow::STOPED:
@@ -2732,7 +2733,8 @@ void MainWindow::loadImageFromSettings(QString path, bool isReadOnly)
 
         this->op_mode = OP_MODE::LOAD_IMG_FROM_FILE;
         this->startRefresh(imgS, true);
-        ui->statusbar->showMessage("Lade Einstellungen aus '" + path + "'...", 3000);
+        if(!isReadOnly)
+            ui->statusbar->showMessage("Lade Einstellungen aus '" + path + "'...", 3000);
     } else {
         ui->statusbar->showMessage("Laden der Einstellungen aus '" + path + "' fehlgeschlagen!", 3000);
         delete imgS;
@@ -2899,4 +2901,3 @@ void MainWindow::on_actionBeispiel_3_triggered()
 {
     this->loadImageFromSettings(":/examples/examples/example3", true);
 }
-
