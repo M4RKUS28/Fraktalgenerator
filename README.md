@@ -3,6 +3,7 @@
 Die Anwendung dient der Erstellung von Abbildungen der Mandelbrot-Menge und zugehörigen Julia-Mengen.
 
 # Besondere Funktionen
+- Platformübergreifend Linux Windows Mac
 - Mandelbrot-Menge und Julia-Mengen
 - Normalized Iteration Count
 - Verschiedene Farbalgorithmen für die Fluchtmenge
