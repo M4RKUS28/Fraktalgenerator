@@ -37,6 +37,7 @@ DialogImageSerie::DialogImageSerie(QWidget *parent, ImgSerie s, double startZoom
 
 
 }
+#include <QDebug>
 
 
 DialogImageSerie::~DialogImageSerie()

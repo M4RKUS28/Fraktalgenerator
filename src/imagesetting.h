@@ -10,7 +10,7 @@
 #include <QLine>
 #include <QDataStream>
 
-#define MAGIC_NUMBER_FILE_VERSION 0xABB1C9DE
+#define MAGIC_NUMBER_FILE_VERSION 0xAC11C9DE
 #define QT_DS_VERSION QDataStream::Qt_5_12
 
 
@@ -30,7 +30,7 @@ struct ImageSetting {
 
 
     void setColorSettings(int farbalgorithmus, bool normalized, double logEscape, int fractalColorIndex, QColor fixFraktalColor,
-                          bool inverted, double escape_radius, bool isIntervallVerlauf);
+                          bool inverted, double escape_radius, bool isIntervallVerlauf, bool useLog, int log_fak);
 
     size_t getIterationCountAt(QPoint pos);
     size_t getIterationCountAt(ssize_t x, ssize_t y);
@@ -67,9 +67,11 @@ struct ImageSetting {
     double juliaStart_img,
            juliaStart_real;
 
-    bool isMandelbrotSet;
+    bool isMandelbrotSet,
+        useLog;
 
-    int farbalgorithmus;
+    int farbalgorithmus,
+        log_multiplier;
 
     //Color settings
     bool inverted, normalized, has_hue, isIntervallVerlauf;
@@ -91,7 +93,7 @@ struct ImageSetting {
         out << MAGIC_NUMBER_FILE_VERSION << rhs.id << rhs.scaleValue << rhs.gaus_mid_re << rhs.gaus_mid_im << rhs.img_w << rhs.img_h << rhs.maxIterations << rhs.isMandelbrotSet
             << rhs.logEscape << rhs.escape_radius << rhs.juliaStart_img << rhs.juliaStart_real << rhs.fraktalColor_index << rhs.inverted << rhs.normalized
             << rhs.farbalgorithmus << rhs.fixFraktalColor << rhs.colors << rhs.hsv_saturation << rhs.spinBoxHSV_value << rhs.isIntervallVerlauf
-            << rhs.spinBoxHSV_alpha << rhs.farbwechselIntervall;
+            << rhs.spinBoxHSV_alpha << rhs.farbwechselIntervall << rhs.useLog << rhs.log_multiplier;
         return out;
     }
 
@@ -100,7 +102,7 @@ struct ImageSetting {
         in >> rhs.id >> rhs.scaleValue >> rhs.gaus_mid_re >> rhs.gaus_mid_im >> rhs.img_w >> rhs.img_h >> rhs.maxIterations >> rhs.isMandelbrotSet
             >> rhs.logEscape >> rhs.escape_radius >> rhs.juliaStart_img >> rhs.juliaStart_real >> rhs.fraktalColor_index >> rhs.inverted >> rhs.normalized
             >> rhs.farbalgorithmus >> rhs.fixFraktalColor >>rhs.colors >> rhs.hsv_saturation >> rhs.spinBoxHSV_value << rhs.isIntervallVerlauf
-            >> rhs.spinBoxHSV_alpha >> rhs.farbwechselIntervall;
+            >> rhs.spinBoxHSV_alpha >> rhs.farbwechselIntervall >> rhs.useLog >> rhs.log_multiplier;
         return in;
     }
 

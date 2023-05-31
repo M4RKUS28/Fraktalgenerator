@@ -189,7 +189,7 @@ void ::ImageSetting::setIterationCountAt(ssize_t x, ssize_t y, size_t iterations
 }
 
 
-void ImageSetting::setColorSettings(int farbalgorithmus, bool normalized, double logEscape, int fractalColorIndex, QColor fixFraktalColor, bool inverted, double escape_radius, bool isIntervallVerlauf, bool useLog)
+void ImageSetting::setColorSettings(int farbalgorithmus, bool normalized, double logEscape, int fractalColorIndex, QColor fixFraktalColor, bool inverted, double escape_radius, bool isIntervallVerlauf, bool useLog, int log_fak)
 {
     this->normalized = normalized;
     this->logEscape = logEscape;
@@ -199,6 +199,9 @@ void ImageSetting::setColorSettings(int farbalgorithmus, bool normalized, double
     this->escape_radius = escape_radius;
     this->farbalgorithmus = farbalgorithmus;
     this->isIntervallVerlauf = isIntervallVerlauf;
+    this->useLog = useLog;
+    this->log_multiplier = log_fak;
+
 }
 
 size_t ImageSetting::getIterationCountAt(QPoint pos)
