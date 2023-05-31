@@ -2,6 +2,7 @@
 #define DIALOGUEBER_H
 
 #include <QDialog>
+#include <QDebug>
 
 namespace Ui {
 class DialogUeber;

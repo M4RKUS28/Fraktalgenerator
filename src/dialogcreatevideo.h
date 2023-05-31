@@ -3,9 +3,9 @@
 
 #include <QDialog>
 #include <QSize>
+#include <QDebug>
 
 #include "dialogimageserie.h"
-#include "QAviWriter.h"
 
 
 

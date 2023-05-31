@@ -11,13 +11,14 @@
 #include <QColorDialog>
 #include <QMap>
 #include <QImageWriter>
+#include <QProcess>
 
 #include <math.h>
 
 #include "workerthread.h"
 #include "imageview.h"
 #include "dialogimageserie.h"
-#include "dialogcreatevideo.h"
+
 
 
 QT_BEGIN_NAMESPACE
@@ -32,7 +33,7 @@ QT_END_NAMESPACE
 #define START_POS_X_JUL 0.0
 #define START_POS_Y_JUL 0.0
 
-#define P_VERSION "3.5.0"
+#define P_VERSION "3.6.0"
 
 
 class MainWindow : public QMainWindow
@@ -149,6 +150,8 @@ public:
     ImageView * fullScreenView;
 
 
+    //init load in show Event
+    bool codeExecuted;
     // Video MODE:
     DialogImageSerie::ImgSerie imgSerie;
     bool useOldPosForImgSerie;
@@ -373,6 +376,14 @@ private slots:
 
     void on_actionBeispiel_3_triggered();
 
+    void on_UseLogButton_toggled(bool checked);
+
+    void on_logFak_valueChanged(int arg1);
+
+    void on_pushButtonResetUnappliedsettings_clicked();
+
+    void on_actionUnangewandte_Bildeinstellungen_zur_cksetzten_triggered();
+
 private:
     Ui::MainWindow *ui;
 
@@ -391,7 +402,13 @@ protected:
     // QWidget interface
 protected:
     virtual void resizeEvent(QResizeEvent *event);
+
+    // QWidget interface
+//protected:
+    virtual void showEvent(QShowEvent *event);
 };
+
+
 
 
 

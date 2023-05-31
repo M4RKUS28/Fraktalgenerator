@@ -123,7 +123,7 @@ QColor WorkerThread::getPreColor(size_t iters, double normalizedItC, const Image
             if(iters == maxIt || maxIt == 0  || farbStufenAnzahl == 0)
                 return Qt::black;
 
-            double iters = normalizedItC;
+            double iters = imgS->useLog ? log(normalizedItC) * (double)imgS->log_multiplier : normalizedItC;  //double iters = normalizedItC;
             // Hier iters % farbStufenIntervall * farbStufenAnzahl für double, um nachdem alle farben dran kamen wieder bei vorne anzufangen
             while( iters > 0 && iters >= farbStufenIntervall * (farbStufenAnzahl))
                 iters -= (farbStufenIntervall * (farbStufenAnzahl));
@@ -150,6 +150,7 @@ QColor WorkerThread::getPreColor(size_t iters, double normalizedItC, const Image
             //                              Diese zahl mit Gesammtintervallgröße multiplizieren. Da RGB 255 Farben unterstützt, hier 255 gewählt und Gesammtintervall ergibt sich aus Intervallgröße und Anzahl
 
             // Da es Übergänge sind, gibt es 1 Weniger Farbe --> Wenn z.B. rot und gelb, dann hat man 1 Übergang, von Rot zu Gelb
+            normalizedItC = imgS->useLog ? log(normalizedItC) * (double)imgS->log_multiplier : normalizedItC;
             double iters = (normalizedItC * 255.0 * (double)( farbStufenAnzahl - 1)) / (double) maxIt ;
 
             //Nun muss die richtige Farbstufe herausgefunden werden --> durch Teilen der Intervallgröße findet man heraus in welcher Stufe man ist und durch abzug von Stufe*Größe erhält man wieweit iters in dem derzeitigen Intervall sit

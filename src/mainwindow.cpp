@@ -14,12 +14,13 @@
 #include <QSysInfo>
 #include <QStyledItemDelegate>
 #include <QSettings>
-
-
+#include <QTimer>
+#include "dialogcreatevideo.h"
+#include "QAviWriter.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , currentImg(new ImageSetting(0, START_SCALE * this->devicePixelRatio() , START_POS_X , START_POS_Y )), lastImgStructID(0),
+    , currentImg(new ImageSetting(0, START_SCALE * this->devicePixelRatio() * ( QGuiApplication::primaryScreen()->geometry().height() == 1440 ? 2 : 1 ) , START_POS_X , START_POS_Y )), lastImgStructID(0),
       editedSettings(false),
       noUpdateGui(false),
       isBackOrVor(false),
@@ -28,12 +29,11 @@ MainWindow::MainWindow(QWidget *parent)
       dont_update_save_check_buttons(false),
       currentBackgroundColor(QColor("white")),
       fullScreenView(new ImageView),
+      codeExecuted(false),
       useOldPosForImgSerie(false),
       ui(new Ui::MainWindow)
 {
     qInfo() << "Init programm...";
-
-
 
     //SETUP DEFAULT COLORS/PALETTE:
     //0
@@ -256,9 +256,6 @@ MainWindow::MainWindow(QWidget *parent)
     //start timer
     timerID = this->startTimer(20);
 
-    updateImage();
-    this->startRefresh(currentImg, true);
-
 
     ///LOAD DEFAULTS...........................................................................
     // standart theme
@@ -283,6 +280,22 @@ MainWindow::MainWindow(QWidget *parent)
     else
         this->ui->doubleSpinBoxEscapeR->setValue(8.0);
 }
+
+void MainWindow::showEvent(QShowEvent *)
+{
+    if (!codeExecuted) {
+        codeExecuted = true;
+        QTimer::singleShot(0, this, [this]() {
+            // Your code to be executed after QMainWindow is fully constructed
+            qDebug() << "QMainWindow is fully constructed.";
+            //Start leoading init image
+            updateImage();
+            this->startRefresh(currentImg, true);
+
+        });
+    }
+}
+
 
 
 void MainWindow::setupIconsInCombobox(int width)
@@ -660,6 +673,8 @@ void MainWindow::zustandWechseln(QString aktion, QString param, QPoint m_pos, QM
                 updateImage();
             if(checkForFinished()) {
                 qInfo() << "    -> Finished!";
+
+                updateImage();
                 endRefresh(op_mode != OP_MODE::REFRESH);
             }
 
@@ -786,8 +801,11 @@ void MainWindow::updateUiWithImageSetting(ImageSetting *imgs)
     this->ui->spinBoxMaxIterations->setValue(imgs->maxIterations);
     ui->comboBox_Fraktal->setCurrentIndex(imgs->isMandelbrotSet ? 0 : 1);
     ui->comboBox_palette->setCurrentIndex(imgs->farbalgorithmus);
-    ui->radioButton_normalized->setChecked( imgs->normalized );
-    ui->radioButton_invert->setChecked( imgs->inverted );
+    ui->radioButton_normalized->setChecked(imgs->normalized);
+    ui->radioButton_invert->setChecked(imgs->inverted);
+
+    ui->UseLogButton->setChecked(imgs->useLog);
+    ui->logFak->setValue(imgs->log_multiplier);
 
     //Setzt Fraktal Farbe... Entweder Index
 
@@ -910,7 +928,9 @@ void MainWindow::startRefresh(ImageSetting *set, bool appendToList)
                              this->getFraktalColor(),
                              ui->radioButton_invert->isChecked(),
                              ui->doubleSpinBoxEscapeR->value(),
-                              ui->comboBox_intervall_absolut->currentIndex() == 0);
+                             ui->comboBox_intervall_absolut->currentIndex() == 0,
+                             ui->UseLogButton->isChecked(),
+                             ui->logFak->value());
 
         set->colors.clear();
         if(ui->radioButtonF1->isChecked())
@@ -1148,9 +1168,11 @@ void MainWindow::endRefresh(bool appendToListHistory)
 
 
     if( ui->actionAutoscroll_in_Mitte->isChecked() ) {
-        qDebug() << "Center..." << ui->scrollArea->verticalScrollBar()->maximum() / 2;
+        qDebug() << "Center..." << ui->scrollArea->verticalScrollBar()->maximum() / 2 << " max: " << ui->scrollArea->verticalScrollBar()->maximum();
+
         ui->scrollArea->verticalScrollBar()->setValue(ui->scrollArea->verticalScrollBar()->maximum() / 2);
         ui->scrollArea->horizontalScrollBar()->setValue(ui->scrollArea->horizontalScrollBar()->maximum() / 2);
+
     }
 
     if(appendToListHistory && !this->isBackOrVor ) {
@@ -2274,6 +2296,7 @@ void MainWindow::on_im_valueChanged(double arg1)
 #include <QImageWriter>
 #include <QSettings>
 #include <QTemporaryFile>
+#include <QTimer>
 
 void MainWindow::pushButton_copy_clicked()
 {
@@ -2324,6 +2347,20 @@ void MainWindow::on_spinBoxHSV_value_valueChanged(int)
 
 
 void MainWindow::on_spinBoxHSV_alpha_valueChanged(int)
+{
+    editedSettings = true;
+    this->setOperationMode();
+}
+
+
+void MainWindow::on_UseLogButton_toggled(bool)
+{
+    editedSettings = true;
+    this->setOperationMode();
+}
+
+
+void MainWindow::on_logFak_valueChanged(int)
 {
     editedSettings = true;
     this->setOperationMode();
@@ -2901,3 +2938,21 @@ void MainWindow::on_actionBeispiel_3_triggered()
 {
     this->loadImageFromSettings(":/examples/examples/example3", true);
 }
+
+
+
+void MainWindow::on_pushButtonResetUnappliedsettings_clicked()
+{
+    updateUiWithImageSetting(currentImg);
+    this->editedSettings = false;
+    this->setOperationMode();
+}
+
+
+
+
+void MainWindow::on_actionUnangewandte_Bildeinstellungen_zur_cksetzten_triggered()
+{
+    this->ui->pushButtonResetUnappliedsettings->click();
+}
+
