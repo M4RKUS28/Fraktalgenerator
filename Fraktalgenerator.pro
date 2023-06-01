@@ -9,6 +9,7 @@ INCLUDEPATH += src/ \
 
 CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT
 
+
 # ICON
 # CMAKE - Win:
 #     set(APP_ICON_RESOURCE_WINDOWS "${CMAKE_CURRENT_SOURCE_DIR}/qt5app.rc")

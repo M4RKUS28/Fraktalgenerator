@@ -2,8 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <complex>
-
+#include <QStyleFactory>
 
 #include <QLinearGradient>
 #include <QListWidgetItem>
@@ -33,7 +32,18 @@ QT_END_NAMESPACE
 #define START_POS_X_JUL 0.0
 #define START_POS_Y_JUL 0.0
 
-#define P_VERSION "3.6.0"
+#define init_width_sidebar 351
+
+#define P_VERSION "3.7.0"
+      #define Q_OS_WEB
+
+
+
+#ifdef Q_OS_WEB
+#include <emscripten.h>
+#else
+#include <QProcess>
+#endif
 
 
 class MainWindow : public QMainWindow
@@ -101,6 +111,8 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+    QString defaultStyle;
 
     // Liste für Zurück-Funktion
     QList<ImageSetting*> settingsList;

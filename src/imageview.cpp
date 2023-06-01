@@ -63,7 +63,7 @@ void ImageView::paintEvent(QPaintEvent * )
 
 void ImageView::mouseMoveEvent(QMouseEvent *event)
 {
-    emit mouseMove(event->pos() * hdpi_multiplicator);
+    emit ImageView::mouseMove(event->pos() * hdpi_multiplicator);
 }
 
 void ImageView::keyPressEvent(QKeyEvent *event)
@@ -83,5 +83,5 @@ void ImageView::mouseReleaseEvent(QMouseEvent *event)
 
 void ImageView::mouseDoubleClickEvent(QMouseEvent *event)
 {
-    emit mouseDoubleClick(event, event->pos() * hdpi_multiplicator);
+    emit ImageView::mouseDoubleClick(event, event->pos() * hdpi_multiplicator);
 }

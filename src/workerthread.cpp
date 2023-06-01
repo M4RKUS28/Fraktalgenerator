@@ -39,6 +39,8 @@ void WorkerThread::startCalc(ImageSetting *settings, int calc_mode)
     this->settings = settings;
     this->calc_mode = calc_mode;
 
+//    this->setStackSize(static_cast<uint>(32000000));
+
     this->start();
 }
 

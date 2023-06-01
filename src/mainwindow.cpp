@@ -17,21 +17,24 @@
 #include <QTimer>
 #include "dialogcreatevideo.h"
 #include "QAviWriter.h"
+#include <QSplitter>
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , currentImg(new ImageSetting(0, START_SCALE * this->devicePixelRatio() * ( QGuiApplication::primaryScreen()->geometry().height() == 1440 ? 2 : 1 ) , START_POS_X , START_POS_Y )), lastImgStructID(0),
-      editedSettings(false),
-      noUpdateGui(false),
-      isBackOrVor(false),
-      ignoreXPosEdited(false),
-      ignoreYPosEdited(false),
-      dont_update_save_check_buttons(false),
-      currentBackgroundColor(QColor("white")),
-      fullScreenView(new ImageView),
-      codeExecuted(false),
-      useOldPosForImgSerie(false),
-      ui(new Ui::MainWindow)
+    : QMainWindow(parent),
+    defaultStyle( QApplication::style()->objectName() ),
+    currentImg(new ImageSetting(0, START_SCALE * this->devicePixelRatio() * ( QGuiApplication::primaryScreen()->geometry().height() == 1440 ? 2 : 1 ) , START_POS_X , START_POS_Y )),
+    lastImgStructID(0),
+    editedSettings(false),
+    noUpdateGui(false),
+    isBackOrVor(false),
+    ignoreXPosEdited(false),
+    ignoreYPosEdited(false),
+    dont_update_save_check_buttons(false),
+    currentBackgroundColor(QColor("white")),
+    fullScreenView(new ImageView),
+    codeExecuted(false),
+    useOldPosForImgSerie(false),
+    ui(new Ui::MainWindow)
 {
     qInfo() << "Init programm...";
 
@@ -254,7 +257,7 @@ MainWindow::MainWindow(QWidget *parent)
     this->ui->spinBoxH->setValue( height );
 
     //start timer
-    timerID = this->startTimer(20);
+    timerID = this->startTimer(30);
 
 
     ///LOAD DEFAULTS...........................................................................
@@ -291,6 +294,11 @@ void MainWindow::showEvent(QShowEvent *)
             //Start leoading init image
             updateImage();
             this->startRefresh(currentImg, true);
+
+            QList<int> sizes;
+            sizes.push_back(ui->splitter->width() - init_width_sidebar);
+            sizes.push_back(init_width_sidebar);
+            ui->splitter->setSizes(sizes);
 
         });
     }
@@ -966,33 +974,64 @@ void MainWindow::startRefresh(ImageSetting *set, bool appendToList)
 
     //start workers
     for( size_t tn = 0; tn < tc; tn++) {
-        WorkerThread * wt = new WorkerThread(this);
-        this->tworkers.append( wt );
+//        WorkerThread * wt = new WorkerThread(this);
+//        this->tworkers.append( wt );
 
-        const ssize_t x_left_corner_part = (parts * tn);
-        const ssize_t x_right_corner_part = (parts * (tn + 1) + ( ( tn + 1 == tc ) ? (set->img_w - parts * (tn + 1)) : 0));
-        const ssize_t y_top_corner = 0;
-        const ssize_t y_bottom_corner = set->img_h;
+//        const ssize_t x_left_corner_part = (parts * tn);
+//        const ssize_t x_right_corner_part = (parts * (tn + 1) + ( ( tn + 1 == tc ) ? (set->img_w - parts * (tn + 1)) : 0));
+//        const ssize_t y_top_corner = 0;
+//        const ssize_t y_bottom_corner = set->img_h;
 
-        //SETUP
-        wt->setRange(x_left_corner_part, x_right_corner_part, y_top_corner, y_bottom_corner);
-        //CONNECT
-        connect(wt, SIGNAL(finishedLine(QList<Pixel>*)), this, SLOT(finishedLine(QList<Pixel>*)));
-        connect(wt, SIGNAL(finished()), this, SLOT(threadFinished()));
-        //START
-        wt->startCalc(set, this->ui->comboBox_precession->currentIndex());
+//        //SETUP
+//        wt->setRange(x_left_corner_part, x_right_corner_part, y_top_corner, y_bottom_corner);
+//        //CONNECT
+//        connect(wt, SIGNAL(finishedLine(QList<Pixel>*)), this, SLOT(finishedLine(QList<Pixel>*)));
+//        connect(wt, SIGNAL(finished()), this, SLOT(threadFinished()));
+//        //START
+//        wt->startCalc(set, this->ui->comboBox_precession->currentIndex());
 
         // warte für den nächsten Thread
-        if(ui->spinBoxStartVerzoegerung->value()) {
-            QTime dieTime= QTime::currentTime().addMSecs(ui->spinBoxStartVerzoegerung->value());
-                while (QTime::currentTime() < dieTime)
-                    QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+//        if(ui->spinBoxStartVerzoegerung->value()) {
+//            QTime dieTime= QTime::currentTime().addMSecs(ui->spinBoxStartVerzoegerung->value());
+//                while (QTime::currentTime() < dieTime)
+//                    QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+
+                // Delay in milliseconds
+                int delayMs = ui->spinBoxStartVerzoegerung->value();
+
+                // Create a QTimer object
+                QTimer* timer = new QTimer(this);
+
+                // Set a single-shot timer with the desired delay
+                timer->setSingleShot(true);
+                timer->start(delayMs * tn);
+
+                // Connect the timer's timeout signal to a slot or lambda function
+                connect(timer, &QTimer::timeout, this, [=]() {
+                    // This code will be executed after the delay
+                    // Perform any desired actions here
+
+                    WorkerThread * wt = new WorkerThread(this);
+                    this->tworkers.append( wt );
+
+                    const ssize_t x_left_corner_part = (parts * tn);
+                    const ssize_t x_right_corner_part = (parts * (tn + 1) + ( ( tn + 1 == tc ) ? (set->img_w - parts * (tn + 1)) : 0));
+                    const ssize_t y_top_corner = 0;
+                    const ssize_t y_bottom_corner = set->img_h;
+
+                    //SETUP
+                    wt->setRange(x_left_corner_part, x_right_corner_part, y_top_corner, y_bottom_corner);
+                    //CONNECT
+                    connect(wt, SIGNAL(finishedLine(QList<Pixel>*)), this, SLOT(finishedLine(QList<Pixel>*)));
+                    connect(wt, SIGNAL(finished()), this, SLOT(threadFinished()));
+                    //START
+                    wt->startCalc(set, this->ui->comboBox_precession->currentIndex());
+                });
         }
 
-    }
+//    }
 
 }
-
 
 #include <algorithm>
 
@@ -1060,8 +1099,10 @@ void MainWindow::afterColoring(ImageSetting *set)
 
 }
 
+
 void MainWindow::setOperationMode()
 {
+
     // Wenn kein Fraktalwechses vorliegt
     if((currentImg->isMandelbrotSet && ui->comboBox_Fraktal->currentIndex() == 0) || (!currentImg->isMandelbrotSet && ui->comboBox_Fraktal->currentIndex() == 1)) {
         // Wenn zoom und einstellungen verändert worden sind
@@ -1259,8 +1300,12 @@ void MainWindow::updateImage()
 //            this->fullScreenView->setImage(*this->currentImg->image);
 //    }
     this->update();
-    if(ui->comboBox_theme->currentIndex() == 0) /*Bei default theme comischer bug -> bild wird nur bei enterEvent akutualisiert, voer bug bei anderen modi...so mit extra update gehts lol*/
+
+    /*Bei default theme comischer bug -> bild wird nur bei enterEvent akutualisiert, voer bug bei anderen modi...so mit extra update gehts lol*/
+    // * nur bei qdarkstyle buggts..alle anderen ...z.b. fusion updaten auch nicht!
+    if(ui->comboBox_theme->currentIndex() < 4) {
         ui->imageView->update();
+    }
 }
 
 void MainWindow::startImgFolge()
@@ -2369,14 +2414,24 @@ void MainWindow::on_logFak_valueChanged(int)
 
 void MainWindow::pushColorButtonClicked(int button_num_array)
 {
-    int index = this->ui->comboBox_theme->currentIndex();
-    if( QSysInfo::productType() != "macos" /*Qt 6*/ && QSysInfo::productType() != "macos"  /*Qt 5*/ )
-        /*BUG FIX:*/ this->ui->comboBox_theme->setCurrentIndex(0);
 
+    //Bei QDarkStyle-Theme wird Maus gefangen!
+    int index = this->ui->comboBox_theme->currentIndex();
+    bool changed_theme = false;
+    if( QSysInfo::productType() != "macos" /*Qt 6*/ && QSysInfo::productType() != "macos"  /*Qt 5*/ ) {
+        changed_theme = true;
+        /*BUG FIX:*/
+        if(index == 4)
+            this->ui->comboBox_theme->setCurrentIndex(1);
+        else if(index == 5)
+            this->ui->comboBox_theme->setCurrentIndex(3);
+
+    }
 
     auto color = QColorDialog::getColor(buttonColors[button_num_array], this, "Farbe " + QString::number(button_num_array + 1));
     if(!color.isValid()) {
-        this->ui->comboBox_theme->setCurrentIndex(index);
+        if(changed_theme)
+            this->ui->comboBox_theme->setCurrentIndex(index);
         return;
     }
 
@@ -2420,8 +2475,8 @@ void MainWindow::pushColorButtonClicked(int button_num_array)
         btn->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[button_num_array].toRgb().name() + ";" );
     editedSettings = true;
     this->setOperationMode();
-    if( QSysInfo::productType() != "macos" /*Qt 6*/ && QSysInfo::productType() != "macos"  /*Qt 5*/ )
-        /*BUG FIX:*/ this->ui->comboBox_theme->setCurrentIndex(index);
+    if(changed_theme)
+        this->ui->comboBox_theme->setCurrentIndex(index);
 }
 
 
@@ -2477,11 +2532,24 @@ void MainWindow::on_pushButton_color8_clicked()
 
 void MainWindow::on_pushButtonFraktalColor_clicked()
 {
+    //Bei QDarkStyle-Theme wird Maus gefangen!
     int index = this->ui->comboBox_theme->currentIndex();
-    this->ui->comboBox_theme->setCurrentIndex(0);
+    bool changed_theme = false;
+    if( QSysInfo::productType() != "macos" /*Qt 6*/ && QSysInfo::productType() != "macos"  /*Qt 5*/ ) {
+        changed_theme = true;
+        /*BUG FIX:*/
+        if(index == 4)
+            this->ui->comboBox_theme->setCurrentIndex(1);
+        else if(index == 5)
+            this->ui->comboBox_theme->setCurrentIndex(3);
+
+    }
+
+
     auto color = QColorDialog::getColor(fraktalColor, this, "Farbe 8");
     if(!color.isValid()) {
-        this->ui->comboBox_theme->setCurrentIndex(index);
+        if(changed_theme)
+            this->ui->comboBox_theme->setCurrentIndex(index);
         return;
     }
     fraktalColor = color;
@@ -2492,7 +2560,8 @@ void MainWindow::on_pushButtonFraktalColor_clicked()
     ui->pushButtonFraktalColor->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + fraktalColor.name() );
     editedSettings = true;
     this->setOperationMode();
-    this->ui->comboBox_theme->setCurrentIndex(index);
+    if(changed_theme)
+        this->ui->comboBox_theme->setCurrentIndex(index);
 }
 
 
@@ -2551,6 +2620,7 @@ void MainWindow::on_radioButtonF8_toggled(bool status)
     radioColorButtonToggeled(7, status);
 }
 
+#include <QStyle>
 
 void MainWindow::on_comboBox_theme_currentIndexChanged(int index)
 {
@@ -2560,32 +2630,102 @@ void MainWindow::on_comboBox_theme_currentIndexChanged(int index)
     QString fileName;
     QString data;
 
+    // Reset the style of QApplication
+    QApplication::setStyle(defaultStyle);
+    this->setStyleSheet("");
+    QApplication::setPalette(QPalette());
+
+    qDebug() << "QStyleFactory: " << QStyleFactory::keys();
+
     if(index == 0) {
-        this->setStyleSheet("");
         currentBackgroundColor = "white";
+
         return;
 
-    } else if( index == 1) {
-        fileName = ":/qss/qss_icons/lightstyle.qss";
+    } else  if(index == 1) {
         currentBackgroundColor = "white";
+        QApplication::setStyle(QStyleFactory::create("Fusion"));
+
+        return;
+
+    }  else  if(index == 2) {
+        currentBackgroundColor = "gray";
+
+        // Set Fusion style
+        QApplication::setStyle(QStyleFactory::create("Fusion"));
+
+        //Customize color palette for dark mode
+        QPalette darkPalette;
+        darkPalette.setColor(QPalette::Window, QColor(53, 53, 53));
+        darkPalette.setColor(QPalette::WindowText, Qt::white);
+        darkPalette.setColor(QPalette::Base, QColor(25, 25, 25));
+        darkPalette.setColor(QPalette::AlternateBase, QColor(53, 53, 53));
+        darkPalette.setColor(QPalette::ToolTipBase, Qt::white);
+        darkPalette.setColor(QPalette::ToolTipText, Qt::white);
+        darkPalette.setColor(QPalette::Text, Qt::white);
+        darkPalette.setColor(QPalette::Button, QColor(53, 53, 53));
+        darkPalette.setColor(QPalette::ButtonText, Qt::white);
+        darkPalette.setColor(QPalette::BrightText, Qt::red);
+        darkPalette.setColor(QPalette::Link, QColor(42, 130, 218));
+
+
+        // Setzen Sie die Dark Palette für Ihre Anwendung
+        QApplication::setPalette(darkPalette);
+        this->setStyleSheet("QListWidget { background-color: #353535; color: #ffffff; }");
+
+        return;
+
+    } else  if(index == 3) {
+        currentBackgroundColor = "QColor::fromRgb(25, 35 , 45 )";
+
+        // Set Fusion style
+        QApplication::setStyle(QStyleFactory::create("Fusion"));
+
+        QPalette darkPalette;
+        darkPalette.setColor(QPalette::Window, QColor("#1f1f2e"));            // Dunkelblau
+        darkPalette.setColor(QPalette::WindowText, QColor("#f0f0f0"));        // Weiß
+        darkPalette.setColor(QPalette::Base, QColor("#2e2e3e"));              // Dunkelgrau
+        darkPalette.setColor(QPalette::AlternateBase, QColor("#1f1f2e"));     // Dunkelblau
+        darkPalette.setColor(QPalette::ToolTipBase, QColor("#f0f0f0"));       // Weiß
+        darkPalette.setColor(QPalette::ToolTipText, QColor("#f0f0f0"));       // Weiß
+        darkPalette.setColor(QPalette::Text, QColor("#f0f0f0"));               // Weiß
+        darkPalette.setColor(QPalette::Button, QColor("#2e2e3e"));             // Dunkelgrau
+        darkPalette.setColor(QPalette::ButtonText, QColor("#f0f0f0"));         // Weiß
+        darkPalette.setColor(QPalette::BrightText, QColor("#ff0000"));         // Hellrot
+        darkPalette.setColor(QPalette::Link, QColor("#2a82da"));               // Blau
+
+        QApplication::setPalette(darkPalette);
+        this->setStyleSheet("QListWidget { background-color: #2e2e3e; color: #f0f0f0; }");
+
+        return;
 
     } else {
-        fileName = ":/qss/qss_icons/darkstyle.qss";
-        currentBackgroundColor = QColor::fromRgb(25, 35 , 45 );
 
-    }
+        if( index == 4) {
+            fileName = ":/qss/qss_icons/lightstyle.qss";
+            currentBackgroundColor = "white";
+        } else if( index == 5) {
+            fileName = ":/qss/qss_icons/darkstyle.qss";
+            currentBackgroundColor = QColor::fromRgb(25, 35 , 45 );
+        } else {
+            qInfo() << "Unknown Theme!";
+            return;
+        }
 
-    QFile file(fileName);
-    if(!file.open(QIODevice::ReadOnly)) {
-        qDebug()<<"filenot opened";
-        return;
-    }
-    else
-    {
-        qDebug()<<"file opened";
-        data = file.readAll();
+        //4 und 5:.................
 
-        /*data += ""
+
+        QFile file(fileName);
+        if(!file.open(QIODevice::ReadOnly)) {
+            qDebug()<<"filenot opened";
+            return;
+        }
+        else
+        {
+            qDebug()<<"file opened";
+            data = file.readAll();
+
+            /*data += ""
                 "QGroupBox {"
                 "    background-color: rgb(69, 83, 100);"
                 "    margin-top:1em;"
@@ -2606,25 +2746,26 @@ void MainWindow::on_comboBox_theme_currentIndexChanged(int index)
                 "    background: transparent;"
                 "    margin-top: -2.5em;"
                 "}";*/
-    }
+        }
 
-    file.close();
+        file.close();
 
-    if( QSysInfo::productType() == "macos" /*Qt 6*/ || QSysInfo::productType() == "macos"  /*Qt 5*/ ) {
-        int index = data.indexOf("QComboBox::indicator {");
-        if( index != -1 ) {
-            int index2 = data.indexOf("}", index);
-            if( index2 != -1 ) {
-                data.insert(index, "/*");
-                index2+= 2 + 1;
-                data.insert(index2, "*/");
+        if( QSysInfo::productType() == "macos" /*Qt 6*/ || QSysInfo::productType() == "macos"  /*Qt 5*/  || true) {
+            int index = data.indexOf("QComboBox::indicator {");
+            if( index != -1 ) {
+                int index2 = data.indexOf("}", index);
+                if( index2 != -1 ) {
+                    data.insert(index, "/*");
+                    index2+= 2 + 1;
+                    data.insert(index2, "*/");
+                }
             }
         }
+
+
+        this->setStyleSheet(data);
+
     }
-
-
-    this->setStyleSheet(data);
-
 }
 
 
@@ -2826,7 +2967,6 @@ void MainWindow::on_spinBoxStartVerzoegerung_valueChanged(int arg1)
     settingOwnColor.setValue("THREAD_CREATE_TIME_DELAY", arg1 );
 }
 
-#include <QProcess>
 
 void MainWindow::on_actionStandart_Einstellungen_wiederherstellen_triggered()
 {
@@ -2834,7 +2974,15 @@ void MainWindow::on_actionStandart_Einstellungen_wiederherstellen_triggered()
     settingOwnColor.clear();
     //restart
     QApplication::quit();
+#ifdef Q_OS_WEB
+    // Reload the current page to restart the application.
+    EM_ASM(
+        {
+            location.reload();
+        });
+#else
     QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
+#endif
 }
 
 
