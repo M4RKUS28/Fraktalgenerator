@@ -34,12 +34,11 @@ QT_END_NAMESPACE
 
 #define init_width_sidebar 351
 
-#define P_VERSION "3.7.0"
-      #define Q_OS_WEB
+#define P_VERSION "3.8.0"
 
-
-
+//#define Q_OS_WEB
 #ifdef Q_OS_WEB
+#define SINGLE_THREADTED_WEB_ASSEMBLY
 #include <emscripten.h>
 #else
 #include <QProcess>
@@ -390,11 +389,13 @@ private slots:
 
     void on_UseLogButton_toggled(bool checked);
 
-    void on_logFak_valueChanged(int arg1);
+    void on_logFak_valueChanged(double arg1);
 
     void on_pushButtonResetUnappliedsettings_clicked();
 
     void on_actionUnangewandte_Bildeinstellungen_zur_cksetzten_triggered();
+
+    void on_actionBeispiel_4_triggered();
 
 private:
     Ui::MainWindow *ui;

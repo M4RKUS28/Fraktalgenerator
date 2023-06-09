@@ -6,11 +6,12 @@
 #include <QPushButton>
 #include <QString>
 
-DialogImageSerie::DialogImageSerie(QWidget *parent, ImgSerie s, double startZoom, unsigned startAddIT) :
+DialogImageSerie::DialogImageSerie(QWidget *parent, ImgSerie s, double startZoom, unsigned startAddIT, double log_faktor) :
     QDialog(parent),
     ui(new Ui::DialogImageSerie),
     startZoom(startZoom),
-    startITC(startAddIT)
+    startITC(startAddIT),
+    log_faktor(log_faktor)
 {
     ui->setupUi(this);
     this->ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->setDisabled(true);
@@ -26,6 +27,7 @@ DialogImageSerie::DialogImageSerie(QWidget *parent, ImgSerie s, double startZoom
     this->ui->label_startZoom->setText(QString::number(startZoom));
     updateEndZoom();
     updateEndItCount();
+    updateLogFaktor();
 
     if( QSysInfo::productType() == "macos" /*Qt 6*/ || QSysInfo::productType() == "macos"  /*Qt 5*/ ) {
 
@@ -50,7 +52,7 @@ DialogImageSerie::~DialogImageSerie()
 DialogImageSerie::ImgSerie DialogImageSerie::getImgSerieSettings()
 {
     return ImgSerie(this->ui->doubleSpinBoxZoomStep->value(), ui->spinBoxBilderZahl->value(), dir, ui->spinBox_NameItStart->value(),
-                    ui->lineEditNamePrefix->text(), ui->lineEditSuffix->text(), ui->spinBoxAddIt->value());
+                    ui->lineEditNamePrefix->text(), ui->lineEditSuffix->text(), ui->spinBoxAddIt->value(), this->ui->doubleSpinBox_add_log_fak->value());
 }
 
 #include <cmath>
@@ -65,6 +67,12 @@ void DialogImageSerie::updateEndItCount()
 {
     this->ui->label_StartIt->setText(QString::number(startITC));
     this->ui->label_EndIt->setText(QString::number(startITC + (ui->spinBoxBilderZahl->value() - 1) * ui->spinBoxAddIt->value() ) );
+}
+
+void DialogImageSerie::updateLogFaktor()
+{
+    this->ui->label_derzeit_fak->setText(QString::number(log_faktor));
+    this->ui->label_log_end_fak->setText(QString::number(log_faktor + (ui->spinBoxBilderZahl->value() - 1) * ui->doubleSpinBox_add_log_fak->value()));
 }
 
 void DialogImageSerie::on_pushButtonOpenSaveDir_clicked()
@@ -97,7 +105,7 @@ DialogImageSerie::ImgSerie::ImgSerie()
 
 }
 
-DialogImageSerie::ImgSerie::ImgSerie(double zoom, unsigned imgCount, QString path, unsigned nameItStart, QString prefix, QString suffix , unsigned addIT)
+DialogImageSerie::ImgSerie::ImgSerie(double zoom, unsigned imgCount, QString path, unsigned nameItStart, QString prefix, QString suffix , unsigned addIT, double log_faktor_add)
 {
     this->zoomStep = zoom;
     this->imgCount = imgCount;
@@ -110,6 +118,7 @@ DialogImageSerie::ImgSerie::ImgSerie(double zoom, unsigned imgCount, QString pat
     this->prefix = prefix;
     this->suffix = suffix;
     this->addIT = addIT;
+    this->log_faktor_add = log_faktor_add;
 
 }
 
@@ -128,7 +137,7 @@ void DialogImageSerie::on_spinBoxBilderZahl_valueChanged(int)
 {
     updateEndZoom();
     updateEndItCount();
-
+    updateLogFaktor();
 }
 
 
@@ -143,5 +152,11 @@ void DialogImageSerie::on_spinBoxAddIt_valueChanged(int)
 {
     updateEndItCount();
 
+}
+
+
+void DialogImageSerie::on_doubleSpinBox_add_log_fak_valueChanged(double arg1)
+{
+    updateLogFaktor();
 }
 

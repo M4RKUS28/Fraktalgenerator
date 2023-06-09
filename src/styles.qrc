@@ -431,5 +431,6 @@
         <file>examples/example1</file>
         <file>examples/example2</file>
         <file>examples/example3</file>
+        <file>examples/example4</file>
     </qresource>
 </RCC>

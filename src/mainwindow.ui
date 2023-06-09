@@ -146,7 +146,7 @@
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <property name="iconSize">
            <size>
@@ -159,7 +159,7 @@
           </property>
           <widget class="QWidget" name="tab_3">
            <attribute name="title">
-            <string>⭐Übersicht</string>
+            <string>★Übersicht</string>
            </attribute>
            <layout class="QVBoxLayout" name="verticalLayout_9">
             <item>
@@ -1472,7 +1472,7 @@
                      <item>
                       <widget class="QRadioButton" name="UseLogButton">
                        <property name="sizePolicy">
-                        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                          <horstretch>0</horstretch>
                          <verstretch>0</verstretch>
                         </sizepolicy>
@@ -1489,9 +1489,9 @@
                       </widget>
                      </item>
                      <item>
-                      <widget class="QSpinBox" name="logFak">
+                      <widget class="QDoubleSpinBox" name="logFak">
                        <property name="sizePolicy">
-                        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                          <horstretch>0</horstretch>
                          <verstretch>0</verstretch>
                         </sizepolicy>
@@ -1502,14 +1502,20 @@
                          <bold>false</bold>
                         </font>
                        </property>
+                       <property name="decimals">
+                        <number>3</number>
+                       </property>
                        <property name="minimum">
-                        <number>1</number>
+                        <double>0.000000000000000</double>
                        </property>
                        <property name="maximum">
-                        <number>99999</number>
+                        <double>10000.000000000000000</double>
+                       </property>
+                       <property name="singleStep">
+                        <double>1.000000000000000</double>
                        </property>
                        <property name="value">
-                        <number>40</number>
+                        <double>40.000000000000000</double>
                        </property>
                       </widget>
                      </item>
@@ -3433,6 +3439,7 @@
     <addaction name="actionBeispiel_1"/>
     <addaction name="actionBespiel_2"/>
     <addaction name="actionBeispiel_3"/>
+    <addaction name="actionBeispiel_4"/>
    </widget>
    <addaction name="menuDatei"/>
    <addaction name="menuAnsicht"/>
@@ -3592,6 +3599,11 @@
   <action name="actionUnangewandte_Bildeinstellungen_zur_cksetzten">
    <property name="text">
     <string>Unangewandte Bildeinstellungen zurücksetzten</string>
+   </property>
+  </action>
+  <action name="actionBeispiel_4">
+   <property name="text">
+    <string>Beispiel 4</string>
    </property>
   </action>
  </widget>

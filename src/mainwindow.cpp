@@ -133,6 +133,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     ///setup ui
     ui->setupUi(this);
+#ifdef SINGLE_THREADTED_WEB_ASSEMBLY
+//    this->ui->spinBox_threads->setMaximum(1);
+#endif
+
 
     ///-------------------------
 
@@ -265,7 +269,7 @@ MainWindow::MainWindow(QWidget *parent)
     if(settingOwnColor.contains("THEME"))
         ui->comboBox_theme->setCurrentIndex(settingOwnColor.value("THEME").toInt());
     else
-        ui->comboBox_theme->setCurrentIndex(2);
+        ui->comboBox_theme->setCurrentIndex(5);
 
     // anzahl an cpu cors als standart
     if(settingOwnColor.contains("THREAD_COUNT"))
@@ -972,6 +976,7 @@ void MainWindow::startRefresh(ImageSetting *set, bool appendToList)
 
     qInfo() << "Start calculating new image...";
 
+
     //start workers
     for( size_t tn = 0; tn < tc; tn++) {
 //        WorkerThread * wt = new WorkerThread(this);
@@ -1026,6 +1031,11 @@ void MainWindow::startRefresh(ImageSetting *set, bool appendToList)
                     connect(wt, SIGNAL(finished()), this, SLOT(threadFinished()));
                     //START
                     wt->startCalc(set, this->ui->comboBox_precession->currentIndex());
+
+#ifdef SINGLE_THREADTED_WEB_ASSEMBLY
+                    wt->run();
+#endif
+
                 });
         }
 
@@ -1268,6 +1278,8 @@ void MainWindow::endRefresh(bool appendToListHistory)
         if(imgSerie.imgCount > 0) {
             //Add ITC
             ui->spinBoxMaxIterations->setValue( ui->spinBoxMaxIterations->value() + imgSerie.addIT );
+            //add log faktor
+            ui->logFak->setValue( ui->logFak->value() + imgSerie.log_faktor_add );
 
             // clear History [-2]!
 
@@ -1310,7 +1322,7 @@ void MainWindow::updateImage()
 
 void MainWindow::startImgFolge()
 {
-    DialogImageSerie dIm(this, this->imgSerie, this->currentImg->scale(), ui->spinBoxMaxIterations->value());
+    DialogImageSerie dIm(this, this->imgSerie, this->currentImg->scale(), ui->spinBoxMaxIterations->value(), ui->logFak->value());
     if( dIm.exec() == QDialog::Accepted ) {
         this->imgSerie = dIm.getImgSerieSettings();
         this->ui->spinBox_zoom->setValue( imgSerie.zoomStep );
@@ -1361,7 +1373,11 @@ bool MainWindow::checkForFinished()
 {
     if(this->ui->progressBar->value() == this->ui->progressBar->maximum() ) {
         for ( ssize_t i = 0; i < this->tworkers.length(); i++ ) {
-            if (this->tworkers.at(i)->isFinished()) {
+            if (this->tworkers.at(i)->isFinished()
+#ifdef SINGLE_THREADTED_WEB_ASSEMBLY
+                    || true
+#endif
+                ) {
                 auto tmp = this->tworkers.takeAt(i--);
                 delete tmp;
             }
@@ -2405,7 +2421,7 @@ void MainWindow::on_UseLogButton_toggled(bool)
 }
 
 
-void MainWindow::on_logFak_valueChanged(int)
+void MainWindow::on_logFak_valueChanged(double)
 {
     editedSettings = true;
     this->setOperationMode();
@@ -3088,6 +3104,11 @@ void MainWindow::on_actionBeispiel_3_triggered()
 }
 
 
+void MainWindow::on_actionBeispiel_4_triggered()
+{
+    this->loadImageFromSettings(":/examples/examples/example4", true);
+
+}
 
 void MainWindow::on_pushButtonResetUnappliedsettings_clicked()
 {
@@ -3103,4 +3124,6 @@ void MainWindow::on_actionUnangewandte_Bildeinstellungen_zur_cksetzten_triggered
 {
     this->ui->pushButtonResetUnappliedsettings->click();
 }
+
+
 

@@ -30,7 +30,7 @@ struct ImageSetting {
 
 
     void setColorSettings(int farbalgorithmus, bool normalized, double logEscape, int fractalColorIndex, QColor fixFraktalColor,
-                          bool inverted, double escape_radius, bool isIntervallVerlauf, bool useLog, int log_fak);
+                          bool inverted, double escape_radius, bool isIntervallVerlauf, bool useLog, double log_fak);
 
     size_t getIterationCountAt(QPoint pos);
     size_t getIterationCountAt(ssize_t x, ssize_t y);
@@ -70,8 +70,9 @@ struct ImageSetting {
     bool isMandelbrotSet,
         useLog;
 
-    int farbalgorithmus,
-        log_multiplier;
+    int farbalgorithmus;
+
+    double log_multiplier;
 
     //Color settings
     bool inverted, normalized, has_hue, isIntervallVerlauf;
