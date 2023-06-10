@@ -3,22 +3,30 @@
 Die Anwendung dient der Erstellung von Abbildungen der Mandelbrot-Menge und zugehörigen Julia-Mengen.
 
 # Besondere Funktionen
-- Platformübergreifend Linux Windows Mac
+- Platformübergreifend Linux Windows Mac Web
 - Mandelbrot-Menge und Julia-Mengen
 - Normalized Iteration Count
 - Verschiedene Farbalgorithmen für die Fluchtmenge
+- Veränderbare Farbpaletten
+- Logarithmisierte Farbfolge
 - Visualisierte Zahlenfolge
-- Selbst einstellbares Koordinatensystem
+- Einstellbares Koordinatensystem
 - High DPI Unterstützung
-- Bilder Verlauf
+- Bilderverlauf
 - Iterationen an Mausposition
 - Multi Threading
-- Full-Screen Mode
+- Full-Screen Mode - 2-Window-control
 - Multi-Screen support
 - Speichern und Laden von Bildeinstellungen
 - Bilderspeicherung
 - Bilderfolgengenerator
-- Videocreator
+- Videocreator ( Zoom, Log, Iterations )
+- Verschiedene Themes: WindowsVista/Mac, Fusion, Fusion Dark/Blue, QDarkstyle, QDarkstyle Light
+- Beispiele
+- Speicherung von Einstellungen
+- Beliebige Bildgröße
+- Antialising
+- usw. ...
 
 
 Theme:
