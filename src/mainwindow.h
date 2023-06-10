@@ -397,6 +397,15 @@ private slots:
 
     void on_actionBeispiel_4_triggered();
 
+    void on_listWidgetHistory_customContextMenuRequested(const QPoint &pos);
+
+    void context_menue_history_load_clicked();
+    void context_menue_history_edit_clicked();
+    void context_menue_history_remove_clicked();
+
+
+    void on_groupBox_2_toggled(bool arg1);
+
 private:
     Ui::MainWindow *ui;
 

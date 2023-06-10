@@ -433,4 +433,11 @@
         <file>examples/example3</file>
         <file>examples/example4</file>
     </qresource>
+    <qresource prefix="/icons">
+        <file>icons/julia_menge_256x128 - Julia-Menge.png</file>
+        <file>icons/mandelbrot_menge_256x128.png</file>
+        <file>icons/delete.png</file>
+        <file>icons/reload.png</file>
+        <file>icons/rename.png</file>
+    </qresource>
 </RCC>

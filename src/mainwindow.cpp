@@ -137,6 +137,7 @@ MainWindow::MainWindow(QWidget *parent)
 //    this->ui->spinBox_threads->setMaximum(1);
 #endif
 
+    ui->listWidgetHistory->setContextMenuPolicy(Qt::CustomContextMenu);
 
     ///-------------------------
 
@@ -329,6 +330,24 @@ void MainWindow::setupIconsInCombobox(int width)
         ui->comboBox_palette->setItemIcon(i, QIcon(QPixmap::fromImage(img)));
     }
 
+    for( auto &combobox : {ui->comboBoxMandelColor,
+                           ui->comboBoxColorKoordSystem,
+                           ui->comboBox_color_zahlenfolge}) {
+        for(int i = 0; i < combobox->count(); i++) {
+            if(QColor::isValidColor(combobox->itemText(i)) == false)
+                continue;
+
+            QImage img = QImage(32, 16, QImage::Format_ARGB32_Premultiplied);
+            QPainter p = QPainter(&img);
+            p.fillRect(0, 0, 32, 16, QColor(combobox->itemText(i)));
+            p.setPen(QPen(Qt::black, 1));
+            p.drawRect(0, 0, 32-1, 16-1);
+            combobox->setItemIcon(i, QIcon(QPixmap::fromImage(img)));
+        }
+    }
+
+    ui->comboBox_Fraktal->setItemIcon(0, QIcon(QPixmap::fromImage(QImage(":/icons/icons/mandelbrot_menge_256x128.png"))));
+    ui->comboBox_Fraktal->setItemIcon(1, QIcon(QPixmap::fromImage(QImage(":/icons/icons/julia_menge_256x128 - Julia-Menge.png"))));
 }
 
 void MainWindow::updateIconInOwnColor(int width)
@@ -673,7 +692,10 @@ void MainWindow::zustandWechseln(QString aktion, QString param, QPoint m_pos, QM
                 if(ui->listWidgetHistory->item(i)->data(187).toInt() == currentImg->id)
                     ui->listWidgetHistory->setCurrentRow(i);
             ui->pushButton_back->setDisabled(true);
-            ui->pushButton_vor->setDisabled(false);
+            if(ui->listWidgetHistory->count() > 1)
+                ui->pushButton_vor->setDisabled(false);
+            else
+                ui->pushButton_vor->setDisabled(true);
 
 //            ui->pushButtonHome->setText("Reset");
 
@@ -1178,9 +1200,9 @@ void MainWindow::endRefresh(bool appendToListHistory)
     if(this->currentImg->id == settingsList.at(0)->id) {
         this->ui->pushButtonHome->setText("Reset");
         // sonderfall reload... auch vor nach refresh möglich!
-        if(settingsList.length() > 1)
-            ui->pushButton_vor->setDisabled(false);
-        else
+        if(settingsList.length() > 1) {
+                ui->pushButton_vor->setDisabled(false);
+        } else
             ui->pushButton_vor->setDisabled(true);
         ui->pushButton_back->setEnabled(false);
     } else {
@@ -1231,6 +1253,10 @@ void MainWindow::endRefresh(bool appendToListHistory)
                                      ") Im(" +  QString::number( - this->currentImg->gaus_mid_im ) + " i)");
         i->setIcon(QIcon(QPixmap::fromImage(*this->currentImg->image).scaled(QSize(256, 256), Qt::AspectRatioMode::KeepAspectRatio, Qt::TransformationMode::FastTransformation)));
         i->setData(187, currentImg->id);
+
+        if(ui->listWidgetHistory->count() == 0) {
+            i->setText("⌂ Home");
+        }
 
         ui->listWidgetHistory->addItem(i);
         ui->listWidgetHistory->setCurrentItem(i);
@@ -1563,7 +1589,7 @@ void MainWindow::paintEvent(QPaintEvent *)
 
             }
 
-            if(zahlenfolge.isShown()) {
+            if( ui->groupBox_2->isChecked() && zahlenfolge.isShown()) {
                 painter.setPen(QPen( QColor(ui->comboBox_color_zahlenfolge->currentText()), ui->spinBoxZahlenfolgeLinienbreite->value()) );
                 if( ui->comboBox_drawStyle_zahlenfolge->currentIndex() == 0) {
                     painter.drawPoints(zahlenfolge.getZahlenfolge().toVector().data(), zahlenfolge.getZahlenfolge().length());
@@ -2298,8 +2324,7 @@ void MainWindow::on_listWidgetHistory_itemDoubleClicked(QListWidgetItem *item)
             }
             ui->listWidgetHistory->setCurrentItem(item);
 
-
-            if(i < settingsList.length() - 1)
+            if(ui->listWidgetHistory->indexFromItem(item).row() < ui->listWidgetHistory->count() -1 )
                 ui->pushButton_vor->setEnabled(true);
             else
                 ui->pushButton_vor->setEnabled(false);
@@ -3126,4 +3151,85 @@ void MainWindow::on_actionUnangewandte_Bildeinstellungen_zur_cksetzten_triggered
 }
 
 
+
+
+void MainWindow::on_listWidgetHistory_customContextMenuRequested(const QPoint &pos)
+{
+    // wenn neben item geklickt...abbruch,
+    auto item = ui->listWidgetHistory->itemAt(pos);
+    if(!item )
+        return;
+
+    // Handle global position
+    QPoint globalPos = ui->listWidgetHistory->mapToGlobal(pos);
+
+    // Create menu and insert some actions
+    QMenu myMenu(this);
+    if(item->data(187).toInt() != currentImg->id) {
+        myMenu.addAction("Laden",  this, SLOT(context_menue_history_load_clicked()))->setIcon(QIcon(QPixmap::fromImage(QImage(":/icons/icons/reload.png"))));
+
+        myMenu.addSeparator();
+    }
+    myMenu.addAction("Umbennen", this, SLOT(context_menue_history_edit_clicked()))->setIcon(QIcon(QPixmap::fromImage(QImage(":/icons/icons/rename.png"))));
+    //wenn gerade verwendetes, wenn item das erste ist, kein löschen...
+    if(item->data(187).toInt() != ui->listWidgetHistory->item(0)->data(187).toInt() && item->data(187).toInt() != currentImg->id) {
+        myMenu.addSeparator();
+        myMenu.addAction("Löschen",  this, SLOT(context_menue_history_remove_clicked()))->setIcon(QIcon(QPixmap::fromImage(QImage(":/icons/icons/delete.png"))));
+    }
+
+    // Show context menu at handling position
+    myMenu.exec(globalPos);
+}
+
+void MainWindow::context_menue_history_load_clicked()
+{
+    emit ui->listWidgetHistory->itemDoubleClicked(ui->listWidgetHistory->currentItem());
+}
+
+
+
+
+#include <QInputDialog>
+
+void MainWindow::context_menue_history_edit_clicked()
+{
+    QListWidgetItem * item;
+    bool ok;
+    QString newName;
+
+    if((item = ui->listWidgetHistory->currentItem()))
+        if (!(newName = QInputDialog::getText(nullptr, "Listenname ändern", "Neuer Name:", QLineEdit::Normal, item->text(), &ok)).isEmpty() && ok)
+            item->setText(newName);
+}
+
+void MainWindow::context_menue_history_remove_clicked()
+{
+    auto item = ui->listWidgetHistory->currentItem();
+    if(!item)
+        return;
+
+    //wenn item das erste ist, abbruch...
+    if( ui->listWidgetHistory->count() < 1 || item == ui->listWidgetHistory->item(0) || item->data(187).toInt() == currentImg->id)
+        return;
+
+    int id = item->data(187).toInt();
+    for(int i = 0; i <  settingsList.length(); i++) {
+        if(settingsList.at(i)->id == id) {
+            auto s = settingsList.takeAt(i);
+            s->cleanUP();
+            delete s;
+            auto it = ui->listWidgetHistory->takeItem(ui->listWidgetHistory->indexFromItem(item).row());
+            if(it)
+                delete it;
+            if(ui->listWidgetHistory->count() > 0 && currentImg->id == ui->listWidgetHistory->item(ui->listWidgetHistory->count() - 1)->data(187).toInt())
+                ui->pushButton_vor->setDisabled(true);
+
+        }
+    }
+}
+
+void MainWindow::on_groupBox_2_toggled(bool)
+{
+    updateImage();
+}
 

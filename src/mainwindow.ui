@@ -146,7 +146,7 @@
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>2</number>
           </property>
           <property name="iconSize">
            <size>
@@ -196,6 +196,12 @@
                  </property>
                  <property name="toolTip">
                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fraktal auswählen - Zu jedem Punkt der Mandelbrot-Menge lässt sich eine Julia-Menge berechnen.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>32</width>
+                   <height>16</height>
+                  </size>
                  </property>
                  <item>
                   <property name="text">
@@ -689,6 +695,12 @@
                  <property name="styleSheet">
                   <string notr="true">border: 0;</string>
                  </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>32</width>
+                   <height>32</height>
+                  </size>
+                 </property>
                 </widget>
                </item>
                <item>
@@ -791,6 +803,12 @@
                  </property>
                  <property name="toolTip">
                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Farbe der Mandelbrot- bzw. Julia-Menge. Über &amp;lt;andere&amp;gt; kann eine beliebige Farbe ausgewählt werden.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>32</width>
+                   <height>16</height>
+                  </size>
                  </property>
                  <item>
                   <property name="text">
@@ -2085,6 +2103,12 @@
                    <bold>false</bold>
                   </font>
                  </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>32</width>
+                   <height>16</height>
+                  </size>
+                 </property>
                  <item>
                   <property name="text">
                    <string>white</string>
@@ -2336,6 +2360,9 @@
               <property name="title">
                <string>Zahlenfolge:</string>
               </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
               <layout class="QGridLayout" name="gridLayout_12">
                <property name="leftMargin">
                 <number>20</number>
@@ -2432,6 +2459,12 @@
                    <bold>false</bold>
                   </font>
                  </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>32</width>
+                   <height>16</height>
+                  </size>
+                 </property>
                  <item>
                   <property name="text">
                    <string>white</string>
@@ -2439,7 +2472,7 @@
                  </item>
                  <item>
                   <property name="text">
-                   <string>back</string>
+                   <string>black</string>
                   </property>
                  </item>
                  <item>
