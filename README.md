@@ -1,6 +1,6 @@
 # Fraktal-Generator
 
-Die Anwendung dient der Erstellung von Abbildungen der Mandelbrot-Menge und zugehörigen Julia-Mengen.
+Die Anwendung dient der Erstellung von Abbildungen der Mandelbrot-Menge und zugehörigen Julia-Mengen. Weitere Informationen zu der Mandelbrot-Menge finden Sie in der zugehörigen [W-Seminararbeit](https://code.obermui.de/markus/W-Seminar-Die-Mandelbrot-Menge).
 
 # Besondere Funktionen
 - Platformübergreifend Linux Windows Mac Web
