@@ -1,6 +1,6 @@
 # Fraktal-Generator
 
-Die Anwendung dient der Erstellung von Abbildungen der Mandelbrot-Menge und zugehörigen Julia-Mengen.
+Die Anwendung dient der Erstellung von Abbildungen der Mandelbrot-Menge und zugehörigen Julia-Mengen. Weitere Informationen zu der Mandelbrot-Menge finden Sie in der zugehörigen [W-Seminararbeit](https://code.obermui.de/markus/W-Seminar-Die-Mandelbrot-Menge).
 
 # Besondere Funktionen
 - Platformübergreifend Linux Windows Mac Web
@@ -21,14 +21,10 @@ Die Anwendung dient der Erstellung von Abbildungen der Mandelbrot-Menge und zuge
 - Bilderspeicherung
 - Bilderfolgengenerator
 - Videocreator ( Zoom, Log, Iterations )
-- Verschiedene Themes: WindowsVista/Mac, Fusion, Fusion Dark/Blue, QDarkstyle, QDarkstyle Light
+- Verschiedene Themes: WindowsVista/Mac, Fusion, Fusion Dark/Blue, [QDarkstyle, QDarkstyle Light](https://github.com/ColinDuquesnoy/QDarkStyleSheet/blob/master/qdarkstyle/light/lightstyle.qss)
 - Beispiele
 - Speicherung von Einstellungen
 - Beliebige Bildgröße
 - Antialising
-- usw. ...
-
-
-Theme:
-https://github.com/ColinDuquesnoy/QDarkStyleSheet/blob/master/qdarkstyle/light/lightstyle.qss
+- und vieles mehr!
 
