@@ -2438,7 +2438,8 @@ void MainWindow::on_listWidgetHistory_itemDoubleClicked(QListWidgetItem *item)
             }
             ui->listWidgetHistory->setCurrentItem(item);
 
-            if(ui->listWidgetHistory->indexFromItem(item).row() < ui->listWidgetHistory->count() -1 )
+
+            if(ui->listWidgetHistory->row(item) < ui->listWidgetHistory->count() -1 )
                 ui->pushButton_vor->setEnabled(true);
             else
                 ui->pushButton_vor->setEnabled(false);
@@ -3332,7 +3333,7 @@ void MainWindow::context_menue_history_remove_clicked()
             auto s = settingsList.takeAt(i);
             s->cleanUP();
             delete s;
-            auto it = ui->listWidgetHistory->takeItem(ui->listWidgetHistory->indexFromItem(item).row());
+            auto it = ui->listWidgetHistory->takeItem(ui->listWidgetHistory->row(item));
             if(it)
                 delete it;
             if(ui->listWidgetHistory->count() > 0 && currentImg->id == ui->listWidgetHistory->item(ui->listWidgetHistory->count() - 1)->data(187).toInt())
