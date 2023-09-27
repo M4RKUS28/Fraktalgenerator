@@ -125,7 +125,7 @@ QColor WorkerThread::getPreColor(size_t iters, double normalizedItC, const Image
             if(iters == maxIt || maxIt == 0  || farbStufenAnzahl == 0)
                 return Qt::black;
 
-            double iters = imgS->useLog ? log(normalizedItC) * imgS->log_multiplier : normalizedItC;  //double iters = normalizedItC;
+            double iters = ((imgS->useLog) ? ( log(normalizedItC) * imgS->log_multiplier ) : normalizedItC);  //double iters = normalizedItC;
             // Hier iters % farbStufenIntervall * farbStufenAnzahl für double, um nachdem alle farben dran kamen wieder bei vorne anzufangen
             while( iters > 0 && iters >= farbStufenIntervall * (farbStufenAnzahl))
                 iters -= (farbStufenIntervall * (farbStufenAnzahl));
@@ -136,9 +136,12 @@ QColor WorkerThread::getPreColor(size_t iters, double normalizedItC, const Image
             iters -= farbStufenIntervall * farbstufe;
             anteil = ((double)iters / (double)farbStufenIntervall);
                                                                                                                 // Bei Verlauf zu letzter Farbe farbe  --> starte wieder bei 0
-            returnColor = QColor::fromRgb(imgS->colors[farbstufe].second.red() + (double)(imgS->colors[ farbstufe == (farbStufenAnzahl-1) ? 0 : farbstufe + 1].second.red() - imgS->colors[farbstufe].second.red()) * anteil,
-                                                       imgS->colors[farbstufe].second.green()  + (double)(imgS->colors[farbstufe == (farbStufenAnzahl-1) ? 0 : farbstufe + 1].second.green() - imgS->colors[farbstufe].second.green()) * anteil,
-                                                       imgS->colors[farbstufe].second.blue()  + (double)(imgS->colors[farbstufe == (farbStufenAnzahl-1) ? 0 : farbstufe + 1].second.blue() - imgS->colors[farbstufe].second.blue()) * anteil);
+            int other_color = farbstufe == (farbStufenAnzahl-1) ? 0 : farbstufe + 1;
+            returnColor = QColor::fromRgba64(imgS->colors[farbstufe].second.rgba64().red()   + (double)(imgS->colors[ other_color ].second.rgba64().red()   - imgS->colors[farbstufe].second.rgba64().red())   * anteil,
+                                             imgS->colors[farbstufe].second.rgba64().green() + (double)(imgS->colors[ other_color ].second.rgba64().green() - imgS->colors[farbstufe].second.rgba64().green()) * anteil,
+                                             imgS->colors[farbstufe].second.rgba64().blue()  + (double)(imgS->colors[ other_color ].second.rgba64().blue()  - imgS->colors[farbstufe].second.rgba64().blue())  * anteil);
+
+//            qDebug() << "fromRgb: " << returnColor.red() << returnColor.green() << returnColor.blue() << " toRGB64: " << returnColor.rgba64().red() << returnColor.rgba64().green() << returnColor.rgba64().blue();
         } else {
             //Absoluter Verlauf
             if(iters == maxIt || maxIt == 0 || farbStufenAnzahl == 0)
@@ -152,7 +155,7 @@ QColor WorkerThread::getPreColor(size_t iters, double normalizedItC, const Image
             //                              Diese zahl mit Gesammtintervallgröße multiplizieren. Da RGB 255 Farben unterstützt, hier 255 gewählt und Gesammtintervall ergibt sich aus Intervallgröße und Anzahl
 
             // Da es Übergänge sind, gibt es 1 Weniger Farbe --> Wenn z.B. rot und gelb, dann hat man 1 Übergang, von Rot zu Gelb
-            normalizedItC = imgS->useLog ? log(normalizedItC) * imgS->log_multiplier : normalizedItC;
+            normalizedItC = ((imgS->useLog) ? (log(normalizedItC) * imgS->log_multiplier) : normalizedItC);
             double iters = (normalizedItC * 255.0 * (double)( farbStufenAnzahl - 1)) / (double) maxIt ;
 
             //Nun muss die richtige Farbstufe herausgefunden werden --> durch Teilen der Intervallgröße findet man heraus in welcher Stufe man ist und durch abzug von Stufe*Größe erhält man wieweit iters in dem derzeitigen Intervall sit
@@ -165,9 +168,9 @@ QColor WorkerThread::getPreColor(size_t iters, double normalizedItC, const Image
             // um einen Verlauf zu erzeugen muss gleichermaßen eine farbe zunehmen und eine abnehmen. durch den Anteil der Iteration am Intervallmaximum wird dies erreicht:
             anteil = /*std::min(*/(double)iters / (double)255/*, 1.0)*/;
             // FARBE = START + ( ZIEL - START ) * STEP
-            returnColor = QColor::fromRgb(imgS->colors[farbstufe].second.red() + (double)(imgS->colors[farbstufe + 1].second.red() - imgS->colors[farbstufe].second.red()) * anteil,
-                                                       imgS->colors[farbstufe].second.green()  + (double)(imgS->colors[farbstufe + 1].second.green() - imgS->colors[farbstufe].second.green()) * anteil,
-                                                       imgS->colors[farbstufe].second.blue()  + (double)(imgS->colors[farbstufe + 1].second.blue() - imgS->colors[farbstufe].second.blue()) * anteil);
+            returnColor = QColor::fromRgba64(imgS->colors[farbstufe].second.rgba64().red()   + (double)(imgS->colors[farbstufe + 1].second.rgba64().red()   - imgS->colors[farbstufe].second.rgba64().red())   * anteil,
+                                             imgS->colors[farbstufe].second.rgba64().green() + (double)(imgS->colors[farbstufe + 1].second.rgba64().green() - imgS->colors[farbstufe].second.rgba64().green()) * anteil,
+                                             imgS->colors[farbstufe].second.rgba64().blue()  + (double)(imgS->colors[farbstufe + 1].second.rgba64().blue()  - imgS->colors[farbstufe].second.rgba64().blue())  * anteil);
         }
 
         break;

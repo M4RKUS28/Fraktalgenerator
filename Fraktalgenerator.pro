@@ -5,7 +5,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 CONFIG += c++17
 
 INCLUDEPATH += src/ \
-               src/video/
+               src/video/ \
+               src/openexr/
 
 CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT
 
@@ -48,6 +49,7 @@ SOURCES += \
     src/dialogcreatevideo.cpp \
     src/dialogueber.cpp \
     src/imagesetting.cpp \
+    src/openexr/miniz.c \
     src/video/avi-utils.cpp \
     src/video/fileio.cpp \
     src/video/gwavi.cpp \
@@ -62,6 +64,8 @@ HEADERS += \
     src/dialogcreatevideo.h \
     src/dialogueber.h \
     src/imagesetting.h \
+    src/openexr/miniz.h \
+    src/openexr/tinyexr.h \
     src/video/gwavi.h \
     src/video/avi-utils.h \
     src/video/fileio.h \

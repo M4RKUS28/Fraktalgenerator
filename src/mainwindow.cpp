@@ -1475,6 +1475,111 @@ void MainWindow::threadFinished()
 //        delete sender_obj;
 }
 
+
+
+#define TINYEXR_USE_THREAD 1
+//#define TINYEXR_USE_STB_ZLIB 1
+#define TINYEXR_IMPLEMENTATION
+#include "openexr/tinyexr.h"
+
+float* convertQImageToFloatArray(const QImage& inputImage, int& width, int& height) {
+    width = inputImage.width();
+    height = inputImage.height();
+
+    float* rgbData = new float[width * height * 3];
+
+    for (int y = 0; y < height; ++y) {
+        for (int x = 0; x < width; ++x) {
+            QRgba64 pixel = inputImage.pixelColor(x, y).rgba64();
+
+
+            //HERE Pos processing effects, e.g. bloom!!!!!!
+
+
+            float r = pow( (1.7* (float)pixel.red())   / 65535.0f, 3.); // Scale to [0, 1]
+            float g = pow( (1.7* (float)pixel.green()) / 65535.0f, 3.); // Scale to [0, 1]
+            float b = pow( (1.7* (float)pixel.blue())  / 65535.0f, 3.); // Scale to [0, 1]
+
+            // Pre-multiplied alpha
+            rgbData[(y * width + x) * 3 + 0] = r ;
+            rgbData[(y * width + x) * 3 + 1] = g ;
+            rgbData[(y * width + x) * 3 + 2] = b;
+        }
+    }
+
+    return rgbData;
+}
+
+
+// See `examples/rgbe2exr/` for more details.
+bool SaveEXR(float* rgb, int width, int height, const char* outfilename) {
+    if(!rgb)
+        return false;
+
+    EXRHeader header;
+    InitEXRHeader(&header);
+
+    EXRImage image;
+    InitEXRImage(&image);
+
+    image.num_channels = 3;
+
+    std::vector<float> images[3];
+    images[0].resize(width * height);
+    images[1].resize(width * height);
+    images[2].resize(width * height);
+
+    // Split RGBRGBRGB... into R, G and B layer
+    for (int i = 0; i < width * height; i++) {
+        images[0][i] = rgb[3*i+0];
+        images[1][i] = rgb[3*i+1];
+        images[2][i] = rgb[3*i+2];
+    }
+
+    float* image_ptr[3];
+    image_ptr[0] = &(images[2].at(0)); // B
+    image_ptr[1] = &(images[1].at(0)); // G
+    image_ptr[2] = &(images[0].at(0)); // R
+
+    image.images = (unsigned char**)image_ptr;
+    image.width = width;
+    image.height = height;
+
+    header.num_channels = 3;
+    header.channels = (EXRChannelInfo *)malloc(sizeof(EXRChannelInfo) * header.num_channels);
+    // Must be (A)BGR order, since most of EXR viewers expect this channel order.
+    strncpy(header.channels[0].name, "B", 255); header.channels[0].name[strlen("B")] = '\0';
+    strncpy(header.channels[1].name, "G", 255); header.channels[1].name[strlen("G")] = '\0';
+    strncpy(header.channels[2].name, "R", 255); header.channels[2].name[strlen("R")] = '\0';
+
+    header.pixel_types = (int *)malloc(sizeof(int) * header.num_channels);
+    header.requested_pixel_types = (int *)malloc(sizeof(int) * header.num_channels);
+    for (int i = 0; i < header.num_channels; i++) {
+        header.pixel_types[i] = TINYEXR_PIXELTYPE_FLOAT; // pixel type of input image
+        header.requested_pixel_types[i] = TINYEXR_PIXELTYPE_HALF; // pixel type of output image to be stored in .EXR
+    }
+
+    const char* err = NULL; // or nullptr in C++11 or later.
+    int ret = SaveEXRImageToFile(&image, &header, outfilename, &err);
+    if (ret != TINYEXR_SUCCESS) {
+        fprintf(stderr, "Save EXR err: %s\n", err);
+        FreeEXRErrorMessage(err); // free's buffer for an error message
+        free(header.channels);
+        free(header.pixel_types);
+        free(header.requested_pixel_types);
+        return ret;
+    }
+    printf("Saved exr file. [ %s ] \n", outfilename);
+
+    delete []rgb;
+
+    free(header.channels);
+    free(header.pixel_types);
+    free(header.requested_pixel_types);
+    return 0;
+}
+
+
 void MainWindow::pushButtonSaveImg_clicked()
 {
 
@@ -1484,7 +1589,7 @@ void MainWindow::pushButtonSaveImg_clicked()
     QString filename = QFileDialog::getSaveFileName(this, "Bild speichern - Dateiendung nach gewünschtem Format ändern. Standart: .png", "", "Images (*.png *.xpm *.jpg)");
 
 
-    if( ! filename.isEmpty()) {
+    if( ! filename.isEmpty() && !filename.endsWith(".exr")) {
         currentImg->image->setText("Description", info);
         filename = filename + ((!filename.contains(".")) ? ".png" : "");
         filename.insert(filename.lastIndexOf("."), " - " + info);
@@ -1495,9 +1600,18 @@ void MainWindow::pushButtonSaveImg_clicked()
         else
             this->ui->statusbar->showMessage("Bild {Re(" + QString::number(this->currentImg->gaus_mid_re) + ") Im(" + QString::number(this->currentImg->gaus_mid_im) + ") 1:"
                                              +  QString::number(currentImg->scale()) + " [" + QString::number(currentImg->img_w) + "x" + QString::number(currentImg->img_h) + "]} gespeichert unter '" + filename + "'." , 5000);
-    } else {
+    } else if(filename.endsWith(".exr")){
+        int w, h;
+        float * img_buffer = convertQImageToFloatArray(ui->imageView->getImg(), w, h);
+        if(SaveEXR(img_buffer, w, h, filename.toStdString().c_str()))
+            this->ui->statusbar->showMessage("Fehler: Kein Bild gespeichert!", 1000);
+
+    }else{
         this->ui->statusbar->showMessage("Kein Bild gespeichert!", 1000);
     }
+
+
+
 }
 
 

@@ -36,9 +36,10 @@ QT_END_NAMESPACE
 
 #define P_VERSION "3.8.0"
 
+
 //#define Q_OS_WEB
 #ifdef Q_OS_WEB
-#define SINGLE_THREADTED_WEB_ASSEMBLY
+//#define SINGLE_THREADTED_WEB_ASSEMBLY
 #include <emscripten.h>
 #else
 #include <QProcess>
