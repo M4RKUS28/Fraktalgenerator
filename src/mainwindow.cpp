@@ -3270,6 +3270,9 @@ void MainWindow::on_actionUnangewandte_Bildeinstellungen_zur_cksetzten_triggered
 
 void MainWindow::on_listWidgetHistory_customContextMenuRequested(const QPoint &pos)
 {
+#ifdef Q_OS_WEB
+    return;
+#endif
     // wenn neben item geklickt...abbruch,
     auto item = ui->listWidgetHistory->itemAt(pos);
     if(!item )
@@ -3346,5 +3349,11 @@ void MainWindow::context_menue_history_remove_clicked()
 void MainWindow::on_groupBox_2_toggled(bool)
 {
     updateImage();
+}
+
+
+void MainWindow::on_listWidgetHistory_itemClicked(QListWidgetItem *)
+{
+
 }
 
