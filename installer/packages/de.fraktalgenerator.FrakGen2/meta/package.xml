@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package>
+    <DisplayName>Fraktalgenerator 2.1.0</DisplayName>
+    <Description>Install Fraktalgenerator 2.1.0.</Description>
+    <Version>2.1.0</Version>
+    <Default>false</Default>
+
+    <ReleaseDate>2023-06-10</ReleaseDate>
+    <Licenses>
+        <License name="GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007" file="license.txt" />
+    </Licenses>
+
+    <Operations>
+        <Operation name="Extract">
+            <Argument>@TargetDir@/Version/FrakGen2</Argument>
+        </Operation>
+    </Operations>
+	
+	<Script>installscript.qs</Script>
+
+</Package>
