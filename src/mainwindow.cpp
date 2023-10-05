@@ -1496,9 +1496,9 @@ float* convertQImageToFloatArray(const QImage& inputImage, int& width, int& heig
             //HERE Pos processing effects, e.g. bloom!!!!!!
 
 
-            float r = pow( (1.7* (float)pixel.red())   / 65535.0f, 3.); // Scale to [0, 1]
-            float g = pow( (1.7* (float)pixel.green()) / 65535.0f, 3.); // Scale to [0, 1]
-            float b = pow( (1.7* (float)pixel.blue())  / 65535.0f, 3.); // Scale to [0, 1]
+            float r = /*pow( (1.7**/ (float)pixel.red()/*)*/   / 65535.0f/*, 3.)*/; // Scale to [0, 1]
+            float g = /*pow( (1.7**/ (float)pixel.green()/*)*/ / 65535.0f/*, 3.)*/; // Scale to [0, 1]
+            float b = /*pow( (1.7**/ (float)pixel.blue()/*)*/  / 65535.0f/*, 3.)*/; // Scale to [0, 1]
 
             // Pre-multiplied alpha
             rgbData[(y * width + x) * 3 + 0] = r ;

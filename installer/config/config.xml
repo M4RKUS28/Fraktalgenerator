@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Installer>
     <Name>Fraktalgenerator</Name>
-    <Version>1.0.0</Version>
+    <Version>3.8.0</Version>
     <Title><Name>Fraktalgenerator</Name> Installer</Title>
     <Publisher>Markus</Publisher>
     <StartMenuDir>Fraktalgenerator</StartMenuDir>
@@ -9,4 +9,13 @@
     <WizardDefaultWidth>800</WizardDefaultWidth>
     <WizardDefaultHeight>500</WizardDefaultHeight>
 	<MaintenanceToolName>FraktalgeneratorMaintenanceTool</MaintenanceToolName>
+    <SortingPriority>321</SortingPriority>
+	<RemoteRepositories>
+     <Repository>
+             <Url>https://github.com/M4RKUS28/Fraktalgenerator/raw/main/installer/repository</Url>
+             <Enabled>1</Enabled>
+             <DisplayName>Github Repo</DisplayName>
+     </Repository>
+</RemoteRepositories>
+	
 </Installer>

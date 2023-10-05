@@ -63,3 +63,5 @@ debug/
 release/
 release*/
 builds/
+
+installer/*Installer.exe
