@@ -10,17 +10,17 @@
   <Default>false</Default>
   <ReleaseDate>2023-06-10</ReleaseDate>
   <Script>installscript.qs</Script>
-  <UpdateFile CompressedSize="16328894" OS="Any" UncompressedSize="57468512"/>
+  <UpdateFile UncompressedSize="57468512" CompressedSize="16328867" OS="Any"/>
   <DownloadableArchives>iconengines.7z,imageformats.7z,platforms.7z,styles.7z,translations.7z,content.7z</DownloadableArchives>
   <Licenses>
-   <License name="GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007" file="license.txt"/>
+   <License file="license.txt" name="GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007"/>
   </Licenses>
   <Operations>
    <Operation name="Extract">
     <Argument>@TargetDir@/Version/FrakGen1</Argument>
    </Operation>
   </Operations>
-  <SHA1>45dd508f3d1a4eb3199a27ebc8162a8877bdb288</SHA1>
+  <SHA1>dbd76ae678ec6577358683283eb02f99ec7a4695</SHA1>
  </PackageUpdate>
  <PackageUpdate>
   <Name>de.fraktalgenerator.FrakGen2</Name>
@@ -30,38 +30,36 @@
   <Default>false</Default>
   <ReleaseDate>2023-06-10</ReleaseDate>
   <Script>installscript.qs</Script>
-  <UpdateFile CompressedSize="16369511" OS="Any" UncompressedSize="57584224"/>
+  <UpdateFile UncompressedSize="57584224" CompressedSize="16369502" OS="Any"/>
   <DownloadableArchives>iconengines.7z,imageformats.7z,platforms.7z,styles.7z,translations.7z,content.7z</DownloadableArchives>
   <Licenses>
-   <License name="GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007" file="license.txt"/>
+   <License file="license.txt" name="GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007"/>
   </Licenses>
   <Operations>
    <Operation name="Extract">
     <Argument>@TargetDir@/Version/FrakGen2</Argument>
    </Operation>
   </Operations>
-  <SHA1>02b532cdcc3e673d55f051914b9d6e866fe61117</SHA1>
+  <SHA1>390f6e76a55519547468bf9e15b8b90a60e6b577</SHA1>
  </PackageUpdate>
  <PackageUpdate>
   <Name>de.fraktalgenerator.FrakGen3</Name>
-  <DisplayName>Fraktalgenerator 3.8.0</DisplayName>
-  <Description>Install Fraktalgenerator 3.8.0.</Description>
+  <DisplayName>Fraktalgenerator 3</DisplayName>
+  <Description>Install Fraktalgenerator 3 Components</Description>
   <Version>3.8.0</Version>
   <Default>true</Default>
   <ReleaseDate>2023-06-10</ReleaseDate>
-  <Script>installscript.qs</Script>
-  <UpdateFile CompressedSize="17055379" OS="Any" UncompressedSize="56505472"/>
-  <DownloadableArchives>generic.7z,iconengines.7z,imageformats.7z,networkinformation.7z,platforms.7z,styles.7z,tls.7z,translations.7z,content.7z</DownloadableArchives>
+  <UpdateFile UncompressedSize="0" CompressedSize="0" OS="Any"/>
   <Licenses>
-   <License name="GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007" file="license.txt"/>
+   <License file="license.txt" name="GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007"/>
   </Licenses>
   <Operations>
    <Operation name="Extract">
     <Argument>@TargetDir@/Version/FrakGen3</Argument>
    </Operation>
   </Operations>
-  <SHA1>f6596c338e1cba63a857c8b4140ff42ecaea1744</SHA1>
+  <SHA1>8dfd1c8c1150d07b4af6adcf5664269382cf73b3</SHA1>
  </PackageUpdate>
- <SHA1>35a9d6d6b258f4de412b9ec7b826bf77b6e3cb34</SHA1>
- <MetadataName>2023-10-05-1405_meta.7z</MetadataName>
+ <SHA1>795ebc339bf8830ae053d799b42eab9b0329a7f9</SHA1>
+ <MetadataName>2023-10-05-1454_meta.7z</MetadataName>
 </Updates>
