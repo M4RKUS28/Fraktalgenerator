@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package>
-    <DisplayName>Fraktalgenerator 3.8.1 Windows Desktop App</DisplayName>
-    <Description>Install Fraktalgenerator 3.8.1.</Description>
-    <Version>3.8.1</Version>
+    <DisplayName>Fraktalgenerator 3.8.2 Windows Desktop App</DisplayName>
+    <Description>Install Fraktalgenerator 3.8.2.</Description>
+    <Version>3.8.2</Version>
     <Default>true</Default>
 
     <ReleaseDate>2023-06-10</ReleaseDate>

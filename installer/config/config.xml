@@ -9,7 +9,6 @@
     <WizardDefaultWidth>800</WizardDefaultWidth>
     <WizardDefaultHeight>500</WizardDefaultHeight>
 	<MaintenanceToolName>FraktalgeneratorMaintenanceTool</MaintenanceToolName>
-    <SortingPriority>321</SortingPriority>
 	<RemoteRepositories>
      <Repository>
              <Url>https://github.com/M4RKUS28/Fraktalgenerator/raw/main/installer/repository</Url>

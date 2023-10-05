@@ -1,6 +1,12 @@
+#!/bin/bash
 
-echo "Staring creating repository...."
- /D/QtNeu/Tools/QtInstallerFramework/4.6/bin/repogen.exe -p packages repository
+if [ -d "./repository" ]; then
+	echo "Staring updating repository...."
+	/D/QtNeu/Tools/QtInstallerFramework/4.6/bin/repogen.exe --update -p packages repository
+else
+	echo "Staring creating repository...."
+	/D/QtNeu/Tools/QtInstallerFramework/4.6/bin/repogen.exe -p packages repository
+fi
 
 echo "Finished!"
 echo "Exit in 3s!"
