@@ -11,12 +11,16 @@
 #include <QMap>
 #include <QImageWriter>
 #include <QProcess>
+#include <QAbstractButton>
+#include <QMessageBox>
 
 #include <math.h>
 
+#include "updater.h"
 #include "workerthread.h"
 #include "imageview.h"
 #include "dialogimageserie.h"
+#include "dialogueber.h"
 
 
 
@@ -39,7 +43,7 @@ QT_END_NAMESPACE
 
 //#define Q_OS_WEB
 #ifdef Q_OS_WEB
-#define SINGLE_THREADTED_WEB_ASSEMBLY
+//#define SINGLE_THREADTED_WEB_ASSEMBLY
 #include <emscripten.h>
 #else
 #include <QProcess>
@@ -112,6 +116,8 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+public:
+    Updater * updater;
     QString defaultStyle;
 
     // Liste für Zurück-Funktion
@@ -408,6 +414,8 @@ private slots:
     void on_groupBox_2_toggled(bool arg1);
 
     void on_listWidgetHistory_itemClicked(QListWidgetItem *item);
+
+    void on_actionNach_Updates_suchen_triggered(bool checked);
 
 private:
     Ui::MainWindow *ui;

@@ -287,6 +287,11 @@ MainWindow::MainWindow(QWidget *parent)
         this->ui->doubleSpinBoxEscapeR->setValue(settingOwnColor.value("ESCAPE_RADIUS").toDouble());
     else
         this->ui->doubleSpinBoxEscapeR->setValue(8.0);
+
+    //UPdater.....
+    updater = new Updater(); // auto search for updates
+    ui->actionNach_Updates_suchen->setChecked(updater->getAutoSearchForUpdateStatus());
+
 }
 
 void MainWindow::showEvent(QShowEvent *)
@@ -308,7 +313,6 @@ void MainWindow::showEvent(QShowEvent *)
         });
     }
 }
-
 
 
 void MainWindow::setupIconsInCombobox(int width)
@@ -415,6 +419,8 @@ MainWindow::~MainWindow()
     // Stoppe und lösche Threads...
     stopThreads();
 
+    delete updater;
+    updater = nullptr;
 
     delete fullScreenView;
     fullScreenView = nullptr;
@@ -432,6 +438,8 @@ MainWindow::~MainWindow()
     qDebug() << "~MainWindow";
     qInfo() << "Exit programm(0)";
 }
+
+
 
 void MainWindow::updateMidPos(bool clear)
 {
@@ -2994,13 +3002,12 @@ void MainWindow::on_actionVideo_aus_Bilderfolge_generieren_triggered()
     this->createVideo();
 }
 
-#include <QDesktopServices>
-#include "dialogueber.h"
+//#include <QDesktopServices>
 
 
 void MainWindow::on_action_ber_triggered()
 {
-    DialogUeber duebr(P_VERSION, this);
+    DialogUeber duebr(P_VERSION, updater, this);
     duebr.exec();
 //    QDesktopServices::openUrl(QUrl("https://github.com/M4RKUS28/Mandelbrot-Menge-Generator"));
 }
@@ -3355,5 +3362,14 @@ void MainWindow::on_groupBox_2_toggled(bool)
 void MainWindow::on_listWidgetHistory_itemClicked(QListWidgetItem *)
 {
 
+}
+
+
+
+
+void MainWindow::on_actionNach_Updates_suchen_triggered(bool checked)
+{
+    updater->setAutoSearchForUpdate(checked);
+    ui->actionNach_Updates_suchen->setChecked(updater->getAutoSearchForUpdateStatus());
 }
 

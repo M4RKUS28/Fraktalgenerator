@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>589</width>
-    <height>339</height>
+    <width>600</width>
+    <height>400</height>
    </rect>
   </property>
   <property name="maximumSize">
    <size>
-    <width>589</width>
-    <height>339</height>
+    <width>600</width>
+    <height>400</height>
    </size>
   </property>
   <property name="font">
@@ -48,21 +48,64 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="0" colspan="3">
-    <spacer name="verticalSpacer_3">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
+   <item row="10" column="0" colspan="3">
+    <widget class="QLabel" name="label_5">
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+       <bold>true</bold>
+      </font>
      </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Fixed</enum>
+     <property name="text">
+      <string>Copyright (c) 2023, Huber Markus. All rights reserved.</string>
      </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>20</height>
-      </size>
+    </widget>
+   </item>
+   <item row="11" column="0" colspan="3">
+    <widget class="QLabel" name="label_4">
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
      </property>
-    </spacer>
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;You are free to use this software for private or educational purposes. (But you are of cours using&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;it at your own risk.) However, redistribution of any kind is NOT allowed without written permission.&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;The program code can be found on &lt;a href=&quot;https://github.com/M4RKUS28/Mandelbrot-Menge-Generator/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;GitHub&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="openExternalLinks">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="2">
+    <widget class="QLabel" name="label_compile_date">
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QLabel" name="label">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Basierend auf:</string>
+     </property>
+    </widget>
    </item>
    <item row="7" column="0" colspan="3">
     <spacer name="verticalSpacer_2">
@@ -80,18 +123,64 @@
      </property>
     </spacer>
    </item>
-   <item row="10" column="0" colspan="3">
-    <spacer name="verticalSpacer">
+   <item row="3" column="2">
+    <widget class="QLabel" name="label_qt_version">
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+   </item>
+   <item row="13" column="0" colspan="3">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Close</set>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="3">
+    <spacer name="verticalSpacer_3">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Fixed</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>0</height>
+       <height>20</height>
       </size>
      </property>
     </spacer>
+   </item>
+   <item row="0" column="0" colspan="3">
+    <widget class="QLabel" name="label_version">
+     <property name="font">
+      <font>
+       <pointsize>15</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+    </widget>
    </item>
    <item row="4" column="1">
     <widget class="QLabel" name="label_2">
@@ -109,6 +198,31 @@
      </property>
      <property name="text">
       <string>Erstellt am:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="12" column="0" colspan="3">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="5" column="2">
+    <widget class="QLabel" name="label_arch">
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
      </property>
     </widget>
    </item>
@@ -155,117 +269,44 @@
      </property>
     </widget>
    </item>
-   <item row="11" column="0" colspan="3">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Close</set>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="0" colspan="3">
-    <widget class="QLabel" name="label_version">
-     <property name="font">
-      <font>
-       <pointsize>15</pointsize>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="2">
-    <widget class="QLabel" name="label_compile_date">
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-    </widget>
-   </item>
    <item row="9" column="0" colspan="3">
-    <widget class="QLabel" name="label_4">
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
+    <spacer name="verticalSpacer_4">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="8" column="2">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="pushButtonCheckForUpdates">
+       <property name="text">
+        <string>Check for Updates</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButtonStartUpdate">
+       <property name="text">
+        <string>Start update</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="8" column="0" colspan="2">
+    <widget class="QLabel" name="label_7">
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;You are free to use this software for private or educational purposes. (But you are of cours using&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;it at your own risk.) However, redistribution of any kind is NOT allowed without written permission.&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;The program code can be found on &lt;a href=&quot;https://github.com/M4RKUS28/Mandelbrot-Menge-Generator/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;GitHub&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>Es sind Updates verfügbar!</string>
      </property>
-     <property name="openExternalLinks">
+     <property name="wordWrap">
       <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="2">
-    <widget class="QLabel" name="label_arch">
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-    </widget>
-   </item>
-   <item row="8" column="0" colspan="3">
-    <widget class="QLabel" name="label_5">
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>Copyright (c) 2023, Huber Markus. All rights reserved.</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="2">
-    <widget class="QLabel" name="label_qt_version">
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="1">
-    <widget class="QLabel" name="label">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>Basierend auf:</string>
      </property>
     </widget>
    </item>

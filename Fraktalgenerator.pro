@@ -10,6 +10,15 @@ INCLUDEPATH += src/ \
 
 CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT
 
+CONFIG(Q_OS_WEB_ST) {
+    DEFINES += Q_OS_WEB
+    DEFINES += SINGLE_THREADTED_WEB_ASSEMBLY
+}
+
+CONFIG(Q_OS_WEB_MT) {
+    DEFINES += Q_OS_WEB
+}
+
 
 # ICON
 # CMAKE - Win:
@@ -50,6 +59,7 @@ SOURCES += \
     src/dialogueber.cpp \
     src/imagesetting.cpp \
     src/openexr/miniz.c \
+    src/updater.cpp \
     src/video/avi-utils.cpp \
     src/video/fileio.cpp \
     src/video/gwavi.cpp \
@@ -66,6 +76,7 @@ HEADERS += \
     src/imagesetting.h \
     src/openexr/miniz.h \
     src/openexr/tinyexr.h \
+    src/updater.h \
     src/video/gwavi.h \
     src/video/avi-utils.h \
     src/video/fileio.h \

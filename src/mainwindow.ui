@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1324</width>
-    <height>940</height>
+    <height>944</height>
    </rect>
   </property>
   <property name="font">
@@ -57,7 +57,7 @@
           <x>0</x>
           <y>0</y>
           <width>898</width>
-          <height>875</height>
+          <height>879</height>
          </rect>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_5">
@@ -3427,8 +3427,12 @@
      <string>Hilfe</string>
     </property>
     <addaction name="actionTastenk_rzel"/>
-    <addaction name="action_ber"/>
+    <addaction name="separator"/>
     <addaction name="actionStandart_Einstellungen_wiederherstellen"/>
+    <addaction name="separator"/>
+    <addaction name="actionNach_Updates_suchen"/>
+    <addaction name="separator"/>
+    <addaction name="action_ber"/>
    </widget>
    <widget class="QMenu" name="menuVideo">
     <property name="title">
@@ -3462,7 +3466,9 @@
      <addaction name="actionAutoscroll_in_Mitte"/>
     </widget>
     <addaction name="menuKoordinatensystem"/>
+    <addaction name="separator"/>
     <addaction name="menuVerlauf"/>
+    <addaction name="separator"/>
     <addaction name="menuAusrichtung"/>
    </widget>
    <widget class="QMenu" name="menuBeispiele">
@@ -3637,6 +3643,17 @@
   <action name="actionBeispiel_4">
    <property name="text">
     <string>Beispiel 4</string>
+   </property>
+  </action>
+  <action name="actionNach_Updates_suchen">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Automatisch nach Updates suchen</string>
    </property>
   </action>
  </widget>

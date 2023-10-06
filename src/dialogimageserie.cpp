@@ -155,7 +155,7 @@ void DialogImageSerie::on_spinBoxAddIt_valueChanged(int)
 }
 
 
-void DialogImageSerie::on_doubleSpinBox_add_log_fak_valueChanged(double arg1)
+void DialogImageSerie::on_doubleSpinBox_add_log_fak_valueChanged(double)
 {
     updateLogFaktor();
 }
