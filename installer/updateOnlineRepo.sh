@@ -1,14 +1,14 @@
 #!/bin/bash
 
-echo "\n	>>	git add ./repository/\n"
+echo "	>>	git add ./repository/"
 sleep 1
 git add ./repository/
 
-echo "\n	>>	git commit -m \"update repository\"\n"
+echo "	>>	git commit -m \"update repository\""
 sleep 1
 git commit -m "update repository"
 
-echo "\n	>>	git push\n"
+echo "	>>	git push"
 sleep 1
 git push
 
