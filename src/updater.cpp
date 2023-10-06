@@ -141,11 +141,11 @@ void Updater::onUpdateCheckFinished(int exitCode, QProcess::ExitStatus exitStatu
         if (output.contains("<updates>") && output.contains("</updates>")) {
             this->status = UPDATE_STATUS::UPDTAE_NEEDED;
 
-            int start = output.indexOf("Desktop App\" version=\"");
+            int start = output.indexOf(" version=\"");
             if(start != -1) {
-                int ende = output.indexOf("\"", start + 22);
+                int ende = output.indexOf("\"", start + 10);
 
-                newVersion = output.mid(start + 22, ende - start - 22);
+                newVersion = output.mid(start + 22, ende - start - 10);
                 qDebug() << newVersion;
             }
 
