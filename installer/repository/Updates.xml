@@ -2,8 +2,8 @@
  <ApplicationName>{AnyApplication}</ApplicationName>
  <ApplicationVersion>1.0.0</ApplicationVersion>
  <Checksum>true</Checksum>
- <SHA1>c1c6a6063849c69488b87abac9ebc332287ab2cc</SHA1>
- <MetadataName>2023-10-06-0329_meta.7z</MetadataName>
+ <SHA1>8a994ead2124123d514021c51bb7317d42270394</SHA1>
+ <MetadataName>2023-10-06-0335_meta.7z</MetadataName>
  <PackageUpdate>
   <Name>de.fraktalgenerator.FrakGen.desktop</Name>
   <DisplayName>Fraktalgenerator Desktop</DisplayName>
@@ -11,28 +11,28 @@
   <Version>1.0.0</Version>
   <Default>false</Default>
   <ReleaseDate>2023-06-10</ReleaseDate>
-  <UpdateFile OS="Any" UncompressedSize="0" CompressedSize="0"/>
-  <SHA1>b09aff3e5299d9001f92298b4158ed1c1907e794</SHA1>
+  <UpdateFile OS="Any" CompressedSize="0" UncompressedSize="0"/>
+  <SHA1>86f89b4ac779fa8caa2f51459b30bdcf12cdd1b0</SHA1>
  </PackageUpdate>
  <PackageUpdate>
   <Name>de.fraktalgenerator.FrakGen.desktop.windows</Name>
-  <DisplayName>Fraktalgenerator 3.8.2 Windows Desktop App</DisplayName>
-  <Description>Install Fraktalgenerator 3.8.2.</Description>
-  <Version>3.8.2</Version>
+  <DisplayName>Fraktalgenerator 3.8.3 Windows Desktop App</DisplayName>
+  <Description>Install Fraktalgenerator 3.8.3.</Description>
+  <Version>3.8.3</Version>
   <Default>true</Default>
   <ReleaseDate>2023-06-10</ReleaseDate>
   <Script>installscript.qs</Script>
-  <UpdateFile OS="Any" UncompressedSize="56523352" CompressedSize="17061955"/>
+  <UpdateFile OS="Any" CompressedSize="17062021" UncompressedSize="56523352"/>
   <DownloadableArchives>generic.7z,iconengines.7z,imageformats.7z,networkinformation.7z,platforms.7z,styles.7z,tls.7z,content.7z</DownloadableArchives>
   <Licenses>
-   <License name="GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007" file="license.txt"/>
+   <License file="license.txt" name="GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007"/>
   </Licenses>
   <Operations>
    <Operation name="Extract">
     <Argument>@TargetDir@/bin/Desktop/Windows</Argument>
    </Operation>
   </Operations>
-  <SHA1>47aedfd5b6ed172656e4cf098db0859a1bf216b3</SHA1>
+  <SHA1>ecc8c5d45ef3919832327c82f1288813195f6eb9</SHA1>
  </PackageUpdate>
  <PackageUpdate>
   <Name>de.fraktalgenerator.FrakGen.web</Name>
@@ -41,8 +41,8 @@
   <Version>1.0.0</Version>
   <Default>false</Default>
   <ReleaseDate>2023-06-10</ReleaseDate>
-  <UpdateFile OS="Any" UncompressedSize="0" CompressedSize="0"/>
-  <SHA1>a6d4f8375bf05ed45a85e328d42dbdf9fe4edcb2</SHA1>
+  <UpdateFile OS="Any" CompressedSize="0" UncompressedSize="0"/>
+  <SHA1>5616bbca0820b66540604600cdd1bc89303ec7d3</SHA1>
  </PackageUpdate>
  <PackageUpdate>
   <Name>de.fraktalgenerator.FrakGen.web.multiThreaded</Name>
@@ -51,17 +51,17 @@
   <Version>3.8.0</Version>
   <Default>false</Default>
   <ReleaseDate>2023-06-10</ReleaseDate>
-  <UpdateFile OS="Any" UncompressedSize="14750653" CompressedSize="4478793"/>
+  <UpdateFile OS="Any" CompressedSize="4478791" UncompressedSize="14750653"/>
   <DownloadableArchives>content.7z</DownloadableArchives>
   <Licenses>
-   <License name="GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007" file="license.txt"/>
+   <License file="license.txt" name="GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007"/>
   </Licenses>
   <Operations>
    <Operation name="Extract">
     <Argument>@TargetDir@/bin/Web/WebMultiThreaded/</Argument>
    </Operation>
   </Operations>
-  <SHA1>a640677101db4ca7b82cbf528ae4cdbfccd61018</SHA1>
+  <SHA1>6e8d8c8eb9f463d63f3095a2d04d63a902ffc875</SHA1>
  </PackageUpdate>
  <PackageUpdate>
   <Name>de.fraktalgenerator.FrakGen.web.singleThreaded</Name>
@@ -70,16 +70,16 @@
   <Version>3.8.0</Version>
   <Default>false</Default>
   <ReleaseDate>2023-06-10</ReleaseDate>
-  <UpdateFile OS="Any" UncompressedSize="14745508" CompressedSize="4489345"/>
+  <UpdateFile OS="Any" CompressedSize="4489344" UncompressedSize="14745508"/>
   <DownloadableArchives>content.7z</DownloadableArchives>
   <Licenses>
-   <License name="GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007" file="license.txt"/>
+   <License file="license.txt" name="GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007"/>
   </Licenses>
   <Operations>
    <Operation name="Extract">
     <Argument>@TargetDir@/bin/Web/WebSingleThreaded</Argument>
    </Operation>
   </Operations>
-  <SHA1>15f04bc23af4f694febfda1d614416cfcaa59ae6</SHA1>
+  <SHA1>54bd209c676b8bfce992b54fc924f4b4753073df</SHA1>
  </PackageUpdate>
 </Updates>

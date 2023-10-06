@@ -20,8 +20,8 @@ DialogUeber::DialogUeber(QString PROGRAMM_VERSION, Updater * updater, QWidget *p
     if( QSysInfo::productType() == "macos" /*Qt 6*/ || QSysInfo::productType() == "macos"  /*Qt 5*/ ) {
 
 
-
     }
+    updater->setAutoShowMessageBox(false);
     updateUpdaterButtonAndTexts();
     connect(updater, SIGNAL(statusChanged()), this, SLOT(updaterStatusChanged()));
 }
