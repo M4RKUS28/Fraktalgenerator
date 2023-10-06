@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package>
     <DisplayName>Fraktalgenerator WebAssmbly</DisplayName>
-    <Description>Install Fraktalgenerator WebAssmbly Version</Description>
+    <Description>Install Fraktalgenerator WebAssmbly</Description>
     <Version>1.0.0</Version>
     <Default>false</Default>
     <ReleaseDate>2023-06-10</ReleaseDate>

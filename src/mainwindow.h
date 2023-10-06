@@ -16,12 +16,20 @@
 
 #include <math.h>
 
+//#define Q_OS_WEB // also in updater!
+
+#ifdef Q_OS_WEB
+//#define SINGLE_THREADTED_WEB_ASSEMBLY
+#include <emscripten.h>
+#else
+#include <QProcess>
+#endif
+
 #include "updater.h"
 #include "workerthread.h"
 #include "imageview.h"
 #include "dialogimageserie.h"
-#include "dialogueber.h"
-
+#pragma once
 
 
 QT_BEGIN_NAMESPACE
@@ -38,16 +46,8 @@ QT_END_NAMESPACE
 
 #define init_width_sidebar 351
 
-#define P_VERSION "3.8.0"
+#define P_VERSION "3.9.0"
 
-
-//#define Q_OS_WEB
-#ifdef Q_OS_WEB
-//#define SINGLE_THREADTED_WEB_ASSEMBLY
-#include <emscripten.h>
-#else
-#include <QProcess>
-#endif
 
 
 class MainWindow : public QMainWindow

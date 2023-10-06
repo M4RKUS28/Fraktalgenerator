@@ -4,6 +4,7 @@
 #include "updater.h"
 
 #include <QThread>
+#include <QTime>
 
 DialogUeber::DialogUeber(QString PROGRAMM_VERSION, Updater * updater, QWidget *parent) :
     QDialog(parent),
@@ -38,6 +39,13 @@ void DialogUeber::updaterStatusChanged()
     updateUpdaterButtonAndTexts();
 }
 
+void DialogUeber::delay(int sec)
+{
+    QTime dieTime= QTime::currentTime().addSecs(sec);
+    while (QTime::currentTime() < dieTime)
+        QApplication::processEvents(QEventLoop::AllEvents, 100);
+}
+
 
 void DialogUeber::updateUpdaterButtonAndTexts()
 {
@@ -67,9 +75,16 @@ void DialogUeber::updateUpdaterButtonAndTexts()
                 ui->pushButtonStartUpdate->show();
         ui->label_7->show();
         break;
-    case Updater::UPDATING:
-        ui->label_7->setText("Updater ausgeführt!");
-            break;
+    case Updater::UPDATING: {
+        ui->label_7->setText("Updater ausgeführt! Programm schließt sich in 3 Sekunden!");
+        this->delay();
+        ui->label_7->setText("Updater ausgeführt! Programm schließt sich in 2 Sekunden!");
+        this->delay();
+        ui->label_7->setText("Updater ausgeführt! Programm schließt sich in 1 Sekunden!");
+        this->delay(2);
+        QApplication::exit();
+        break;
+        }
     case Updater::ERROR:
         ui->label_7->setText("Während der Suche nach Updates ist ein Fehler aufgetreten: " + updater->getError());
             break;

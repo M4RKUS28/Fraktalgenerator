@@ -17,15 +17,25 @@ Updater::Updater(bool doAutoUpdateIfEnabled)
         this->checkForUpdates();
     }
 
+#ifdef Q_OS_WEB
+    status = UPDATE_STATUS::NO_UPDATER;
+#endif
 }
 
 Updater::~Updater()
 {
     qDebug() << "~Updater()";
-    if(status == UPDATE_STATUS::CHECKING && updaterPrz.state() == QProcess::Running ) {
+#ifndef Q_OS_WEB
+    if(updaterPrz.state() == QProcess::Running) {
         qDebug() << "Kill updater";
         updaterPrz.kill();
+        if(!updaterPrz.waitForFinished()) {
+            updaterPrz.terminate();
+            qDebug() << "terminate updater";
+        }
     }
+#endif
+
 
 }
 
@@ -96,7 +106,7 @@ void Updater::startUpdate()
     } else
         qDebug() << "Start FraktalgeneratorMaintenanceTool...";
 
-    if(!QProcess::startDetached(QApplication::applicationDirPath() + "/../../../FraktalgeneratorMaintenanceTool.exe", QStringList() << "update")) {
+    if(!QProcess::startDetached(QApplication::applicationDirPath() + "/../../../FraktalgeneratorMaintenanceTool.exe")) {
         status = UPDATE_STATUS::ERROR;
         error =  "Start FraktalgeneratorMaintenanceTool failed";
         emit statusChanged();
@@ -123,11 +133,11 @@ void Updater::updateDialogButtonClicked(QAbstractButton *button)
 void Updater::onUpdateCheckFinished(int exitCode, QProcess::ExitStatus exitStatus)
 {
     qDebug() << "onUpdateCheckFinished updater process";
+    QString output = updaterPrz.readAllStandardOutput();
 
     if (exitStatus == QProcess::NormalExit && exitCode == 0) {
         qDebug() << "updates... show msg box";
 
-        QString output = updaterPrz.readAllStandardOutput();
         if (output.contains("<updates>") && output.contains("</updates>")) {
             this->status = UPDATE_STATUS::UPDTAE_NEEDED;
 
@@ -140,7 +150,7 @@ void Updater::onUpdateCheckFinished(int exitCode, QProcess::ExitStatus exitStatu
             }
 
             if(showMsgBox) {
-                updateMsgBox = new QMessageBox(QMessageBox::Information, "Update Available", "Updates are available!");
+                updateMsgBox = new QMessageBox(QMessageBox::Information, "Update Available", "Es ist eine neuere Version verfügbar: " + newVersion + "\nBitte aktualiseren sie die Anwendung!");
                 updateMsgBox->addButton("Update Now", QMessageBox::AcceptRole);
                 updateMsgBox->addButton("Update Later", QMessageBox::RejectRole);
                 updateMsgBox->show();
@@ -152,7 +162,8 @@ void Updater::onUpdateCheckFinished(int exitCode, QProcess::ExitStatus exitStatu
         }
     } else {
         status = UPDATE_STATUS::ERROR;
-        error = "Process exec failed";
+        QString err = updaterPrz.readAllStandardError();
+        error = "Process exec failed: " + (err.isEmpty() ? output : err) ;
     }
 
     emit statusChanged();

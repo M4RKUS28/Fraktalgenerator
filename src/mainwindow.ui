@@ -3430,8 +3430,6 @@
     <addaction name="separator"/>
     <addaction name="actionStandart_Einstellungen_wiederherstellen"/>
     <addaction name="separator"/>
-    <addaction name="actionNach_Updates_suchen"/>
-    <addaction name="separator"/>
     <addaction name="action_ber"/>
    </widget>
    <widget class="QMenu" name="menuVideo">
@@ -3465,11 +3463,19 @@
      </property>
      <addaction name="actionAutoscroll_in_Mitte"/>
     </widget>
+    <widget class="QMenu" name="menuAktualiserung">
+     <property name="title">
+      <string>Aktualiserung</string>
+     </property>
+     <addaction name="actionNach_Updates_suchen"/>
+    </widget>
     <addaction name="menuKoordinatensystem"/>
     <addaction name="separator"/>
     <addaction name="menuVerlauf"/>
     <addaction name="separator"/>
     <addaction name="menuAusrichtung"/>
+    <addaction name="separator"/>
+    <addaction name="menuAktualiserung"/>
    </widget>
    <widget class="QMenu" name="menuBeispiele">
     <property name="title">

@@ -3002,8 +3002,7 @@ void MainWindow::on_actionVideo_aus_Bilderfolge_generieren_triggered()
     this->createVideo();
 }
 
-//#include <QDesktopServices>
-
+#include "dialogueber.h"
 
 void MainWindow::on_action_ber_triggered()
 {

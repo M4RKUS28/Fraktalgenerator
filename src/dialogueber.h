@@ -26,9 +26,11 @@ private slots:
     void on_pushButtonCheckForUpdates_clicked();
     void updaterStatusChanged();
 
+
 private:
     Ui::DialogUeber *ui;
     QString PROGRAMM_VERSION;
+    void delay(int sec = 1);
 };
 
 #endif // DIALOGUEBER_H

@@ -1,10 +1,15 @@
 #ifndef UPDATER_H
 #define UPDATER_H
 
+
+
 #include <QString>
 #include <QSettings>
 #include <QProcess>
 #include <QMessageBox>
+
+
+//#define Q_OS_WEB
 
 
 
@@ -39,7 +44,9 @@ public:
     QString getError() const;
 
 private:
+#ifndef Q_OS_WEB
     QProcess updaterPrz;
+#endif
     QMessageBox * updateMsgBox;
 
 signals:
