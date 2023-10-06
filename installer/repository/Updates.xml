@@ -2,8 +2,8 @@
  <ApplicationName>{AnyApplication}</ApplicationName>
  <ApplicationVersion>1.0.0</ApplicationVersion>
  <Checksum>true</Checksum>
- <SHA1>17db5b83065ef070cbdbce47b0bf5d268b8626f8</SHA1>
- <MetadataName>2023-10-06-1230_meta.7z</MetadataName>
+ <SHA1>4c1dfb7a780a511e4e9467ce19ec2695d54c1907</SHA1>
+ <MetadataName>2023-10-06-1242_meta.7z</MetadataName>
  <PackageUpdate>
   <Name>de.fraktalgenerator.FrakGen.desktop</Name>
   <DisplayName>Fraktalgenerator Desktop</DisplayName>
@@ -11,8 +11,8 @@
   <Version>1.0.0</Version>
   <Default>false</Default>
   <ReleaseDate>2023-06-10</ReleaseDate>
-  <UpdateFile OS="Any" CompressedSize="0" UncompressedSize="0"/>
-  <SHA1>37c6ca652615e6e2ef3c4256e6eb0b71d5f7a409</SHA1>
+  <UpdateFile CompressedSize="0" UncompressedSize="0" OS="Any"/>
+  <SHA1>c5f810a5793c9cc7aea058785281ce0f1f0ffd8a</SHA1>
  </PackageUpdate>
  <PackageUpdate>
   <Name>de.fraktalgenerator.FrakGen.desktop.windows</Name>
@@ -22,7 +22,7 @@
   <Default>true</Default>
   <ReleaseDate>2023-06-10</ReleaseDate>
   <Script>installscript.qs</Script>
-  <UpdateFile OS="Any" CompressedSize="17061085" UncompressedSize="56525400"/>
+  <UpdateFile CompressedSize="17065258" UncompressedSize="56525400" OS="Any"/>
   <DownloadableArchives>generic.7z,iconengines.7z,imageformats.7z,networkinformation.7z,platforms.7z,styles.7z,tls.7z,content.7z</DownloadableArchives>
   <Licenses>
    <License file="license.txt" name="GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007"/>
@@ -32,7 +32,7 @@
     <Argument>@TargetDir@/bin/Desktop/Windows</Argument>
    </Operation>
   </Operations>
-  <SHA1>b607728a347bf033ba35707a76a29f8455949316</SHA1>
+  <SHA1>7e88e54bdf73d4b83d520b1b07db4a39f868271b</SHA1>
  </PackageUpdate>
  <PackageUpdate>
   <Name>de.fraktalgenerator.FrakGen.web</Name>
@@ -41,8 +41,8 @@
   <Version>1.0.0</Version>
   <Default>false</Default>
   <ReleaseDate>2023-06-10</ReleaseDate>
-  <UpdateFile OS="Any" CompressedSize="0" UncompressedSize="0"/>
-  <SHA1>37852e421cc89011dbb14d23f1daa88c366c6226</SHA1>
+  <UpdateFile CompressedSize="0" UncompressedSize="0" OS="Any"/>
+  <SHA1>ba0e0d84edd4e5bd96eacf1432d268fc2ddff640</SHA1>
  </PackageUpdate>
  <PackageUpdate>
   <Name>de.fraktalgenerator.FrakGen.web.multiThreaded</Name>
@@ -51,7 +51,7 @@
   <Version>3.8.0</Version>
   <Default>false</Default>
   <ReleaseDate>2023-06-10</ReleaseDate>
-  <UpdateFile OS="Any" CompressedSize="4478790" UncompressedSize="14750653"/>
+  <UpdateFile CompressedSize="4478790" UncompressedSize="14750653" OS="Any"/>
   <DownloadableArchives>content.7z</DownloadableArchives>
   <Licenses>
    <License file="license.txt" name="GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007"/>
@@ -61,7 +61,7 @@
     <Argument>@TargetDir@/bin/Web/WebMultiThreaded/</Argument>
    </Operation>
   </Operations>
-  <SHA1>cc90a1b8382108391d173adfb404b5928fed5f9c</SHA1>
+  <SHA1>ba1758d894c4abf32cc45bd788adc715d2cf7254</SHA1>
  </PackageUpdate>
  <PackageUpdate>
   <Name>de.fraktalgenerator.FrakGen.web.singleThreaded</Name>
@@ -70,7 +70,7 @@
   <Version>3.8.0</Version>
   <Default>false</Default>
   <ReleaseDate>2023-06-10</ReleaseDate>
-  <UpdateFile OS="Any" CompressedSize="4489345" UncompressedSize="14745508"/>
+  <UpdateFile CompressedSize="4489343" UncompressedSize="14745508" OS="Any"/>
   <DownloadableArchives>content.7z</DownloadableArchives>
   <Licenses>
    <License file="license.txt" name="GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007"/>
@@ -80,6 +80,6 @@
     <Argument>@TargetDir@/bin/Web/WebSingleThreaded</Argument>
    </Operation>
   </Operations>
-  <SHA1>c7e382fe82632a3b87894a5d34e6b4ac4277eca2</SHA1>
+  <SHA1>2f4c1d25b299264561b07ed45afa01e8260d5f3e</SHA1>
  </PackageUpdate>
 </Updates>
