@@ -49,31 +49,20 @@ void DialogUeber::delay(int sec)
 
 void DialogUeber::updateUpdaterButtonAndTexts()
 {
-
     ui->pushButtonStartUpdate->hide();
     ui->pushButtonCheckForUpdates->hide();
+    ui->label_7->setText(updater->getStatusStr());
 
     switch (updater->getStatus()) {
     case Updater::NOT_CHECKED:
-        ui->label_7->setText("Auf Updates prüfen:");
-            ui->pushButtonCheckForUpdates->show();
-        break;
-    case Updater::NO_UPDATER:
-        ui->label_7->setText("Diese Version wurde ohne Updater installiert!");
-        break;
-    case Updater::CHECKING:
-        ui->label_7->setText("Es wird auf Updates geprüft...");
-            break;
-    case Updater::UP_TO_DATE:
-        ui->label_7->setText("Es wird die neuste Version verwendet!");
+        ui->pushButtonCheckForUpdates->show();
         break;
     case Updater::UPDTAE_NEEDED:
-        if(updater->getNewVersion().isEmpty())
-            ui->label_7->setText("Es sind Updates verfügbar!");
-                else
-                ui->label_7->setText("Es ist eine Neue Version verfügbar: " + updater->getNewVersion());
-                ui->pushButtonStartUpdate->show();
-        ui->label_7->show();
+        ui->pushButtonStartUpdate->show();
+        break;
+    case Updater::UP_TO_DATE:
+        ui->label_7->setText("Sie verwenden die neuste Version! Erneut nach Updates suchen?");
+        ui->pushButtonCheckForUpdates->show();
         break;
     case Updater::UPDATING: {
         ui->label_7->setText("Updater ausgeführt! Programm schließt sich in 3 Sekunden!");
@@ -85,9 +74,8 @@ void DialogUeber::updateUpdaterButtonAndTexts()
         QApplication::exit();
         break;
         }
-    case Updater::ERROR:
-        ui->label_7->setText("Während der Suche nach Updates ist ein Fehler aufgetreten: " + updater->getError());
-            break;
+    default:
+        break;
     }
 }
 

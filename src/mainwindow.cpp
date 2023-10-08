@@ -289,7 +289,7 @@ MainWindow::MainWindow(QWidget *parent)
         this->ui->doubleSpinBoxEscapeR->setValue(8.0);
 
     //UPdater.....
-    updater = new Updater(); // auto search for updates
+    updater = new Updater(QApplication::applicationDirPath() + "/../../../FraktalgeneratorMaintenanceTool.exe", "Markus@W-Sem_2022", "Fraktalgenerator"); // auto search for updates
     ui->actionNach_Updates_suchen->setChecked(updater->getAutoSearchForUpdateStatus());
 
 }

@@ -27,21 +27,25 @@ public:
         ERROR
     } status;
 
-    Updater(bool doAutoUpdateIfEnabled = true);
+    Updater(QString maintananceToolPath, QString organisation, QString application, bool doAutoUpdateIfEnabled = true);
     ~Updater();
 
-    void setAutoSearchForUpdate(bool status);
+    //Getter
     bool getAutoSearchForUpdateStatus();
-    void setAutoShowMessageBox(bool status);
-
     bool updateExists();
     QString getNewVersion();
-    UPDATE_STATUS getStatus() const;
-
-    void checkForUpdates();
-    void startUpdate();
-
     QString getError() const;
+    UPDATE_STATUS getStatus() const;
+    QString getStatusStr();
+
+    //Setter
+    void setAutoSearchForUpdate(const bool & status);
+    void setAutoShowMessageBox(const bool & status);
+    bool showUpdateMessageBox();
+
+    //
+    bool checkForUpdates();
+    bool startUpdate();
 
 private:
 #ifndef Q_OS_WEB
@@ -55,13 +59,19 @@ signals:
 
 public slots:
     void updateDialogButtonClicked(QAbstractButton *button);
-
 #ifndef Q_OS_WEB
     void onUpdateCheckFinished(int exitCode, QProcess::ExitStatus exitStatus);
 #endif
 
 private:
-    QString newVersion, error;
+
+    bool zustandWechseln(QString action, QString value = "");
+    QString newVersion;
+    QString error;
+    QString organisation;
+    QString application;
+
+    QString maintananceToolPath;
     bool showMsgBox;
 };
 
