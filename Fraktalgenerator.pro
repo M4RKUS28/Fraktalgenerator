@@ -27,11 +27,11 @@ CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT
 # QMake - Win:
 
 
-win32:RC_ICONS += src/qss_icons/icon.ico
+win32:RC_ICONS += src/icons/icon256_2.ico
 
 # MAC qmake
 
-ICON = src/qss_icons/icon.icns
+# ICON = src/qss_icons/icon.icns
 
 # MAC C make
 

@@ -14,7 +14,7 @@
 #include <QAbstractButton>
 #include <QMessageBox>
 
-#include <math.h>
+
 
 //#define Q_OS_WEB // also in updater!
 

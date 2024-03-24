@@ -19,6 +19,9 @@
 #include "QAviWriter.h"
 #include <QSplitter>
 
+#include "math.h"
+
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
     defaultStyle( QApplication::style()->objectName() ),

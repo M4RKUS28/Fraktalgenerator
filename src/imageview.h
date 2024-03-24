@@ -13,8 +13,6 @@
 
 
 
-
-
 class ImageView : public QWidget
 {
     Q_OBJECT
