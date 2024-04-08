@@ -92,7 +92,7 @@ QString Updater::getStatusStr()
     }
     case Updater::UPDATING:
         return "Updater ausgeführt!";
-    case Updater::ERROR:
+    default:
         return "Während der Suche nach Updates ist ein Fehler aufgetreten: " + this->getError();
     }
 }

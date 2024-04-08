@@ -418,6 +418,7 @@
         <file>qss_icons/light/rc/window_undock_focus@2x.png</file>
         <file>qss_icons/light/rc/window_undock_pressed.png</file>
         <file>qss_icons/light/rc/window_undock_pressed@2x.png</file>
+        <file>icons/appicon.ico</file>
     </qresource>
     <qresource prefix="/qss">
         <file>qss_icons/darkstyle.qss</file>

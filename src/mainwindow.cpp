@@ -8,7 +8,7 @@
 #include <QPainter>
 #include <QPixmap>
 #include <QTime>
-#include <iostream>
+
 #include <QScreen>
 #include <QApplication>
 #include <QSysInfo>
@@ -341,7 +341,7 @@ void MainWindow::setupIconsInCombobox(int width)
                            ui->comboBoxColorKoordSystem,
                            ui->comboBox_color_zahlenfolge}) {
         for(int i = 0; i < combobox->count(); i++) {
-            if(QColor::isValidColor(combobox->itemText(i)) == false)
+            if(!QColor::isValidColorName(combobox->itemText(i)))
                 continue;
 
             QImage img = QImage(32, 16, QImage::Format_ARGB32_Premultiplied);
@@ -2230,11 +2230,7 @@ void MainWindow::on_doubleSpinBoxEscapeR_valueChanged(double value)
     settingOwnColor.setValue("ESCAPE_RADIUS", value );
 }
 
-
-#include <limits>
 #include <cmath>
-
-#include <chrono>
 
 void MainWindow::ZahlenFolge::setZahlenfolge(Point c_p, ImageSetting *s)
 {

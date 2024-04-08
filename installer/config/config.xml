@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Installer>
-    <Name>Fraktalgenerator</Name>
-    <Version>3.8.0</Version>
+<Name>Fraktalgenerator</Name>
+    <Version>3.9.2</Version>
     <Title><Name>Fraktalgenerator</Name> Installer</Title>
-    <Publisher>Markus</Publisher>
-    <StartMenuDir>Fraktalgenerator</StartMenuDir>
-    <TargetDir>@ApplicationsDirUser@/Fraktalgenerator/</TargetDir>
-    <WizardDefaultWidth>800</WizardDefaultWidth>
-    <WizardDefaultHeight>500</WizardDefaultHeight>
-	<MaintenanceToolName>FraktalgeneratorMaintenanceTool</MaintenanceToolName>
-	<RemoteRepositories>
-     <Repository>
-             <Url>https://github.com/M4RKUS28/Fraktalgenerator/raw/main/installer/repository</Url>
-             <Enabled>1</Enabled>
-             <DisplayName>Github Repo</DisplayName>
-     </Repository>
-</RemoteRepositories>
-	
+    <InstallerApplicationIcon>installerIcon1</InstallerApplicationIcon>
+    <InstallerWindowIcon>installerIcon2</InstallerWindowIcon>
+      <Publisher>Markus</Publisher>
+        <StartMenuDir>Fraktalgenerator</StartMenuDir>
+        <TargetDir>@ApplicationsDir@/Fraktalgenerator/</TargetDir>
+        <WizardDefaultWidth>800</WizardDefaultWidth>
+        <WizardDefaultHeight>500</WizardDefaultHeight>
+        <MaintenanceToolName>FraktalgeneratorMaintenanceTool</MaintenanceToolName>
+        <RemoteRepositories>
+            <Repository>
+                <Url>https://raw.githubusercontent.com/M4RKUS28/Fraktalgenerator/main/installer/repository/</Url>
+                <Enabled>1</Enabled>
+                <DisplayName>Main-Repo</DisplayName>
+            </Repository>
+        </RemoteRepositories>
 </Installer>
