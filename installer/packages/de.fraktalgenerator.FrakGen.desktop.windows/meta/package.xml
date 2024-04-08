@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package>
-   <DisplayName>Fraktalgenerator 3.9.3</DisplayName>
+   <DisplayName>Fraktalgenerator 3.9.4</DisplayName>
    <Description>Die Anwendung dient der Erstellung von Abbildungen der Mandelbrot-Menge und zugehörigen Julia-Mengen. </Description>
-   <Version>3.9.3</Version>
+   <Version>3.9.4</Version>
    <Default>true</Default>
    <ReleaseDate>2024-04-09</ReleaseDate>
    <Licenses>
