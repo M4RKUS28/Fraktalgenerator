@@ -292,7 +292,7 @@ MainWindow::MainWindow(QWidget *parent)
         this->ui->doubleSpinBoxEscapeR->setValue(8.0);
 
     //UPdater.....
-    updater = new Updater(QApplication::applicationDirPath() + "/../../../FraktalgeneratorMaintenanceTool.exe", "Markus@W-Sem_2022", "Fraktalgenerator"); // auto search for updates
+    updater = new Updater(QApplication::applicationDirPath() + "/../FraktalgeneratorMaintenanceTool.exe", "Markus@W-Sem_2022", "Fraktalgenerator"); // auto search for updates
     ui->actionNach_Updates_suchen->setChecked(updater->getAutoSearchForUpdateStatus());
 
 }
@@ -2579,24 +2579,24 @@ void MainWindow::pushColorButtonClicked(int button_num_array)
 {
 
     //Bei QDarkStyle-Theme wird Maus gefangen!
-    int index = this->ui->comboBox_theme->currentIndex();
-    bool changed_theme = false;
-    if( QSysInfo::productType() != "macos" /*Qt 6*/ && QSysInfo::productType() != "macos"  /*Qt 5*/ ) {
-        changed_theme = true;
-        /*BUG FIX:*/
-        if(index == 4)
-            this->ui->comboBox_theme->setCurrentIndex(1);
-        else if(index == 5)
-            this->ui->comboBox_theme->setCurrentIndex(3);
+    // int index = this->ui->comboBox_theme->currentIndex();
+    // bool changed_theme = false;
+    // if( QSysInfo::productType() != "macos" /*Qt 6*/ && QSysInfo::productType() != "macos"  /*Qt 5*/ ) {
+    //     // changed_theme = true;
+    //     /*BUG FIX:*/
+    //     // if(index == 4)
+    //     //     this->ui->comboBox_theme->setCurrentIndex(1);
+    //     // else if(index == 5)
+    //     //     this->ui->comboBox_theme->setCurrentIndex(3);
 
-    }
+    // }
 
     auto color = QColorDialog::getColor(buttonColors[button_num_array], this, "Farbe " + QString::number(button_num_array + 1));
-    if(!color.isValid()) {
-        if(changed_theme)
-            this->ui->comboBox_theme->setCurrentIndex(index);
-        return;
-    }
+    // if(!color.isValid()) {
+    //     if(changed_theme)
+    //         this->ui->comboBox_theme->setCurrentIndex(index);
+    //     return;
+    // }
 
     buttonColors[button_num_array] = color;
     if(ui->comboBox_palette->currentText() == "<eigen>") {
@@ -2638,8 +2638,8 @@ void MainWindow::pushColorButtonClicked(int button_num_array)
         btn->setStyleSheet(STYLE_SHEET_COLOR_BUTTON + buttonColors[button_num_array].toRgb().name() + ";" );
     editedSettings = true;
     this->setOperationMode();
-    if(changed_theme)
-        this->ui->comboBox_theme->setCurrentIndex(index);
+    // if(changed_theme)
+    //     this->ui->comboBox_theme->setCurrentIndex(index);
 }
 
 
