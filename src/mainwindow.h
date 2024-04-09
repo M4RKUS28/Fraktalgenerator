@@ -46,7 +46,7 @@ QT_END_NAMESPACE
 
 #define init_width_sidebar 351
 
-#define P_VERSION "3.9.5"
+#define P_VERSION "3.9.6"
 
 
 
