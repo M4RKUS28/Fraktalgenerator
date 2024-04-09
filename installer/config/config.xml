@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Installer>
 <Name>Fraktalgenerator</Name>
-    <Version>3.9.4</Version>
+    <Version>3.9.6</Version>
     <Title><Name>Fraktalgenerator</Name> Installer</Title>
     <InstallerApplicationIcon>installerIcon1</InstallerApplicationIcon>
     <InstallerWindowIcon>installerIcon2</InstallerWindowIcon>
@@ -13,7 +13,7 @@
         <MaintenanceToolName>FraktalgeneratorMaintenanceTool</MaintenanceToolName>
         <RemoteRepositories>
             <Repository>
-                <Url>https:/raw.githubusercontent.com/M4RKUS28/Fraktalgenerator/main/installer/repository</Url>
+                <Url>https://raw.githubusercontent.com/M4RKUS28/Fraktalgenerator/main/installer/repository</Url>
                 <Enabled>1</Enabled>
                 <DisplayName>Main-Repo</DisplayName>
             </Repository>
