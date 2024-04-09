@@ -592,6 +592,9 @@
                  <property name="toolTip">
                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Imaginärer Teil des Startwertes c, über dem sich die Maus auf der Gauß'schen Zahlenebene befindet.&lt;/p&gt;&lt;p&gt;Dieses Feld lässt sich auch als Eingabefeld verwenden!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
                  <property name="suffix">
                   <string> i</string>
                  </property>
@@ -605,6 +608,12 @@
                </item>
                <item row="0" column="1">
                 <widget class="QDoubleSpinBox" name="re">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
                  <property name="font">
                   <font>
                    <pointsize>10</pointsize>
@@ -613,6 +622,12 @@
                  </property>
                  <property name="toolTip">
                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Reeller Teil des Startwertes c, über dem sich die Maus auf der Gauß'schen Zahlenebene befindet.&lt;/p&gt;&lt;p&gt;Dieses Feld lässt sich auch als Eingabefeld verwenden!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                 <property name="suffix">
+                  <string/>
                  </property>
                  <property name="decimals">
                   <number>15</number>
@@ -3349,7 +3364,7 @@
              <item>
               <widget class="QProgressBar" name="progressBar">
                <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
@@ -3373,10 +3388,16 @@
                 <number>0</number>
                </property>
                <property name="alignment">
-                <set>Qt::AlignCenter</set>
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+               <property name="textVisible">
+                <bool>true</bool>
                </property>
                <property name="invertedAppearance">
                 <bool>false</bool>
+               </property>
+               <property name="format">
+                <string>%p%</string>
                </property>
               </widget>
              </item>
