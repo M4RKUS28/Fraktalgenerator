@@ -2,8 +2,8 @@
  <ApplicationName>{AnyApplication}</ApplicationName>
  <ApplicationVersion>1.0.0</ApplicationVersion>
  <Checksum>true</Checksum>
- <SHA1>eb320185b1d348eaec47f077c0f7a4f7b26e229c</SHA1>
- <MetadataName>2024-04-09-0217_meta.7z</MetadataName>
+ <SHA1>469b86c17843638c7781b0d71db673d20f47635c</SHA1>
+ <MetadataName>2024-04-25-1511_meta.7z</MetadataName>
  <PackageUpdate>
   <Name>de.fraktalgenerator.FrakGen.desktop</Name>
   <DisplayName>Fraktalgenerator Desktop</DisplayName>
@@ -12,27 +12,27 @@
   <Default>false</Default>
   <ReleaseDate>2023-06-10</ReleaseDate>
   <UpdateFile UncompressedSize="0" OS="Any" CompressedSize="0"/>
-  <SHA1>797adaad6069c25a6a5bdff727382bc071eab336</SHA1>
+  <SHA1>59abc6039c4801d7e76407616619d36896689e5d</SHA1>
  </PackageUpdate>
  <PackageUpdate>
   <Name>de.fraktalgenerator.FrakGen.desktop.windows</Name>
-  <DisplayName>Fraktalgenerator 3.9.6</DisplayName>
+  <DisplayName>Fraktalgenerator 3.9.8</DisplayName>
   <Description>Die Anwendung dient der Erstellung von Abbildungen der Mandelbrot-Menge und zugehörigen Julia-Mengen. </Description>
-  <Version>3.9.6</Version>
+  <Version>3.9.8</Version>
   <Default>true</Default>
-  <ReleaseDate>2024-04-09</ReleaseDate>
+  <ReleaseDate>2024-04-25</ReleaseDate>
   <Script>installscript.qs</Script>
-  <UpdateFile UncompressedSize="73430447" OS="Any" CompressedSize="22202618"/>
+  <UpdateFile UncompressedSize="73430447" OS="Any" CompressedSize="22205493"/>
   <DownloadableArchives>generic.7z,iconengines.7z,imageformats.7z,networkinformation.7z,platforms.7z,styles.7z,tls.7z,translations.7z,content.7z</DownloadableArchives>
   <Licenses>
-   <License name="GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007" file="license.txt"/>
+   <License file="license.txt" name="GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007"/>
   </Licenses>
   <Operations>
    <Operation name="Extract">
     <Argument>@TargetDir@/bin/</Argument>
    </Operation>
   </Operations>
-  <SHA1>70aae917e021945778689f88dee8049e307b973b</SHA1>
+  <SHA1>ff1e83abce7067ed89db4199ea1790c4879d82b5</SHA1>
  </PackageUpdate>
  <PackageUpdate>
   <Name>de.fraktalgenerator.FrakGen.web</Name>
@@ -42,7 +42,7 @@
   <Default>false</Default>
   <ReleaseDate>2023-06-10</ReleaseDate>
   <UpdateFile UncompressedSize="0" OS="Any" CompressedSize="0"/>
-  <SHA1>2cf75cd8b38c8d0a73bd1684629790aa6e8e41d8</SHA1>
+  <SHA1>404f561f2c90f8bac6498789c328df795939260b</SHA1>
  </PackageUpdate>
  <PackageUpdate>
   <Name>de.fraktalgenerator.FrakGen.web.multiThreaded</Name>
@@ -51,17 +51,17 @@
   <Version>3.8.0</Version>
   <Default>false</Default>
   <ReleaseDate>2023-06-10</ReleaseDate>
-  <UpdateFile UncompressedSize="14750740" OS="Any" CompressedSize="4478668"/>
+  <UpdateFile UncompressedSize="14750740" OS="Any" CompressedSize="4478609"/>
   <DownloadableArchives>content.7z</DownloadableArchives>
   <Licenses>
-   <License name="GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007" file="license.txt"/>
+   <License file="license.txt" name="GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007"/>
   </Licenses>
   <Operations>
    <Operation name="Extract">
     <Argument>@TargetDir@/bin/Web/WebMultiThreaded/</Argument>
    </Operation>
   </Operations>
-  <SHA1>1dbb1576310dcdc0c40d2539afef04c42bdba332</SHA1>
+  <SHA1>7477b559a5bf015a375e0a86e0df2784836f1c36</SHA1>
  </PackageUpdate>
  <PackageUpdate>
   <Name>de.fraktalgenerator.FrakGen.web.singleThreaded</Name>
@@ -70,16 +70,16 @@
   <Version>3.8.0</Version>
   <Default>false</Default>
   <ReleaseDate>2023-06-10</ReleaseDate>
-  <UpdateFile UncompressedSize="14744995" OS="Any" CompressedSize="4488532"/>
+  <UpdateFile UncompressedSize="14744995" OS="Any" CompressedSize="4488481"/>
   <DownloadableArchives>content.7z</DownloadableArchives>
   <Licenses>
-   <License name="GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007" file="license.txt"/>
+   <License file="license.txt" name="GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007"/>
   </Licenses>
   <Operations>
    <Operation name="Extract">
     <Argument>@TargetDir@/bin/Web/WebSingleThreaded</Argument>
    </Operation>
   </Operations>
-  <SHA1>9b4940219cd29f61c235b61fc0714c9a19ba4710</SHA1>
+  <SHA1>eefe0121b8e8ff456afe298e15680bb270aab697</SHA1>
  </PackageUpdate>
 </Updates>

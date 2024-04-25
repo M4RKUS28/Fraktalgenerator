@@ -18,6 +18,9 @@
 
 //#define Q_OS_WEB // also in updater!
 
+
+
+
 #ifdef Q_OS_WEB
 //#define SINGLE_THREADTED_WEB_ASSEMBLY
 #include <emscripten.h>
@@ -46,7 +49,7 @@ QT_END_NAMESPACE
 
 #define init_width_sidebar 351
 
-#define P_VERSION "3.9.6"
+#define P_VERSION "3.9.8"
 
 
 

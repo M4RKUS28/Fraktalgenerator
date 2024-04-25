@@ -113,11 +113,12 @@ void Updater::updateDialogButtonClicked(QAbstractButton *button)
     zustandWechseln("updateDialogButtonClicked()", (role == QMessageBox::AcceptRole) ? "AcceptRole" : "<Declined>");
 }
 
+#ifndef Q_OS_WEB
 void Updater::onUpdateCheckFinished(int exitCode, QProcess::ExitStatus exitStatus)
 {
     zustandWechseln("onUpdateCheckFinished()", (exitStatus == QProcess::NormalExit && exitCode == 0) ? "QProcess::NormalExit;ExitValue==0" : "<Error>");
 }
-
+#endif
 
 
 
@@ -175,6 +176,8 @@ bool Updater::zustandWechseln(QString action, QString value)
     case CHECKING: {
         if(action == "onUpdateCheckFinished()") {
             qDebug() << "onUpdateCheckFinished updater process";
+#ifndef Q_OS_WEB
+
             QString output = updaterPrz.readAllStandardOutput();
 
             if (value == "QProcess::NormalExit;ExitValue==0") {
@@ -205,6 +208,7 @@ bool Updater::zustandWechseln(QString action, QString value)
                 error = "Process execution failed: " + (err.isEmpty() ? output : err) ;
                 status = UPDATE_STATUS::ERROR;
             }
+#endif
             break;
         } else {
             //Error
@@ -257,11 +261,12 @@ bool Updater::zustandWechseln(QString action, QString value)
                 }
             }
             break;
+#endif
+
         } else {
             //Error
             return false;
         }
-#endif
         break;
     }
     case UPDATING:
