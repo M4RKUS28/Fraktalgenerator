@@ -109,6 +109,7 @@ bool Updater::startUpdate()
 
 void Updater::updateDialogButtonClicked(QAbstractButton *button)
 {
+    qDebug() << "updateDialogButtonClicked()";
     QMessageBox::ButtonRole role = updateMsgBox->buttonRole(button);
     zustandWechseln("updateDialogButtonClicked()", (role == QMessageBox::AcceptRole) ? "AcceptRole" : "<Declined>");
 }
@@ -125,6 +126,7 @@ void Updater::onUpdateCheckFinished(int exitCode, QProcess::ExitStatus exitStatu
 
 bool Updater::zustandWechseln(QString action, QString value)
 {
+    qDebug() << "zustandWechseln: " << action << value << " zustand: " <<this->status;
     switch (this->status) {
 
     case UP_TO_DATE:
@@ -224,21 +226,24 @@ bool Updater::zustandWechseln(QString action, QString value)
                 updateMsgBox = new QMessageBox(QMessageBox::Information, "Update Available", "Es ist eine neuere Version verfügbar: " + newVersion + "\nBitte aktualiseren sie die Anwendung!");
                                updateMsgBox->addButton("Jetzt aktualisieren", QMessageBox::AcceptRole);
                 updateMsgBox->addButton("Später aktualisieren", QMessageBox::RejectRole);
-                    updateMsgBox->show();
-                connect(updateMsgBox, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(updateDialogButtonClicked(QAbstractButton*)));
+                updateMsgBox->show();
+                QObject::connect(updateMsgBox, SIGNAL(buttonClicked(QAbstractButton *)), this, SLOT(updateDialogButtonClicked(QAbstractButton *)));
                 return true;    // no status changes! --> no emits
             }
         } else if(action == "updateDialogButtonClicked()") {
+
             if(value == "AcceptRole") {
-                this->status = UPDATE_STATUS::UPDATING;
+                // this->status = UPDATE_STATUS::UPDATING;
                 error =  "Start Maintanance Tool for Update...";
+                // qDebug() << "Start Maintanance Tool for Update... " << value;
                 startUpdate();
+                // qDebug() << " after: " << this->getError();
             } else {
                 error = "No Error";
                 this->status = UPDATE_STATUS::UPDTAE_NEEDED;
             }
             if(updateMsgBox) {
-                delete updateMsgBox;
+                updateMsgBox->deleteLater();
                 updateMsgBox = nullptr;
             }
 
@@ -246,15 +251,20 @@ bool Updater::zustandWechseln(QString action, QString value)
 
 
         } else if(action == "startUpdate()") {
+            // qDebug() << "UPDTAE_NEEDED::startUpdate";
+
+
 #ifndef Q_OS_WEB
             if(!QFile(maintananceToolPath).exists()) {
                 status = UPDATE_STATUS::NO_UPDATER;
                 error =  "Not installed with updater!";
+                // qDebug() << error;
             } else {
-                qDebug() << "Start MaintenanceTool...";
+                // qDebug() << "Start MaintenanceTool..." << maintananceToolPath;
                 if(!QProcess::startDetached(maintananceToolPath)) {
                     status = UPDATE_STATUS::ERROR;
                     error =  "Start MaintenanceTool failed";
+                    // qDebug() << error;
                 } else {
                     error = "No Error";
                     status = UPDATE_STATUS::UPDATING;

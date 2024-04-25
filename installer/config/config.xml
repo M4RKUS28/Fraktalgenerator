@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Installer>
 <Name>Fraktalgenerator</Name>
-    <Version>3.9.8</Version>
+    <Version>3.9.9</Version>
     <Title><Name>Fraktalgenerator</Name> Installer</Title>
     <InstallerApplicationIcon>installerIcon1</InstallerApplicationIcon>
     <InstallerWindowIcon>installerIcon2</InstallerWindowIcon>
