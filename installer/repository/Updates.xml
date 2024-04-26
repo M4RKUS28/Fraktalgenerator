@@ -2,8 +2,8 @@
  <ApplicationName>{AnyApplication}</ApplicationName>
  <ApplicationVersion>1.0.0</ApplicationVersion>
  <Checksum>true</Checksum>
- <SHA1>61e87bde2a0a1aa1ae7aba13e2f039c71e7d20a2</SHA1>
- <MetadataName>2024-04-26-0153_meta.7z</MetadataName>
+ <SHA1>a4a037caf31db788c73ee811ff2b3c67fdc41940</SHA1>
+ <MetadataName>2024-04-26-0200_meta.7z</MetadataName>
  <PackageUpdate>
   <Name>de.fraktalgenerator.FrakGen.desktop</Name>
   <DisplayName>Fraktalgenerator Desktop</DisplayName>
@@ -11,8 +11,8 @@
   <Version>1.0.0</Version>
   <Default>false</Default>
   <ReleaseDate>2023-06-10</ReleaseDate>
-  <UpdateFile UncompressedSize="0" OS="Any" CompressedSize="0"/>
-  <SHA1>dbb2ed072fae69259490c76c233d778f5cd39737</SHA1>
+  <UpdateFile OS="Any" CompressedSize="0" UncompressedSize="0"/>
+  <SHA1>36007a4579284b54d41cb766a4b0cfafff8c809d</SHA1>
  </PackageUpdate>
  <PackageUpdate>
   <Name>de.fraktalgenerator.FrakGen.desktop.windows</Name>
@@ -22,17 +22,17 @@
   <Default>true</Default>
   <ReleaseDate>2024-04-26</ReleaseDate>
   <Script>installscript.qs</Script>
-  <UpdateFile UncompressedSize="73684911" OS="Any" CompressedSize="22188741"/>
+  <UpdateFile OS="Any" CompressedSize="22188274" UncompressedSize="73684911"/>
   <DownloadableArchives>generic.7z,iconengines.7z,imageformats.7z,networkinformation.7z,platforms.7z,styles.7z,tls.7z,translations.7z,content.7z</DownloadableArchives>
   <Licenses>
-   <License name="GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007" file="license.txt"/>
+   <License file="license.txt" name="GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007"/>
   </Licenses>
   <Operations>
    <Operation name="Extract">
     <Argument>@TargetDir@/bin/</Argument>
    </Operation>
   </Operations>
-  <SHA1>c4a2aa5fcc01e1f8e75822237b791fa38864a88a</SHA1>
+  <SHA1>fe06c69f735f39c2e234996e1367c83ae5674160</SHA1>
  </PackageUpdate>
  <PackageUpdate>
   <Name>de.fraktalgenerator.FrakGen.web</Name>
@@ -41,8 +41,8 @@
   <Version>1.0.0</Version>
   <Default>false</Default>
   <ReleaseDate>2023-06-10</ReleaseDate>
-  <UpdateFile UncompressedSize="0" OS="Any" CompressedSize="0"/>
-  <SHA1>c2a30537cfdd0cad32dd398437a2908aaac5a60c</SHA1>
+  <UpdateFile OS="Any" CompressedSize="0" UncompressedSize="0"/>
+  <SHA1>97ab2e0c018ba7cd7f2b0f578c18b6aaac574dee</SHA1>
  </PackageUpdate>
  <PackageUpdate>
   <Name>de.fraktalgenerator.FrakGen.web.multiThreaded</Name>
@@ -51,17 +51,17 @@
   <Version>3.8.0</Version>
   <Default>false</Default>
   <ReleaseDate>2023-06-10</ReleaseDate>
-  <UpdateFile UncompressedSize="14750740" OS="Any" CompressedSize="4478642"/>
+  <UpdateFile OS="Any" CompressedSize="4478641" UncompressedSize="14750740"/>
   <DownloadableArchives>content.7z</DownloadableArchives>
   <Licenses>
-   <License name="GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007" file="license.txt"/>
+   <License file="license.txt" name="GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007"/>
   </Licenses>
   <Operations>
    <Operation name="Extract">
     <Argument>@TargetDir@/bin/Web/WebMultiThreaded/</Argument>
    </Operation>
   </Operations>
-  <SHA1>6dc67d7e3cd197c0ce3d889bc04e22ac3f30da84</SHA1>
+  <SHA1>a2fad7048defcfed39bf63453b2e30cdd20664ec</SHA1>
  </PackageUpdate>
  <PackageUpdate>
   <Name>de.fraktalgenerator.FrakGen.web.singleThreaded</Name>
@@ -70,16 +70,16 @@
   <Version>3.8.0</Version>
   <Default>false</Default>
   <ReleaseDate>2023-06-10</ReleaseDate>
-  <UpdateFile UncompressedSize="14744995" OS="Any" CompressedSize="4488513"/>
+  <UpdateFile OS="Any" CompressedSize="4488511" UncompressedSize="14744995"/>
   <DownloadableArchives>content.7z</DownloadableArchives>
   <Licenses>
-   <License name="GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007" file="license.txt"/>
+   <License file="license.txt" name="GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007"/>
   </Licenses>
   <Operations>
    <Operation name="Extract">
     <Argument>@TargetDir@/bin/Web/WebSingleThreaded</Argument>
    </Operation>
   </Operations>
-  <SHA1>32d52824ef2ef9866a25fb0d35076f30704a20e1</SHA1>
+  <SHA1>0ef32ef36c3567df459d2fcdcd1bb979a349fcbd</SHA1>
  </PackageUpdate>
 </Updates>
