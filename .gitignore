@@ -64,3 +64,5 @@ release/
 release*/
 builds/
 installer/*.exe
+
+build/

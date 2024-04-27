@@ -16,13 +16,13 @@
 
 
 
-//#define Q_OS_WEB // also in updater!
+#define Q_OS_WEB // also in updater!
 
 
 
 
 #ifdef Q_OS_WEB
-//#define SINGLE_THREADTED_WEB_ASSEMBLY
+#define SINGLE_THREADTED_WEB_ASSEMBLY
 #include <emscripten.h>
 #else
 #include <QProcess>

@@ -27,6 +27,11 @@ CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT
 # QMake - Win:
 
 
+QMAKE_LFLAGS += -sASYNCIFY -Os
+
+
+
+
 win32:RC_ICONS += src/icons/icon256_2.ico
 
 # MAC qmake

@@ -9,7 +9,7 @@
 #include <QMessageBox>
 
 
-//#define Q_OS_WEB
+#define Q_OS_WEB
 
 
 
