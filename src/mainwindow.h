@@ -16,13 +16,13 @@
 
 
 
-#define Q_OS_WEB // also in updater!
+//#define Q_OS_WEB // also in updater!
 
 
 
 
 #ifdef Q_OS_WEB
-#define SINGLE_THREADTED_WEB_ASSEMBLY
+//#define SINGLE_THREADTED_WEB_ASSEMBLY
 #include <emscripten.h>
 #else
 #include <QProcess>
@@ -49,7 +49,7 @@ QT_END_NAMESPACE
 
 #define init_width_sidebar 351
 
-#define P_VERSION "3.9.9"
+#define P_VERSION "3.9.10"
 
 
 
@@ -420,6 +420,9 @@ private slots:
 
     void on_actionNach_Updates_suchen_triggered(bool checked);
 
+    void pinchRecieved(bool zoomIn, QPoint posCenter, QPoint posCenterScaled);
+
+
 private:
     Ui::MainWindow *ui;
 
@@ -442,6 +445,8 @@ protected:
     // QWidget interface
 //protected:
     virtual void showEvent(QShowEvent *event);
+
+
 };
 
 

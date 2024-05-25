@@ -247,6 +247,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->imageView, SIGNAL(mousePress(QMouseEvent*, QPoint )), this, SLOT(mouse_press_in_img(QMouseEvent*, QPoint)));
     connect(ui->imageView, SIGNAL(mouseRelease(QMouseEvent*, QPoint)), this, SLOT(mouse_release_in_img(QMouseEvent*, QPoint)));
     connect(ui->imageView, SIGNAL(mouseDoubleClick(QMouseEvent*, QPoint)), this, SLOT(mouse_double_click_in_img(QMouseEvent*, QPoint)));
+    connect(ui->imageView, SIGNAL(pinchEvent(bool,QPoint,QPoint)), this, SLOT(pinchRecieved(bool,QPoint,QPoint)));
+    this->ui->imageView->setAllowZooming(true);
 
 
     connect(fullScreenView, SIGNAL(keyPressed(QKeyEvent *)), this, SLOT(key_press_in_img(QKeyEvent *)));
@@ -254,6 +256,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(fullScreenView, SIGNAL(mousePress(QMouseEvent*, QPoint)), this, SLOT(mouse_press_in_img(QMouseEvent*, QPoint)));
     connect(fullScreenView, SIGNAL(mouseRelease(QMouseEvent*, QPoint)), this, SLOT(mouse_release_in_img(QMouseEvent*, QPoint)));
     connect(fullScreenView, SIGNAL(mouseDoubleClick(QMouseEvent*, QPoint)), this, SLOT(mouse_double_click_in_img(QMouseEvent*, QPoint)));
+    connect(fullScreenView, SIGNAL(pinchEvent(bool,QPoint,QPoint)), this, SLOT(pinchRecieved(bool,QPoint,QPoint)));
 
     // init rect:
     zoomRect.updateRectSize(this->ui->spinBoxW->value(), this->ui->spinBoxH->value(), ui->spinBox_zoom->value());
@@ -1930,6 +1933,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     case Qt::Key_Q:
     case Qt::Key_L:
     case Qt::Key_E:
+    case Qt::Key_Back:
         if(this->fullScreenView->isVisible())
             this->setFullScreenWindowVisible(false);
         break;
@@ -1954,8 +1958,9 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             ui->spinBoxMaxIterations->setValue(n_v);
         break;
         }
-
-
+    case Qt::Key_Control:
+        this->ui->imageView->setControlKeyIsPressed(true);
+        break;
 
     default:
         break;
@@ -1963,9 +1968,33 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 
 }
 
-void MainWindow::keyReleaseEvent(QKeyEvent *)
+void MainWindow::keyReleaseEvent(QKeyEvent *key)
 {
+    if(key->key() == Qt::Key_Control) {
+        this->ui->imageView->setControlKeyIsPressed(false);
 
+       // ui->scrollArea->verticalScrollBar()->setValue(ui->scrollArea->verticalScrollBar()->maximum() / 2);
+       // ui->scrollArea->horizontalScrollBar()->setValue(ui->scrollArea->horizontalScrollBar()->maximum() / 2);
+        // QPoint cursorInScrollArea = ui->scrollArea->mapFromGlobal(QCursor::pos());
+
+        // // Get current scroll values and the maximum scroll values
+        // int hScrollValue = ui->scrollArea->horizontalScrollBar()->value();
+        // int vScrollValue = ui->scrollArea->verticalScrollBar()->value();
+        // int hMaxScroll = ui->scrollArea->horizontalScrollBar()->maximum();
+        // int vMaxScroll = ui->scrollArea->verticalScrollBar()->maximum();
+
+        // // Calculate the new scroll values to center the cursor
+        // int newHScrollValue = hScrollValue + cursorInScrollArea.x() - (ui->scrollArea->viewport()->width() / 2);
+        // int newVScrollValue = vScrollValue + cursorInScrollArea.y() - (ui->scrollArea->viewport()->height() / 2);
+
+        // // Ensure the new scroll values are within the scroll range
+        // newHScrollValue = qBound(0, newHScrollValue, hMaxScroll);
+        // newVScrollValue = qBound(0, newVScrollValue, vMaxScroll);
+
+        // // Set the new scroll values
+        // ui->scrollArea->horizontalScrollBar()->setValue(newHScrollValue);
+        // ui->scrollArea->verticalScrollBar()->setValue(newVScrollValue);
+    }
 }
 
 
@@ -2498,6 +2527,7 @@ void MainWindow::on_im_valueChanged(double arg1)
 }
 
 #include <QClipboard>
+#include <QGestureEvent>
 #include <QIcon>
 #include <QImageWriter>
 #include <QImageWriter>
@@ -3369,5 +3399,20 @@ void MainWindow::on_actionNach_Updates_suchen_triggered(bool checked)
 {
     updater->setAutoSearchForUpdate(checked);
     ui->actionNach_Updates_suchen->setChecked(updater->getAutoSearchForUpdateStatus());
+}
+
+void MainWindow::pinchRecieved(bool zoomIn, QPoint posCenter, QPoint posCenterScaled)
+{
+    ui->spinBox_zoom->setValue((zoomIn ? 1 : -1) * std::abs(ui->spinBox_zoom->value()));
+
+    QMouseEvent* doubleClickEvent = new QMouseEvent(
+        QEvent::MouseButtonDblClick,
+        posCenter,
+        Qt::LeftButton,
+        Qt::NoButton,
+        Qt::NoModifier
+    );
+
+    zustandWechseln("DOPPELKLICK_IN_BILD", "", posCenterScaled, doubleClickEvent);
 }
 

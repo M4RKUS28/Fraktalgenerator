@@ -27,7 +27,7 @@ CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT
 # QMake - Win:
 
 
-QMAKE_LFLAGS += -sASYNCIFY -Os
+#QMAKE_LFLAGS += -sASYNCIFY -Os
 
 
 
@@ -106,3 +106,11 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     src/styles.qrc
+
+contains(ANDROID_TARGET_ARCH,arm64-v8a) {
+    ANDROID_PACKAGE_SOURCE_DIR = \
+        $$PWD/android
+}
+
+DISTFILES += \
+    android/AndroidManifest.xml
