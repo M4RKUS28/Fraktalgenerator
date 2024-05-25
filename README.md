@@ -45,21 +45,21 @@ Probiere hier den Fraktalgenerator aus!
 ![Vorschau4](https://github.com/M4RKUS28/Mandelbrot-Generator/blob/76baa565383021a2a83604bb21b63b2192b4ebfa/docs/example1.PNG?raw=true)
 
 ### Windows (64-bit)
--  [FraktalgeneratorOfflineInstaller64BitWindows_Fraktalgenerator_v3.9.10.exe](https://github.com/M4RKUS28/Fraktalgenerator/releases/download/v3.9.10/FraktalgeneratorOfflineInstaller64BitWindows_Fraktalgenerator_v3.9.10.exe)
+- [FraktalgeneratorOfflineInstaller64BitWindows_Fraktalgenerator_v3.9.10.exe](https://github.com/M4RKUS28/Fraktalgenerator/releases/download/v3.9.10/FraktalgeneratorOfflineInstaller64BitWindows_Fraktalgenerator_v3.9.10.exe)
 - [FraktalgeneratorOnlineInstaller.exe](https://github.com/M4RKUS28/Fraktalgenerator/releases/download/v3.9.10/FraktalgeneratorOnlineInstaller.exe)
 - [ReleaseMinGWWindows64Bit-v3.9.10.zip](https://github.com/M4RKUS28/Fraktalgenerator/releases/download/v3.9.10/ReleaseMinGWWindows64Bit-v3.9.10.zip)
- ###   macOS
+### macOS
 - [Release.v3.4.0_Fraktalgenerator.MacOS.zip](https://github.com/M4RKUS28/Fraktalgenerator/releases/download/v3.9.10/Release.v3.4.0_Fraktalgenerator.MacOS.zip)
- ###   Linux
+###   Linux
 - [Fraktalgenerator-64Bit-linux-v3.8.0](https://github.com/M4RKUS28/Fraktalgenerator/releases/download/v3.9.10/Fraktalgenerator-64Bit-linux-v3.8.0)
- ###   Browser
- - [WebAssembly_MultiThreaded_Fraktalgenerator_v3.9.10.zip](https://github.com/M4RKUS28/Fraktalgenerator/releases/download/v3.9.10/WebAssembly_MultiThreaded_Fraktalgenerator_v3.9.10.zip)
- - [WebAssembly_Single_threaded-Fraktalgenerator-v3.9.10.zip](https://github.com/M4RKUS28/Fraktalgenerator/releases/download/v3.9.10/WebAssembly_Single_threaded-Fraktalgenerator-v3.9.10.zip)
- ###   Android
- -  [Fraktalgenerator-v3.9.10.apk](https://github.com/M4RKUS28/Fraktalgenerator/releases/download/v3.9.10/Fraktalgenerator-v3.9.10.apk)
- ###   Source Code
- -  [Source code (zip)](https://github.com/M4RKUS28/Fraktalgenerator/archive/refs/tags/v3.9.10.zip)
- - [Source code (tar.gz)](https://github.com/M4RKUS28/Fraktalgenerator/archive/refs/tags/v3.9.10.tar.gz)
+### Browser
+- [WebAssembly_MultiThreaded_Fraktalgenerator_v3.9.10.zip](https://github.com/M4RKUS28/Fraktalgenerator/releases/download/v3.9.10/WebAssembly_MultiThreaded_Fraktalgenerator_v3.9.10.zip)
+- [WebAssembly_Single_threaded-Fraktalgenerator-v3.9.10.zip](https://github.com/M4RKUS28/Fraktalgenerator/releases/download/v3.9.10/WebAssembly_Single_threaded-Fraktalgenerator-v3.9.10.zip)
+### Android
+- [Fraktalgenerator-v3.9.10.apk](https://github.com/M4RKUS28/Fraktalgenerator/releases/download/v3.9.10/Fraktalgenerator-v3.9.10.apk)
+### Source Code
+- [Source code (zip)](https://github.com/M4RKUS28/Fraktalgenerator/archive/refs/tags/v3.9.10.zip)
+- [Source code (tar.gz)](https://github.com/M4RKUS28/Fraktalgenerator/archive/refs/tags/v3.9.10.tar.gz)
 
 Important Notes:
 ## Important Notes:
