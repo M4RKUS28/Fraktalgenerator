@@ -1,8 +1,8 @@
 # Fraktalgenerator
 
-Die Anwendung dient der Erstellung von Abbildungen der Mandelbrot-Menge und zugehörigen Julia-Mengen. Weitere Informationen zu der Mandelbrot-Menge finden Sie in der zugehörigen [W-Seminararbeit]([https://code.obermui.de/markus/W-Seminar-Die-Mandelbrot-Menge](https://code.obermui.de/markus/W-Seminar-Die-Mandelbrot-Menge/raw/branch/master/Seminararbeit_Die%20Mandelbrot-Menge_2022.pdf)).
+Die Anwendung dient der Erstellung von Abbildungen der Mandelbrot-Menge und zugehörigen Julia-Mengen. Weitere Informationen zu der Mandelbrot-Menge finden Sie in der zugehörigen [W-Seminararbeit](https://code.obermui.de/markus/W-Seminar-Die-Mandelbrot-Menge/raw/branch/master/Seminararbeit_Die%20Mandelbrot-Menge_2022.pdf).
 
-[WEB Version](https://m4rkus28.codeberg.page/Mandelbrot-Generator-WebappST/@main/Fraktalgenerator.html)
+[WEB Version](https://m4rkus28.codeberg.page/Mandelbrot-Generator-WebappST/@works/Fraktalgenerator.html)
 
 # Besondere Funktionen
 - Platformübergreifend Linux Windows Mac Web
