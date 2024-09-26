@@ -1,5 +1,7 @@
 # Fraktalgenerator
+
 [Github Pages Link](https://m4rkus28.github.io/Fraktalgenerator)
+
 ![Vorschau0](https://github.com/M4RKUS28/Fraktalgenerator/blob/main/docs/fraktalgen.gif)
 
 ![Vorschau1](https://github.com/M4RKUS28/Mandelbrot-Generator/blob/76baa565383021a2a83604bb21b63b2192b4ebfa/docs/example2.PNG?raw=true)
