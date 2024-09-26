@@ -22,7 +22,8 @@
 
 
 #ifdef Q_OS_WEB
-//#define SINGLE_THREADTED_WEB_ASSEMBLY
+#define SINGLE_THREADTED_WEB_ASSEMBLY
+
 #include <emscripten.h>
 #else
 #include <QProcess>
