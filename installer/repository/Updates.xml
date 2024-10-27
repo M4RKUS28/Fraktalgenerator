@@ -2,6 +2,8 @@
  <ApplicationName>{AnyApplication}</ApplicationName>
  <ApplicationVersion>1.0.0</ApplicationVersion>
  <Checksum>true</Checksum>
+ <SHA1>775fe49e19fb626bfdd2dc394518d44519c9e86b</SHA1>
+ <MetadataName>2024-10-28-0020_meta.7z</MetadataName>
  <PackageUpdate>
   <Name>de.fraktalgenerator.FrakGen.desktop</Name>
   <DisplayName>Fraktalgenerator Desktop</DisplayName>
@@ -10,17 +12,17 @@
   <Default>false</Default>
   <ReleaseDate>2023-06-10</ReleaseDate>
   <UpdateFile CompressedSize="0" OS="Any" UncompressedSize="0"/>
-  <SHA1>d1c6a3e23b0275cce9d0742bc2b9b3f6261c07f3</SHA1>
+  <SHA1>07fe399454106b42158d1167bd8849dd758608bd</SHA1>
  </PackageUpdate>
  <PackageUpdate>
   <Name>de.fraktalgenerator.FrakGen.desktop.windows</Name>
-  <DisplayName>Fraktalgenerator 3.9.10</DisplayName>
+  <DisplayName>Fraktalgenerator 3.9.11</DisplayName>
   <Description>Die Anwendung dient der Erstellung von Abbildungen der Mandelbrot-Menge und zugehörigen Julia-Mengen. </Description>
-  <Version>3.9.10</Version>
+  <Version>3.9.11</Version>
   <Default>true</Default>
-  <ReleaseDate>2024-05-26</ReleaseDate>
+  <ReleaseDate>2024-10-28</ReleaseDate>
   <Script>installscript.qs</Script>
-  <UpdateFile CompressedSize="21954748" OS="Any" UncompressedSize="72911105"/>
+  <UpdateFile CompressedSize="22765935" OS="Any" UncompressedSize="75532700"/>
   <DownloadableArchives>generic.7z,iconengines.7z,imageformats.7z,networkinformation.7z,platforms.7z,styles.7z,tls.7z,translations.7z,content.7z</DownloadableArchives>
   <Licenses>
    <License file="license.txt" name="GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007"/>
@@ -30,7 +32,7 @@
     <Argument>@TargetDir@/bin/</Argument>
    </Operation>
   </Operations>
-  <SHA1>07b1614fb6c53903182628a83a383d7eb56e346b</SHA1>
+  <SHA1>34f2047ae8d453b95b8af894baa60bbce654e6c7</SHA1>
  </PackageUpdate>
  <PackageUpdate>
   <Name>de.fraktalgenerator.FrakGen.web</Name>
@@ -40,7 +42,7 @@
   <Default>false</Default>
   <ReleaseDate>2023-06-10</ReleaseDate>
   <UpdateFile CompressedSize="0" OS="Any" UncompressedSize="0"/>
-  <SHA1>a4527913b2791cf76a336ae4c3b49301df530e9f</SHA1>
+  <SHA1>bc1f929aea490fbe645a80f7493e9312a7ba3d65</SHA1>
  </PackageUpdate>
  <PackageUpdate>
   <Name>de.fraktalgenerator.FrakGen.web.multiThreaded</Name>
@@ -49,7 +51,7 @@
   <Version>3.9.10</Version>
   <Default>false</Default>
   <ReleaseDate>2024-06-10</ReleaseDate>
-  <UpdateFile CompressedSize="4790620" OS="Any" UncompressedSize="15696454"/>
+  <UpdateFile CompressedSize="4790625" OS="Any" UncompressedSize="15696454"/>
   <DownloadableArchives>content.7z</DownloadableArchives>
   <Licenses>
    <License file="license.txt" name="GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007"/>
@@ -59,7 +61,7 @@
     <Argument>@TargetDir@/bin/Web/WebMultiThreaded/</Argument>
    </Operation>
   </Operations>
-  <SHA1>971b53606e48595a9f268c8db80d1aa1e42e534c</SHA1>
+  <SHA1>c26712b501665a32217540ff0fa188aafe50cfbd</SHA1>
  </PackageUpdate>
  <PackageUpdate>
   <Name>de.fraktalgenerator.FrakGen.web.singleThreaded</Name>
@@ -68,7 +70,7 @@
   <Version>3.9.10</Version>
   <Default>false</Default>
   <ReleaseDate>2024-06-10</ReleaseDate>
-  <UpdateFile CompressedSize="4795437" OS="Any" UncompressedSize="15655925"/>
+  <UpdateFile CompressedSize="4795439" OS="Any" UncompressedSize="15655925"/>
   <DownloadableArchives>content.7z</DownloadableArchives>
   <Licenses>
    <License file="license.txt" name="GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007"/>
@@ -78,8 +80,6 @@
     <Argument>@TargetDir@/bin/Web/WebSingleThreaded</Argument>
    </Operation>
   </Operations>
-  <SHA1>a3d5c1f86c672f19c59f3f706cd1cb3ae7f674b5</SHA1>
+  <SHA1>5c53516d498647ca80e0e8252b9d0b056d00847e</SHA1>
  </PackageUpdate>
- <SHA1>45d69b1a3dce6e6668b222bd28e50ebea0f4fba0</SHA1>
- <MetadataName>2024-10-27-2053_meta.7z</MetadataName>
 </Updates>
