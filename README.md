@@ -3,6 +3,12 @@
 
 ![Vorschau1](https://github.com/M4RKUS28/Mandelbrot-Generator/blob/76baa565383021a2a83604bb21b63b2192b4ebfa/docs/example2.PNG?raw=true)
 
+[Github Pages Link](https://m4rkus28.github.io/Fraktalgenerator)
+
+![Vorschau0](https://github.com/M4RKUS28/Fraktalgenerator/blob/main/docs/fraktalgen.gif)
+
+![Vorschau1](https://github.com/M4RKUS28/Mandelbrot-Generator/blob/76baa565383021a2a83604bb21b63b2192b4ebfa/docs/example2.PNG?raw=true)
+
 Die Anwendung dient der Erstellung von Abbildungen der Mandelbrot-Menge und zugehörigen Julia-Mengen. Weitere Informationen zu der Mandelbrot-Menge finden Sie in der zugehörigen [W-Seminararbeit](https://code.obermui.de/markus/W-Seminar-Die-Mandelbrot-Menge/raw/branch/master/Seminararbeit_Die%20Mandelbrot-Menge_2022.pdf).
 
 # Online Version
