@@ -2,19 +2,19 @@
 
 # Start program 1 in the background
 echo "Starting creating online installer..."
-/C/Qt/Tools/QtInstallerFramework/4.6/bin/binarycreator.exe --online-only -c config/config.xml -p packages FraktalgeneratorOnlineInstaller.exe &
+/C/Qt/Tools/QtInstallerFramework/4.8/bin/binarycreator.exe --online-only -c config/config.xml -p packages FraktalgeneratorOnlineInstaller.exe &
 
 # Start program 2 in the background
 echo "Starting creating offline installer..."
-/C/Qt/Tools/QtInstallerFramework/4.6/bin/binarycreator.exe --offline-only -c config/config.xml -p packages FraktalgeneratorOfflineInstaller.exe &
+/C/Qt/Tools/QtInstallerFramework/4.8/bin/binarycreator.exe --offline-only -c config/config.xml -p packages FraktalgeneratorOfflineInstaller.exe &
 
 
 if [ -d "./repository" ]; then
 	echo "Staring updating repository...."
-	/C/Qt/Tools/QtInstallerFramework/4.6/bin/repogen.exe --update -p packages repository
+	/C/Qt/Tools/QtInstallerFramework/4.8/bin/repogen.exe --update -p packages repository
 else
 	echo "Staring creating repository...."
-	/C/Qt/Tools/QtInstallerFramework/4.6/bin/repogen.exe -p packages repository
+	/C/Qt/Tools/QtInstallerFramework/4.8/bin/repogen.exe -p packages repository
 fi
 
 # Wait for program 1 and program 2 to finish

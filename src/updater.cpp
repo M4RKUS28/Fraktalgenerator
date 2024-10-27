@@ -4,6 +4,11 @@
 #include <QApplication>
 #include <QFile>
 
+
+#ifndef Q_OS_WEB
+#include <QProcess>
+#endif
+
 Updater::Updater(QString maintananceToolPath, QString organisation, QString application, bool doAutoUpdateIfEnabled)
     : status(UPDATE_STATUS::NOT_CHECKED), updateMsgBox(nullptr), organisation(organisation), application(application), maintananceToolPath(maintananceToolPath), showMsgBox(true)
 {

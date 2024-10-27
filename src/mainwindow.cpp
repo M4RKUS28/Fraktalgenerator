@@ -21,6 +21,8 @@
 
 #include "math.h"
 
+//Qt 6+
+#include <QStyleHints>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
@@ -146,6 +148,17 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->comboBox_palette->setCurrentIndex(2);
     on_comboBox_palette_currentIndexChanged(2);
+
+
+    //Qt 6+
+    ui->progressBar->setTextVisible(ui->comboBox_theme->currentIndex() != 0);
+    if(QGuiApplication::styleHints()->colorScheme() == Qt::ColorScheme::Light)
+        currentBackgroundColor = "white";
+    else
+        currentBackgroundColor = QColor(60, 60, 60);
+
+
+
     //Setup comobox -> fix error on mac
     ui->comboBox_palette->setItemDelegate(new QStyledItemDelegate(ui->comboBox_palette));    
     setupIconsInCombobox(80);
@@ -2815,6 +2828,7 @@ void MainWindow::on_radioButtonF8_toggled(bool status)
 
 #include <QStyle>
 
+
 void MainWindow::on_comboBox_theme_currentIndexChanged(int index)
 {
     QSettings settingOwnColor("Markus@W-Sem_2022", "Fraktalgenerator");
@@ -2827,11 +2841,20 @@ void MainWindow::on_comboBox_theme_currentIndexChanged(int index)
     QApplication::setStyle(defaultStyle);
     this->setStyleSheet("");
     QApplication::setPalette(QPalette());
+    ui->progressBar->setTextVisible(ui->comboBox_theme->currentIndex() != 0);
 
     qDebug() << "QStyleFactory: " << QStyleFactory::keys();
 
     if(index == 0) {
-        currentBackgroundColor = "white";
+
+        //OLD
+        //currentBackgroundColor = "white";
+
+        //Qt 6+
+        if(QGuiApplication::styleHints()->colorScheme() == Qt::ColorScheme::Light)
+            currentBackgroundColor = "white";
+        else
+            currentBackgroundColor = QColor(60, 60, 60);
 
         return;
 
