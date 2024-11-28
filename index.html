@@ -220,9 +220,21 @@
                 <div id="pdf-container"></div>
                 <!-- Download-Link zur PDF -->
                 <p>Weitere Details findest du in der vollständigen Seminararbeit:</p>
-                <a href="docs/Seminararbeit_Die Mandelbrot-Menge_2022.pdf" target="_blank" class="btn btn-primary">Zur PDF-Datei</a>
+                <a href="https://github.com/M4RKUS28/Fraktalgenerator/blob/main/docs/Seminararbeit_Die%20Mandelbrot-Menge_2022.pdf" target="_blank" class="btn btn-primary">Zur PDF-Datei</a>
 
             </div>
+
+            <!-- PDF-Inhalte -->
+            <div class="tab-pane fade" id="examples" role="tabpanel">
+                <h2>Screenshots aus der APp</h2>
+                <a href="docs/example1.png" target="_blank" class="btn btn-primary">Example 1</a>
+                <a href="docs/example2.png" target="_blank" class="btn btn-primary">Example 2</a>
+                <a href="docs/example3.png" target="_blank" class="btn btn-primary">Example 3</a>
+                <a href="docs/example4.png" target="_blank" class="btn btn-primary">Example 4</a>
+
+
+            </div>
+
 
             <!-- Downloads -->
             <div class="tab-pane fade" id="downloads" role="tabpanel">
@@ -302,7 +314,7 @@
         });
 
 
-        const url = 'docs/Seminararbeit_Die Mandelbrot-Menge_2022.pdf';
+        const url = 'https://github.com/M4RKUS28/Fraktalgenerator/blob/main/docs/Seminararbeit_Die%20Mandelbrot-Menge_2022.pdf';
         
             // PDF.js initialisieren
             const loadingTask = pdfjsLib.getDocument(url);
