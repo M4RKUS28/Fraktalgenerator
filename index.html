@@ -113,6 +113,13 @@
         .text-container {
             font-size: 1.2em;
         }
+
+        canvas {
+            display: block;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
     </style>
 </head>
 <body>
@@ -224,17 +231,19 @@
 
             <!-- PDF-Inhalte -->
             <div class="tab-pane fade" id="pdf" role="tabpanel">
-                <h2>Wissenschaftliche Inhalte aus der PDF</h2>
-                <!-- Download-Link zur PDF -->
-                <p></p>
-                <a href="https://github.com/M4RKUS28/Fraktalgenerator/blob/main/docs/Seminararbeit_Die%20Mandelbrot-Menge_2022.pdf" target="_blank" class="btn btn-primary">Download</a>
-                <div class="center-content">
 
+                <div class="flex-container">
+                    <div class="text-container">
+                        <h2>Wissenschaftliche Inhalte aus der PDF</h2>
+                    </div>
+                    <a href="https://github.com/M4RKUS28/Fraktalgenerator/blob/main/docs/Seminararbeit_Die%20Mandelbrot-Menge_2022.pdf" target="_blank" class="btn btn-primary">Download</a>
+                </div>
+                <p></p>
+                <div class="center-content">
                     <div id="pdf-container"></div>
                 </div>
             </div>
 
-            <!-- PDF-Inhalte -->
             <div class="tab-pane fade" id="examples" role="tabpanel">
                 <h2>Screenshots aus der APP</h2>
                 <img src="https://github.com/M4RKUS28/Fraktalgenerator/blob/108f63fa4c7151f31f9fe67686a264b29909496e/docs/example1.PNG?raw=true" target="_blank"  class="example-image"></a>
