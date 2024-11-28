@@ -8,6 +8,7 @@ Erstelle faszinierende Visualisierungen der **Mandelbrot-Menge** und ihrer **Jul
 
 ## Vorschau
 
+![Beispiel 1](https://github.com/M4RKUS28/Mandelbrot-Generator/blob/76baa565383021a2a83604bb21b63b2192b4ebfa/docs/example2.PNG?raw=true)  
 ![GIF-Vorschau](https://github.com/M4RKUS28/Fraktalgenerator/blob/main/docs/fraktalgen.gif)
 
 **Probiere die Web-App aus!**  
