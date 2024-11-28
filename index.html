@@ -227,10 +227,10 @@
             <!-- PDF-Inhalte -->
             <div class="tab-pane fade" id="examples" role="tabpanel">
                 <h2>Screenshots aus der APp</h2>
-                <a href="docs/example1.png" target="_blank" class="btn btn-primary">Example 1</a>
-                <a href="docs/example2.png" target="_blank" class="btn btn-primary">Example 2</a>
-                <a href="docs/example3.png" target="_blank" class="btn btn-primary">Example 3</a>
-                <a href="docs/example4.png" target="_blank" class="btn btn-primary">Example 4</a>
+                <img href="https://github.com/M4RKUS28/Fraktalgenerator/blob/main/docs/example1.png" target="_blank" class="btn btn-primary">Example 1</a>
+                <img href="https://github.com/M4RKUS28/Fraktalgenerator/blob/main/docs/example2.png" target="_blank" class="btn btn-primary">Example 2</a>
+                <img href="https://github.com/M4RKUS28/Fraktalgenerator/blob/main/docs/example3.png" target="_blank" class="btn btn-primary">Example 3</a>
+                <img href="https://github.com/M4RKUS28/Fraktalgenerator/blob/main/docs/example4.png" target="_blank" class="btn btn-primary">Example 4</a>
 
 
             </div>
@@ -317,30 +317,37 @@
         const url = 'https://github.com/M4RKUS28/Fraktalgenerator/blob/main/docs/Seminararbeit_Die%20Mandelbrot-Menge_2022.pdf';
         
             // PDF.js initialisieren
+            // PDF.js initialisieren
             const loadingTask = pdfjsLib.getDocument(url);
-            
+
             loadingTask.promise.then(pdf => {
                 console.log('PDF geladen');
-                
-                // Ersten Seiteninhalt rendern
-                pdf.getPage(1).then(page => {
-                    const scale = 1.5;
-                    const viewport = page.getViewport({ scale: scale });
-                    
-                    // Canvas zum Rendern der Seite
-                    const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('2d');
-                    canvas.height = viewport.height;
-                    canvas.width = viewport.width;
-                    
-                    document.getElementById('pdf-container').appendChild(canvas);
-                    
-                    // Seite rendern
-                    page.render({
-                        canvasContext: ctx,
-                        viewport: viewport
+
+                // Alle Seiten rendern
+                for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                    pdf.getPage(pageNum).then(page => {
+                        const scale = 1.5; // Skala für die Anzeigegröße
+                        const viewport = page.getViewport({ scale: scale });
+
+                        // Canvas erstellen und konfigurieren
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        canvas.height = viewport.height;
+                        canvas.width = viewport.width;
+
+                        document.getElementById('pdf-container').appendChild(canvas);
+
+                        // Seite rendern
+                        page.render({
+                            canvasContext: ctx,
+                            viewport: viewport
+                        }).promise.then(() => {
+                            console.log(`Seite ${pageNum} gerendert`);
+                        });
                     });
-                });
+                }
+            }).catch(error => {
+                console.error('Fehler beim Laden der PDF:', error);
             });
         </script>
 </body>
