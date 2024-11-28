@@ -1,129 +1,137 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fraktalgenerator 🌌✨</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
             line-height: 1.6;
-            margin: 0;
-            padding: 0;
-            color: #333;
         }
-        header {
-            background: #6200ea;
+        .hero {
+            background: linear-gradient(to right, #6200ea, #3700b3);
             color: #fff;
-            padding: 20px 10px;
+            padding: 60px 20px;
             text-align: center;
         }
-        header h1 {
-            margin: 0;
-            font-size: 2.5em;
+        .hero h1 {
+            font-size: 3em;
         }
-        header p {
+        .hero p {
             font-size: 1.2em;
         }
-        section {
-            padding: 20px;
-        }
-        .feature {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin-top: 20px;
-        }
-        .feature img {
+        .example-image {
             max-width: 100%;
-            border: 2px solid #ccc;
             border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
         iframe {
             width: 100%;
             height: 500px;
-            border: 1px solid #ddd;
+            border: none;
             border-radius: 8px;
-            margin-top: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
         footer {
             background: #333;
             color: #fff;
             text-align: center;
-            padding: 10px 0;
-            margin-top: 20px;
+            padding: 20px 0;
         }
-        .download-buttons a {
-            display: inline-block;
-            margin: 10px 5px;
-            padding: 10px 20px;
-            background: #6200ea;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background 0.3s;
-        }
-        .download-buttons a:hover {
-            background: #3700b3;
+        .download-btn {
+            margin: 5px;
         }
     </style>
 </head>
 <body>
-    <header>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Fraktalgenerator</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#overview">Überblick</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#examples">Beispiele</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#pdf">PDF-Inhalte</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#downloads">Downloads</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#impressum">Impressum</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
         <h1>Fraktalgenerator 🌌✨</h1>
         <p>Erstelle faszinierende Visualisierungen der Mandelbrot- und Julia-Mengen!</p>
-    </header>
-
-    <section>
-        <h2>Über den Fraktalgenerator</h2>
-        <p>Der Fraktalgenerator bietet leistungsstarke Funktionen zur Visualisierung der Mandelbrot-Menge und verwandter Julia-Mengen. Mit umfangreichen Konfigurationsoptionen und einer breiten Plattformunterstützung ist es ein Werkzeug für Mathematik-Liebhaber, Künstler und Neugierige.</p>
-        <p>Weitere Informationen zur Mandelbrot-Menge findest du in der zugehörigen <a href="https://code.obermui.de/markus/W-Seminar-Die-Mandelbrot-Menge/raw/branch/master/Seminararbeit_Die%20Mandelbrot-Menge_2022.pdf" target="_blank">Seminararbeit</a>.</p>
     </section>
 
-    <section>
-        <h2>Features</h2>
+    <!-- Überblick -->
+    <section id="overview" class="container py-5">
+        <h2>Überblick</h2>
+        <p>
+            Der Fraktalgenerator dient dazu, die Schönheit mathematischer Strukturen wie der Mandelbrot-Menge und verwandter Julia-Mengen zu erkunden. 
+            Mit diesem leistungsstarken Tool kannst du eigene Fraktale erstellen, Farben anpassen und Videos generieren!
+        </p>
+        <img src="https://github.com/M4RKUS28/Fraktalgenerator/blob/main/docs/fraktalgen.gif?raw=true" alt="Fraktal-GIF" class="example-image my-4">
+    </section>
+
+    <!-- Beispiele -->
+    <section id="examples" class="container py-5">
+        <h2>Beispiele</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <img src="https://github.com/M4RKUS28/Mandelbrot-Generator/blob/76baa565383021a2a83604bb21b63b2192b4ebfa/docs/example2.PNG?raw=true" alt="Beispiel 1" class="example-image">
+            </div>
+            <div class="col-md-6">
+                <img src="https://github.com/M4RKUS28/Mandelbrot-Generator/blob/76baa565383021a2a83604bb21b63b2192b4ebfa/docs/example3.PNG?raw=true" alt="Beispiel 2" class="example-image">
+            </div>
+        </div>
+    </section>
+
+    <!-- PDF-Inhalte -->
+    <section id="pdf" class="container py-5">
+        <h2>PDF-Inhalte</h2>
+        <p>
+            In der Mandelbrot-Menge begegnen wir faszinierenden mathematischen Konzepten wie den Fixpunkten, der Kardioide und dem Feigenbaum-Diagramm. 
+            Erfahre mehr in unserer <a href="Seminararbeit_Die%20Mandelbrot-Menge_2022.pdf" target="_blank">PDF-Datei</a>.
+        </p>
         <ul>
-            <li>Mandelbrot-Menge und Julia-Mengen</li>
-            <li>Farbalgorithmen und anpassbare Farbpaletten</li>
-            <li>Bild- und Videogenerator</li>
-            <li>Cross-Plattform-Unterstützung (Windows, Linux, macOS, Web, Android)</li>
-            <li>Hochauflösende Bilder und Full-Screen-Ansicht</li>
-            <li>Multi-Screen- und Multi-Threading-Unterstützung</li>
+            <li>Fixpunkte: Attraktive, abstoßende und indifferente Typen</li>
+            <li>Kardioide: Die Herzform der Mandelbrot-Menge</li>
+            <li>Feigenbaum-Diagramm: Die Verbindung von Ordnung und Chaos</li>
         </ul>
     </section>
 
-    <section>
-        <h2>Vorschau</h2>
-        <div class="feature">
-            <div>
-                <h3>GIF Vorschau</h3>
-                <img src="https://github.com/M4RKUS28/Fraktalgenerator/blob/main/docs/fraktalgen.gif?raw=true" alt="Fraktal-GIF">
-            </div>
-            <div>
-                <h3>Beispielbild</h3>
-                <img src="https://github.com/M4RKUS28/Mandelbrot-Generator/blob/76baa565383021a2a83604bb21b63b2192b4ebfa/docs/example2.PNG?raw=true" alt="Fraktal-Bild">
-            </div>
+    <!-- Downloads -->
+    <section id="downloads" class="container py-5">
+        <h2>Downloads</h2>
+        <div>
+            <a href="https://github.com/M4RKUS28/Fraktalgenerator/releases/download/v3.9.10/FraktalgeneratorOfflineInstaller64BitWindows_Fraktalgenerator_v3.9.10.exe" class="btn btn-primary download-btn">Windows (64-bit)</a>
+            <a href="https://github.com/M4RKUS28/Fraktalgenerator/releases/download/v3.9.10/Release.v3.4.0_Fraktalgenerator.MacOS.zip" class="btn btn-primary download-btn">macOS</a>
+            <a href="https://github.com/M4RKUS28/Fraktalgenerator/releases/download/v3.9.10/Fraktalgenerator-64Bit-linux-v3.8.0" class="btn btn-primary download-btn">Linux</a>
+            <a href="https://github.com/M4RKUS28/Fraktalgenerator/releases/download/v3.9.10/Fraktalgenerator-v3.9.10.apk" class="btn btn-primary download-btn">Android</a>
         </div>
     </section>
 
-    <section>
-        <h2>Interaktive Online-Version</h2>
-        <p>Teste den Fraktalgenerator direkt in deinem Browser:</p>
-        <iframe src="https://m4rkus28.codeberg.page/Mandelbrot-Generator-WebappST/@works/Fraktalgenerator.html" title="Fraktalgenerator Online"></iframe>
+    <!-- Impressum -->
+    <section id="impressum" class="container py-5">
+        <h2>Impressum</h2>
+        <p>Entwickelt von Markus Huber. Kontakt: <a href="mailto:markus@example.com">markus@example.com</a></p>
     </section>
 
-    <section>
-        <h2>Download</h2>
-        <div class="download-buttons">
-            <a href="https://github.com/M4RKUS28/Fraktalgenerator/releases/download/v3.9.10/FraktalgeneratorOfflineInstaller64BitWindows_Fraktalgenerator_v3.9.10.exe">Windows (64-bit)</a>
-            <a href="https://github.com/M4RKUS28/Fraktalgenerator/releases/download/v3.9.10/Release.v3.4.0_Fraktalgenerator.MacOS.zip">macOS</a>
-            <a href="https://github.com/M4RKUS28/Fraktalgenerator/releases/download/v3.9.10/Fraktalgenerator-64Bit-linux-v3.8.0">Linux (64-bit)</a>
-            <a href="https://github.com/M4RKUS28/Fraktalgenerator/releases/download/v3.9.10/Fraktalgenerator-v3.9.10.apk">Android (arm-v8a)</a>
-        </div>
-    </section>
-
+    <!-- Footer -->
     <footer>
-        <p>© 2024 Fraktalgenerator | Entwickelt von Markus Huber</p>
+        <p>&copy; 2024 Fraktalgenerator. Alle Rechte vorbehalten.</p>
     </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
