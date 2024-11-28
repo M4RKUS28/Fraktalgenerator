@@ -140,44 +140,84 @@
         </ul>
 
         <!-- Tabs Content -->
-        <div class="tab-content">
-            <!-- Überblick -->
-            <div class="tab-pane fade show active" id="overview" role="tabpanel">
-                <h2>Überblick</h2>
-                <div class="center-content">
-                    <p>Der Fraktalgenerator dient zur Visualisierung mathematischer Strukturen.</p>
-                    <img src="https://github.com/M4RKUS28/Fraktalgenerator/blob/main/docs/fraktalgen.gif?raw=true" alt="Fraktal GIF" class="example-image">
-                </div>
-            </div>
-            
-            <!-- Beispiele -->
-            <div class="tab-pane fade" id="examples" role="tabpanel">
-                <h2>Beispiele</h2>
-                <img src="https://github.com/M4RKUS28/Mandelbrot-Generator/blob/76baa565383021a2a83604bb21b63b2192b4ebfa/docs/example2.PNG?raw=true" alt="Beispiel">
-            </div>
-
-            <!-- PDF-Inhalte -->
-            <div class="tab-pane fade" id="pdf" role="tabpanel">
-                <h2>Wissenschaftliche Inhalte</h2>
-                <h3>1. Die Kardioide</h3>
-                <p>Die Kardioide beschreibt die zentrale Herzform der Mandelbrot-Menge.</p>
-                <h3>2. Fixpunkte</h3>
-                <p>Es gibt attraktive, abstoßende und indifferente Fixpunkte.</p>
-            </div>
-
-            <!-- Downloads -->
-            <div class="tab-pane fade" id="downloads" role="tabpanel">
-                <h2>Downloads</h2>
-                <a href="#" class="download-btn">Windows</a>
-            </div>
+<div class="tab-content">
+    <!-- Überblick -->
+    <div class="tab-pane fade show active" id="overview" role="tabpanel">
+        <h2>Überblick</h2>
+        <div class="center-content">
+            <p>Der Fraktalgenerator bietet faszinierende Einblicke in mathematische Strukturen wie die Mandelbrot-Menge und verwandte Julia-Mengen.</p>
+            <p>Visualisiere komplexe Formen, passe Farben an, erstelle hochauflösende Bilder und generiere animierte Zoom-Videos. Entdecke die Schönheit der Mathematik auf völlig neue Weise!</p>
+            <img src="https://github.com/M4RKUS28/Fraktalgenerator/blob/main/docs/fraktalgen.gif?raw=true" alt="Fraktal GIF" class="example-image">
         </div>
     </div>
+
+    <!-- PDF-Inhalte -->
+    <div class="tab-pane fade" id="pdf" role="tabpanel">
+        <h2>Wissenschaftliche Inhalte aus der PDF</h2>
+        <h3>1. Die Kardioide</h3>
+        <p>
+            Die Mandelbrot-Menge hat eine zentrale Struktur, die als **Kardioide** bezeichnet wird. Diese herzförmige Region ist der stabile Bereich für Fixpunkte quadratischer Iterationsfunktionen.
+        </p>
+        <p>
+            Die Kardioide wird durch die Gleichung 
+            <code>(1/2)(1 - cos(t))</code> parametrisiert und ist eine Schlüsselstruktur, die zeigt, wie harmonisch Chaos und Ordnung in der Mathematik miteinander verwoben sind.
+        </p>
+
+        <h3>2. Fixpunkte</h3>
+        <p>
+            Fixpunkte spielen eine entscheidende Rolle in der Mathematik der Iterationen:
+        </p>
+        <ul>
+            <li>**Attraktive Fixpunkte**: Punkte, an die sich Iterationen stabil annähern.</li>
+            <li>**Abstoßende Fixpunkte**: Iterationen entfernen sich exponentiell von diesen Punkten.</li>
+            <li>**Indifferente Fixpunkte**: Iterationen bewegen sich entlang einer neutralen Bahn.</li>
+        </ul>
+
+        <h3>3. Feigenbaum-Diagramm</h3>
+        <p>
+            Die Mandelbrot-Menge ist eng mit dem **Feigenbaum-Diagramm** verwandt, das die periodischen Bahnen dynamischer Systeme beschreibt. Die Feigenbaum-Konstante, ~4.669, zeigt universelle Eigenschaften chaotischer Systeme und findet Anwendung in der Physik, Biologie und Computergrafik.
+        </p>
+
+        <h3>4. Dynamische Systeme und Komplexe Zahlen</h3>
+        <p>
+            Die Mandelbrot-Menge ist das Ergebnis iterativer Abbildungen in der komplexen Ebene. Durch die wiederholte Anwendung quadratischer Funktionen können stabile oder chaotische Verläufe in Abhängigkeit vom Startwert dargestellt werden.
+        </p>
+
+        <p>Weitere Details findest du in der vollständigen Seminararbeit:</p>
+        <a href="Seminararbeit_Die%20Mandelbrot-Menge_2022.pdf" target="_blank" class="btn btn-primary">Zur PDF-Datei</a>
+    </div>
+
+    <!-- Downloads -->
+    <div class="tab-pane fade" id="downloads" role="tabpanel">
+        <h2>Downloads</h2>
+        <p>Lade den Fraktalgenerator für deine Plattform herunter und starte deine Entdeckungsreise in die faszinierende Welt der Fraktale!</p>
+        <div>
+            <a href="https://github.com/M4RKUS28/Fraktalgenerator/releases/download/v3.9.10/FraktalgeneratorOfflineInstaller64BitWindows_Fraktalgenerator_v3.9.10.exe" class="btn btn-primary download-btn">Windows (64-bit)</a>
+            <a href="https://github.com/M4RKUS28/Fraktalgenerator/releases/download/v3.9.10/FraktalgeneratorOnlineInstaller.exe" class="btn btn-primary download-btn">Windows (Online Installer)</a>
+            <a href="https://github.com/M4RKUS28/Fraktalgenerator/releases/download/v3.9.10/Release.v3.4.0_Fraktalgenerator.MacOS.zip" class="btn btn-primary download-btn">macOS</a>
+            <a href="https://github.com/M4RKUS28/Fraktalgenerator/releases/download/v3.9.10/Fraktalgenerator-64Bit-linux-v3.8.0" class="btn btn-primary download-btn">Linux (64-bit)</a>
+            <a href="https://github.com/M4RKUS28/Fraktalgenerator/releases/download/v3.9.10/WebAssembly_MultiThreaded_Fraktalgenerator_v3.9.10.zip" class="btn btn-primary download-btn">Browser (WebAssembly, Multi-Threaded)</a>
+            <a href="https://github.com/M4RKUS28/Fraktalgenerator/releases/download/v3.9.10/WebAssembly_Single_threaded-Fraktalgenerator-v3.9.10.zip" class="btn btn-primary download-btn">Browser (WebAssembly, Single-Threaded)</a>
+            <a href="https://github.com/M4RKUS28/Fraktalgenerator/releases/download/v3.9.10/Fraktalgenerator-v3.9.10.apk" class="btn btn-primary download-btn">Android (arm-v8a)</a>
+        </div>
+    </div>
+
+    <!-- Try it Out -->
+    <div class="tab-pane fade" id="tryitout" role="tabpanel">
+        <h2>Try it Out</h2>
+        <p>Teste die Online-Version des Fraktalgenerators direkt in deinem Browser!</p>
+        <iframe 
+            src="https://m4rkus28.codeberg.page/Mandelbrot-Generator-WebappST/@works/Fraktalgenerator.html" 
+            title="Fraktalgenerator Online"
+            style="min-width: 1920px; min-height: 1080px; width: 100%; height: 100%;">
+        </iframe>
 
     <!-- Footer -->
     <footer>
         <p>&copy; 2024 Fraktalgenerator</p>
     </footer>
-
+    </div>
+</div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
