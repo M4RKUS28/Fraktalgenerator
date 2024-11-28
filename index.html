@@ -8,47 +8,96 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
+            font-family: 'Arial', sans-serif;
+        }
+        /* Sticky Header */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: #2a2d34;
+            color: white;
+            padding: 10px 20px;
+        }
+        nav .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5em;
+        }
+        nav .nav-link {
+            color: #f0f0f0 !important;
+        }
+        nav .nav-link:hover {
+            color: #d1d1d1 !important;
+        }
+        /* Tabs Styling */
+        .tab-content {
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        .nav-tabs {
+            margin-bottom: 20px;
+            border-bottom: 2px solid #dee2e6;
+        }
+        .nav-tabs .nav-link {
+            color: #2a2d34;
+            border: none;
+        }
+        .nav-tabs .nav-link.active {
+            background: #dcdfe4;
+            color: #2a2d34;
         }
         .hero {
-            background: linear-gradient(to right, #6200ea, #3700b3);
-            color: #fff;
-            padding: 60px 20px;
+            background: linear-gradient(to bottom, #5d5f71, #2a2d34);
+            color: white;
+            padding: 50px 20px;
             text-align: center;
         }
         .hero h1 {
-            font-size: 3em;
+            font-size: 2.5em;
+            font-weight: bold;
         }
         .hero p {
             font-size: 1.2em;
+            margin-top: 10px;
         }
-        .example-image {
-            max-width: 100%;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        /* Centered GIF */
+        .center-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
         }
         iframe {
             width: 100%;
             height: 500px;
             border: none;
             border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
         footer {
-            background: #333;
-            color: #fff;
+            background: #2a2d34;
+            color: white;
             text-align: center;
-            padding: 20px 0;
+            padding: 10px 0;
         }
         .download-btn {
             margin: 5px;
+            background: #5d5f71;
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+        }
+        .download-btn:hover {
+            background: #434455;
         }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <!-- Sticky Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Fraktalgenerator</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -72,66 +121,63 @@
         <p>Erstelle faszinierende Visualisierungen der Mandelbrot- und Julia-Mengen!</p>
     </section>
 
-    <!-- Überblick -->
-    <section id="overview" class="container py-5">
-        <h2>Überblick</h2>
-        <p>
-            Der Fraktalgenerator dient dazu, die Schönheit mathematischer Strukturen wie der Mandelbrot-Menge und verwandter Julia-Mengen zu erkunden. 
-            Mit diesem leistungsstarken Tool kannst du eigene Fraktale erstellen, Farben anpassen und Videos generieren!
-        </p>
-        <img src="https://github.com/M4RKUS28/Fraktalgenerator/blob/main/docs/fraktalgen.gif?raw=true" alt="Fraktal-GIF" class="example-image my-4">
-    </section>
-
-    <!-- Beispiele -->
-    <section id="examples" class="container py-5">
-        <h2>Beispiele</h2>
-        <div class="row">
-            <div class="col-md-6">
-                <img src="https://github.com/M4RKUS28/Mandelbrot-Generator/blob/76baa565383021a2a83604bb21b63b2192b4ebfa/docs/example2.PNG?raw=true" alt="Beispiel 1" class="example-image">
-            </div>
-            <div class="col-md-6">
-                <img src="https://github.com/M4RKUS28/Mandelbrot-Generator/blob/76baa565383021a2a83604bb21b63b2192b4ebfa/docs/example3.PNG?raw=true" alt="Beispiel 2" class="example-image">
-            </div>
-        </div>
-    </section>
-
-    <!-- PDF-Inhalte -->
-    <section id="pdf" class="container py-5">
-        <h2>PDF-Inhalte</h2>
-        <p>
-            In der Mandelbrot-Menge begegnen wir faszinierenden mathematischen Konzepten wie den Fixpunkten, der Kardioide und dem Feigenbaum-Diagramm. 
-            Erfahre mehr in unserer <a href="Seminararbeit_Die%20Mandelbrot-Menge_2022.pdf" target="_blank">PDF-Datei</a>.
-        </p>
-        <ul>
-            <li>Fixpunkte: Attraktive, abstoßende und indifferente Typen</li>
-            <li>Kardioide: Die Herzform der Mandelbrot-Menge</li>
-            <li>Feigenbaum-Diagramm: Die Verbindung von Ordnung und Chaos</li>
+    <!-- Tabs Content -->
+    <div class="container mt-4">
+        <!-- Tabs Navigation -->
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" role="tab">Überblick</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" id="examples-tab" data-bs-toggle="tab" data-bs-target="#examples" role="tab">Beispiele</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" id="pdf-tab" data-bs-toggle="tab" data-bs-target="#pdf" role="tab">PDF-Inhalte</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" id="downloads-tab" data-bs-toggle="tab" data-bs-target="#downloads" role="tab">Downloads</button>
+            </li>
         </ul>
-    </section>
 
-    <!-- Downloads -->
-    <section id="downloads" class="container py-5">
-        <h2>Downloads</h2>
-        <div>
-            <a href="https://github.com/M4RKUS28/Fraktalgenerator/releases/download/v3.9.10/FraktalgeneratorOfflineInstaller64BitWindows_Fraktalgenerator_v3.9.10.exe" class="btn btn-primary download-btn">Windows (64-bit)</a>
-            <a href="https://github.com/M4RKUS28/Fraktalgenerator/releases/download/v3.9.10/Release.v3.4.0_Fraktalgenerator.MacOS.zip" class="btn btn-primary download-btn">macOS</a>
-            <a href="https://github.com/M4RKUS28/Fraktalgenerator/releases/download/v3.9.10/Fraktalgenerator-64Bit-linux-v3.8.0" class="btn btn-primary download-btn">Linux</a>
-            <a href="https://github.com/M4RKUS28/Fraktalgenerator/releases/download/v3.9.10/Fraktalgenerator-v3.9.10.apk" class="btn btn-primary download-btn">Android</a>
+        <!-- Tabs Content -->
+        <div class="tab-content">
+            <!-- Überblick -->
+            <div class="tab-pane fade show active" id="overview" role="tabpanel">
+                <h2>Überblick</h2>
+                <div class="center-content">
+                    <p>Der Fraktalgenerator dient zur Visualisierung mathematischer Strukturen.</p>
+                    <img src="https://github.com/M4RKUS28/Fraktalgenerator/blob/main/docs/fraktalgen.gif?raw=true" alt="Fraktal GIF" class="example-image">
+                </div>
+            </div>
+            
+            <!-- Beispiele -->
+            <div class="tab-pane fade" id="examples" role="tabpanel">
+                <h2>Beispiele</h2>
+                <img src="https://github.com/M4RKUS28/Mandelbrot-Generator/blob/76baa565383021a2a83604bb21b63b2192b4ebfa/docs/example2.PNG?raw=true" alt="Beispiel">
+            </div>
+
+            <!-- PDF-Inhalte -->
+            <div class="tab-pane fade" id="pdf" role="tabpanel">
+                <h2>Wissenschaftliche Inhalte</h2>
+                <h3>1. Die Kardioide</h3>
+                <p>Die Kardioide beschreibt die zentrale Herzform der Mandelbrot-Menge.</p>
+                <h3>2. Fixpunkte</h3>
+                <p>Es gibt attraktive, abstoßende und indifferente Fixpunkte.</p>
+            </div>
+
+            <!-- Downloads -->
+            <div class="tab-pane fade" id="downloads" role="tabpanel">
+                <h2>Downloads</h2>
+                <a href="#" class="download-btn">Windows</a>
+            </div>
         </div>
-    </section>
-
-    <!-- Impressum -->
-    <section id="impressum" class="container py-5">
-        <h2>Impressum</h2>
-        <p>Entwickelt von Markus Huber. Kontakt: <a href="mailto:markus@example.com">markus@example.com</a></p>
-    </section>
+    </div>
 
     <!-- Footer -->
     <footer>
-        <p>&copy; 2024 Fraktalgenerator. Alle Rechte vorbehalten.</p>
+        <p>&copy; 2024 Fraktalgenerator</p>
     </footer>
 
-    <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
