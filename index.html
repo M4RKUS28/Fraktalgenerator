@@ -72,17 +72,13 @@
         }
         iframe {
             width: 100%;
-            height: 500px;
             border: none;
             border-radius: 8px;
+            min-height: 720px; /* Default minimum height */
+            min-width: 1280px; /* Default minimum width */
+            transition: height 0.5s, width 0.5s;
         }
-        footer {
-            background: #2a2d34;
-            color: white;
-            text-align: center;
-            padding: 4px 0;
-            height: 32px;
-        }
+
         .download-btn {
             margin: 5px;
             background: #5d5f71;
@@ -94,28 +90,27 @@
         .download-btn:hover {
             background: #434455;
         }
+
+        /* Fix for hidden tabs with iframe */
+        .tab-pane {
+            visibility: hidden;
+        }
+
+        .tab-pane.show {
+            visibility: visible;
+        }
+    
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center; /* Align items vertically in the center */
+        }
+        .text-container {
+            font-size: 1.2em;
+        }
     </style>
 </head>
 <body>
-    <!-- Sticky Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Fraktalgenerator</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#overview">Überblick</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#examples">Beispiele</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#pdf">PDF-Inhalte</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#downloads">Downloads</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#impressum">Impressum</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
     <!-- Hero Section -->
     <section class="hero">
         <h1>Fraktalgenerator 🌌✨</h1>
@@ -123,72 +118,110 @@
     </section>
 
     <!-- Tabs Content -->
-    <div class="container mt-4">
+    <div class="container mt-4" style="width: 95%">
         <!-- Tabs Navigation -->
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item">
-                <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" role="tab">Überblick</button>
+                <a class="nav-link active" id="overview-tab" data-bs-toggle="tab" href="#overview" role="tab">Überblick</a>
             </li>
             <li class="nav-item">
-                <button class="nav-link" id="tryitout-tab" data-bs-toggle="tab" data-bs-target="#tryitout" role="tab">Try it out!</button>
+                <a class="nav-link" id="tryitout-tab" data-bs-toggle="tab" href="#tryitout" role="tab">Try it out!</a>
             </li>
             <li class="nav-item">
-                <button class="nav-link" id="examples-tab" data-bs-toggle="tab" data-bs-target="#examples" role="tab">Beispiele</button>
+                <a class="nav-link" id="examples-tab" data-bs-toggle="tab" data-bs-target="#examples" href="#examples" role="tab">Beispiele</a>
             </li>
             <li class="nav-item">
-                <button class="nav-link" id="pdf-tab" data-bs-toggle="tab" data-bs-target="#pdf" role="tab">PDF-Inhalte</button>
+                <a class="nav-link" id="pdf-tab" data-bs-toggle="tab" data-bs-target="#pdf" href="#pdf" role="tab">PDF-Inhalte</a>
             </li>
             <li class="nav-item">
-                <button class="nav-link" id="downloads-tab" data-bs-toggle="tab" data-bs-target="#downloads" role="tab">Downloads</button>
+                <a class="nav-link" id="downloads-tab" data-bs-toggle="tab" href="#downloads" role="tab">Downloads</a>
             </li>
         </ul>
 
         <!-- Tabs Content -->
-        <div class="tab-content">
+        <div class="tab-content" >
             <!-- Überblick -->
-            <div class="tab-pane fade show active" id="overview" role="tabpanel">
+            <div class="tab-pane fade show active" id="overview" role="tabpanel" >
                 <h2>Überblick</h2>
                 <div class="center-content">
                     <p>Der Fraktalgenerator bietet faszinierende Einblicke in mathematische Strukturen wie die Mandelbrot-Menge und verwandte Julia-Mengen.</p>
                     <p>Visualisiere komplexe Formen, passe Farben an, erstelle hochauflösende Bilder und generiere animierte Zoom-Videos. Entdecke die Schönheit der Mathematik auf völlig neue Weise!</p>
                     <img src="https://github.com/M4RKUS28/Fraktalgenerator/blob/main/docs/fraktalgen.gif?raw=true" alt="Fraktal GIF" class="example-image">
                 </div>
+                <h1>Highlights</h1>
+
+                    <div class="highlight-section">
+                        <div class="section-title">Plattformübergreifend:</div>
+                        <ul>
+                            <li>Linux, Windows, macOS, Web, und Android.</li>
+                        </ul>
+                    </div>
+
+                    <div class="highlight-section">
+                        <div class="section-title">Mandelbrot- & Julia-Mengen:</div>
+                        <ul>
+                            <li>Visualisierung in atemberaubender Qualität.</li>
+                        </ul>
+                    </div>
+
+                    <div class="highlight-section">
+                        <div class="section-title">Anpassbare Farben:</div>
+                        <ul>
+                            <li>Wähle zwischen verschiedenen Farbpaletten und Algorithmen.</li>
+                        </ul>
+                    </div>
+
+                    <div class="highlight-section">
+                        <div class="section-title">Fortschrittliche Visualisierungen:</div>
+                        <ul class="highlight-list">
+                            <li>Normalized Iteration Count</li>
+                            <li>Logarithmische Farbverläufe</li>
+                            <li>Iterationszahlen direkt an der Mausposition.</li>
+                        </ul>
+                    </div>
+
+                    <div class="highlight-section">
+                        <div class="section-title">Optimiertes Rendering:</div>
+                        <ul class="highlight-list">
+                            <li>Multi-Threading für schnelle Berechnungen.</li>
+                            <li>High-DPI-Unterstützung für gestochen scharfe Bilder.</li>
+                            <li>Einstellbare Bildgröße und Anti-Aliasing.</li>
+                        </ul>
+                    </div>
+
+                    <div class="highlight-section">
+                        <div class="section-title">Zoom & Animationen:</div>
+                        <ul>
+                            <li>Videos erstellen (z. B. Zoom-Animationen).</li>
+                            <li>Bilderserien für Präsentationen generieren.</li>
+                        </ul>
+                    </div>
+
+                    <div class="highlight-section">
+                        <div class="section-title">Themen & Benutzeroberfläche:</div>
+                        <ul>
+                            <li>Verschiedene Themes (Dark Mode, Fusion, QDarkStyle).</li>
+                            <li>Unterstützung für mehrere Monitore.</li>
+                        </ul>
+                    </div>
+
+                    <div class="highlight-section">
+                        <div class="section-title">Speichern & Laden:</div>
+                        <ul>
+                            <li>Bildeinstellungen sichern und laden.</li>
+                            <li>Generierte Bilder einfach exportieren.</li>
+                        </ul>
+                    </div>
             </div>
 
             <!-- PDF-Inhalte -->
             <div class="tab-pane fade" id="pdf" role="tabpanel">
                 <h2>Wissenschaftliche Inhalte aus der PDF</h2>
-                <h3>1. Die Kardioide</h3>
-                <p>
-                    Die Mandelbrot-Menge hat eine zentrale Struktur, die als **Kardioide** bezeichnet wird. Diese herzförmige Region ist der stabile Bereich für Fixpunkte quadratischer Iterationsfunktionen.
-                </p>
-                <p>
-                    Die Kardioide wird durch die Gleichung 
-                    <code>(1/2)(1 - cos(t))</code> parametrisiert und ist eine Schlüsselstruktur, die zeigt, wie harmonisch Chaos und Ordnung in der Mathematik miteinander verwoben sind.
-                </p>
-
-                <h3>2. Fixpunkte</h3>
-                <p>
-                    Fixpunkte spielen eine entscheidende Rolle in der Mathematik der Iterationen:
-                </p>
-                <ul>
-                    <li>**Attraktive Fixpunkte**: Punkte, an die sich Iterationen stabil annähern.</li>
-                    <li>**Abstoßende Fixpunkte**: Iterationen entfernen sich exponentiell von diesen Punkten.</li>
-                    <li>**Indifferente Fixpunkte**: Iterationen bewegen sich entlang einer neutralen Bahn.</li>
-                </ul>
-
-                <h3>3. Feigenbaum-Diagramm</h3>
-                <p>
-                    Die Mandelbrot-Menge ist eng mit dem **Feigenbaum-Diagramm** verwandt, das die periodischen Bahnen dynamischer Systeme beschreibt. Die Feigenbaum-Konstante, ~4.669, zeigt universelle Eigenschaften chaotischer Systeme und findet Anwendung in der Physik, Biologie und Computergrafik.
-                </p>
-
-                <h3>4. Dynamische Systeme und Komplexe Zahlen</h3>
-                <p>
-                    Die Mandelbrot-Menge ist das Ergebnis iterativer Abbildungen in der komplexen Ebene. Durch die wiederholte Anwendung quadratischer Funktionen können stabile oder chaotische Verläufe in Abhängigkeit vom Startwert dargestellt werden.
-                </p>
-
+                <div id="pdf-container"></div>
+                <!-- Download-Link zur PDF -->
                 <p>Weitere Details findest du in der vollständigen Seminararbeit:</p>
-                <a href="Seminararbeit_Die%20Mandelbrot-Menge_2022.pdf" target="_blank" class="btn btn-primary">Zur PDF-Datei</a>
+                <a href="https://github.com/M4RKUS28/Fraktalgenerator/blob/main/docs/Seminararbeit_Die%20Mandelbrot-Menge_2022.pdf" target="_blank" class="btn btn-primary">Zur PDF-Datei</a>
+
             </div>
 
             <!-- Downloads -->
@@ -207,23 +240,96 @@
             </div>
 
             <!-- Try it Out -->
-            <div class="tab-pane fade" id="tryitout" role="tabpanel">
+            <div class="tab-pane fade" id="tryitout" role="tabpanel" style="width: 100%; margin: auto;">
                 <h2>Try it Out</h2>
-                <p>Teste die Online-Version des Fraktalgenerators direkt in deinem Browser!</p>
-                <iframe 
-                    src="https://m4rkus28.codeberg.page/Mandelbrot-Generator-WebappST/@works/Fraktalgenerator.html" 
-                    title="Fraktalgenerator Online"
-                    style="min-width: 1280px; min-height: 720; width: 100%; height: 100%;">
-                </iframe>
+                <div class="flex-container">
+                    <div class="text-container">
+                        <p>Teste die Online-Version des Fraktalgenerators direkt in deinem Browser!</p>
+                    </div>
+                    <button class="fullscreen-btn btn btn-primary" id="fullscreenBtn">🖥️ Vollbild</button>
+                </div>
+                <div style="position: relative;">
+                    <iframe 
+                        id="fractalIframe"
+                        src="" 
+                        title="Fraktalgenerator Online"
+                        style="min-height: 980px; min-width: 1280px;">
+                    </iframe>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2024 Fraktalgenerator</p>
-    </footer>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+
+    <script>
+        // Ensure iframe starts loading when tab is shown
+        var myTab = new bootstrap.Tab(document.getElementById('tryitout-tab'));
+
+        document.getElementById('myTab').addEventListener('shown.bs.tab', function (event) {
+            var targetTab = event.target; // Active tab
+            if (targetTab.id === 'tryitout-tab') {
+                var iframe = document.getElementById('fractalIframe');
+                // Load the iframe source when tab is shown
+                iframe.src = "https://m4rkus28.codeberg.page/Mandelbrot-Generator-WebappST/@works/Fraktalgenerator.html";
+            }
+        });
+
+         // Fullscreen toggle for iframe
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        const iframe = document.getElementById('fractalIframe');
+
+        fullscreenBtn.addEventListener('click', () => {
+            if (iframe.requestFullscreen) {
+                iframe.requestFullscreen();
+            } else if (iframe.mozRequestFullScreen) { // Firefox
+                iframe.mozRequestFullScreen();
+            } else if (iframe.webkitRequestFullscreen) { // Chrome and Safari
+                iframe.webkitRequestFullscreen();
+            } else if (iframe.msRequestFullscreen) { // IE/Edge
+                iframe.msRequestFullscreen();
+            }
+        });
+
+        // Exit fullscreen on escape key
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                if (document.fullscreenElement) {
+                    document.exitFullscreen();
+                }
+            }
+        });
+
+
+        const url = 'https://github.com/M4RKUS28/Fraktalgenerator/blob/main/docs/Seminararbeit_Die%20Mandelbrot-Menge_2022.pdf';
+        
+            // PDF.js initialisieren
+            const loadingTask = pdfjsLib.getDocument(url);
+            
+            loadingTask.promise.then(pdf => {
+                console.log('PDF geladen');
+                
+                // Ersten Seiteninhalt rendern
+                pdf.getPage(1).then(page => {
+                    const scale = 1.5;
+                    const viewport = page.getViewport({ scale: scale });
+                    
+                    // Canvas zum Rendern der Seite
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+                    
+                    document.getElementById('pdf-container').appendChild(canvas);
+                    
+                    // Seite rendern
+                    page.render({
+                        canvasContext: ctx,
+                        viewport: viewport
+                    });
+                });
+            });
+        </script>
 </body>
 </html>
