@@ -1,0 +1,1244 @@
+<!DOCTYPE html> <html lang="de" class="dark-mode"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>FractalVerse | Explore the Infinite Beauty of Fractals</title> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> <style> /* Core Variables */ :root { --dark-bg-primary: #121212; --dark-bg-secondary: #1e1e1e; --dark-bg-tertiary: #2d2d2d; --dark-text-primary: #ffffff; --dark-text-secondary: #b3b3b3; --dark-accent: #7b2cbf; --dark-accent-secondary: #5a189a; --dark-card-bg: rgba(30, 30, 30, 0.8);
+--light-bg-primary: #ffffff;
+        --light-bg-secondary: #f5f5f7;
+        --light-bg-tertiary: #e5e5e7;
+        --light-text-primary: #121212;
+        --light-text-secondary: #4a4a4a;
+        --light-accent: #5a189a;
+        --light-accent-secondary: #7b2cbf;
+        --light-card-bg: rgba(255, 255, 255, 0.8);
+        
+        --transition-speed: 0.3s;
+        
+        /* Default to dark mode */
+        --bg-primary: var(--dark-bg-primary);
+        --bg-secondary: var(--dark-bg-secondary);
+        --bg-tertiary: var(--dark-bg-tertiary);
+        --text-primary: var(--dark-text-primary);
+        --text-secondary: var(--dark-text-secondary);
+        --accent: var(--dark-accent);
+        --accent-secondary: var(--dark-accent-secondary);
+        --card-bg: var(--dark-card-bg);
+    }
+    
+    .light-mode {
+        --bg-primary: var(--light-bg-primary);
+        --bg-secondary: var(--light-bg-secondary);
+        --bg-tertiary: var(--light-bg-tertiary);
+        --text-primary: var(--light-text-primary);
+        --text-secondary: var(--light-text-secondary);
+        --accent: var(--light-accent);
+        --accent-secondary: var(--light-accent-secondary);
+        --card-bg: var(--light-card-bg);
+    }
+    
+    /* Global Styles */
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        transition: color var(--transition-speed), background-color var(--transition-speed);
+    }
+    
+    body {
+        font-family: 'Montserrat', 'Segoe UI', Roboto, sans-serif;
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
+        line-height: 1.6;
+        overflow-x: hidden;
+        position: relative;
+    }
+    
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: var(--bg-secondary);
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: var(--accent);
+        border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: var(--accent-secondary);
+    }
+ⓘ
+For code that is intended to be used in Siemens products or services, the code generation features of our AI Services may only be used after prior approval of your responsible organizational unit.
+/* Background Animation */
+    .bg-animation {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        opacity: 0.2;
+        pointer-events: none;
+    }
+    
+    /* Header and Navigation */
+    header {
+        position: relative;
+        background-color: var(--bg-primary);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+    }
+    
+    .navbar {
+        background: rgba(var(--bg-primary), 0.8);
+        backdrop-filter: blur(10px);
+        padding: 1rem 2rem;
+        transition: all var(--transition-speed);
+    }
+    
+    .navbar-brand {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+    }
+    
+    .navbar-brand i {
+        margin-right: 10px;
+        color: var(--accent);
+    }
+    
+    .navbar-nav .nav-link {
+        color: var(--text-primary);
+        font-weight: 500;
+        margin-left: 1rem;
+        padding: 0.5rem 1rem;
+        border-radius: 25px;
+        transition: all 0.2s;
+    }
+    
+    .navbar-nav .nav-link:hover,
+    .navbar-nav .nav-link.active {
+        background-color: var(--accent);
+        color: white;
+        transform: translateY(-2px);
+    }
+    
+    .theme-toggle {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1.2rem;
+        color: var(--text-primary);
+        transition: transform 0.3s ease;
+    }
+    
+    .theme-toggle:hover {
+        transform: rotate(30deg);
+    }
+    
+    /* Hero Section */
+    .hero {
+        position: relative;
+        padding: 8rem 0 6rem;
+        background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+        overflow: hidden;
+    }
+    
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+    }
+    
+    .hero h1 {
+        font-size: 4rem;
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(90deg, var(--accent) 0%, #9d4edd 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        animation: glow 2s infinite alternate;
+    }
+    
+    @keyframes glow {
+        0% {
+            text-shadow: 0 0 10px rgba(123, 44, 191, 0.3);
+        }
+        100% {
+            text-shadow: 0 0 20px rgba(123, 44, 191, 0.6), 0 0 30px rgba(123, 44, 191, 0.4);
+        }
+    }
+    
+    .hero p {
+        font-size: 1.4rem;
+        margin-bottom: 2rem;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+        color: var(--text-secondary);
+    }
+    
+    .hero-btn {
+        display: inline-block;
+        background: linear-gradient(90deg, var(--accent) 0%, var(--accent-secondary) 100%);
+        color: white;
+        font-size: 1.1rem;
+        font-weight: 600;
+        padding: 0.8rem 2rem;
+        border-radius: 50px;
+        text-decoration: none;
+        transition: all 0.3s;
+        box-shadow: 0 4px 15px rgba(123, 44, 191, 0.3);
+        margin: 0 0.5rem 1rem;
+    }
+    
+    .hero-btn:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 7px 20px rgba(123, 44, 191, 0.5);
+        color: white;
+    }
+    
+    .hero-image {
+        max-width: 100%;
+        border-radius: 10px;
+        box-shadow: 0 20px 80px rgba(0, 0, 0, 0.3);
+        transform: perspective(1000px) rotateY(-5deg) rotateX(5deg);
+        transition: all 0.5s ease;
+    }
+    
+    .hero-image:hover {
+        transform: perspective(1000px) rotateY(0) rotateX(0);
+    }
+    
+    .fractal-loader {
+        position: absolute;
+        width: 400px;
+        height: 400px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 0.1;
+        z-index: 1;
+        animation: rotate 60s linear infinite;
+    }
+    
+    @keyframes rotate {
+        from {
+            transform: translate(-50%, -50%) rotate(0deg);
+        }
+        to {
+            transform: translate(-50%, -50%) rotate(360deg);
+        }
+    }
+    
+    /* Main Content */
+    .content-section {
+        padding: 5rem 0;
+        position: relative;
+    }
+    
+    .section-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: var(--text-primary);
+        text-align: center;
+    }
+    
+    .section-title span {
+        color: var(--accent);
+    }
+    
+    .section-subtitle {
+        font-size: 1.2rem;
+        text-align: center;
+        max-width: 800px;
+        margin: 0 auto 3rem;
+        color: var(--text-secondary);
+    }
+    
+    /* Cards */
+    .feature-card {
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        overflow: hidden;
+        height: 100%;
+        padding: 2rem;
+        transition: all 0.3s;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    }
+    
+    .feature-card .icon {
+        font-size: 3rem;
+        color: var(--accent);
+        margin-bottom: 1.5rem;
+        display: inline-block;
+        transition: transform 0.3s;
+    }
+    
+    .feature-card:hover .icon {
+        transform: scale(1.2);
+    }
+    
+    .feature-card h3 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: var(--text-primary);
+    }
+    
+    .feature-card p {
+        color: var(--text-secondary);
+        margin-bottom: 0;
+    }
+    
+    /* Tab Content */
+    .nav-tabs {
+        border: none;
+        margin-bottom: 2rem;
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+    
+    .nav-tabs .nav-link {
+        background: transparent;
+        border: none;
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+        font-weight: 500;
+        padding: 1rem 1.5rem;
+        border-radius: 50px;
+        transition: all 0.3s;
+    }
+    
+    .nav-tabs .nav-link:hover {
+        color: var(--accent);
+    }
+    
+    .nav-tabs .nav-link.active {
+        background-color: var(--accent);
+        color: white;
+        box-shadow: 0 4px 15px rgba(123, 44, 191, 0.3);
+    }
+    
+    .tab-content {
+        padding: 2rem;
+        background: var(--bg-secondary);
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .tab-pane {
+        transition: opacity 0.3s ease-in-out;
+    }
+    
+    .tab-pane.fade {
+        opacity: 0;
+    }
+    
+    .tab-pane.show {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    /* Try it Out Tab */
+    .iframe-container {
+        position: relative;
+        width: 100%;
+        height: 0;
+        padding-bottom: 72%; /* Maintain 16:9 aspect ratio */
+        overflow: hidden;
+        border-radius: 12px;
+        box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+    }
+    
+    .iframe-container iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+        min-height: 0;
+        min-width: 0;
+        transition: all 0.3s ease;
+    }
+    
+    .fullscreen-btn {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        z-index: 10;
+        background: rgba(123, 44, 191, 0.7);
+        border: none;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        backdrop-filter: blur(5px);
+        transition: all 0.3s;
+    }
+    
+    .fullscreen-btn:hover {
+        background: var(--accent);
+        transform: scale(1.1);
+    }
+    
+    /* Examples Tab */
+    .gallery-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-gap: 20px;
+    }
+    
+    .gallery-item {
+        position: relative;
+        overflow: hidden;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        transition: all 0.3s;
+    }
+    
+    .gallery-item:hover {
+        transform: scale(1.05);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+    }
+    
+    .gallery-item img {
+        width: 100%;
+        height: auto;
+        display: block;
+        transition: all 0.5s;
+    }
+    
+    .gallery-item:hover img {
+        transform: scale(1.1);
+    }
+    
+    /* Download Section */
+    .download-section {
+        padding: 5rem 0;
+        background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+    }
+    
+    .download-option {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        background: var(--card-bg);
+        border-radius: 15px;
+        padding: 1.5rem;
+        transition: all 0.3s;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .download-option:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    .download-icon {
+        width: 60px;
+        height: 60px;
+        margin-right: 1.5rem;
+        object-fit: contain;
+        transition: transform 0.3s;
+    }
+    
+    .download-option:hover .download-icon {
+        transform: scale(1.2) rotate(5deg);
+    }
+    
+    .download-info {
+        flex: 1;
+    }
+    
+    .download-info h4 {
+        margin: 0 0 0.5rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        font-size: 1.25rem;
+    }
+    
+    .download-info p {
+        margin: 0;
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+    }
+    
+    .download-btn {
+        background: linear-gradient(90deg, var(--accent) 0%, var(--accent-secondary) 100%);
+        color: white;
+        font-weight: 600;
+        padding: 0.75rem 1.5rem;
+        border-radius: 50px;
+        text-decoration: none;
+        transition: all 0.3s;
+        box-shadow: 0 4px 15px rgba(123, 44, 191, 0.3);
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .download-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 7px 20px rgba(123, 44, 191, 0.5);
+        color: white;
+    }
+    
+    /* Math/Fractal Info Section */
+    .info-card {
+        background: var(--card-bg);
+        border-radius: 15px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s;
+    }
+    
+    .info-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    }
+    
+    .info-card h3 {
+        font-size: 1.6rem;
+        margin-bottom: 1rem;
+        color: var(--text-primary);
+    }
+    
+    .info-card p {
+        color: var(--text-secondary);
+        line-height: 1.8;
+    }
+    
+    .math-formula {
+        background: var(--bg-tertiary);
+        padding: 1.5rem;
+        border-radius: 10px;
+        margin: 1.5rem 0;
+        overflow-x: auto;
+        text-align: center;
+        font-size: 1.2rem;
+    }
+    
+    /* PDF Viewer */
+    .pdf-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .pdf-container canvas {
+        max-width: 100%;
+        border-radius: 8px;
+        margin-bottom: 2rem;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    }
+    
+    /* Footer */
+    footer {
+        background-color: var(--bg-secondary);
+        color: var(--text-secondary);
+        padding: 3rem 0;
+        position: relative;
+    }
+    
+    .footer-content {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-bottom: 2rem;
+    }
+    
+    .footer-column {
+        flex: 1;
+        min-width: 250px;
+        margin-bottom: 2rem;
+    }
+    
+    .footer-column h4 {
+        color: var(--text-primary);
+        font-size: 1.25rem;
+        margin-bottom: 1.5rem;
+        position: relative;
+    }
+    
+    .footer-column h4::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 50px;
+        height: 3px;
+        background-color: var(--accent);
+    }
+    
+    .footer-column ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .footer-column ul li {
+        margin-bottom: 0.75rem;
+    }
+    
+    .footer-column ul li a {
+        color: var(--text-secondary);
+        text-decoration: none;
+        transition: all 0.3s;
+    }
+    
+    .footer-column ul li a:hover {
+        color: var(--accent);
+        padding-left: 5px;
+    }
+    
+    .social-links {
+        display: flex;
+        gap: 15px;
+    }
+    
+    .social-links a {
+        background: var(--bg-tertiary);
+        color: var(--text-secondary);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        transition: all 0.3s;
+    }
+    
+    .social-links a:hover {
+        background: var(--accent);
+        color: white;
+        transform: translateY(-3px);
+    }
+    
+    .copyright {
+        text-align: center;
+        padding-top: 2rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 992px) {
+        .hero h1 {
+            font-size: 3rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+        }
+        
+        .feature-card {
+            margin-bottom: 2rem;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .hero {
+            padding: 6rem 0 4rem;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+        }
+        
+        .hero p {
+            font-size: 1rem;
+        }
+        
+        .hero-btn {
+            font-size: 1rem;
+            padding: 0.7rem 1.5rem;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+        }
+        
+        .iframe-container {
+            padding-bottom: 85%;
+        }
+        
+        .footer-column {
+            flex-basis: 100%;
+        }
+    }
+    
+    /* Animations */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .fade-in {
+        animation: fadeIn 1s ease-out forwards;
+    }
+    
+    .delay-1 {
+        animation-delay: 0.2s;
+    }
+    
+    .delay-2 {
+        animation-delay: 0.4s;
+    }
+    
+    .delay-3 {
+        animation-delay: 0.6s;
+    }
+</style>
+
+</head> <body> <!-- Animated Background --> <div class="bg-animation" id="bg-animation"></div>
+<!-- Header and Navigation -->
+<header>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-square-root-variable"></i>FractalVerse
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <i class="fas fa-bars" style="color: var(--text-primary);"></i>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#overview">Overview</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#try-it">Try It Out</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#examples">Gallery</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#learn">Learn</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#downloads">Downloads</a>
+                    </li>
+                </ul>
+                <button class="theme-toggle ms-3" id="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="fractal-loader">
+        <img src="https://github.com/M4RKUS28/Fraktalgenerator/blob/main/docs/mandelbrot.png?raw=true" alt="Fractal loader">
+    </div>
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 hero-content fade-in">
+                <h1>Explore the Infinite Beauty of Fractals</h1>
+                <p>Discover the mesmerizing world of mathematical art with our powerful Fractal Generator. Dive into the infinite complexity of Mandelbrot and Julia sets.</p>
+                <a href="#try-it" class="hero-btn">
+                    <i class="fas fa-play me-2"></i>Try It Now
+                </a>
+                <a href="#downloads" class="hero-btn">
+                    <i class="fas fa-download me-2"></i>Download
+                </a>
+            </div>
+            <div class="col-lg-6 fade-in delay-1">
+                <img src="https://github.com/M4RKUS28/Fraktalgenerator/blob/main/docs/fraktalgen.gif?raw=true" alt="Fractal Animation" class="hero-image">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="content-section" id="overview">
+    <div class="container">
+        <h2 class="section-title fade-in">Unleash Your <span>Creativity</span></h2>
+        <p class="section-subtitle fade-in delay-1">Explore endless mathematical beauty with our powerful fractal visualization tool</p>
+        
+        <div class="row">
+            <div class="col-lg-4 col-md-6 mb-4 fade-in delay-1">
+                <div class="feature-card">
+                    <i class="fas fa-laptop-code icon"></i>
+                    <h3>Cross-Platform</h3>
+                    <p>Seamlessly works on Windows, macOS, Linux, Android, and directly in your web browser. Your exploration continues wherever you are.</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 mb-4 fade-in delay-2">
+                <div class="feature-card">
+                    <i class="fas fa-palette icon"></i>
+                    <h3>Stunning Visuals</h3>
+                    <p>Create breathtaking images with customizable color palettes, advanced algorithms, and high-resolution rendering.</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 mb-4 fade-in delay-3">
+                <div class="feature-card">
+                    <i class="fas fa-bolt icon"></i>
+                    <h3>High Performance</h3>
+                    <p>Multi-threaded rendering engine delivers lightning-fast calculations even for the most complex fractals.</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 mb-4 fade-in delay-1">
+                <div class="feature-card">
+                    <i class="fas fa-bezier-curve icon"></i>
+                    <h3>Mandelbrot & Julia Sets</h3>
+                    <p>Explore both the famous Mandelbrot set and the related Julia sets with intuitive navigation tools.</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 mb-4 fade-in delay-2">
+                <div class="feature-card">
+                    <i class="fas fa-film icon"></i>
+                    <h3>Animation Creation</h3>
+                    <p>Generate mesmerizing zoom sequences and animations to showcase the infinite complexity of fractals.</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 mb-4 fade-in delay-3">
+                <div class="feature-card">
+                    <i class="fas fa-save icon"></i>
+                    <h3>Export & Share</h3>
+                    <p>Save your creations in high resolution for printing or sharing online. Show the world your fractal discoveries.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Try It Out Section -->
+<section class="content-section bg-dark" id="try-it">
+    <div class="container">
+        <h2 class="section-title fade-in">Experience It <span>Now</span></h2>
+        <p class="section-subtitle fade-in">Explore the fractal universe directly in your browser</p>
+        
+        <div class="iframe-container fade-in delay-1">
+            <iframe id="fractalIframe" src="" title="Fraktalgenerator Online" allowfullscreen></iframe>
+            <button class="fullscreen-btn" id="fullscreenBtn">
+                <i class="fas fa-expand"></i>
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Learning Section -->
+<section class="content-section" id="learn">
+    <div class="container">
+        <h2 class="section-title fade-in">Discover the <span>Mathematics</span></h2>
+        <p class="section-subtitle fade-in">Unravel the fascinating mathematics behind these infinite patterns</p>
+        
+        <div class="row">
+            <div class="col-lg-6 mb-4 fade-in delay-1">
+                <div class="info-card">
+                    <h3>What is the Mandelbrot Set?</h3>
+                    <p>The Mandelbrot set is one of the most famous fractals in mathematics. It consists of all complex numbers <em>c</em> for which the function $z_{n+1} = z_n^2 + c$ does not diverge to infinity when starting with $z_0 = 0$.</p>
+                    <div class="math-formula">
+                        $$M = \{c \in \mathbb{C} : |z_n| \text{ remains bounded as } n \to \infty\}$$
+                    </div>
+                    <p>This set is particularly known for its incredible self-similarity and complexity, even at increasing magnifications. When zooming into an image of the Mandelbrot set, new fractal structures continuously emerge.</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-6 mb-4 fade-in delay-2">
+                <div class="info-card">
+                    <h3>The Julia Sets</h3>
+                    <p>Julia sets are closely related to the Mandelbrot set. For each complex number <em>c</em>, there is a corresponding Julia set. The Julia set consists of all complex numbers $z_0$ whose orbit under iteration of $z_{n+1} = z_n^2 + c$ remains bounded.</p>
+                    <div class="math-formula">
+                        $$J_c = \{z_0 \in \mathbb{C} : \text{the sequence } z_n \text{ remains bounded}\}$$
+                    </div>
+                    <p>The Mandelbrot set serves as a map of Julia sets - points inside the Mandelbrot set correspond to connected Julia sets, while points outside correspond to disconnected "dust-like" Julia sets.</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-12 mb-4 fade-in delay-3">
+                <div class="info-card">
+                    <h3>Escape Time Algorithm</h3>
+                    <p>The most common method for visualizing these sets is the escape time algorithm. For each point in the complex plane:</p>
+                    <ol>
+                        <li>We iterate the function $z_{n+1} = z_n^2 + c$ (starting with $z_0 = 0$ for the Mandelbrot set)</li>
+                        <li>We count how many iterations it takes before $|z_n| > 2$ (at which point we know it will escape to infinity)</li>
+                        <li>We assign a color based on this "escape time"</li>
+                    </ol>
+                    <p>Points that never escape (or take more iterations than our maximum limit) are considered part of the set and typically colored black.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Example Gallery Section -->
+<section class="content-section bg-dark" id="examples">
+    <div class="container">
+        <h2 class="section-title fade-in">Fractal <span>Gallery</span></h2>
+        <p class="section-subtitle fade-in">Behold the mesmerizing beauty of mathematical art</p>
+        
+        <div class="gallery-container fade-in delay-1">
+            <div class="gallery-item">
+                <img src="https://github.com/M4RKUS28/Fraktalgenerator/blob/108f63fa4c7151f31f9fe67686a264b29909496e/docs/example1.PNG?raw=true" alt="Fractal Example 1">
+            </div>
+            <div class="gallery-item">
+                <img src="https://github.com/M4RKUS28/Fraktalgenerator/blob/108f63fa4c7151f31f9fe67686a264b29909496e/docs/example2.PNG?raw=true" alt="Fractal Example 2">
+            </div>
+            <div class="gallery-item">
+                <img src="https://github.com/M4RKUS28/Fraktalgenerator/blob/108f63fa4c7151f31f9fe67686a264b29909496e/docs/example3.PNG?raw=true" alt="Fractal Example 3">
+            </div>
+            <div class="gallery-item">
+                <img src="https://github.com/M4RKUS28/Fraktalgenerator/blob/108f63fa4c7151f31f9fe67686a264b29909496e/docs/example4.PNG?raw=true" alt="Fractal Example 4">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Downloads Section -->
+<section class="download-section" id="downloads">
+    <div class="container">
+        <h2 class="section-title fade-in">Download <span>Now</span></h2>
+        <p class="section-subtitle fade-in">Get the Fractal Generator for your platform and start exploring</p>
+        
+        <div class="row">
+            <div class="col-lg-6 fade-in delay-1">
+                <div class="download-option">
+                    <img src="https://cdn-icons-png.flaticon.com/512/888/888882.png" alt="Windows" class="download-icon">
+                    <div class="download-info">
+                        <h4>Windows (64-bit)</h4>
+                        <p>Full offline installer for Windows 10/11</p>
+                    </div>
+                    <a href="https://github.com/M4RKUS28/Fraktalgenerator/releases/download/v3.9.10/FraktalgeneratorOfflineInstaller64BitWindows_Fraktalgenerator_v3.9.10.exe" class="download-btn">
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                </div>
+            </div>
+            
+            <div class="col-lg-6 fade-in delay-1">
+                <div class="download-option">
+                    <img src="https://cdn-icons-png.flaticon.com/512/888/888841.png" alt="Windows Online" class="download-icon">
+                    <div class="download-info">
+                        <h4>Windows (Online Installer)</h4>
+                        <p>Smaller download, requires internet during installation</p>
+                    </div>
+                    <a href="https://github.com/M4RKUS28/Fraktalgenerator/releases/download/v3.9.10/FraktalgeneratorOnlineInstaller.exe" class="download-btn">
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                </div>
+            </div>
+            
+            <div class="col-lg-6 fade-in delay-2">
+                <div class="download-option">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2/2235.png" alt="macOS" class="download-icon">
+                    <div class="download-info">
+                        <h4>macOS</h4>
+                        <p>Compatible with Intel and Apple Silicon Macs</p>
+                    </div>
+                    <a href="https://github.com/M4RKUS28/Fraktalgenerator/releases/download/v3.9.10/Release.v3.4.0_Fraktalgenerator.MacOS.zip" class="download-btn">
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                </div>
+            </div>
+            
+            <div class="col-lg-6 fade-in delay-2">
+                <div class="download-option">
+                    <img src="https://cdn-icons-png.flaticon.com/512/226/226772.png" alt="Linux" class="download-icon">
+                    <div class="download-info">
+                        <h4>Linux (64-bit)</h4>
+                        <p>Executable for modern Linux distributions</p>
+                    </div>
+                    <a href="https://github.com/M4RKUS28/Fraktalgenerator/releases/download/v3.9.10/Fraktalgenerator-64Bit-linux-v3.8.0" class="download-btn">
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                </div>
+            </div>
+            
+            <div class="col-lg-6 fade-in delay-3">
+                <div class="download-option">
+                    <img src="https://cdn-icons-png.flaticon.com/512/732/732204.png" alt="Browser" class="download-icon">
+                    <div class="download-info">
+                        <h4>Browser (Multi-Threaded)</h4>
+                        <p>WebAssembly version with multi-threading support</p>
+                    </div>
+                    <a href="https://github.com/M4RKUS28/Fraktalgenerator/releases/download/v3.9.10/WebAssembly_MultiThreaded_Fraktalgenerator_v3.9.10.zip" class="download-btn">
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                </div>
+            </div>
+            
+            <div class="col-lg-6 fade-in delay-3">
+                <div class="download-option">
+                    <img src="https://cdn-icons-png.flaticon.com/512/732/732190.png" alt="Browser Simple" class="download-icon">
+                    <div class="download-info">
+                        <h4>Browser (Single-Threaded)</h4>
+                        <p>Compatible with browsers that don't support SharedArrayBuffer</p>
+                    </div>
+                    <a href="https://github.com/M4RKUS28/Fraktalgenerator/releases/download/v3.9.10/WebAssembly_Single_threaded-Fraktalgenerator-v3.9.10.zip" class="download-btn">
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                </div>
+            </div>
+            
+            <div class="col-lg-6 fade-in delay-4">
+                <div class="download-option">
+                    <img src="https://cdn-icons-png.flaticon.com/512/888/888839.png" alt="Android" class="download-icon">
+                    <div class="download-info">
+                        <h4>Android (arm-v8a)</h4>
+                        <p>For modern Android smartphones and tablets</p>
+                    </div>
+                    <a href="https://github.com/M4RKUS28/Fraktalgenerator/releases/download/v3.9.10/Fraktalgenerator-v3.9.10.apk" class="download-btn">
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                </div>
+            </div>
+            
+            <div class="col-lg-6 fade-in delay-4">
+                <div class="download-option">
+                    <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="Source Code" class="download-icon">
+                    <div class="download-info">
+                        <h4>Source Code</h4>
+                        <p>Access the full source code on GitHub</p>
+                    </div>
+                    <a href="https://github.com/M4RKUS28/Fraktalgenerator" class="download-btn">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h4>FractalVerse</h4>
+                <p>A powerful tool for exploring the fascinating world of fractals through mathematical visualization.</p>
+                <div class="social-links mt-3">
+                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#overview">Overview</a></li>
+                    <li><a href="#try-it">Try It Online</a></li>
+                    <li><a href="#examples">Gallery</a></li>
+                    <li><a href="#learn">Learn</a></li>
+                    <li><a href="#downloads">Downloads</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="https://github.com/M4RKUS28/Fraktalgenerator/blob/main/docs/Seminararbeit_Die%20Mandelbrot-Menge_2022.pdf" target="_blank">Research Paper (PDF)</a></li>
+                    <li><a href="https://github.com/M4RKUS28/Fraktalgenerator/issues">Report Issues</a></li>
+                    <li><a href="https://github.com/M4RKUS28/Fraktalgenerator/wiki">Documentation</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2023 FractalVerse by Markus Huber. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-chtml.js"></script>
+
+<script>
+    // Theme toggle functionality
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = themeToggle.querySelector('i');
+    const htmlElement = document.documentElement;
+    
+    themeToggle.addEventListener('click', () => {
+        if (htmlElement.classList.contains('light-mode')) {
+            htmlElement.classList.remove('light-mode');
+            themeIcon.classList.remove('fa-sun');
+            themeIcon.classList.add('fa-moon');
+            localStorage.setItem('theme', 'dark');
+        } else {
+            htmlElement.classList.add('light-mode');
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+            localStorage.setItem('theme', 'light');
+        }
+    });
+    
+    // Check saved theme preference
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+        htmlElement.classList.add('light-mode');
+        themeIcon.classList.remove('fa-moon');
+        themeIcon.classList.add('fa-sun');
+    }
+    
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            
+            if (targetElement) {
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+                
+                // Update active class on nav
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('active');
+                });
+                this.classList.add('active');
+            }
+        });
+    });
+    
+    // Load iframe when tab is visible
+    function handleIntersection(entries, observer) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const iframe = document.getElementById('fractalIframe');
+                if (!iframe.src) {
+                    iframe.src = "https://m4rkus28.codeberg.page/Mandelbrot-Generator-WebappST/@works/Fraktalgenerator.html";
+                }
+                observer.unobserve(entry.target);
+            }
+        });
+    }
+    
+    const observer = new IntersectionObserver(handleIntersection, { threshold: 0.1 });
+    const tryItSection = document.getElementById('try-it');
+    observer.observe(tryItSection);
+    
+    // Fullscreen toggle for iframe
+    const fullscreenBtn = document.getElementById('fullscreenBtn');
+    const iframe = document.getElementById('fractalIframe');
+    
+    fullscreenBtn.addEventListener('click', () => {
+        if (iframe.requestFullscreen) {
+            iframe.requestFullscreen();
+        } else if (iframe.mozRequestFullScreen) { // Firefox
+            iframe.mozRequestFullScreen();
+        } else if (iframe.webkitRequestFullscreen) { // Chrome and Safari
+            iframe.webkitRequestFullscreen();
+        } else if (iframe.msRequestFullscreen) { // IE/Edge
+            iframe.msRequestFullscreen();
+        }
+    });
+    
+    // Background animation
+    const bgAnimation = document.getElementById('bg-animation');
+    
+    function createFractalShape() {
+        const shape = document.createElement('div');
+        shape.style.position = 'absolute';
+        
+        // Random position
+        shape.style.left = `${Math.random() * 100}%`;
+        shape.style.top = `${Math.random() * 100}%`;
+        
+        // Random size
+        const size = Math.random() * 150 + 50;
+        shape.style.width = `${size}px`;
+        shape.style.height = `${size}px`;
+        
+        // Styling
+        shape.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+        shape.style.background = `radial-gradient(circle, rgba(123,44,191,0.2) 0%, rgba(90,24,154,0.1) 70%, rgba(0,0,0,0) 100%)`;
+        
+        // Animation
+        shape.style.animation = `float ${Math.random() * 10 + 10}s linear infinite`;
+        shape.style.opacity = Math.random() * 0.3;
+        
+        // Add to background
+        bgAnimation.appendChild(shape);
+        
+        // Remove after some time
+        setTimeout(() => {
+            shape.remove();
+        }, 15000);
+    }
+    
+    // Create initial shapes
+    for (let i = 0; i < 15; i++) {
+        createFractalShape();
+    }
+    
+    // Continue creating shapes
+    setInterval(createFractalShape, 2000);
+    
+    // Add floating animation
+    const styleSheet = document.createElement('style');
+    styleSheet.textContent = `
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(30px, -30px) rotate(90deg);
+            }
+            50% {
+                transform: translate(60px, 0px) rotate(180deg);
+            }
+            75% {
+                transform: translate(30px, 30px) rotate(270deg);
+            }
+            100% {
+                transform: translate(0, 0) rotate(360deg);
+            }
+        }
+    `;
+    document.head.appendChild(styleSheet);
+    
+    // Intersection Observer for fade-in animations
+    const fadeObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = 1;
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, { threshold: 0.1 });
+    
+    // Apply to all fade-in elements
+    document.querySelectorAll('.fade-in').forEach(element => {
+        element.style.opacity = 0;
+        element.style.transform = 'translateY(20px)';
+        element.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        fadeObserver.observe(element);
+    });
+</script>
