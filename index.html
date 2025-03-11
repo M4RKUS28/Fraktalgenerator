@@ -741,6 +741,69 @@
         .delay-3 {
             animation-delay: 0.6s;
         }
+
+        /* Image Modal/Lightbox */
+        .image-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            padding-top: 50px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            overflow: auto;
+            transition: all 0.3s ease-in-out;
+        }
+        
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 90vh;
+            border-radius: 8px;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.5);
+            animation: zoom 0.3s ease-in-out;
+        }
+        
+        @keyframes zoom {
+            from {transform: scale(0.1); opacity: 0;}
+            to {transform: scale(1); opacity: 1;}
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        
+        .close-modal:hover,
+        .close-modal:focus {
+            color: var(--accent);
+            text-decoration: none;
+            transform: scale(1.2);
+        }
+        
+        .modal-caption {
+            margin: auto;
+            display: block;
+            width: 80%;
+            text-align: center;
+            color: #ccc;
+            padding: 10px 0;
+            height: 50px;
+        }
+        
+        /* Add pointer cursor to gallery items */
+        .gallery-item {
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -1275,6 +1338,81 @@
             element.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
             fadeObserver.observe(element);
         });
+
+        // Gallery Modal/Lightbox functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create modal elements if they don't exist
+            if (!document.getElementById('imageModal')) {
+                const modal = document.createElement('div');
+                modal.id = 'imageModal';
+                modal.className = 'image-modal';
+                
+                const closeBtn = document.createElement('span');
+                closeBtn.className = 'close-modal';
+                closeBtn.innerHTML = '&times;';
+                
+                const modalImg = document.createElement('img');
+                modalImg.className = 'modal-content';
+                modalImg.id = 'modalImage';
+                
+                const caption = document.createElement('div');
+                caption.className = 'modal-caption';
+                caption.id = 'modalCaption';
+                
+                modal.appendChild(closeBtn);
+                modal.appendChild(modalImg);
+                modal.appendChild(caption);
+                document.body.appendChild(modal);
+            }
+    
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            const captionText = document.getElementById('modalCaption');
+            const closeModal = document.getElementsByClassName('close-modal')[0];
+        
+            // Get all gallery images
+            const galleryItems = document.querySelectorAll('.gallery-item img');
+        
+            // Add click handler to each image
+            galleryItems.forEach(img => {
+                img.onclick = function() {
+                    modal.style.display = "block";
+                    modalImg.src = this.src;
+                    captionText.innerHTML = this.alt;
+                    document.body.style.overflow = 'hidden'; // Prevent scrolling
+                }
+            });
+        
+            // Close the modal when the × is clicked
+            closeModal.onclick = function() {
+                modal.style.display = "none";
+                document.body.style.overflow = ''; // Re-enable scrolling
+            }
+        
+            // Also close modal when clicking outside the image
+            modal.onclick = function(event) {
+                if (event.target === modal) {
+                    modal.style.display = "none";
+                    document.body.style.overflow = ''; // Re-enable scrolling
+                }
+            }
+        
+            // Add keyboard support (ESC to close)
+            document.addEventListener('keydown', function(event) {
+                if (event.key === "Escape" && modal.style.display === "block") {
+                    modal.style.display = "none";
+                    document.body.style.overflow = ''; // Re-enable scrolling
+                }
+            });
+        });
     </script>
+
+    !-- Image Modal/Lightbox -->
+    <div id="imageModal" class="image-modal">
+        <span class="close-modal">&times;</span>
+        <img class="modal-content" id="modalImage">
+        <div class="modal-caption" id="modalCaption"></div>
+    </div>
+    
 </body>
 </html>
